@@ -109,7 +109,12 @@ def extract_layer_transfers(
         dfs.append(df)
 
     # merge all blocks
-    dfs = pd.concat(dfs, keys=dates)
+    if len(dates) == len(dfs):
+        dfs = pd.concat(dfs, keys=dates)
+    else:
+        # if the number of dates found is different from the number
+        # of transfer blocks, do not use dates and use range instead
+        dfs = pd.concat(dfs, keys=range(len(dfs)))
 
     # rename axes
     dfs.index.names = ['time', 'layer']
