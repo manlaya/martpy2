@@ -68,7 +68,7 @@ def extract_layer_transfers(
 
         for part in parts:
             # use regex string match and read it with pandas
-            df_ = pd.read_csv(io.StringIO(part), sep='|')
+            df_ = pd.read_csv(io.StringIO(part), sep='|', dtype=str)
 
             # get rid of white spaces
             df_.columns = df_.columns.str.strip()
