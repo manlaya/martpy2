@@ -1,0 +1,290 @@
+Craie NPC
+ #<V7.2># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+  /Charge       /HISTO/   =   /XCOO:X= 563416Y=2652742P=      4;00061X0117/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 566744Y=2650037P=      4;00065X0011/P1
+  /Charge       /HISTO/   =   /XCOO:X= 575646Y=2643113P=      7;00067X0029/P1
+  /Charge       /HISTO/   =   /XCOO:X= 575626Y=2643103P=      7;00067X0183/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 582772Y=2644948P=      4;00068X0010/F295
+  /Charge       /HISTO/   =   /XCOO:X= 581329Y=2643846P=      4;00068X0072/P1
+  /Charge       /HISTO/   =   /XCOO:X= 586109Y=2646352P=      4;00068X0147/PZ5
+  /Charge       /HISTO/   =   /XCOO:X= 553474Y=2622944P=      7;00107X0006/P1
+  /Charge       /HISTO/   =   /XCOO:X= 580888Y=2640308P=      4;00113X0001/P1
+  /Charge       /HISTO/   =   /XCOO:X= 576770Y=2634695P=      7;00113X0002/P1
+  /Charge       /HISTO/   =   /XCOO:X= 567093Y=2621395P=      4;00115X0011/P1
+  /Charge       /HISTO/   =   /XCOO:X= 578495Y=2626458P=      7;00117X0023/P1
+  /Charge       /HISTO/   =   /XCOO:X= 587954Y=2640459P=      4;00121X0001/P1
+  /Charge       /HISTO/   =   /XCOO:X= 589406Y=2637191P=      4;00121X0019/S1
+  /Charge       /HISTO/   =   /XCOO:X= 594829Y=2630799P=      4;00122X0064/P1
+  /Charge       /HISTO/   =   /XCOO:X= 601874Y=2634897P=      4;00123X0113/F2
+  /Charge       /HISTO/   =   /XCOO:X= 611854Y=2631819P=      4;00124X0023/F1
+  /Charge       /HISTO/   =   /XCOO:X= 588756Y=2623221P=      6;00125X0080/P1
+  /Charge       /HISTO/   =   /XCOO:X= 603848Y=2627958P=      4;00127X0873/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 650924Y=2627194P=      4;00146B0737/PZR2
+  /Charge       /HISTO/   =   /XCOO:X= 647554Y=2622757P=      4;00146C0234/P1
+  /Charge       /HISTO/   =   /XCOO:X= 650817Y=2624355P=      4;00146D1853/PZOCE
+  /Charge       /HISTO/   =   /XCOO:X= 652099Y=2629799P=      4;00147A0341/F1
+  /Charge       /HISTO/   =   /XCOO:X= 655972Y=2621407P=      4;00147D0129/P1
+  /Charge       /HISTO/   =   /XCOO:X= 654323Y=2625626P=      4;00147D0218/P1
+  /Charge       /HISTO/   =   /XCOO:X= 663660Y=2625299P=      4;00148D0177/F2
+  /Charge       /HISTO/   =   /XCOO:X= 551623Y=2614436P=      4;00163X0032/F2
+  /Charge       /HISTO/   =   /XCOO:X= 557185Y=2613696P=      4;00164X0073/PZ1MAR
+  /Charge       /HISTO/   =   /XCOO:X= 553189Y=2606992P=      4;00167X0001/P1
+  /Charge       /HISTO/   =   /XCOO:X= 567285Y=2611936P=      6;00171X0051/P1
+  /Charge       /HISTO/   =   /XCOO:X= 571773Y=2616596P=      6;00172X0037/P1
+  /Charge       /HISTO/   =   /XCOO:X= 578767Y=2615776P=      7;00173X0083/PZ13A
+  /Charge       /HISTO/   =   /XCOO:X= 585130Y=2619905P=      7;00174X0014/P1
+  /Charge       /HISTO/   =   /XCOO:X= 581583Y=2614584P=      6;00174X0026/P1
+  /Charge       /HISTO/   =   /XCOO:X= 563210Y=2603719P=      4;00175X0014/S1
+  /Charge       /HISTO/   =   /XCOO:X= 569310Y=2608750P=      4;00176X0060/P
+  /Charge       /HISTO/   =   /XCOO:X= 575021Y=2607910P=      4;00177X0003/P
+  /Charge       /HISTO/   =   /XCOO:X= 580112Y=2601899P=      4;00177X0033/P
+  /Charge       /HISTO/   =   /XCOO:X= 579160Y=2604880P=      7;00177X0053/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 584910Y=2609564P=      4;00178X0003/S1
+  /Charge       /HISTO/   =   /XCOO:X= 588608Y=2611980P=      6;00181X0125/PZT1
+  /Charge       /HISTO/   =   /XCOO:X= 590902Y=2612190P=      7;00181X0134/PZ15A
+  /Charge       /HISTO/   =   /XCOO:X= 590892Y=2612190P=      6;00181X0136/PZ15B
+  /Charge       /HISTO/   =   /XCOO:X= 595591Y=2611609P=      7;00182X0010/P1
+  /Charge       /HISTO/   =   /XCOO:X= 594449Y=2616679P=      6;00182X0031/P
+  /Charge       /HISTO/   =   /XCOO:X= 597916Y=2617972P=      6;00182X0039/P
+  /Charge       /HISTO/   =   /XCOO:X= 599103Y=2620192P=      4;00182X0063/P
+  /Charge       /HISTO/   =   /XCOO:X= 599143Y=2620187P=      4;00182X0079/PZC-L
+  /Charge       /HISTO/   =   /XCOO:X= 604028Y=2614966P=      6;00183X0002/S1
+  /Charge       /HISTO/   =   /XCOO:X= 607605Y=2612862P=      4;00184X0133/P1
+  /Charge       /HISTO/   =   /XCOO:X= 602755Y=2604145P=      4;00187X0005/P1
+  /Charge       /HISTO/   =   /XCOO:X= 602830Y=2604505P=      4;00187X0017/P
+  /Charge       /HISTO/   =   /XCOO:X= 617224Y=2612620P=      4;00191X0281/PZ2
+  /Charge       /HISTO/   =   /XCOO:X= 617061Y=2612513P=      4;00191X0297/PZ5BIS
+  /Charge       /HISTO/   =   /XCOO:X= 617645Y=2613001P=      4;00191X0308/PZ3
+  /Charge       /HISTO/   =   /XCOO:X= 616207Y=2611869P=      4;00191X0309/PZ4
+  /Charge       /HISTO/   =   /XCOO:X= 616057Y=2612264P=      4;00191X0367/PZ1BIS
+  /Charge       /HISTO/   =   /XCOO:X= 626964Y=2616146P=      4;00193X0167/PZ28
+  /Charge       /HISTO/   =   /XCOO:X= 614789Y=2608963P=      6;00195X0087/P2
+  /Charge       /HISTO/   =   /XCOO:X= 619587Y=2600807P=      6;00196X0053/P1
+  /Charge       /HISTO/   =   /XCOO:X= 624498Y=2609683P=      4;00196X0294/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 624077Y=2610575P=      4;00196X0316/PZ4
+  /Charge       /HISTO/   =   /XCOO:X= 624581Y=2609153P=      4;00196X0334/PZC5
+  /Charge       /HISTO/   =   /XCOO:X= 624765Y=2609928P=      4;00196X0335/PZC6
+  /Charge       /HISTO/   =   /XCOO:X= 624021Y=2609799P=      4;00196X0336/PZC7
+  /Charge       /HISTO/   =   /XCOO:X= 623789Y=2610196P=      4;00196X0337/PZC8
+  /Charge       /HISTO/   =   /XCOO:X= 629387Y=2605384P=      4;00197X0042/P1
+  /Charge       /HISTO/   =   /XCOO:X= 627714Y=2609472P=      4;00197X0049/F2
+  /Charge       /HISTO/   =   /XCOO:X= 628135Y=2608650P=      4;00197X0279/PZ2
+  /Charge       /HISTO/   =   /XCOO:X= 633746Y=2610342P=      4;00198X0087/P
+  /Charge       /HISTO/   =   /XCOO:X= 634569Y=2603443P=      4;00198X0123/P1
+  /Charge       /HISTO/   =   /XCOO:X= 635713Y=2601772P=      4;00198X0275/F4
+  /Charge       /HISTO/   =   /XCOO:X= 637903Y=2605873P=      4;00198X0473/PZ3
+  /Charge       /HISTO/   =   /XCOO:X= 641011Y=2612835P=      4;00201C0126/F1
+  /Charge       /HISTO/   =   /XCOO:X= 640862Y=2614333P=      4;00201C0498/P1
+  /Charge       /HISTO/   =   /XCOO:X= 652366Y=2617190P=      4;00203A0033/P1
+  /Charge       /HISTO/   =   /XCOO:X= 651674Y=2617100P=      4;00203A0359/PZ2
+  /Charge       /HISTO/   =   /XCOO:X= 663209Y=2619580P=      6;00204B0115/P1
+  /Charge       /HISTO/   =   /XCOO:X= 659759Y=2614521P=      4;00204C0191/PZST3
+  /Charge       /HISTO/   =   /XCOO:X= 639687Y=2607345P=      4;00205X0001/F1
+  /Charge       /HISTO/   =   /XCOO:X= 642711Y=2601643P=      4;00205X0396/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 642951Y=2601362P=      4;00205X0397/PZ2
+  /Charge       /HISTO/   =   /XCOO:X= 644660Y=2603010P=      4;00205X0465/PZ2BIS
+  /Charge       /HISTO/   =   /XCOO:X= 643355Y=2601690P=      4;00205X0498/PZCVI
+  /Charge       /HISTO/   =   /XCOO:X= 646290Y=2606952P=      4;00206X0471/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 645036Y=2603265P=      4;00206X0516/PZ2
+  /Charge       /HISTO/   =   /XCOO:X= 651239Y=2602851P=      4;00206X0519/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 651115Y=2603172P=      4;00206X0520/PZ7
+  /Charge       /HISTO/   =   /XCOO:X= 649072Y=2604592P=      4;00206X0550/PZS2
+  /Charge       /HISTO/   =   /XCOO:X= 649077Y=2604588P=      4;00206X0551/PZC3
+  /Charge       /HISTO/   =   /XCOO:X= 646635Y=2605578P=      4;00206X0553/PZS7
+  /Charge       /HISTO/   =   /XCOO:X= 653923Y=2602310P=      4;00207X0133/F1
+  /Charge       /HISTO/   =   /XCOO:X= 651469Y=2602965P=      4;00207X0313/PZ2
+  /Charge       /HISTO/   =   /XCOO:X= 651408Y=2603059P=      4;00207X0314/PZ3
+  /Charge       /HISTO/   =   /XCOO:X= 651421Y=2603052P=      4;00207X0315/PZ4
+  /Charge       /HISTO/   =   /XCOO:X= 651631Y=2602857P=      4;00207X0316/PZ5
+  /Charge       /HISTO/   =   /XCOO:X= 651356Y=2602905P=      4;00207X0317/PZ6
+  /Charge       /HISTO/   =   /XCOO:X= 651387Y=2603292P=      4;00207X0318/PZ8
+  /Charge       /HISTO/   =   /XCOO:X= 651360Y=2602970P=      4;00207X0325/PZ10
+  /Charge       /HISTO/   =   /XCOO:X= 651700Y=2602960P=      4;00207X0326/PZ11
+  /Charge       /HISTO/   =   /XCOO:X= 651314Y=2603038P=      4;00207X0389/PZS12
+  /Charge       /HISTO/   =   /XCOO:X= 664122Y=2602736P=      4;00215X0140/P1
+  /Charge       /HISTO/   =   /XCOO:X= 675538Y=2609403P=      4;00216X0073/PZ3
+  /Charge       /HISTO/   =   /XCOO:X= 682462Y=2610922P=      3;00217X0068/P1
+  /Charge       /HISTO/   =   /XCOO:X= 687998Y=2602420P=      4;00218X0479/PZC26
+  /Charge       /HISTO/   =   /XCOO:X= 688269Y=2602629P=      4;00218X0480/PZC27
+  /Charge       /HISTO/   =   /XCOO:X= 689732Y=2604655P=      4;00225X0077/FC2
+  /Charge       /HISTO/   =   /XCOO:X= 563221Y=2599240P=      4;00241X0012/P1
+  /Charge       /HISTO/   =   /XCOO:X= 575755Y=2594094P=      4;00243X0028/F
+  /Charge       /HISTO/   =   /XCOO:X= 585304Y=2588044P=      4;00248X0005/P1
+  /Charge       /HISTO/   =   /XCOO:X= 588178Y=2598644P=      4;00251X0013/P
+  /Charge       /HISTO/   =   /XCOO:X= 597385Y=2594477P=      4;00252X0019/P
+  /Charge       /HISTO/   =   /XCOO:X= 601403Y=2595539P=      4;00253X0044/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 611471Y=2595769P=      4;00254X0003/P1
+  /Charge       /HISTO/   =   /XCOO:X= 611541Y=2595764P=      4;00254X0037/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 610639Y=2586412P=      4;00258X0009/P1
+  /Charge       /HISTO/   =   /XCOO:X= 626119Y=2599864P=      6;00263X0006/P1
+  /Charge       /HISTO/   =   /XCOO:X= 627180Y=2592931P=      4;00263X0129/PZASA4
+  /Charge       /HISTO/   =   /XCOO:X= 623772Y=2586109P=      4;00266X0030/P1
+  /Charge       /HISTO/   =   /XCOO:X= 639413Y=2594911P=      4;00271X0002/P2
+  /Charge       /HISTO/   =   /XCOO:X= 658831Y=2600675P=      4;00274X0014/F2
+  /Charge       /HISTO/   =   /XCOO:X= 663766Y=2592117P=      4;00274X0292/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 639410Y=2584322P=      4;00275X0005/P1
+  /Charge       /HISTO/   =   /XCOO:X= 650371Y=2589428P=      4;00276X0030/F1
+  /Charge       /HISTO/   =   /XCOO:X= 647153Y=2584450P=      4;00276X0057/PZSP1
+  /Charge       /HISTO/   =   /XCOO:X= 667427Y=2599809P=      4;00281X0002/F1
+  /Charge       /HISTO/   =   /XCOO:X= 668946Y=2593076P=      4;00281X0004/F1
+  /Charge       /HISTO/   =   /XCOO:X= 669269Y=2596993P=      4;00281X0076/F1
+  /Charge       /HISTO/   =   /XCOO:X= 666570Y=2595580P=      4;00281X0352/PZ6
+  /Charge       /HISTO/   =   /XCOO:X= 676272Y=2596398P=      4;00282X0046/F1
+  /Charge       /HISTO/   =   /XCOO:X= 688742Y=2591942P=      4;00284X0701/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 672349Y=2586652P=      4;00286X0037/P1
+  /Charge       /HISTO/   =   /XCOO:X= 676584Y=2581791P=      4;00286X0405/PZST2
+  /Charge       /HISTO/   =   /XCOO:X= 692994Y=2598090P=      4;00291X0031/P1
+  /Charge       /HISTO/   =   /XCOO:X= 697824Y=2586676P=      4;00296X0158/P1
+  /Charge       /HISTO/   =   /XCOO:X= 599088Y=2578989P=      4;00342X0025/S1
+  /Charge       /HISTO/   =   /XCOO:X= 613172Y=2573309P=      4;00351X0030/P
+  /Charge       /HISTO/   =   /XCOO:X= 628224Y=2578866P=      4;00353X0073/P
+  /Charge       /HISTO/   =   /XCOO:X= 636852Y=2573635P=      4;00354X0058/S1
+  /Charge       /HISTO/   =   /XCOO:X= 621616Y=2570252P=      4;00356X0207/P
+  /Charge       /HISTO/   =   /XCOO:X= 629448Y=2566765P=      4;00357X0058/P1
+  /Charge       /HISTO/   =   /XCOO:X= 633624Y=2561776P=      4;00358X0216/PIEZO
+  /Charge       /HISTO/   =   /XCOO:X= 645898Y=2575475P=      4;00362X0012/P1
+  /Charge       /HISTO/   =   /XCOO:X= 657319Y=2578295P=      4;00363X0006/S1
+  /Charge       /HISTO/   =   /XCOO:X= 642629Y=2565379P=      4;00365X0003/P1
+  /Charge       /HISTO/   =   /XCOO:X= 647476Y=2563184P=      4;00366X0020/P1
+  /Charge       /HISTO/   =   /XCOO:X= 652084Y=2563212P=      6;00367X0006/P1
+  /Charge       /HISTO/   =   /XCOO:X= 653017Y=2568541P=      4;00367X0026/P1
+  /Charge       /HISTO/   =   /XCOO:X= 658295Y=2567427P=      4;00368X0045/P1
+  /Charge       /HISTO/   =   /XCOO:X= 677451Y=2575029P=      4;00373X0042/S1
+  /Charge       /HISTO/   =   /XCOO:X= 666696Y=2562194P=      4;00375X0105/S1
+  /Charge       /HISTO/   =   /XCOO:X= 677243Y=2561267P=      4;00376X0160/P1
+  /Charge       /HISTO/   =   /XCOO:X= 673601Y=2568721P=      4;00376X0210/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 683589Y=2570508P=      4;00377X0051/S1
+  /Charge       /HISTO/   =   /XCOO:X= 689799Y=2570364P=      4;00378X0162/PZCAT4
+  /Charge       /HISTO/   =   /XCOO:X= 632740Y=2553503P=      4;00474X0011/F
+  /Charge       /HISTO/   =   /XCOO:X= 641115Y=2559450P=      4;00481X0001/F
+  /Charge       /HISTO/   =   /XCOO:X= 649347Y=2557034P=      4;00482X0063/S1
+  /Charge       /HISTO/   =   /XCOO:X= 663638Y=2555004P=      4;00484X0018/S1
+  /Charge       /HISTO/   =   /XCOO:X= 647399Y=2542713P=      4;00486X0015/S1
+  /Charge       /HISTO/   =   /XCOO:X= 652968Y=2545495P=      4;00487X0015/S1
+  /Charge       /HISTO/   =   /XCOO:X= 657036Y=2550100P=      4;00487X0026/S1
+  /Charge       /HISTO/   =   /XCOO:X= 657086Y=2550100P=      4;00487X0084/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 670287Y=2552848P=      4;00491X0013/P
+  /Charge       /HISTO/   =   /XCOO:X= 681327Y=2558099P=      4;00493X0061/S1
+  /Charge       /HISTO/   =   /XCOO:X= 676622Y=2545433P=      4;00496X0019/S1
+  /Charge       /HISTO/   =   /XCOO:X= 680190Y=2549647P=      4;00497X0018/S1
+  /Charge       /HISTO/   =   /XCOO:X= 655095Y=2532285P=      4;00643X0015/P
+  /Charge       /HISTO/   =   /XCOO:X= 654978Y=2538574P=      4;00643X0031/P
+  /Charge       /HISTO/   =   /XCOO:X= 659946Y=2540435P=      4;00644X0011/P
+  /Charge       /HISTO/   =   /XCOO:X= 649979Y=2642003P=      8;00096D0003/F1
+  /Charge       /HISTO/   =   /XCOO:X= 652963Y=2639517P=      8;00143A0008/F1
+  /Charge       /HISTO/   =   /XCOO:X= 654146Y=2634988P=      8;00143C0079/F1
+  /Charge       /HISTO/   =   /XCOO:X= 659404Y=2635199P=      8;00144C0166/F1
+  /Charge       /HISTO/   =   /XCOO:X= 648059Y=2626068P=      8;00146B0007/F1
+  /Charge       /HISTO/   =   /XCOO:X= 665114Y=2624128P=      8;00155C0017/F1
+  /Charge       /HISTO/   =   /XCOO:X= 657264Y=2636939P=      8;00143B0102/F1
+  /Charge       /HISTO/   =   /XCOO:X= 659909Y=2635735P=      8;00144C1075/F3
+  /Charge       /HISTO/   =   /XCOO:X= 661870Y=2632526P=      8;00144D0002/F1
+  /Charge       /HISTO/   =   /XCOO:X= 662404Y=2634752P=      8;00144D0208/F1
+  /Charge       /HISTO/   =   /XCOO:X= 662884Y=2633449P=      8;00144D1082
+  /Charge       /HISTO/   =   /XCOO:X= 662884Y=2633449P=      8;00144D1083
+  /Charge       /HISTO/   =   /XCOO:X= 662784Y=2633318P=      8;00144D1166
+  /Charge       /HISTO/   =   /XCOO:X= 662804Y=2633328P=      8;00144D1167
+  /Charge       /HISTO/   =   /XCOO:X= 650616Y=2628513P=      4;00146B0018/F3
+  /Charge       /HISTO/   =   /XCOO:X= 650736Y=2628714P=      4;00146B0019/F5
+  /Charge       /HISTO/   =   /XCOO:X= 650426Y=2628383P=      4;00146B0020/F8
+  /Charge       /HISTO/   =   /XCOO:X= 650395Y=2626389P=      4;00146B0030/F1
+  /Charge       /HISTO/   =   /XCOO:X= 650585Y=2626860P=      4;00146B0027/F1
+  /Charge       /HISTO/   =   /XCOO:X= 650836Y=2626680P=      4;00146B0028/F1
+  /Charge       /HISTO/   =   /XCOO:X= 650536Y=2627431P=      4;00146B0061/F1
+  /Charge       /HISTO/   =   /XCOO:X= 651027Y=2628924P=      4;00146B0688/F1
+  /Charge       /HISTO/   =   /XCOO:X= 646796Y=2621520P=      4;00146C0001/F1
+  /Charge       /HISTO/   =   /XCOO:X= 646775Y=2621170P=      4;00146C0002/F2
+  /Charge       /HISTO/   =   /XCOO:X= 647176Y=2621109P=      4;00146C0003/F3
+  /Charge       /HISTO/   =   /XCOO:X= 648008Y=2621069P=      4;00146D0004/F4
+  /Charge       /HISTO/   =   /XCOO:X= 648359Y=2620969P=      4;00146D0073/F5
+  /Charge       /HISTO/   =   /XCOO:X= 648579Y=2620928P=      4;00146D0074/F6
+  /Charge       /HISTO/   =   /XCOO:X= 647206Y=2620869P=      4;00146C0072/F7
+  /Charge       /HISTO/   =   /XCOO:X= 646605Y=2621721P=      4;00146C0075/F8
+  /Charge       /HISTO/   =   /XCOO:X= 647607Y=2621119P=      4;00146C0077/F10
+  /Charge       /HISTO/   =   /XCOO:X= 650326Y=2628694P=      4;00147A0012/F7
+  /Charge       /HISTO/   =   /XCOO:X= 651087Y=2629135P=      4;00147A0350
+  /Charge       /HISTO/   =   /XCOO:X= 651157Y=2629014P=      4;00147A0351
+  /Charge       /HISTO/   =   /XCOO:X= 647796Y=2617933P=      4;00202A0122/F1
+  /Charge       /HISTO/   =   /XCOO:X= 647556Y=2618133P=      4;00202A0123/F2
+  /Charge       /HISTO/   =   /XCOO:X= 647315Y=2618103P=      4;00202A0124/F3
+  /Charge       /HISTO/   =   /XCOO:X= 646995Y=2618464P=      4;00202A0125/F4
+  /Charge       /HISTO/   =   /XCOO:X= 646744Y=2618604P=      4;00202A0126/F5
+  /Charge       /HISTO/   =   /XCOO:X= 646474Y=2618755P=      4;00202A0127/F6
+  /Charge       /HISTO/   =   /XCOO:X= 646264Y=2619035P=      4;00202A0128/F7
+  /Charge       /HISTO/   =   /XCOO:X= 645973Y=2619206P=      4;00202A0129/F8
+  /Charge       /HISTO/   =   /XCOO:X= 645763Y=2619416P=      4;00202A0130/F9
+  /Charge       /HISTO/   =   /XCOO:X= 645552Y=2619627P=      4;00202A0131/F10
+  /Charge       /HISTO/   =   /XCOO:X= 646814Y=2618143P=      4;00202A0407/F11
+  /Charge       /HISTO/   =   /XCOO:X= 661986Y=2599611P=      4;00274X0188/F1N
+  /Charge       /HISTO/   =   /XCOO:X= 662076Y=2599661P=      4;00274X0002/F2
+  /Charge       /HISTO/   =   /XCOO:X= 662167Y=2599731P=      4;00274X0003/F3
+  /Charge       /HISTO/   =   /XCOO:X= 662277Y=2599751P=      4;00274X0004/F4
+  /Charge       /HISTO/   =   /XCOO:X= 662387Y=2599761P=      4;00274X0005/F5
+  /Charge       /HISTO/   =   /XCOO:X= 662497Y=2599756P=      4;00274X0189/F6N
+  /Charge       /HISTO/   =   /XCOO:X= 662617Y=2599751P=      4;00274X0190/F7N
+  /Charge       /HISTO/   =   /XCOO:X= 662818Y=2600132P=      4;00274X0191/F8N
+  /Charge       /HISTO/   =   /XCOO:X= 663309Y=2599741P=      4;00274X0009/F9
+  /Charge       /HISTO/   =   /XCOO:X= 662708Y=2599631P=      4;00274X0010/F10
+  /Charge       /HISTO/   =   /XCOO:X= 661966Y=2599611P=      4;00274X0001/F11
+  /Charge       /HISTO/   =   /XCOO:X= 662928Y=2599751P=      4;00274X0012/F12
+  /Charge       /HISTO/   =   /XCOO:X= 663068Y=2599751P=      4;00274X0013/F13
+  /Charge       /HISTO/   =   /XCOO:X= 641141Y=2609997P=      4;Estevelles
+  /Charge       /HISTO/   =   /XCOO:X= 637362Y=2611955P=      4;Wingles F2
+  /Charge       /HISTO/   =   /XCOO:X= 637093Y=2611885P=      4;Wingles F3
+  /Charge       /HISTO/   =   /XCOO:X= 638015Y=2612545P=      4;Wingles FE2
+  /Charge       /HISTO/   =   /XCOO:X= 637674Y=2612575P=      4;Wingles FE3
+  /Charge       /HISTO/   =   /XCOO:X= 643368Y=2618205P=      4;AnsereuillesF16
+  /Charge       /HISTO/   =   /XCOO:X= 643367Y=2618379P=      4;AnsereuillesF8
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    224L=    184P=      1;E1563710
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    207L=    182P=      1;E1566010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    262L=    175P=      1;E1726020
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    273L=    176P=      1;E1727510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    284L=    170P=      1;E1766010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    298L=    146P=      1;E1827020
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    213L=    170P=      1;E2071105
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    237L=    147P=      1;E2367410
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    272L=    133P=      1;E2371105
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    259L=    147P=      1;E2376010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    266L=    140P=      1;E2377210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    271L=    131P=      1;E2400411
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    194L=    122P=      1;E3102110
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    233L=    115P=      1;E3346010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    224L=    127P=      1;E3346020
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    217L=     93P=      1;E3383510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    215L=     91P=      1;E3412100
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     90L=    128P=      1;E3511210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     96L=    107P=      1;E3511220
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    117L=    110P=      1;E3518510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    127L=    100P=      1;E3611210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    146L=    112P=      1;E3646210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    143L=    136P=      1;E3660600
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    214L=     90P=      1;E3811265
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    100L=     87P=      1;E4035710
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     80L=    110P=      1;E4035720
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     84L=     87P=      1;E4035730
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     83L=     88P=      1;E4036530
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     70L=     66P=      1;E4306010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    147L=     44P=      1;E4905710
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    119L=     51P=      1;E4905711
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    148L=     64P=      1;E4909405
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     42L=    144P=      1;E5400310
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     71L=    160P=      1;E5406510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    367L=    174P=      1;Test Sambre
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    109L=     49P=      1;zone4
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    174L=    110P=      1;zone114
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=     80L=     80P=      4;zone5
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    121L=    127P=      4;zone3
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    218L=    106P=      4;zone103
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=     55L=    142P=      4;zone1
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    104L=    162P=      4;zone11
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=     80L=    186P=      4;zone109
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    156L=    181P=      4;zone106
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    177L=    241P=      4;zone112
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    209L=    200P=      4;zone110
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    242L=    143P=      1;zone118
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    226L=    267P=      4;zone113
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    255L=    212P=      4;zone2
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    293L=    178P=      4;zone107
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    281L=    109P=      8;zone99
+  /Flux_Infiltr /HISTO/   =   /MAIL:C=    317L=    199P=      4;zone117
+ *** Fin du fichier des 'Mailles à Historique'       ***

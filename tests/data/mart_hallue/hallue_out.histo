@@ -1,0 +1,8 @@
+Marthe Time series
+ #<V7.8.4># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne 
+  /Charge       /HISTO/   =   /XCOO:X= 611.62Y=   2560P=      1; Col_Obs=1; Name=00464X0013/H1
+  /Charge       /HISTO/   =   /XCOO:X= 617.43Y= 2558.7P=      1; Name=00471X0010/H1
+ 1/Charge       /HISTO/   =   /COOR:X= 617.43Y= 2558.7P=      1; Name=00471X0010/no_interp
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     25L=     29P=      1; Name=E6397010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     22L=     40P=      1;
+ *** Fin du fichier des 'Mailles à Historique'       ***

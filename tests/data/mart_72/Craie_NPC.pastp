@@ -1,0 +1,2984 @@
+Craie NPC
+ #<V7.1># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+ *** Début de la simulation    à la date : 25/12/1981 ; ***
+  /FLUX_PLUV/ZONEP     Z=      1V=        22; File= Pluie_Gravelines.txt
+  /FLUX_PLUV/ZONEP     Z=      2V=        22; File= Pluie_Watten.txt
+  /FLUX_PLUV/ZONEP     Z=      3V=        22; File= Pluie_Lille.txt
+  /FLUX_PLUV/ZONEP     Z=      4V=        22; File= Pluie_Bouchain.txt
+  /FLUX_PLUV/ZONEP     Z=      5V=        22; File= Pluie_Troisvilles.txt
+  /FLUX_PLUV/ZONEP     Z=      6V=        22; File= Pluie_Touquet.txt
+  /FLUX_PLUV/ZONEP     Z=      7V=        22; File= Pluie_Attin.txt
+  /FLUX_PLUV/ZONEP     Z=      8V=        22; File= Pluie_Marconelle.txt
+  /FLUX_PLUV/ZONEP     Z=      9V=        22; File= Pluie_St_Pol.txt
+  /FLUX_PLUV/ZONEP     Z=     10V=        22; File= Pluie_Douai.txt
+  /FLUX_PLUV/ZONEP     Z=     11V=        22; File= Pluie_Achiet.txt
+  /FLUX_PLUV/ZONEP     Z=     12V=        22; File= Pluie_Escaudoeuvres.txt
+  /FLUX_PLUV/ZONEP     Z=     13V=        22; File= Pluie_Crevecoeur.txt
+  /FLUX_PLUV/ZONEP     Z=     14V=        22; File= Pluie_Bony.txt
+  /FLUX_PLUV/ZONEP     Z=     15V=        22; File= Pluie_Villiers.txt
+  /FLUX_PLUV/ZONEP     Z=     16V=        22; File= Pluie_Pontru.txt
+  /FLUX_ETP/ZONEP      Z=      1V=        18; File= ETP_Touquet.txt
+  /FLUX_ETP/ZONEP      Z=      2V=        18; File= ETP_Touquet.txt
+  /FLUX_ETP/ZONEP      Z=      3V=        18; File= ETP_Lille.txt
+  /FLUX_ETP/ZONEP      Z=      4V=        18; File= ETP_Lille.txt
+  /FLUX_ETP/ZONEP      Z=      5V=        18; File= ETP_St_Quentin.txt
+  /FLUX_ETP/ZONEP      Z=      6V=        18; File= ETP_Touquet.txt
+  /FLUX_ETP/ZONEP      Z=      7V=        18; File= ETP_Touquet.txt
+  /FLUX_ETP/ZONEP      Z=      8V=        18; File= ETP_Abbeville.txt
+  /FLUX_ETP/ZONEP      Z=      9V=        18; File= ETP_Abbeville.txt
+  /FLUX_ETP/ZONEP      Z=     10V=        18; File= ETP_Lille.txt
+  /FLUX_ETP/ZONEP      Z=     11V=        18; File= ETP_Lille.txt
+  /FLUX_ETP/ZONEP      Z=     12V=        18; File= ETP_St_Quentin.txt
+  /FLUX_ETP/ZONEP      Z=     13V=        18; File= ETP_St_Quentin.txt
+  /FLUX_ETP/ZONEP      Z=     14V=        18; File= ETP_St_Quentin.txt
+  /FLUX_ETP/ZONEP      Z=     15V=        18; File= ETP_St_Quentin.txt
+  /FLUX_ETP/ZONEP      Z=     16V=        18; File= ETP_St_Quentin.txt
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=      1V=        32;
+  /CORR_ETP/ZONEP      Z=      1V=         0;
+  /CORREC_PLUIE/ZONEP  Z=      1V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=      1V=      9000;
+  /T_DEMI_PERCOL/ZONEP Z=      1V=      3e-2;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=     11V=        30;
+  /CORR_ETP/ZONEP      Z=     11V=         0;
+  /CORREC_PLUIE/ZONEP  Z=     11V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=     11V=      5500;
+  /T_DEMI_PERCOL/ZONEP Z=     11V=      5e-2;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=      2V=       125;
+  /CORR_ETP/ZONEP      Z=      2V=       6.4;
+  /CORREC_PLUIE/ZONEP  Z=      2V=      11.6;
+  /EQU_RUIS_PERC/ZONEP Z=      2V=       408;
+  /T_DEMI_PERCOL/ZONEP Z=      2V=      19.3;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=      3V=       125;
+  /CORR_ETP/ZONEP      Z=      3V=         0;
+  /CORREC_PLUIE/ZONEP  Z=      3V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=      3V=       126;
+  /T_DEMI_PERCOL/ZONEP Z=      3V=       1.7;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=      4V=       347;
+  /CORR_ETP/ZONEP      Z=      4V=         0;
+  /CORREC_PLUIE/ZONEP  Z=      4V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=      4V=        13;
+  /T_DEMI_PERCOL/ZONEP Z=      4V=       0.7;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=      5V=        44;
+  /CORR_ETP/ZONEP      Z=      5V=       -15;
+  /CORREC_PLUIE/ZONEP  Z=      5V=      -3.7;
+  /EQU_RUIS_PERC/ZONEP Z=      5V=       226;
+  /T_DEMI_PERCOL/ZONEP Z=      5V=       2.8;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    103V=       109;
+  /CORR_ETP/ZONEP      Z=    103V=      -6.3;
+  /CORREC_PLUIE/ZONEP  Z=    103V=      -1.5;
+  /EQU_RUIS_PERC/ZONEP Z=    103V=        37;
+  /T_DEMI_PERCOL/ZONEP Z=    103V=       1.6;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    106V=       236;
+  /CORR_ETP/ZONEP      Z=    106V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    106V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    106V=      9500;
+  /T_DEMI_PERCOL/ZONEP Z=    106V=      1.14;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    107V=       157;
+  /CORR_ETP/ZONEP      Z=    107V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    107V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    107V=       130;
+  /T_DEMI_PERCOL/ZONEP Z=    107V=       0.3;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    109V=        32;
+  /CORR_ETP/ZONEP      Z=    109V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    109V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    109V=      9000;
+  /T_DEMI_PERCOL/ZONEP Z=    109V=      3e-2;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    110V=       236;
+  /CORR_ETP/ZONEP      Z=    110V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    110V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    110V=      9500;
+  /T_DEMI_PERCOL/ZONEP Z=    110V=      1.14;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    112V=       239;
+  /CORR_ETP/ZONEP      Z=    112V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    112V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    112V=      3186;
+  /T_DEMI_PERCOL/ZONEP Z=    112V=      0.32;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    113V=        30;
+  /CORR_ETP/ZONEP      Z=    113V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    113V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    113V=      5500;
+  /T_DEMI_PERCOL/ZONEP Z=    113V=      5e-2;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    114V=       347;
+  /CORR_ETP/ZONEP      Z=    114V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    114V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    114V=        13;
+  /T_DEMI_PERCOL/ZONEP Z=    114V=       0.7;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    117V=       157;
+  /CORR_ETP/ZONEP      Z=    117V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    117V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    117V=       130;
+  /T_DEMI_PERCOL/ZONEP Z=    117V=       0.3;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=    118V=       157;
+  /CORR_ETP/ZONEP      Z=    118V=         0;
+  /CORREC_PLUIE/ZONEP  Z=    118V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=    118V=       130;
+  /T_DEMI_PERCOL/ZONEP Z=    118V=       0.3;
+  /!!!!!/!!!!!
+  /CAP_SOL_PROGR/ZONEP Z=     99V=       350;
+  /CORR_ETP/ZONEP      Z=     99V=         0;
+  /CORREC_PLUIE/ZONEP  Z=     99V=         0;
+  /EQU_RUIS_PERC/ZONEP Z=     99V=        13;
+  /T_DEMI_PERCOL/ZONEP Z=     99V=       0.7;
+  /!!!!!/!!!!!
+  /Q_EXTER_RIVI/MAILL  C=    115L=    102P=      0V=         0; File= AEP_Aire_sur_la_Lys.txt
+  /*****/***** Fin de ce pas
+ *** Le pas :    1: se termine à la date : 05/01/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /DEBIT/LISTM         N: prelevements_1982.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /*****/***** Fin de ce pas
+ *** Le pas :    2: se termine à la date : 15/01/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :    3: se termine à la date : 25/01/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :    4: se termine à la date : 05/02/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :    5: se termine à la date : 15/02/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :    6: se termine à la date : 25/02/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :    7: se termine à la date : 05/03/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :    8: se termine à la date : 15/03/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :    9: se termine à la date : 25/03/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   10: se termine à la date : 05/04/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   11: se termine à la date : 15/04/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   12: se termine à la date : 25/04/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   13: se termine à la date : 05/05/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   14: se termine à la date : 15/05/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   15: se termine à la date : 25/05/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   16: se termine à la date : 05/06/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   17: se termine à la date : 15/06/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   18: se termine à la date : 25/06/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /%SATURAT/EDITI      I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   19: se termine à la date : 05/07/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   20: se termine à la date : 15/07/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   21: se termine à la date : 25/07/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /%SATURAT/EDITI      I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   22: se termine à la date : 05/08/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   23: se termine à la date : 15/08/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   24: se termine à la date : 25/08/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /%SATURAT/EDITI      I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   25: se termine à la date : 05/09/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   26: se termine à la date : 15/09/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   27: se termine à la date : 25/09/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   28: se termine à la date : 05/10/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   29: se termine à la date : 15/10/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   30: se termine à la date : 25/10/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   31: se termine à la date : 05/11/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   32: se termine à la date : 15/11/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   33: se termine à la date : 25/11/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   34: se termine à la date : 05/12/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   35: se termine à la date : 15/12/1982 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   36: se termine à la date : 25/12/1982 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   37: se termine à la date : 05/01/1983 ; ***
+  /DEBIT/LISTM         N: prelevements_1983.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   38: se termine à la date : 15/01/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   39: se termine à la date : 25/01/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   40: se termine à la date : 05/02/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   41: se termine à la date : 15/02/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   42: se termine à la date : 25/02/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   43: se termine à la date : 05/03/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   44: se termine à la date : 15/03/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   45: se termine à la date : 25/03/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   46: se termine à la date : 05/04/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   47: se termine à la date : 15/04/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   48: se termine à la date : 25/04/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   49: se termine à la date : 05/05/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   50: se termine à la date : 15/05/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   51: se termine à la date : 25/05/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   52: se termine à la date : 05/06/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   53: se termine à la date : 15/06/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   54: se termine à la date : 25/06/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   55: se termine à la date : 05/07/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   56: se termine à la date : 15/07/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   57: se termine à la date : 25/07/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   58: se termine à la date : 05/08/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   59: se termine à la date : 15/08/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   60: se termine à la date : 25/08/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   61: se termine à la date : 05/09/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   62: se termine à la date : 15/09/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   63: se termine à la date : 25/09/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   64: se termine à la date : 05/10/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   65: se termine à la date : 15/10/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   66: se termine à la date : 25/10/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   67: se termine à la date : 05/11/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   68: se termine à la date : 15/11/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   69: se termine à la date : 25/11/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   70: se termine à la date : 05/12/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   71: se termine à la date : 15/12/1983 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   72: se termine à la date : 25/12/1983 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   73: se termine à la date : 05/01/1984 ; ***
+  /DEBIT/LISTM         N: prelevements_1984.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   74: se termine à la date : 15/01/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   75: se termine à la date : 25/01/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   76: se termine à la date : 05/02/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   77: se termine à la date : 15/02/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   78: se termine à la date : 25/02/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   79: se termine à la date : 05/03/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   80: se termine à la date : 15/03/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   81: se termine à la date : 25/03/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   82: se termine à la date : 05/04/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   83: se termine à la date : 15/04/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   84: se termine à la date : 25/04/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   85: se termine à la date : 05/05/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   86: se termine à la date : 15/05/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   87: se termine à la date : 25/05/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   88: se termine à la date : 05/06/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   89: se termine à la date : 15/06/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   90: se termine à la date : 25/06/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   91: se termine à la date : 05/07/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   92: se termine à la date : 15/07/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   93: se termine à la date : 25/07/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   94: se termine à la date : 05/08/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   95: se termine à la date : 15/08/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   96: se termine à la date : 25/08/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   97: se termine à la date : 05/09/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :   98: se termine à la date : 15/09/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :   99: se termine à la date : 25/09/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  100: se termine à la date : 05/10/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  101: se termine à la date : 15/10/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  102: se termine à la date : 25/10/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  103: se termine à la date : 05/11/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  104: se termine à la date : 15/11/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  105: se termine à la date : 25/11/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  106: se termine à la date : 05/12/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  107: se termine à la date : 15/12/1984 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  108: se termine à la date : 25/12/1984 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  109: se termine à la date : 05/01/1985 ; ***
+  /DEBIT/LISTM         N: prelevements_1985.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  110: se termine à la date : 15/01/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  111: se termine à la date : 25/01/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  112: se termine à la date : 05/02/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  113: se termine à la date : 15/02/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  114: se termine à la date : 25/02/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  115: se termine à la date : 05/03/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  116: se termine à la date : 15/03/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  117: se termine à la date : 25/03/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  118: se termine à la date : 05/04/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  119: se termine à la date : 15/04/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  120: se termine à la date : 25/04/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  121: se termine à la date : 05/05/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  122: se termine à la date : 15/05/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  123: se termine à la date : 25/05/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  124: se termine à la date : 05/06/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  125: se termine à la date : 15/06/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  126: se termine à la date : 25/06/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  127: se termine à la date : 05/07/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  128: se termine à la date : 15/07/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  129: se termine à la date : 25/07/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  130: se termine à la date : 05/08/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  131: se termine à la date : 15/08/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  132: se termine à la date : 25/08/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  133: se termine à la date : 05/09/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  134: se termine à la date : 15/09/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  135: se termine à la date : 25/09/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  136: se termine à la date : 05/10/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  137: se termine à la date : 15/10/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  138: se termine à la date : 25/10/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  139: se termine à la date : 05/11/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  140: se termine à la date : 15/11/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  141: se termine à la date : 25/11/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  142: se termine à la date : 05/12/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  143: se termine à la date : 15/12/1985 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  144: se termine à la date : 25/12/1985 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  145: se termine à la date : 05/01/1986 ; ***
+  /DEBIT/LISTM         N: prelevements_1986.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  146: se termine à la date : 15/01/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  147: se termine à la date : 25/01/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  148: se termine à la date : 05/02/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  149: se termine à la date : 15/02/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  150: se termine à la date : 25/02/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  151: se termine à la date : 05/03/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  152: se termine à la date : 15/03/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  153: se termine à la date : 25/03/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  154: se termine à la date : 05/04/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  155: se termine à la date : 15/04/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  156: se termine à la date : 25/04/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  157: se termine à la date : 05/05/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  158: se termine à la date : 15/05/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  159: se termine à la date : 25/05/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  160: se termine à la date : 05/06/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  161: se termine à la date : 15/06/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  162: se termine à la date : 25/06/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  163: se termine à la date : 05/07/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  164: se termine à la date : 15/07/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  165: se termine à la date : 25/07/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  166: se termine à la date : 05/08/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  167: se termine à la date : 15/08/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  168: se termine à la date : 25/08/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  169: se termine à la date : 05/09/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  170: se termine à la date : 15/09/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  171: se termine à la date : 25/09/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  172: se termine à la date : 05/10/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  173: se termine à la date : 15/10/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  174: se termine à la date : 25/10/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  175: se termine à la date : 05/11/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  176: se termine à la date : 15/11/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  177: se termine à la date : 25/11/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  178: se termine à la date : 05/12/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  179: se termine à la date : 15/12/1986 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  180: se termine à la date : 25/12/1986 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  181: se termine à la date : 05/01/1987 ; ***
+  /DEBIT/LISTM         N: prelevements_1987.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  182: se termine à la date : 15/01/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  183: se termine à la date : 25/01/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  184: se termine à la date : 05/02/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  185: se termine à la date : 15/02/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  186: se termine à la date : 25/02/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  187: se termine à la date : 05/03/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  188: se termine à la date : 15/03/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  189: se termine à la date : 25/03/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  190: se termine à la date : 05/04/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  191: se termine à la date : 15/04/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  192: se termine à la date : 25/04/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  193: se termine à la date : 05/05/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  194: se termine à la date : 15/05/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  195: se termine à la date : 25/05/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  196: se termine à la date : 05/06/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  197: se termine à la date : 15/06/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  198: se termine à la date : 25/06/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  199: se termine à la date : 05/07/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  200: se termine à la date : 15/07/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  201: se termine à la date : 25/07/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  202: se termine à la date : 05/08/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  203: se termine à la date : 15/08/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  204: se termine à la date : 25/08/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  205: se termine à la date : 05/09/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  206: se termine à la date : 15/09/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  207: se termine à la date : 25/09/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  208: se termine à la date : 05/10/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  209: se termine à la date : 15/10/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  210: se termine à la date : 25/10/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  211: se termine à la date : 05/11/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  212: se termine à la date : 15/11/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  213: se termine à la date : 25/11/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  214: se termine à la date : 05/12/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  215: se termine à la date : 15/12/1987 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  216: se termine à la date : 25/12/1987 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  217: se termine à la date : 05/01/1988 ; ***
+  /DEBIT/LISTM         N: prelevements_1988.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  218: se termine à la date : 15/01/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  219: se termine à la date : 25/01/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  220: se termine à la date : 05/02/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  221: se termine à la date : 15/02/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  222: se termine à la date : 25/02/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  223: se termine à la date : 05/03/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  224: se termine à la date : 15/03/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  225: se termine à la date : 25/03/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  226: se termine à la date : 05/04/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  227: se termine à la date : 15/04/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  228: se termine à la date : 25/04/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  229: se termine à la date : 05/05/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  230: se termine à la date : 15/05/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  231: se termine à la date : 25/05/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  232: se termine à la date : 05/06/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  233: se termine à la date : 15/06/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  234: se termine à la date : 25/06/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  235: se termine à la date : 05/07/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  236: se termine à la date : 15/07/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  237: se termine à la date : 25/07/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  238: se termine à la date : 05/08/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  239: se termine à la date : 15/08/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  240: se termine à la date : 25/08/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  241: se termine à la date : 05/09/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  242: se termine à la date : 15/09/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  243: se termine à la date : 25/09/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  244: se termine à la date : 05/10/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  245: se termine à la date : 15/10/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  246: se termine à la date : 25/10/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  247: se termine à la date : 05/11/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  248: se termine à la date : 15/11/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  249: se termine à la date : 25/11/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  250: se termine à la date : 05/12/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  251: se termine à la date : 15/12/1988 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  252: se termine à la date : 25/12/1988 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  253: se termine à la date : 05/01/1989 ; ***
+  /DEBIT/LISTM         N: prelevements_1989.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  254: se termine à la date : 15/01/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  255: se termine à la date : 25/01/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  256: se termine à la date : 05/02/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  257: se termine à la date : 15/02/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  258: se termine à la date : 25/02/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  259: se termine à la date : 05/03/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  260: se termine à la date : 15/03/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  261: se termine à la date : 25/03/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  262: se termine à la date : 05/04/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  263: se termine à la date : 15/04/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  264: se termine à la date : 25/04/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  265: se termine à la date : 05/05/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  266: se termine à la date : 15/05/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  267: se termine à la date : 25/05/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  268: se termine à la date : 05/06/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  269: se termine à la date : 15/06/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  270: se termine à la date : 25/06/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  271: se termine à la date : 05/07/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  272: se termine à la date : 15/07/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  273: se termine à la date : 25/07/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  274: se termine à la date : 05/08/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  275: se termine à la date : 15/08/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  276: se termine à la date : 25/08/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  277: se termine à la date : 05/09/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  278: se termine à la date : 15/09/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  279: se termine à la date : 25/09/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  280: se termine à la date : 05/10/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  281: se termine à la date : 15/10/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  282: se termine à la date : 25/10/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  283: se termine à la date : 05/11/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  284: se termine à la date : 15/11/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  285: se termine à la date : 25/11/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  286: se termine à la date : 05/12/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  287: se termine à la date : 15/12/1989 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  288: se termine à la date : 25/12/1989 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  289: se termine à la date : 05/01/1990 ; ***
+  /DEBIT/LISTM         N: prelevements_1990.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  290: se termine à la date : 15/01/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  291: se termine à la date : 25/01/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  292: se termine à la date : 05/02/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  293: se termine à la date : 15/02/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  294: se termine à la date : 25/02/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  295: se termine à la date : 05/03/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  296: se termine à la date : 15/03/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  297: se termine à la date : 25/03/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  298: se termine à la date : 05/04/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  299: se termine à la date : 15/04/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  300: se termine à la date : 25/04/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  301: se termine à la date : 05/05/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  302: se termine à la date : 15/05/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  303: se termine à la date : 25/05/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  304: se termine à la date : 05/06/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  305: se termine à la date : 15/06/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  306: se termine à la date : 25/06/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  307: se termine à la date : 05/07/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  308: se termine à la date : 15/07/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  309: se termine à la date : 25/07/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  310: se termine à la date : 05/08/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  311: se termine à la date : 15/08/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  312: se termine à la date : 25/08/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  313: se termine à la date : 05/09/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  314: se termine à la date : 15/09/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  315: se termine à la date : 25/09/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  316: se termine à la date : 05/10/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  317: se termine à la date : 15/10/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  318: se termine à la date : 25/10/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  319: se termine à la date : 05/11/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  320: se termine à la date : 15/11/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  321: se termine à la date : 25/11/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  322: se termine à la date : 05/12/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  323: se termine à la date : 15/12/1990 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  324: se termine à la date : 25/12/1990 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  325: se termine à la date : 05/01/1991 ; ***
+  /DEBIT/LISTM         N: prelevements_1991.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  326: se termine à la date : 15/01/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  327: se termine à la date : 25/01/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  328: se termine à la date : 05/02/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  329: se termine à la date : 15/02/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  330: se termine à la date : 25/02/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  331: se termine à la date : 05/03/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  332: se termine à la date : 15/03/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  333: se termine à la date : 25/03/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  334: se termine à la date : 05/04/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  335: se termine à la date : 15/04/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  336: se termine à la date : 25/04/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  337: se termine à la date : 05/05/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  338: se termine à la date : 15/05/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  339: se termine à la date : 25/05/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  340: se termine à la date : 05/06/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  341: se termine à la date : 15/06/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  342: se termine à la date : 25/06/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  343: se termine à la date : 05/07/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  344: se termine à la date : 15/07/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  345: se termine à la date : 25/07/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  346: se termine à la date : 05/08/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  347: se termine à la date : 15/08/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  348: se termine à la date : 25/08/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  349: se termine à la date : 05/09/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  350: se termine à la date : 15/09/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  351: se termine à la date : 25/09/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  352: se termine à la date : 05/10/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  353: se termine à la date : 15/10/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  354: se termine à la date : 25/10/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  355: se termine à la date : 05/11/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  356: se termine à la date : 15/11/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  357: se termine à la date : 25/11/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  358: se termine à la date : 05/12/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  359: se termine à la date : 15/12/1991 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  360: se termine à la date : 25/12/1991 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  361: se termine à la date : 05/01/1992 ; ***
+  /DEBIT/LISTM         N: prelevements_1992.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  362: se termine à la date : 15/01/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  363: se termine à la date : 25/01/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  364: se termine à la date : 05/02/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  365: se termine à la date : 15/02/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  366: se termine à la date : 25/02/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  367: se termine à la date : 05/03/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  368: se termine à la date : 15/03/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  369: se termine à la date : 25/03/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  370: se termine à la date : 05/04/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  371: se termine à la date : 15/04/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  372: se termine à la date : 25/04/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  373: se termine à la date : 05/05/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  374: se termine à la date : 15/05/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  375: se termine à la date : 25/05/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  376: se termine à la date : 05/06/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  377: se termine à la date : 15/06/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  378: se termine à la date : 25/06/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  379: se termine à la date : 05/07/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  380: se termine à la date : 15/07/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  381: se termine à la date : 25/07/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  382: se termine à la date : 05/08/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  383: se termine à la date : 15/08/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  384: se termine à la date : 25/08/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  385: se termine à la date : 05/09/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  386: se termine à la date : 15/09/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  387: se termine à la date : 25/09/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  388: se termine à la date : 05/10/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  389: se termine à la date : 15/10/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  390: se termine à la date : 25/10/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  391: se termine à la date : 05/11/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  392: se termine à la date : 15/11/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  393: se termine à la date : 25/11/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  394: se termine à la date : 05/12/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  395: se termine à la date : 15/12/1992 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  396: se termine à la date : 25/12/1992 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  397: se termine à la date : 05/01/1993 ; ***
+  /DEBIT/LISTM         N: prelevements_1993.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  398: se termine à la date : 15/01/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  399: se termine à la date : 25/01/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  400: se termine à la date : 05/02/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  401: se termine à la date : 15/02/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  402: se termine à la date : 25/02/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  403: se termine à la date : 05/03/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  404: se termine à la date : 15/03/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  405: se termine à la date : 25/03/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  406: se termine à la date : 05/04/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  407: se termine à la date : 15/04/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  408: se termine à la date : 25/04/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  409: se termine à la date : 05/05/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  410: se termine à la date : 15/05/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  411: se termine à la date : 25/05/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  412: se termine à la date : 05/06/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  413: se termine à la date : 15/06/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  414: se termine à la date : 25/06/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  415: se termine à la date : 05/07/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  416: se termine à la date : 15/07/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  417: se termine à la date : 25/07/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  418: se termine à la date : 05/08/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  419: se termine à la date : 15/08/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  420: se termine à la date : 25/08/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  421: se termine à la date : 05/09/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  422: se termine à la date : 15/09/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  423: se termine à la date : 25/09/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  424: se termine à la date : 05/10/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  425: se termine à la date : 15/10/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  426: se termine à la date : 25/10/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  427: se termine à la date : 05/11/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  428: se termine à la date : 15/11/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  429: se termine à la date : 25/11/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  430: se termine à la date : 05/12/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  431: se termine à la date : 15/12/1993 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  432: se termine à la date : 25/12/1993 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  433: se termine à la date : 05/01/1994 ; ***
+  /DEBIT/LISTM         N: prelevements_1994.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  434: se termine à la date : 15/01/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  435: se termine à la date : 25/01/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  436: se termine à la date : 05/02/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  437: se termine à la date : 15/02/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  438: se termine à la date : 25/02/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  439: se termine à la date : 05/03/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  440: se termine à la date : 15/03/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  441: se termine à la date : 25/03/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  442: se termine à la date : 05/04/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  443: se termine à la date : 15/04/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  444: se termine à la date : 25/04/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  445: se termine à la date : 05/05/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  446: se termine à la date : 15/05/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  447: se termine à la date : 25/05/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  448: se termine à la date : 05/06/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  449: se termine à la date : 15/06/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  450: se termine à la date : 25/06/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  451: se termine à la date : 05/07/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  452: se termine à la date : 15/07/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  453: se termine à la date : 25/07/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  454: se termine à la date : 05/08/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  455: se termine à la date : 15/08/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  456: se termine à la date : 25/08/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  457: se termine à la date : 05/09/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  458: se termine à la date : 15/09/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  459: se termine à la date : 25/09/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  460: se termine à la date : 05/10/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  461: se termine à la date : 15/10/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  462: se termine à la date : 25/10/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  463: se termine à la date : 05/11/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  464: se termine à la date : 15/11/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  465: se termine à la date : 25/11/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  466: se termine à la date : 05/12/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  467: se termine à la date : 15/12/1994 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  468: se termine à la date : 25/12/1994 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  469: se termine à la date : 05/01/1995 ; ***
+  /DEBIT/LISTM         N: prelevements_1995.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  470: se termine à la date : 15/01/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  471: se termine à la date : 25/01/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  472: se termine à la date : 05/02/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  473: se termine à la date : 15/02/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  474: se termine à la date : 25/02/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  475: se termine à la date : 05/03/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  476: se termine à la date : 15/03/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  477: se termine à la date : 25/03/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  478: se termine à la date : 05/04/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  479: se termine à la date : 15/04/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  480: se termine à la date : 25/04/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /CHARGE/EDITI        I= 1;
+  /DEBIT/EDITI         *= 1;V= 1;L= 0;S= 1;Z= 0;
+  /DEBIT_RIVI/EDITI    I= 1;L= 0;F= 0;B= 1;
+  /QECH_RIV_NAPP/EDITI I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  481: se termine à la date : 05/05/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  482: se termine à la date : 15/05/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  483: se termine à la date : 25/05/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  484: se termine à la date : 05/06/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  485: se termine à la date : 15/06/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  486: se termine à la date : 25/06/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /CHARGE/EDITI        I= 1;
+  /DEBIT/EDITI         *= 1;V= 1;L= 0;S= 1;Z= 0;
+  /DEBIT_RIVI/EDITI    I= 1;L= 0;F= 0;B= 1;
+  /QECH_RIV_NAPP/EDITI I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  487: se termine à la date : 05/07/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  488: se termine à la date : 15/07/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  489: se termine à la date : 25/07/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  490: se termine à la date : 05/08/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  491: se termine à la date : 15/08/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  492: se termine à la date : 25/08/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  493: se termine à la date : 05/09/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  494: se termine à la date : 15/09/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  495: se termine à la date : 25/09/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  496: se termine à la date : 05/10/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  497: se termine à la date : 15/10/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  498: se termine à la date : 25/10/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  499: se termine à la date : 05/11/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  500: se termine à la date : 15/11/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  501: se termine à la date : 25/11/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  502: se termine à la date : 05/12/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  503: se termine à la date : 15/12/1995 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  504: se termine à la date : 25/12/1995 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  505: se termine à la date : 05/01/1996 ; ***
+  /DEBIT/LISTM         N: prelevements_1996.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  506: se termine à la date : 15/01/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  507: se termine à la date : 25/01/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  508: se termine à la date : 05/02/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  509: se termine à la date : 15/02/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  510: se termine à la date : 25/02/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  511: se termine à la date : 05/03/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  512: se termine à la date : 15/03/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  513: se termine à la date : 25/03/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  514: se termine à la date : 05/04/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  515: se termine à la date : 15/04/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  516: se termine à la date : 25/04/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  517: se termine à la date : 05/05/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  518: se termine à la date : 15/05/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  519: se termine à la date : 25/05/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  520: se termine à la date : 05/06/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  521: se termine à la date : 15/06/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  522: se termine à la date : 25/06/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  523: se termine à la date : 05/07/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  524: se termine à la date : 15/07/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  525: se termine à la date : 25/07/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  526: se termine à la date : 05/08/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  527: se termine à la date : 15/08/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  528: se termine à la date : 25/08/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  529: se termine à la date : 05/09/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  530: se termine à la date : 15/09/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  531: se termine à la date : 25/09/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  532: se termine à la date : 05/10/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  533: se termine à la date : 15/10/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  534: se termine à la date : 25/10/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  535: se termine à la date : 05/11/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  536: se termine à la date : 15/11/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  537: se termine à la date : 25/11/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  538: se termine à la date : 05/12/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  539: se termine à la date : 15/12/1996 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  540: se termine à la date : 25/12/1996 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  541: se termine à la date : 05/01/1997 ; ***
+  /DEBIT/LISTM         N: prelevements_1997.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  542: se termine à la date : 15/01/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  543: se termine à la date : 25/01/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  544: se termine à la date : 05/02/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  545: se termine à la date : 15/02/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  546: se termine à la date : 25/02/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  547: se termine à la date : 05/03/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  548: se termine à la date : 15/03/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  549: se termine à la date : 25/03/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  550: se termine à la date : 05/04/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  551: se termine à la date : 15/04/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  552: se termine à la date : 25/04/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  553: se termine à la date : 05/05/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  554: se termine à la date : 15/05/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  555: se termine à la date : 25/05/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  556: se termine à la date : 05/06/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  557: se termine à la date : 15/06/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  558: se termine à la date : 25/06/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  559: se termine à la date : 05/07/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  560: se termine à la date : 15/07/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  561: se termine à la date : 25/07/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  562: se termine à la date : 05/08/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  563: se termine à la date : 15/08/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  564: se termine à la date : 25/08/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  565: se termine à la date : 05/09/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  566: se termine à la date : 15/09/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  567: se termine à la date : 25/09/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  568: se termine à la date : 05/10/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  569: se termine à la date : 15/10/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  570: se termine à la date : 25/10/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  571: se termine à la date : 05/11/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  572: se termine à la date : 15/11/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  573: se termine à la date : 25/11/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  574: se termine à la date : 05/12/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  575: se termine à la date : 15/12/1997 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  576: se termine à la date : 25/12/1997 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /CHARGE/EDITI        I= 1;
+  /DEBIT/EDITI         *= 1;V= 1;L= 0;S= 1;Z= 0;
+  /DEBIT_RIVI/EDITI    I= 1;L= 0;F= 0;B= 1;
+  /QECH_RIV_NAPP/EDITI I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  577: se termine à la date : 05/01/1998 ; ***
+  /DEBIT/LISTM         N: prelevements_1998.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  578: se termine à la date : 15/01/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  579: se termine à la date : 25/01/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  580: se termine à la date : 05/02/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  581: se termine à la date : 15/02/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  582: se termine à la date : 25/02/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  583: se termine à la date : 05/03/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  584: se termine à la date : 15/03/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  585: se termine à la date : 25/03/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  586: se termine à la date : 05/04/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  587: se termine à la date : 15/04/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  588: se termine à la date : 25/04/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  589: se termine à la date : 05/05/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  590: se termine à la date : 15/05/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  591: se termine à la date : 25/05/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  592: se termine à la date : 05/06/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  593: se termine à la date : 15/06/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  594: se termine à la date : 25/06/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  595: se termine à la date : 05/07/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  596: se termine à la date : 15/07/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  597: se termine à la date : 25/07/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  598: se termine à la date : 05/08/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  599: se termine à la date : 15/08/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  600: se termine à la date : 25/08/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  601: se termine à la date : 05/09/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  602: se termine à la date : 15/09/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  603: se termine à la date : 25/09/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  604: se termine à la date : 05/10/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  605: se termine à la date : 15/10/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  606: se termine à la date : 25/10/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  607: se termine à la date : 05/11/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  608: se termine à la date : 15/11/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  609: se termine à la date : 25/11/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  610: se termine à la date : 05/12/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  611: se termine à la date : 15/12/1998 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  612: se termine à la date : 25/12/1998 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  613: se termine à la date : 05/01/1999 ; ***
+  /DEBIT/LISTM         N: prelevements_1999.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  614: se termine à la date : 15/01/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  615: se termine à la date : 25/01/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  616: se termine à la date : 05/02/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  617: se termine à la date : 15/02/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  618: se termine à la date : 25/02/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  619: se termine à la date : 05/03/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  620: se termine à la date : 15/03/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  621: se termine à la date : 25/03/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  622: se termine à la date : 05/04/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  623: se termine à la date : 15/04/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  624: se termine à la date : 25/04/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  625: se termine à la date : 05/05/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  626: se termine à la date : 15/05/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  627: se termine à la date : 25/05/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  628: se termine à la date : 05/06/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  629: se termine à la date : 15/06/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  630: se termine à la date : 25/06/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  631: se termine à la date : 05/07/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  632: se termine à la date : 15/07/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  633: se termine à la date : 25/07/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  634: se termine à la date : 05/08/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  635: se termine à la date : 15/08/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  636: se termine à la date : 25/08/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  637: se termine à la date : 05/09/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  638: se termine à la date : 15/09/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  639: se termine à la date : 25/09/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  640: se termine à la date : 05/10/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  641: se termine à la date : 15/10/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  642: se termine à la date : 25/10/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  643: se termine à la date : 05/11/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  644: se termine à la date : 15/11/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  645: se termine à la date : 25/11/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  646: se termine à la date : 05/12/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  647: se termine à la date : 15/12/1999 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  648: se termine à la date : 25/12/1999 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  649: se termine à la date : 05/01/2000 ; ***
+  /DEBIT/LISTM         N: prelevements_2000.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  650: se termine à la date : 15/01/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  651: se termine à la date : 25/01/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  652: se termine à la date : 05/02/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  653: se termine à la date : 15/02/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  654: se termine à la date : 25/02/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  655: se termine à la date : 05/03/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  656: se termine à la date : 15/03/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  657: se termine à la date : 25/03/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  658: se termine à la date : 05/04/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  659: se termine à la date : 15/04/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  660: se termine à la date : 25/04/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  661: se termine à la date : 05/05/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  662: se termine à la date : 15/05/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  663: se termine à la date : 25/05/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  664: se termine à la date : 05/06/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  665: se termine à la date : 15/06/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  666: se termine à la date : 25/06/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  667: se termine à la date : 05/07/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  668: se termine à la date : 15/07/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  669: se termine à la date : 25/07/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  670: se termine à la date : 05/08/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  671: se termine à la date : 15/08/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  672: se termine à la date : 25/08/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  673: se termine à la date : 05/09/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  674: se termine à la date : 15/09/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  675: se termine à la date : 25/09/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  676: se termine à la date : 05/10/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  677: se termine à la date : 15/10/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  678: se termine à la date : 25/10/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  679: se termine à la date : 05/11/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  680: se termine à la date : 15/11/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  681: se termine à la date : 25/11/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  682: se termine à la date : 05/12/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  683: se termine à la date : 15/12/2000 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  684: se termine à la date : 25/12/2000 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  685: se termine à la date : 05/01/2001 ; ***
+  /DEBIT/LISTM         N: prelevements_2001.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  686: se termine à la date : 15/01/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  687: se termine à la date : 25/01/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  688: se termine à la date : 05/02/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  689: se termine à la date : 15/02/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  690: se termine à la date : 25/02/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  691: se termine à la date : 05/03/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  692: se termine à la date : 15/03/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  693: se termine à la date : 25/03/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  694: se termine à la date : 05/04/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  695: se termine à la date : 15/04/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  696: se termine à la date : 25/04/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /CHARGE/EDITI        I= 1;
+  /DEBIT/EDITI         *= 1;V= 1;L= 0;S= 1;Z= 0;
+  /DEBIT_RIVI/EDITI    I= 1;L= 0;F= 0;B= 1;
+  /QECH_RIV_NAPP/EDITI I= 1;
+  /%SATURAT/EDITI      I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  697: se termine à la date : 05/05/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  698: se termine à la date : 15/05/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  699: se termine à la date : 25/05/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  700: se termine à la date : 05/06/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  701: se termine à la date : 15/06/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  702: se termine à la date : 25/06/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  703: se termine à la date : 05/07/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  704: se termine à la date : 15/07/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  705: se termine à la date : 25/07/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  706: se termine à la date : 05/08/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  707: se termine à la date : 15/08/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  708: se termine à la date : 25/08/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  709: se termine à la date : 05/09/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  710: se termine à la date : 15/09/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  711: se termine à la date : 25/09/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  712: se termine à la date : 05/10/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  713: se termine à la date : 15/10/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  714: se termine à la date : 25/10/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  715: se termine à la date : 05/11/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  716: se termine à la date : 15/11/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  717: se termine à la date : 25/11/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  718: se termine à la date : 05/12/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  719: se termine à la date : 15/12/2001 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  720: se termine à la date : 25/12/2001 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  721: se termine à la date : 05/01/2002 ; ***
+  /DEBIT/LISTM         N: prelevements_2002.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  722: se termine à la date : 15/01/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  723: se termine à la date : 25/01/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  724: se termine à la date : 05/02/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  725: se termine à la date : 15/02/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  726: se termine à la date : 25/02/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  727: se termine à la date : 05/03/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  728: se termine à la date : 15/03/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  729: se termine à la date : 25/03/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  730: se termine à la date : 05/04/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  731: se termine à la date : 15/04/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  732: se termine à la date : 25/04/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  733: se termine à la date : 05/05/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  734: se termine à la date : 15/05/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  735: se termine à la date : 25/05/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  736: se termine à la date : 05/06/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  737: se termine à la date : 15/06/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  738: se termine à la date : 25/06/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  739: se termine à la date : 05/07/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  740: se termine à la date : 15/07/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  741: se termine à la date : 25/07/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  742: se termine à la date : 05/08/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  743: se termine à la date : 15/08/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  744: se termine à la date : 25/08/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  745: se termine à la date : 05/09/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  746: se termine à la date : 15/09/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  747: se termine à la date : 25/09/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  748: se termine à la date : 05/10/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  749: se termine à la date : 15/10/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  750: se termine à la date : 25/10/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  751: se termine à la date : 05/11/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  752: se termine à la date : 15/11/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  753: se termine à la date : 25/11/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  754: se termine à la date : 05/12/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  755: se termine à la date : 15/12/2002 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  756: se termine à la date : 25/12/2002 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  757: se termine à la date : 05/01/2003 ; ***
+  /DEBIT/LISTM         N: prelevements_2003.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  758: se termine à la date : 15/01/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  759: se termine à la date : 25/01/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  760: se termine à la date : 05/02/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  761: se termine à la date : 15/02/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  762: se termine à la date : 25/02/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  763: se termine à la date : 05/03/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  764: se termine à la date : 15/03/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  765: se termine à la date : 25/03/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  766: se termine à la date : 05/04/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  767: se termine à la date : 15/04/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  768: se termine à la date : 25/04/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  769: se termine à la date : 05/05/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  770: se termine à la date : 15/05/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  771: se termine à la date : 25/05/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  772: se termine à la date : 05/06/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  773: se termine à la date : 15/06/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  774: se termine à la date : 25/06/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  775: se termine à la date : 05/07/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  776: se termine à la date : 15/07/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  777: se termine à la date : 25/07/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  778: se termine à la date : 05/08/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  779: se termine à la date : 15/08/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  780: se termine à la date : 25/08/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  781: se termine à la date : 05/09/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  782: se termine à la date : 15/09/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  783: se termine à la date : 25/09/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  784: se termine à la date : 05/10/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  785: se termine à la date : 15/10/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  786: se termine à la date : 25/10/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  787: se termine à la date : 05/11/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  788: se termine à la date : 15/11/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  789: se termine à la date : 25/11/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  790: se termine à la date : 05/12/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  791: se termine à la date : 15/12/2003 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  792: se termine à la date : 25/12/2003 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  793: se termine à la date : 05/01/2004 ; ***
+  /DEBIT/LISTM         N: prelevements_2004.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  794: se termine à la date : 15/01/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  795: se termine à la date : 25/01/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  796: se termine à la date : 05/02/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  797: se termine à la date : 15/02/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  798: se termine à la date : 25/02/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  799: se termine à la date : 05/03/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  800: se termine à la date : 15/03/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  801: se termine à la date : 25/03/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  802: se termine à la date : 05/04/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  803: se termine à la date : 15/04/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  804: se termine à la date : 25/04/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  805: se termine à la date : 05/05/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  806: se termine à la date : 15/05/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  807: se termine à la date : 25/05/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  808: se termine à la date : 05/06/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  809: se termine à la date : 15/06/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  810: se termine à la date : 25/06/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  811: se termine à la date : 05/07/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  812: se termine à la date : 15/07/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  813: se termine à la date : 25/07/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  814: se termine à la date : 05/08/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  815: se termine à la date : 15/08/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  816: se termine à la date : 25/08/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  817: se termine à la date : 05/09/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  818: se termine à la date : 15/09/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  819: se termine à la date : 25/09/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  820: se termine à la date : 05/10/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  821: se termine à la date : 15/10/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  822: se termine à la date : 25/10/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  823: se termine à la date : 05/11/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  824: se termine à la date : 15/11/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  825: se termine à la date : 25/11/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  826: se termine à la date : 05/12/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  827: se termine à la date : 15/12/2004 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  828: se termine à la date : 25/12/2004 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  829: se termine à la date : 05/01/2005 ; ***
+  /DEBIT/LISTM         N: prelevements_2005.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  830: se termine à la date : 15/01/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  831: se termine à la date : 25/01/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  832: se termine à la date : 05/02/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  833: se termine à la date : 15/02/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  834: se termine à la date : 25/02/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  835: se termine à la date : 05/03/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  836: se termine à la date : 15/03/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  837: se termine à la date : 25/03/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  838: se termine à la date : 05/04/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  839: se termine à la date : 15/04/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  840: se termine à la date : 25/04/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  841: se termine à la date : 05/05/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  842: se termine à la date : 15/05/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  843: se termine à la date : 25/05/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  844: se termine à la date : 05/06/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  845: se termine à la date : 15/06/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  846: se termine à la date : 25/06/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  847: se termine à la date : 05/07/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  848: se termine à la date : 15/07/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  849: se termine à la date : 25/07/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  850: se termine à la date : 05/08/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  851: se termine à la date : 15/08/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  852: se termine à la date : 25/08/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  853: se termine à la date : 05/09/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  854: se termine à la date : 15/09/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  855: se termine à la date : 25/09/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  856: se termine à la date : 05/10/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  857: se termine à la date : 15/10/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  858: se termine à la date : 25/10/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  859: se termine à la date : 05/11/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  860: se termine à la date : 15/11/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  861: se termine à la date : 25/11/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  862: se termine à la date : 05/12/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  863: se termine à la date : 15/12/2005 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  864: se termine à la date : 25/12/2005 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  865: se termine à la date : 05/01/2006 ; ***
+  /DEBIT/LISTM         N: prelevements_2006.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  866: se termine à la date : 15/01/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  867: se termine à la date : 25/01/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  868: se termine à la date : 05/02/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  869: se termine à la date : 15/02/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  870: se termine à la date : 25/02/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  871: se termine à la date : 05/03/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  872: se termine à la date : 15/03/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  873: se termine à la date : 25/03/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  874: se termine à la date : 05/04/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  875: se termine à la date : 15/04/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  876: se termine à la date : 25/04/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  877: se termine à la date : 05/05/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  878: se termine à la date : 15/05/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  879: se termine à la date : 25/05/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  880: se termine à la date : 05/06/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  881: se termine à la date : 15/06/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  882: se termine à la date : 25/06/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  883: se termine à la date : 05/07/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  884: se termine à la date : 15/07/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  885: se termine à la date : 25/07/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  886: se termine à la date : 05/08/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  887: se termine à la date : 15/08/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  888: se termine à la date : 25/08/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  889: se termine à la date : 05/09/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  890: se termine à la date : 15/09/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  891: se termine à la date : 25/09/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  892: se termine à la date : 05/10/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  893: se termine à la date : 15/10/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  894: se termine à la date : 25/10/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  895: se termine à la date : 05/11/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  896: se termine à la date : 15/11/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  897: se termine à la date : 25/11/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  898: se termine à la date : 05/12/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  899: se termine à la date : 15/12/2006 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  900: se termine à la date : 25/12/2006 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  901: se termine à la date : 05/01/2007 ; ***
+  /DEBIT/LISTM         N: prelevements_2007.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  902: se termine à la date : 15/01/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  903: se termine à la date : 25/01/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  904: se termine à la date : 05/02/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  905: se termine à la date : 15/02/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  906: se termine à la date : 25/02/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  907: se termine à la date : 05/03/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  908: se termine à la date : 15/03/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  909: se termine à la date : 25/03/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  910: se termine à la date : 05/04/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  911: se termine à la date : 15/04/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  912: se termine à la date : 25/04/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  913: se termine à la date : 05/05/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  914: se termine à la date : 15/05/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  915: se termine à la date : 25/05/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  916: se termine à la date : 05/06/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  917: se termine à la date : 15/06/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  918: se termine à la date : 25/06/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  919: se termine à la date : 05/07/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  920: se termine à la date : 15/07/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  921: se termine à la date : 25/07/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  922: se termine à la date : 05/08/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  923: se termine à la date : 15/08/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  924: se termine à la date : 25/08/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  925: se termine à la date : 05/09/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  926: se termine à la date : 15/09/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  927: se termine à la date : 25/09/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  928: se termine à la date : 05/10/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  929: se termine à la date : 15/10/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  930: se termine à la date : 25/10/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  931: se termine à la date : 05/11/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  932: se termine à la date : 15/11/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  933: se termine à la date : 25/11/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  934: se termine à la date : 05/12/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  935: se termine à la date : 15/12/2007 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  936: se termine à la date : 25/12/2007 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  937: se termine à la date : 05/01/2008 ; ***
+  /DEBIT/LISTM         N: prelevements_2008.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  938: se termine à la date : 15/01/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  939: se termine à la date : 25/01/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  940: se termine à la date : 05/02/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  941: se termine à la date : 15/02/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  942: se termine à la date : 25/02/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  943: se termine à la date : 05/03/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  944: se termine à la date : 15/03/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  945: se termine à la date : 25/03/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  946: se termine à la date : 05/04/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  947: se termine à la date : 15/04/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  948: se termine à la date : 25/04/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  949: se termine à la date : 05/05/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  950: se termine à la date : 15/05/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  951: se termine à la date : 25/05/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  952: se termine à la date : 05/06/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  953: se termine à la date : 15/06/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  954: se termine à la date : 25/06/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  955: se termine à la date : 05/07/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  956: se termine à la date : 15/07/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  957: se termine à la date : 25/07/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  958: se termine à la date : 05/08/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  959: se termine à la date : 15/08/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  960: se termine à la date : 25/08/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  961: se termine à la date : 05/09/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  962: se termine à la date : 15/09/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  963: se termine à la date : 25/09/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  964: se termine à la date : 05/10/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  965: se termine à la date : 15/10/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  966: se termine à la date : 25/10/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  967: se termine à la date : 05/11/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  968: se termine à la date : 15/11/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  969: se termine à la date : 25/11/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  970: se termine à la date : 05/12/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  971: se termine à la date : 15/12/2008 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  972: se termine à la date : 25/12/2008 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  973: se termine à la date : 05/01/2009 ; ***
+  /DEBIT/LISTM         N: prelevements_2008.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  974: se termine à la date : 15/01/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  975: se termine à la date : 25/01/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  976: se termine à la date : 05/02/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  977: se termine à la date : 15/02/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  978: se termine à la date : 25/02/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  979: se termine à la date : 05/03/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  980: se termine à la date : 15/03/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  981: se termine à la date : 25/03/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  982: se termine à la date : 05/04/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  983: se termine à la date : 15/04/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  984: se termine à la date : 25/04/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  985: se termine à la date : 05/05/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  986: se termine à la date : 15/05/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  987: se termine à la date : 25/05/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /CHARGE/EDITI        I= 1;
+  /DEBIT/EDITI         *= 1;V= 1;L= 0;S= 1;Z= 0;
+  /DEBIT_RIVI/EDITI    I= 1;L= 0;F= 0;B= 1;
+  /QECH_RIV_NAPP/EDITI I= 1;
+  /%SATURAT/EDITI      I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  988: se termine à la date : 05/06/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  989: se termine à la date : 15/06/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  990: se termine à la date : 25/06/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  991: se termine à la date : 05/07/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  992: se termine à la date : 15/07/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  993: se termine à la date : 25/07/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  994: se termine à la date : 05/08/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  995: se termine à la date : 15/08/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  996: se termine à la date : 25/08/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  997: se termine à la date : 05/09/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas :  998: se termine à la date : 15/09/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :  999: se termine à la date : 25/09/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1000: se termine à la date : 05/10/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1001: se termine à la date : 15/10/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1002: se termine à la date : 25/10/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /CHARGE/EDITI        I= 1;
+  /DEBIT/EDITI         *= 1;V= 1;L= 0;S= 1;Z= 0;
+  /DEBIT_RIVI/EDITI    I= 1;L= 0;F= 0;B= 1;
+  /QECH_RIV_NAPP/EDITI I= 1;
+  /%SATURAT/EDITI      I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1003: se termine à la date : 05/11/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1004: se termine à la date : 15/11/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1005: se termine à la date : 25/11/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1006: se termine à la date : 05/12/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1007: se termine à la date : 15/12/2009 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1008: se termine à la date : 25/12/2009 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1009: se termine à la date : 05/01/2010 ; ***
+  /DEBIT/LISTM         N: prelevements_2008.txt <X_Y_C> <Somm_Mail> <Keep_9999>
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1010: se termine à la date : 15/01/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1011: se termine à la date : 25/01/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1012: se termine à la date : 05/02/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1013: se termine à la date : 15/02/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1014: se termine à la date : 25/02/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1015: se termine à la date : 05/03/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1016: se termine à la date : 15/03/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1017: se termine à la date : 25/03/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1018: se termine à la date : 05/04/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1019: se termine à la date : 15/04/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1020: se termine à la date : 25/04/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1021: se termine à la date : 05/05/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1022: se termine à la date : 15/05/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1023: se termine à la date : 25/05/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1024: se termine à la date : 05/06/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1025: se termine à la date : 15/06/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1026: se termine à la date : 25/06/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1027: se termine à la date : 05/07/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1028: se termine à la date : 15/07/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1029: se termine à la date : 25/07/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1030: se termine à la date : 05/08/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1031: se termine à la date : 15/08/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1032: se termine à la date : 25/08/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1033: se termine à la date : 05/09/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1034: se termine à la date : 15/09/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1035: se termine à la date : 25/09/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1036: se termine à la date : 05/10/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1037: se termine à la date : 15/10/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1038: se termine à la date : 25/10/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1039: se termine à la date : 05/11/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1040: se termine à la date : 15/11/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1041: se termine à la date : 25/11/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1042: se termine à la date : 05/12/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I=-1;
+  /*****/***** Fin de ce pas
+ *** Le pas : 1043: se termine à la date : 15/12/2010 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas : 1044: se termine à la date : 25/12/2010 ; ***
+  /CALCUL_HDYNAM/ACTIO I= 1;
+  /*****/***** Fin de ce pas
+ ***        :     : Fin de la simulation :            ; ***

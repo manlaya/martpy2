@@ -1,0 +1,252 @@
+Modèle npc
+ #<V7.4a># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+  /Charge       /HISTO/   =   /XCOO:X= 563416Y=2652741P=      6; Name=00061X0117/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 566744Y=2650036P=      6; Name=00065X0011/P1
+  /Charge       /HISTO/   =   /XCOO:X= 575646Y=2643113P=      9; Name=00067X0029/P1
+  /Charge       /HISTO/   =   /XCOO:X= 575625Y=2643103P=      9; Name=00067X0183/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 582771Y=2644948P=      6; Name=00068X0010/F295
+  /Charge       /HISTO/   =   /XCOO:X= 581328Y=2643845P=      6; Name=00068X0072/P1
+  /Charge       /HISTO/   =   /XCOO:X= 586108Y=2646351P=      6; Name=00068X0147/PZ5
+  /Charge       /HISTO/   =   /XCOO:X= 649979Y=2642003P=     10; Name=00096D0003/F1
+  /Charge       /HISTO/   =   /XCOO:X= 553474Y=2622943P=      9; Name=00107X0006/P1
+  /Charge       /HISTO/   =   /XCOO:X= 580888Y=2640307P=      6; Name=00113X0001/P1
+  /Charge       /HISTO/   =   /XCOO:X= 576770Y=2634694P=      9; Name=00113X0002/P1
+  /Charge       /HISTO/   =   /XCOO:X= 567092Y=2621394P=      6; Name=00115X0011/P1
+  /Charge       /HISTO/   =   /XCOO:X= 578495Y=2626457P=      9; Name=00117X0023/P1
+  /Charge       /HISTO/   =   /XCOO:X= 587953Y=2640458P=      6; Name=00121X0001/P1
+  /Charge       /HISTO/   =   /XCOO:X= 589406Y=2637190P=      6; Name=00121X0019/S1
+  /Charge       /HISTO/   =   /XCOO:X= 594829Y=2630798P=      6; Name=00122X0064/P1
+  /Charge       /HISTO/   =   /XCOO:X= 601874Y=2634897P=      6; Name=00123X0113/F2
+  /Charge       /HISTO/   =   /XCOO:X= 611854Y=2631819P=      6; Name=00124X0023/F1
+  /Charge       /HISTO/   =   /XCOO:X= 588755Y=2623221P=      8; Name=00125X0080/P1
+  /Charge       /HISTO/   =   /XCOO:X= 603848Y=2627957P=      6; Name=00127X0873/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 652963Y=2639517P=     10; Name=00143A0008/F1
+  /Charge       /HISTO/   =   /XCOO:X= 654146Y=2634988P=     10; Name=00143C0079/F1
+  /Charge       /HISTO/   =   /XCOO:X= 659404Y=2635199P=     10; Name=00144C0166/F1
+  /Charge       /HISTO/   =   /XCOO:X= 648059Y=2626068P=     10; Name=00146B0007/F1
+  /Charge       /HISTO/   =   /XCOO:X= 650923Y=2627194P=      6; Name=00146B0737/PZR2
+  /Charge       /HISTO/   =   /XCOO:X= 647554Y=2622757P=      6; Col_Obs=2; Name=00146C0234/P1-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 650817Y=2624355P=      6; Name=00146D1853/PZOCE
+  /Charge       /HISTO/   =   /XCOO:X= 652099Y=2629799P=      6; Name=00147A0341/F1
+  /Charge       /HISTO/   =   /XCOO:X= 655971Y=2621406P=      6; Name=00147D0129/P1
+  /Charge       /HISTO/   =   /XCOO:X= 654323Y=2625626P=      6; Name=00147D0218/P1
+  /Charge       /HISTO/   =   /XCOO:X= 663660Y=2625299P=      6; Name=00148D0177/F2
+  /Charge       /HISTO/   =   /XCOO:X= 665114Y=2624128P=     10; Name=00155C0017/F1
+  /Charge       /HISTO/   =   /XCOO:X= 551623Y=2614435P=      6; Name=00163X0032/F2
+  /Charge       /HISTO/   =   /XCOO:X= 557185Y=2613696P=      6; Name=00164X0073/PZ1MAR
+  /Charge       /HISTO/   =   /XCOO:X= 553189Y=2606991P=      6; Name=00167X0001/P1
+  /Charge       /HISTO/   =   /XCOO:X= 567285Y=2611935P=      8; Name=00171X0051/P1
+  /Charge       /HISTO/   =   /XCOO:X= 571773Y=2616596P=      8; Name=00172X0037/P1
+  /Charge       /HISTO/   =   /XCOO:X= 578767Y=2615775P=      6; Name=00173X0083/PZ13A
+  /Charge       /HISTO/   =   /XCOO:X= 585129Y=2619905P=      9; Name=00174X0014/P1
+  /Charge       /HISTO/   =   /XCOO:X= 581583Y=2614583P=      8; Name=00174X0026/P1
+  /Charge       /HISTO/   =   /XCOO:X= 563209Y=2603718P=      6; Name=00175X0014/S1
+  /Charge       /HISTO/   =   /XCOO:X= 569310Y=2608750P=      6; Name=00176X0060/P
+  /Charge       /HISTO/   =   /XCOO:X= 575021Y=2607910P=      6; Name=00177X0003/P
+  /Charge       /HISTO/   =   /XCOO:X= 580112Y=2601899P=      6; Name=00177X0033/P
+  /Charge       /HISTO/   =   /XCOO:X= 579159Y=2604879P=      9; Name=00177X0053/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 584910Y=2609564P=      6; Name=00178X0003/S1
+  /Charge       /HISTO/   =   /XCOO:X= 588607Y=2611979P=      8; Name=00181X0125/PZT1
+  /Charge       /HISTO/   =   /XCOO:X= 590902Y=2612190P=      9; Name=00181X0134/PZ15A
+  /Charge       /HISTO/   =   /XCOO:X= 590892Y=2612190P=      8; Name=00181X0136/PZ15B
+  /Charge       /HISTO/   =   /XCOO:X= 595591Y=2611609P=      9; Name=00182X0010/P1
+  /Charge       /HISTO/   =   /XCOO:X= 594448Y=2616679P=      8; Name=00182X0031/P
+  /Charge       /HISTO/   =   /XCOO:X= 597916Y=2617972P=      8; Name=00182X0039/P
+  /Charge       /HISTO/   =   /XCOO:X= 604028Y=2614965P=      8; Name=00183X0002/S1
+  /Charge       /HISTO/   =   /XCOO:X= 607605Y=2612861P=      6; Name=00184X0133/P1
+  /Charge       /HISTO/   =   /XCOO:X= 602755Y=2604144P=      6; Name=00187X0005/P1
+  /Charge       /HISTO/   =   /XCOO:X= 602830Y=2604505P=      6; Name=00187X0017/P
+  /Charge       /HISTO/   =   /XCOO:X= 626964Y=2616145P=      6; Name=00193X0167/PZ28
+  /Charge       /HISTO/   =   /XCOO:X= 614788Y=2608963P=      8; Name=00195X0087/P2
+  /Charge       /HISTO/   =   /XCOO:X= 619587Y=2600806P=      8; Name=00196X0053/P1
+  /Charge       /HISTO/   =   /XCOO:X= 629386Y=2605383P=      6; Name=00197X0042/P1
+  /Charge       /HISTO/   =   /XCOO:X= 627714Y=2609472P=      6; Name=00197X0049/F2
+  /Charge       /HISTO/   =   /XCOO:X= 628224Y=2608661P=      6; Name=00197X0279/PZ2
+  /Charge       /HISTO/   =   /XCOO:X= 633746Y=2610342P=      6; Name=00198X0087/P
+  /Charge       /HISTO/   =   /XCOO:X= 634569Y=2603442P=      6; Name=00198X0123/P1
+  /Charge       /HISTO/   =   /XCOO:X= 635712Y=2601772P=      6; Name=00198X0275/F4
+  /Charge       /HISTO/   =   /XCOO:X= 641011Y=2612835P=      6; Col_Obs=19; Name=00201C0126/F1-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640861Y=2614333P=      6; Col_Obs=20; Name=00201C0498/P1-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 652365Y=2617189P=      6; Col_Obs=59; Name=00203A0033/P1-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 651674Y=2617100P=      6; Col_Obs=60; Name=00203A0359/PZ2-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 663208Y=2619579P=      8; Name=00204B0115/P1
+  /Charge       /HISTO/   =   /XCOO:X= 659759Y=2614521P=      6; Name=00204C0191/PZST3
+  /Charge       /HISTO/   =   /XCOO:X= 639687Y=2607344P=      6; Name=00205X0001/F1
+  /Charge       /HISTO/   =   /XCOO:X= 641800Y=2604889P=      6; Name=00205X0042/F1
+  /Charge       /HISTO/   =   /XCOO:X= 642728Y=2601619P=      6; Name=00205X0397/PZ2
+  /Charge       /HISTO/   =   /XCOO:X= 653922Y=2602310P=      6; Name=00207X0133/F1
+  /Charge       /HISTO/   =   /XCOO:X= 664122Y=2602736P=      6; Name=00215X0140/P1
+  /Charge       /HISTO/   =   /XCOO:X= 675537Y=2609403P=      6; Name=00216X0073/PZ3
+  /Charge       /HISTO/   =   /XCOO:X= 682462Y=2610921P=      6; Name=00217X0068/P1
+  /Charge       /HISTO/   =   /XCOO:X= 689732Y=2604654P=      6; Name=00225X0077/FC2
+  /Charge       /HISTO/   =   /XCOO:X= 563220Y=2599240P=      6; Name=00241X0012/P1
+  /Charge       /HISTO/   =   /XCOO:X= 575755Y=2594094P=      6; Name=00243X0028/F
+  /Charge       /HISTO/   =   /XCOO:X= 585303Y=2588044P=      6; Name=00248X0005/P1
+  /Charge       /HISTO/   =   /XCOO:X= 588178Y=2598644P=      6; Name=00251X0013/P
+  /Charge       /HISTO/   =   /XCOO:X= 597385Y=2594477P=      6; Name=00252X0019/P
+  /Charge       /HISTO/   =   /XCOO:X= 601402Y=2595538P=      6; Name=00253X0044/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 611471Y=2595768P=      6; Name=00254X0003/P1
+  /Charge       /HISTO/   =   /XCOO:X= 611541Y=2595763P=      6; Name=00254X0037/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 610639Y=2586411P=      6; Name=00258X0009/P1
+  /Charge       /HISTO/   =   /XCOO:X= 626119Y=2599864P=      8; Name=00263X0006/P1
+  /Charge       /HISTO/   =   /XCOO:X= 627179Y=2592930P=      6; Name=00263X0129/PZASA4
+  /Charge       /HISTO/   =   /XCOO:X= 623772Y=2586109P=      6; Name=00266X0030/P1
+  /Charge       /HISTO/   =   /XCOO:X= 639412Y=2594911P=      6; Name=00271X0002/P2
+  /Charge       /HISTO/   =   /XCOO:X= 658831Y=2600674P=      6; Name=00274X0014/F2
+  /Charge       /HISTO/   =   /XCOO:X= 663766Y=2592116P=      6; Name=00274X0292/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 639409Y=2584322P=      6; Name=00275X0005/P1
+  /Charge       /HISTO/   =   /XCOO:X= 650370Y=2589427P=      6; Name=00276X0030/F1
+  /Charge       /HISTO/   =   /XCOO:X= 647153Y=2584450P=      6; Name=00276X0057/PZSP1
+  /Charge       /HISTO/   =   /XCOO:X= 667427Y=2599809P=      6; Name=00281X0002/F1
+  /Charge       /HISTO/   =   /XCOO:X= 668946Y=2593075P=      6; Name=00281X0004/F1
+  /Charge       /HISTO/   =   /XCOO:X= 669269Y=2596992P=      6; Name=00281X0076/F1
+  /Charge       /HISTO/   =   /XCOO:X= 676271Y=2596397P=      6; Name=00282X0046/F1
+  /Charge       /HISTO/   =   /XCOO:X= 688742Y=2591942P=      6; Name=00284X0701/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 672349Y=2586652P=      6; Name=00286X0037/P1
+  /Charge       /HISTO/   =   /XCOO:X= 676583Y=2581791P=      6; Name=00286X0405/PZST2
+  /Charge       /HISTO/   =   /XCOO:X= 692993Y=2598090P=      6; Name=00291X0031/P1
+  /Charge       /HISTO/   =   /XCOO:X= 697824Y=2586675P=      6; Name=00296X0158/P1
+  /Charge       /HISTO/   =   /XCOO:X= 599088Y=2578988P=      6; Name=00342X0025/S1
+  /Charge       /HISTO/   =   /XCOO:X= 613172Y=2573308P=      6; Name=00351X0030/P
+  /Charge       /HISTO/   =   /XCOO:X= 628224Y=2578866P=      6; Name=00353X0073/P
+  /Charge       /HISTO/   =   /XCOO:X= 636852Y=2573634P=      6; Name=00354X0058/S1
+  /Charge       /HISTO/   =   /XCOO:X= 621615Y=2570252P=      6; Name=00356X0207/P
+  /Charge       /HISTO/   =   /XCOO:X= 629448Y=2566765P=      6; Name=00357X0058/P1
+  /Charge       /HISTO/   =   /XCOO:X= 633738Y=2561776P=      6; Name=00358X0216/PIEZO
+  /Charge       /HISTO/   =   /XCOO:X= 645897Y=2575474P=      6; Name=00362X0012/P1
+  /Charge       /HISTO/   =   /XCOO:X= 657318Y=2578295P=      6; Name=00363X0006/S1
+  /Charge       /HISTO/   =   /XCOO:X= 642629Y=2565379P=      6; Name=00365X0003/P1
+  /Charge       /HISTO/   =   /XCOO:X= 647476Y=2563184P=      6; Name=00366X0020/P1
+  /Charge       /HISTO/   =   /XCOO:X= 652083Y=2563212P=      8; Name=00367X0006/P1
+  /Charge       /HISTO/   =   /XCOO:X= 653017Y=2568540P=      6; Name=00367X0026/P1
+  /Charge       /HISTO/   =   /XCOO:X= 658295Y=2567426P=      6; Name=00368X0045/P1
+  /Charge       /HISTO/   =   /XCOO:X= 677451Y=2575029P=      6; Name=00373X0042/S1
+  /Charge       /HISTO/   =   /XCOO:X= 666696Y=2562194P=      6; Name=00375X0105/S1
+  /Charge       /HISTO/   =   /XCOO:X= 677242Y=2561266P=      6; Name=00376X0160/P1
+  /Charge       /HISTO/   =   /XCOO:X= 673601Y=2568721P=      6; Name=00376X0210/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 683588Y=2570507P=      6; Name=00377X0051/S1
+  /Charge       /HISTO/   =   /XCOO:X= 689798Y=2570363P=      6; Name=00378X0162/PZCAT4
+  /Charge       /HISTO/   =   /XCOO:X= 632734Y=2553507P=      6; Name=00474X0011/F
+  /Charge       /HISTO/   =   /XCOO:X= 641114Y=2559450P=      6; Name=00481X0001/F
+  /Charge       /HISTO/   =   /XCOO:X= 649346Y=2557033P=      6; Name=00482X0063/S1
+  /Charge       /HISTO/   =   /XCOO:X= 663658Y=2554994P=      6; Name=00484X0018/S1
+  /Charge       /HISTO/   =   /XCOO:X= 647398Y=2542712P=      6; Name=00486X0015/S1
+  /Charge       /HISTO/   =   /XCOO:X= 652967Y=2545494P=      6; Name=00487X0015/S1
+  /Charge       /HISTO/   =   /XCOO:X= 657035Y=2550099P=      6; Name=00487X0026/S1
+  /Charge       /HISTO/   =   /XCOO:X= 657085Y=2550099P=      6; Name=00487X0084/PZ1
+  /Charge       /HISTO/   =   /XCOO:X= 670311Y=2552847P=      6; Name=00491X0013/P
+  /Charge       /HISTO/   =   /XCOO:X= 681327Y=2558099P=      6; Name=00493X0061/S1
+  /Charge       /HISTO/   =   /XCOO:X= 676664Y=2545442P=      6; Name=00496X0019/S1
+  /Charge       /HISTO/   =   /XCOO:X= 680190Y=2549647P=      6; Name=00497X0018/S1
+  /Charge       /HISTO/   =   /XCOO:X= 655095Y=2532285P=      6; Name=00643X0015/P
+  /Charge       /HISTO/   =   /XCOO:X= 655023Y=2538578P=      6; Name=00643X0031/P
+  /Charge       /HISTO/   =   /XCOO:X= 659945Y=2540434P=      6; Name=00644X0011/P
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    224L=    184P=      1; Name=E1563710
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=     92L=    440P=      1; Name=E1566010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    251L=    184P=      1; Name=E1715510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    264L=    172P=      1; Name=E1726020
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    273L=    176P=      1; Name=E1727510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    284L=    170P=      1; Name=E1766010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    298L=    146P=      1; Name=E1827020
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    293L=    144P=      1; Name=E1830410
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=    118L=    378P=      1; Name=E2071105
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=    254L=    266P=      1; Name=E2367410
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    272L=    133P=      1; Name=E2371105
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    259L=    146P=      1; Name=E2376010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    266L=    140P=      1; Name=E2377210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    270L=    131P=      1; Name=E2400411
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=     26L=    148P=      1; Name=E3102110-URBEAU
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=    222L=    105P=      1; Name=E3346010
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=    179L=    161P=      1; Name=E3346020
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    217L=     93P=      1; Name=E3383510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    215L=     91P=      1; Name=E3412100
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     90L=    128P=      1; Name=E3511210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     96L=    107P=      1; Name=E3511220
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    118L=    109P=      1; Name=E3518510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    127L=    100P=      1; Name=E3611210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    146L=    112P=      1; Name=E3646210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    143L=    136P=      1; Name=E3660600
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    193L=     90P=      1; Name=E3671250
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    213L=     72P=      1; Name=E3811210
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    217L=     71P=      1; Name=E3811265
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    100L=     87P=      1; Name=E4035710
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     80L=    110P=      1; Name=E4035720
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     84L=     87P=      1; Name=E4035730
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     83L=     88P=      1; Name=E4036530
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     70L=     66P=      1; Name=E4306010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    147L=     44P=      1; Name=E4905710
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    115L=     52P=      1; Name=E4905711
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    123L=     62P=      1; Name=E4907005
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    149L=     63P=      1; Name=E4909405
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     42L=    144P=      1; Name=E5400310
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     71L=    160P=      1; Name=E5406510
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     55L=    176P=      1; Name=E5505720
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    195L=    259P=      1; Name=E6351410
+  /Charge       /HISTO/   =   /XCOO:X= 652357Y=2621669P=      6; Col_Obs=8; Name=00147C3289/PZ0-PzSdL00-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 649171Y=2621930P=      6; Col_Obs=3; Name=00146D1974/PZ1-PzSdL01-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 649471Y=2620778P=      6; Col_Obs=38; Name=00202B0449/PZ2-PzSdL02-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 650783Y=2619144P=      6; Col_Obs=39; Name=00202B0450/PZ3-PzSdL03-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 646304Y=2620659P=      6; Col_Obs=34; Name=00202A0451/PZ4-PzSdL04-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647046Y=2620428P=      6; Col_Obs=35; Name=00202A0452/PZ5-PzSdL05-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 648659Y=2619395P=      6; Col_Obs=40; Name=00202B0453/PZ6-PzSdL06-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 648447Y=2617522P=      6; Col_Obs=41; Name=00202B0454/PZ7-PzSdL07-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 646383Y=2617693P=      6; Col_Obs=36; Name=00202A0456/PZ12-PzSdL12-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 646955Y=2618044P=      6; Name=00202A0417/PZ27-PzSdL27-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 646609Y=2618304P=      6; Name=00202A0419/PZ29-PzSdL29-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647616Y=2618184P=      6; Name=00202A0420/PZ30-PzSdL30-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 646684Y=2617663P=      6; Name=00202A0433/PZ31-PzSdL31-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 645844Y=2621178P=      6; Col_Obs=4; Name=00146X2016/PZ37-PzSdL37-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647601Y=2620944P=      6; Col_Obs=5; Name=00146X2017/PZ38-PzSdL38-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647516Y=2620752P=      6; Col_Obs=42; Name=00202X0454/PZ39-PzSdL39-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647827Y=2620628P=      6; Col_Obs=43; Name=00202X0455/PZ40-PzSdL40-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647844Y=2619913P=      6; Col_Obs=44; Name=00202X0456/PZ41-PzSdL41-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 645235Y=2620067P=      6; Col_Obs=45; Name=00202X0457/PZ42-PzSdL42-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 645346Y=2619951P=      6; Col_Obs=46; Name=00202X0458/PZ43-PzSdL43-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 645500Y=2619783P=      6; Col_Obs=47; Name=00202X0459/PZ44-PzSdL44-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 646888Y=2620849P=      6; Col_Obs=6; Name=00146X2018/PZ45-PzSdL45-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647544Y=2620620P=      6; Col_Obs=48; Name=00202X0460/PZ46-PzSdL46-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647868Y=2620801P=      6; Col_Obs=49; Name=00202X0461/PZ47-PzSdL47-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 641349Y=2617430P=      6; Name=00201X0548/PZ49-PzSdL49-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 643028Y=2618260P=      6; Col_Obs=21; Name=00201X0547/PZ50-PzSdL50-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 645678Y=2619147P=      6; Name=00202X0467/PZ51-PzSdL51-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 646209Y=2618903P=      6; Name=00202X0468/PZ52-PzSdL52-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647613Y=2619022P=      6; Name=00202X0469/PZ53-PzSdL53-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 648161Y=2620637P=      6; Name=00202X0470/PZ54-PzSdL54-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 642321Y=2615578P=      6; Col_Obs=23; Name=00201X0549/PZ55-PzSdL55-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 643930Y=2618320P=      6; Col_Obs=24; Name=00201X0550/PZ56-PzSdL56-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 645043Y=2617634P=      6; Name=00202X0471/PZ57-PzSdL57-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 644478Y=2619024P=      6; Name=00201X0551/PZ58-PzSdL58-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640481Y=2616566P=      6; Name=00201X0553/PZ59-PzSdL59-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 641615Y=2617982P=      6; Col_Obs=26; Name=00201X0552/PZ60-PzSdL60-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 648609Y=2620310P=      6; Name=00202X0473/PZ61-PzSdL61-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 641874Y=2615583P=      6; Col_Obs=29; Name=00201X0555/PZ62-PzSdL62-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 642332Y=2615173P=      6; Name=00146X2050/PZ63-PzSdL63-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 642878Y=2615679P=      6; Col_Obs=28; Name=00201X0554/PZ64-PzSdL64-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 644237Y=2618059P=      6; Name=00202X0474/PZ65-PzSdL65-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 646139Y=2616719P=      6; Name=00202X0472/PZ66-PzSdL66-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 644751Y=2618943P=      6; Name=00202X0475/PZ67-PzSdL67-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 645843Y=2621808P=      6; Name=BSS003NWVQ/Pz68-PzSdL68-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640311Y=2616373P=      6; Col_Obs=12; Name=00201A0538/PZ4-PZ9Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640268Y=2616189P=      6; Name=00201A0273/F3-PZ10Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640330Y=2616292P=      6; Name=00201A0549/PZ11-PZ11Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640134Y=2616287P=      6; Col_Obs=14; Name=00201A0550/PZ12-PZ12Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640126Y=2616366P=      6; Col_Obs=15; Name=00201A0551/PZ13-PZ13Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 639984Y=2616077P=      6; Col_Obs=16; Name=00201A0553/PZ15-PZ15Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640194Y=2616401P=      6; Col_Obs=17; Name=00201A0554/PZ16-PZ16Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640036Y=2616407P=      6; Col_Obs=18; Name=00201A0555/PZ17-PZ17Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 640232Y=2616777P=      6; Col_Obs=10; Name=00201A0260/PZA2-PZ19Blanchisserie-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 648578Y=2617111P=      6; Col_Obs=37; Name=00202B0059/F1-S01-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647207Y=2620869P=      6; Col_Obs=62; Name=Source Billaut-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 647608Y=2621120P=      6; Col_Obs=63; Name=Source Guermanez-URBEAU
+  /Charge       /HISTO/   =   /XCOO:X= 639641Y=2619319P=      6; Col_Obs=9; Name=00201A0117/F1-SW01-URBEAU
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=     98L=    266P=      1;Tdeule1
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=     40L=    230P=      1;Tdeule2
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=     20L=    261P=      1;Tsouchez
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=    226L=    137P=      1;TVmarque-am
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=     20L=    158P=      1;Vdeule-am-aac
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=     80L=     86P=      1;Vdeule-av-aac
+ 1/Débit_Rivi   /HISTO/   =   /MAIL:C=    232L=     60P=      1;Vmarque-av
+ 1/Charge       /HISTO/   =   /MAIL:C=     23L=    180P=      6;VPiezo1
+ 1/Charge       /HISTO/   =   /MAIL:C=    154L=    114P=      6;VPiezo2
+ 1/Charge       /HISTO/   =   /MAIL:C=    135L=    183P=      6;VPiezo1c
+ 1/Charge       /HISTO/   =   /MAIL:C=     33L=    103P=      6;VPiezo2c

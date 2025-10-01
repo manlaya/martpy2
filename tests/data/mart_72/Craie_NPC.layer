@@ -1,0 +1,14 @@
+Description des Couches et Gigognes
+Cou=  1;Épais=    10;Épon Sup =0;//////////=     0;Uni Ke=      1;Anisot=      0
+Cou=  2;Épais=    10;Épon Sup =0;//////////=     0;Uni Ke=      1;Anisot=      0
+Cou=  3;Épais=    10;Épon Sup =0;//////////=     0;Uni Ke=      1;Anisot=      0
+Cou=  4;Épais=    10;Épon Sup =0;//////////=     0;Uni Ke=      1;Anisot=      0
+Cou=  5;Épais=    10;Épon Sup =0;//////////=     0;Uni Ke=      1;Anisot=      0
+Cou=  6;Épais=    10;Épon Sup =0;//////////=     0;Uni Ke=      1;Anisot=      0
+Cou=  7;Épais=    10;Épon Sup =0;//////////=     0;Uni Ke=      1;Anisot=      0
+Cou=  8;Épais=    10;Épon Sup =0;//////////=     0;Uni Ke=      1;Anisot=      0
+ *** Sous-maillages Gigognes, Coupe, Radial          ***
+         0=Nombre de sous-maillages Gigognes
+         0=Coupe Verticale à Substratums Irréguliers (0=Non 1=Oui)
+         0=Maillage Radial [Rayon , Angle] (0=Non 1=Oui)
+ *** Fin du fichier 'Description des couches'        ***

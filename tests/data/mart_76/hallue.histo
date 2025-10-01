@@ -1,0 +1,7 @@
+Modélisation du bassin de la Somme en régime transitoire
+ #<V7.6># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+  /Charge       /HISTO/   =   /XCOO:X= 611.62Y=   2560P=      1;00464X0013/H1
+  /Charge       /HISTO/   =   /XCOO:X= 617.43Y= 2558.7P=      1;00471X0010/H1
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     25L=     29P=      1;E6397010
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     22L=     40P=      1;E6397030
+ *** Fin du fichier des 'Mailles à Historique'       ***
