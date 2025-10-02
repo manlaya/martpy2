@@ -56,10 +56,22 @@ class MartHisto(pd.DataFrame):
 
     def write_file(
         self,
-        file_name='.histo',
+        file_name='file.histo',
         title='Marthe Time series',
         encoding='ISO-8859-1'
     ):
+        """ Write a .histo file
+        To extract simulation results at specific locations
+
+        Parameters
+        ----------
+        file_name : str, optional
+            name of the file to be written, by default 'file.histo'
+        title : str, optional
+            a custom header in file, by default 'Marthe Time series'
+        encoding : str, optional
+            encoding for the file, by default 'ISO-8859-1'
+        """
         histo_lines = _build_header(title)
         histo_lines.extend(_build_histo_from_dataframe(self))
         with open(file_name, mode='w', encoding=encoding) as f:
@@ -85,6 +97,13 @@ def read_histo_file(histo_file, encoding='ISO-8859-1'):
     -------
     pd.DataFrame
         DataFrame with columns:
+        - id_grid: the grid index in which is located the observation in model domain
+        - variable: the variable to extract from simulation
+        - name: name of the observation
+        - mode: mode of the observation (XCOO, GRID, etc.)
+        - x, y or col, lig: coordinates of the observation
+        - layer: layer of the observation
+        - interp: wether the simulation extracted at obs location is interpolated or not
     """
     with open(histo_file, encoding=encoding) as f:
         lines = [line.rstrip() for line in f if '/HISTO/' in line]
@@ -200,8 +219,8 @@ def _build_histo_line(
 def _build_histo_from_dataframe(df):
     """ Build histo file string content from martpy dataframe convention
     
-    Return
-    ------
+    Returns
+    -------
     list:
         list of strings (lines).
     """

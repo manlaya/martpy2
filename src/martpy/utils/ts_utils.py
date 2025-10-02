@@ -10,6 +10,12 @@ def _get_nearest_date(df, tol=7):
     return df.index.get_indexer(df.index.values, method='nearest', tolerance=tol)
 
 
+def get_interval_time(dtimeindex, windows_size=0.5):
+    # dt time index need to be sorted
+    # get interval between pastp
+    return round((- pd.Series(dtimeindex[::-1]).diff().dt.days).mean() * windows_size)
+
+
 def dt_replace(series, year=None, month=None, day=None):
     return pd.to_datetime(
         {

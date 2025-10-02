@@ -64,6 +64,13 @@ MART_TEMPLATE['type'] = MART_TEMPLATE['type'].apply(
 def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False):
     """ Parse mart file into nested dictionnary
     
+    Parameters
+    ----------
+    mart_file : str
+        path to mart file
+    encoding : str, optional
+        encoding of the file
+
     Returns
     -------
     dict:
@@ -163,6 +170,25 @@ def _build_init_parameters(dict_param):
 
 
 def _write_mart_file(dict_mart, mart_file, encoding='ISO-8859-1', title='mart parameter file'):
+    """ Write a marthe parameter file from a dictionnary of parameters
+
+    Notes
+    -----
+    - dict_mart should follow the structure returned by _parse_mart_file
+    - This function currently only works for French version of Marthe (need internationalization)
+
+    Parameters
+    ----------
+    dict_mart : dict
+        Dictionnary of parameters
+    mart_file : str
+        Path to the marthe parameter file
+    encoding : str, optional
+        Encoding of the file, by default 'ISO-8859-1'
+    title : str, optional
+        Title of the file, by default 'mart parameter file'
+    """
+
     block_names = { v: k for k,v in BLOCK_MART.items()}  # reversed dict
     
     mart_str = '\n'.join(_build_header(title)) + '\n'
@@ -210,4 +236,4 @@ def _write_mart_file(dict_mart, mart_file, encoding='ISO-8859-1', title='mart pa
     with open(mart_file, 'w', encoding=encoding) as f:
         f.write(mart_str)
     
-    return
+    return None

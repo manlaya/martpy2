@@ -29,6 +29,18 @@ def _parse_param_value(val, typ):
     - 1:2 : range from 1 to 2
     - =24 : uniform value (for a grid mode)
     - 1e2 : just a float value
+
+    Parameters
+    ----------
+    val : str
+        Value to parse
+    typ : type
+        Expected type of the value.
+    
+    Returns
+    -------
+    list or str
+        Parsed value of type `typ`
     """
     if '*' in val:
         return val
@@ -78,7 +90,8 @@ def _parse_units_si(unit_line):
 
 
 def _parse_param_file_and_col(line):
-    # parse File= VALUE[; Col=INT] format
+    """ parse File= VALUE[; Col=INT] format
+    """
     pattern = r'File=\s*(?P<file_evol>\S+);+\s*(?:Col=\s*(?P<file_column>\d+))?'
     match = re.search(pattern, line)
     if match:
@@ -92,8 +105,10 @@ def _parse_parameter_line(line, verbose=False):
 
     Parameters
     ----------
-    line : _type_
-        _description_
+    line : str
+        a parameter line from mart or pastp files.
+    verbose : bool, optional
+       Print debug information, by default False
 
     Returns
     -------
@@ -146,7 +161,10 @@ def _parse_parameter_line(line, verbose=False):
 
 
 def _parse_parameter_block(block_lines, verbose=False):
-    # parse a params/actions block for .mart or .pastp
+    """ parse a params/actions block for .mart or .pastp
+    => loop over lines in block to call :py:func:`_parse_parameter_line`
+    and merge results
+    """
     params = {}
     for line in block_lines:
         iparam = _parse_parameter_line(line, verbose=verbose)
@@ -160,21 +178,19 @@ def _parse_parameter_block(block_lines, verbose=False):
 
 
 def _build_parameter_line(variable, action, **kwargs):
-    """
-    Edit a line of a Marthe time step file or mart file (general parameters)
+    """ Edit a line of a Marthe time step file or mart file (general parameters)
 
     Parameters
     ----------
     variable : str
-        Variable to edit. Possible values are all the variable of
-        MARTHE
+        Variable to edit. Possible values are all the variable of MARTHE
     action : str
         Geometry. Possible values are in ACTIONS_FMT dictionnary keys.
     kwargs : dict
         Other options depending on the typ. See ACTIONS_FMT and EDITIONS dictionnaries.
     
-    Return
-    ------
+    Returns
+    -------
     line : str
         Line formatted for the MARTHE file
     """
@@ -245,6 +261,17 @@ def set_edit_file(filename, entete, start, end, dates):
 
 
 def write_nzcli(clim_zone: list, file_nzcli):
+    """ Write a climatic zone file (`*.nzcli`)
+
+    Parameters
+    ----------
+    clim_zone : list if int
+       List of climatic zones to use, it links zone grid to data
+       (ie some kind of header for climatic tabular data),
+       see Marthe general documentation for more informations.
+    file_nzcli : str or Path-like.
+        file to be written
+    """
     with open(file_nzcli, mode='w', encoding='ISO-8859-1') as f:
         f.write('Numéro des {} Zones Météo des fichiers\n'.format(len(clim_zone)))
         f.write('    '.join(clim_zone))
@@ -253,6 +280,8 @@ def write_nzcli(clim_zone: list, file_nzcli):
 
 
 def write_river_tree(tree_df, file_tree, title='Branchement affluents'):
+    """ Write a river tree file (`*.arb_r`)
+    """
     with open(file_tree, mode='w', encoding='ISO-8859-1') as f:
         f.write(f"{title}\n")
         tree_df.to_csv(f, sep='\t', index=False, header=False, float_format='10i')
@@ -261,6 +290,8 @@ def write_river_tree(tree_df, file_tree, title='Branchement affluents'):
 
 
 def write_layer(layer_df, dict_geom, file_layer):
+    """ Write a layer file (`*.layer`)
+    """
     with open(file_layer, mode='w', encoding='ISO-8859-1') as f:
         f.write(' *** Description des couches aquifères               ***\n')
         for row in layer_df.to_dict('records'):

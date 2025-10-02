@@ -43,7 +43,7 @@ class MartheTimeSteps:
     ----------
     times: pd.DataFrame
         DataFrame with columns ['step', 'date', 'has_action']
-    actions: dict
+    actions: dict, optional
         keys are dates in 'YYYY-MM-DD' format, values are list of actions (dicts)
     """
 
@@ -78,8 +78,7 @@ class MartheTimeSteps:
         pass
 
     def write_file(self, filename, title='Marthe TimeSteps', encoding='ISO-8859-1'):
-        """
-        Build a pastp file
+        """ Build a Timestep (`*.pastp`) file
 
         Parameters
         ----------
@@ -114,6 +113,10 @@ class MartheTimeSteps:
 
 
 def _parse_date_pastp(date_str):
+    """ Parse a date string, read from pastp file into:
+        - float if it is a numeric value,
+        - datetime if it is a date with fmt DD/MM/YYYY or DD/MM/YYYY HH:MM
+    """
     if date_str is None:
         return None
     elif re.match(_FLOAT_FMT, date_str):
@@ -128,7 +131,9 @@ def _parse_date_pastp(date_str):
 
 
 def _convert_date_to_str(date):
-    # fmt to write date in pastp: float/int: >10, date: ^12, datetime: ^18
+    """ Convert datetime or float/int to str, according to expected format
+    for Marthe timesteps file (pastp): float/int: >10, date: ^12, datetime: ^18
+    """
     if isinstance(date, (int, float)):
         return '{:>10g}'.format(date)
     elif isinstance(date, (datetime, pd.Timestamp)):
@@ -139,14 +144,16 @@ def _convert_date_to_str(date):
 
 
 def _convert_date_to_str_iso(date):
-    # use for key in actions dictionnary
+    """ Convert datetime to str, leave int/float unchanged.
+    used for to create/match key in actions dictionnary
+    """
     if isinstance(date, (int, float)):
         return date
     elif isinstance(date, (datetime, pd.Timestamp)):
         # get time to set fmt
         if date.hour == 0 and date.minute == 0:
             return date.strftime("%Y-%m-%d")
-        return date.strftime("%Y-%m-%d %H:%M")
+        return date.strftime("%Y-%m-%dT%H:%M")
 
 
 def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
@@ -162,8 +169,8 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
     encoding : str, optional
         encoding used to read the file, by default 'ISO-8859-1'
     
-    Return
-    ------
+    Returns
+    -------
     MartTimeStep
     """
     
@@ -213,18 +220,20 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
 
 
 def _build_timestep(istep, date, dactions):
-    """
-    Build the lines for one time step of MARTHE pastp file.
+    """ Build the lines for one time step of MARTHE pastp file.
 
     Parameters
     ----------
-    date_perm : str
-        Format %Y/%m/%d
-    length : int
+    istep: int
+        index of time step. 0-based. The 0 step is steady state.
+    date : datetime object or pd.Timestamp
+        corresponding date for current timestep.
     dactions : dict
+        dictionnary containing actions for current timestep.
+        Keys are string dates in iso format (YYYY-MM-DDTHH:MM:SS)
 
-    Return
-    ------
+    Returns
+    -------
     lines : list of str
     """
     date_str = _convert_date_to_str(date)
@@ -247,17 +256,23 @@ def _build_timestep(istep, date, dactions):
 
 
 def _build_pastp(dates, dactions):
-    """
-    Build all lines of a pastp file
+    """ Build all lines of a pastp file
 
     Parameters
     ----------
-    dates : list of str
+    dates : list of datetime or pd.Series
+        Dates of Marthe time steps.
     dactions : dict
+        dictionnary containing actions for all timesteps.
+        Keys are string dates in iso format (YYYY-MM-DDTHH:MM:SS)
 
     Return
     ------
-    list of str 
+    list of str
+        list of lines to write in pastp file. One line per parameter per timestep.
+        Lines are ordered by timestep and then by parameter.
+        It Does NOT contains header/footer for pastp file 
+        (see `MartheTimeStep.write_file` method to write a full pastp file)
     """
     lines = []
     for i, date in enumerate(dates):
