@@ -1,4 +1,6 @@
 # from ruff doc: https://docs.astral.sh/ruff/configuration/
+# if using vscode/codium, please add the following to your settings.json
+#     "ruff.configurationPreference": "filesystemFirst",
 
 # Same as Black.
 line-length = 88
@@ -17,8 +19,8 @@ extend-exclude = [
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`) codes by default.
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
-# blank lines E303
-select = ["E4", "E7", "E9", "F", "E303", "E501"]
+# blank lines E303 (too many), E305 (two)
+select = ["E4", "E7", "E9", "F", "E303", "E501", "E305"]
 
 # extend-select = B950  : 'B'                                                                                                   
 # https://github.com/PyCQA/flake8-bugbear#opinionated-warnings#    
@@ -47,7 +49,7 @@ preview = true
 
 # 4. Ignore `E402` (import violations) in all `__init__.py` files, and in selected subdirectories.
 [lint.per-file-ignores]
-"__init__.py" = ["E402"]
+"__init__.py" = ["E402", "F403", "F401"]
 "**/{tests,docs,tools}/*" = ["E402"]
 
 [lint.flake8-quotes]

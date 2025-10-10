@@ -4,11 +4,13 @@
 from martpy.inputs._mart_parser import (
     _parse_mart_file,
     _write_mart_file,
-    _parse_parameter_line,
     BLOCK_MART
 )
 
-from martpy.inputs.io_utils import _build_parameter_line
+from martpy.inputs.io_utils import (
+    _build_parameter_line,
+    _parse_parameter_line
+)
 
 
 MART_FILE = './tests/data/mart_hallue/hallue_for_test.mart'
@@ -48,6 +50,12 @@ def test_writer(dict_value, mart_file):
     return None
 
 
+def test_parse_modin():
+    mart_file = './tests/data/modin/MOD82_Safran_BV_Ext_1958-2021.mart'
+    dict_res = _parse_mart_file(mart_file)
+    return
+
+
 def test():
     test_parse_parameter_line()
     res_reader = test_reader()
@@ -55,4 +63,5 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
+    # test()
+    test_parse_modin()

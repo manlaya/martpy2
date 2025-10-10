@@ -4,18 +4,18 @@
 import os, subprocess
 
 from martpy.utils.config import MARTBIN
-from martpy.inputs._mart_parser import (
-    _parse_rma_file,
+from martpy.inputs._rma_parser import (
+    _parse_marthe_project,
     _write_rma_file
 ) 
 
+
 # class for RMA/ MartModel
 # read rma file, check for defrma, optionaly read permh with gridmarthe and get dimensions
-
 class MartModel:
     def __init__(self, file_rma=None):
         self.file_rma = file_rma
-        self.rma = _parse_rma_file(file_rma) if file_rma is not None else {}
+        self.rma = _parse_marthe_project(file_rma) if file_rma is not None else {}
 
     def write_file(self, file_rma=None, title='MARTHE Project'):
         if file_rma is None:
@@ -70,3 +70,12 @@ class MartModel:
             process.wait()
         
         return process
+    
+    def add_layer():
+        pass
+    
+    def remove_layer():
+        pass
+    
+    def write_layer():
+        pass

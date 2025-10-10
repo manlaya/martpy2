@@ -77,10 +77,54 @@ class MartHisto(pd.DataFrame):
         with open(file_name, mode='w', encoding=encoding) as f:
             f.write('\n'.join(histo_lines))
 
-    def _get_index_from_grid(self, grid):
-        # fill missing x,y or col,lig (depending on mode)
-        # based on grid domain intersection
-        return
+    @staticmethod
+    def _set_xy_from_grid(df, grid):
+        """ memo: grid is a marthe grid file, read with gm library
+        and add_col_row=True
+        """
+        df_histo = df.copy()
+        df_histo_cells = df_histo.dropna(subset=['col', 'row'])
+        for i, row in df_histo_cells.iterrows():
+            _grid_loc = grid.gm.search_zone(i=row['col'], j=row['row'])
+            # get only first x,y; even if multilayer, it's the same coordinates
+            df_histo.loc[row.name, 'x'] = _grid_loc['x'].data[0]
+            df_histo.loc[row.name, 'y'] = _grid_loc['y'].data[0]
+        return df_histo
+    
+    @staticmethod
+    def _set_col_row_from_grid(df, grid):
+        """ memo: grid is a marthe grid file, read with gm library
+        and add_col_row=True
+        """
+        df_histo = df.copy()
+        df_histo_cells = df_histo.dropna(subset=['x', 'y'])
+        for i, row in df_histo_cells.iterrows():
+            _grid_loc = grid.gm.search_zone(x=row['x'], y=row['y'])
+            # get only first x,y; even if multilayer, it's the same coordinates
+            df_histo.loc[row.name, 'col'] = _grid_loc['col'].data[0]
+            df_histo.loc[row.name, 'row'] = _grid_loc['lig'].data[0]
+        return df_histo
+    
+    def fill_coordinates_from_grid(self, grid):
+        """ Get missing coordinates (x,y or row,col) from grid
+
+        Parameters
+        ----------
+        grid : xr.Dataset with gridmarthe accessor
+            gridfile as read by gridmarthe wrappers. See 
+            :py:func:`martpy.grid.load_marthe_grid`
+            grid need col/row variables, so `add_col_row=True` must be set in
+            load_marthe_grid call.
+
+        Returns
+        -------
+        MartHisto
+            DataFrame with coordinates filled
+        """
+        df_histo = self.copy()
+        df_histo = self._set_col_row_from_grid(df_histo, grid)
+        df_histo = self._set_xy_from_grid(df_histo, grid)
+        return df_histo
 
 
 def read_histo_file(histo_file, encoding='ISO-8859-1'):

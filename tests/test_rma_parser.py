@@ -7,7 +7,7 @@ from martpy.inputs._rma_parser import _parse_marthe_project, _write_rma_file
 def test_reader(rma_file):
     dict_rma = _parse_marthe_project(rma_file)
     assert isinstance(dict_rma, dict)
-    assert len(dict_rma) == 206
+    assert len(dict_rma) == 206  # expert level testing... :)
     return dict_rma
 
 

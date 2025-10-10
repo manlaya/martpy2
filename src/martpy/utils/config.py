@@ -107,7 +107,7 @@ _ACTION_PARSER = {
     'ZONE_GEO2' : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'ZONE_GEO3' : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'EDITION'   : r'I=\s*(?P<edit>\d+)\s*;',
-    'FICHIER'   : r'N:\s*(?P<file>\w+)',
+    'FICHIER'   : r'N:\s*(?P<file>\S+)',
     'TRONCON'   : r'A=\s*(?P<afluent>\S+)\s*T=\s*(?P<tronc>\S+)\s*V=\s*(?P<value>\S+)\s*;',
     'LAC_GLOB'  : r'L=\s*(?P<lake>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'LAC_EXUT'  : r'L=\s*(?P<lake>\d+)\s*A=\s*(?P<afluent>\d+)\s*V=\s*(?P<value>\S+)\s*;',
