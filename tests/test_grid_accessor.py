@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import numpy as np
 import xarray as xr
 
 from martpy import grid
+from martpy.inputs._mart_parser import _parse_mart_file
 
 
 FGRID = './tests/data/mart_hallue/hallue.permh'
@@ -24,9 +26,19 @@ def test_xr_accessor():
     assert 'zone' in ds.coords, 'Error while stacking coordinates'
 
 
+def test_assign_zone_value():
+    par = _parse_mart_file('tests/data/mart_hallue/hallue.mart')
+    ds = grid.load_marthe_grid(FGRID.replace('permh', 'zgeom'), drop_nan=True, nanval=[9999., 0.])
+    ds2 = ds.gm.assign_zone_values('zgeom', par['init_parameters']['PERMEAB'])
+    assert np.isin(np.unique(ds2['zgeom'].values), [0.001, 0.002]).all(), (
+        'Error with assign value from zone'
+    )
+
+
 def main():
     test_load_marthe_grid()
     test_xr_accessor()
+    test_assign_zone_value()
 
 
 if __name__ == "__main__":

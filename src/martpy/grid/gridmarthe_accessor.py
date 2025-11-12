@@ -84,6 +84,30 @@ class MartheGrid(object):
     def plot_nested_grid(self, ax=None, varname='charge', **kwargs):
         gm.plot_nested_grid(self.obj, ax, varname, **kwargs)
 
+    # Additional methods can be added here
+    def assign_zone_values(self, zone_field='zone_geom', list_values_dict=[]):
+        """ Assign values to grid cells based on zone information
+
+        Parameters
+        ----------
+        zone_field : str, optional
+            Name of the field in the grid that contains zone information,
+            by default 'zone_geom'
+        list_values_dict : list
+            Dictionary with zone as keys and values to assign as values.
+            Example: [{'mode': 'ZONE_GEO', 'zone': 3, 'value': 0.001}, ... ]
+
+        Returns
+        -------
+        xarray.Dataset
+            New dataset with assigned values
+        """
+        par = {x['zone']: x['value'] for x in list_values_dict}
+        zgeom_par = self.obj.to_dataframe().replace({zone_field: par}).to_xarray()
+        return zgeom_par
+
+    def __repr__(self):
+        return f"MartheGrid accessor for xarray.Dataset with dimensions {self.obj.dims}"
 
 # @wraps(gm.load_marthe_grid)
 # def load_marthe_grid(*args, **kwargs):
