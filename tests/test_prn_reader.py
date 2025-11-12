@@ -13,6 +13,7 @@ class TestReaderPrn(unittest.TestCase):
         # Example directory and file paths
         self.example_dir = './tests/data/mart_outputs/simple_case'
         self.example_dir_zone = './tests/data/mart_outputs/outputs_zone'
+        self.example_dir_affl = './tests/data/mart_outputs/outputs_afflu'
         self.all_files = [
             'histobil_debit.prn',
             'histobil_nap_cumu.prn',
@@ -27,7 +28,7 @@ class TestReaderPrn(unittest.TestCase):
     
     def test_read_prn_file_missing(self):
         with self.assertRaises(FileNotFoundError):
-            reader_prn.read_prn_file('./tests/data/mart_outputs/missing.prn')
+            reader_prn.read_output_water_balance('./tests/data/mart_outputs/missing.prn')
     
     def test_read_time_serie(self):
         # Assuming reader_prn.read_prn_file returns a list of dicts
@@ -40,9 +41,35 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('field', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
+    
+    def test_read_time_serie_affl(self):
+        # Assuming reader_prn.read_prn_file returns a list of dicts
+        result = reader_prn.read_output_time_series(
+            f"{self.example_dir_affl}/historiq.prn"
+        )
+        self.assertIsInstance(result, pd.DataFrame)
+        self.assertGreater(len(result), 0)
+        self.assertIn('date', result.index.names)
+        self.assertIn('field', result.columns.names)
+        self.assertIn('coords', result.columns.names)
+        self.assertIn('name', result.columns.names)
+        self.assertIn('riv_afluent', result.columns.names)
+    
+    def test_read_time_serie_affl_gig(self,):
+        result = reader_prn.read_output_time_series(
+            f"{self.example_dir_affl}/historiq_with_gig.prn"
+        )
+        self.assertIsInstance(result, pd.DataFrame)
+        self.assertGreater(len(result), 0)
+        self.assertIn('date', result.index.names)
+        self.assertIn('field', result.columns.names)
+        self.assertIn('coords', result.columns.names)
+        self.assertIn('name', result.columns.names)
+        self.assertIn('grid', result.columns.names)
+        self.assertIn('riv_afluent', result.columns.names)
 
     def test_read_balance(self):
-        res = reader_prn.read_output_balance(
+        res = reader_prn.read_output_water_balance(
             f"{self.example_dir}/histobil_debit.prn"
         )
         self.assertIsInstance(res, pd.DataFrame)
@@ -52,7 +79,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('Nombre_Suintem', res.columns)
     
     def test_read_balance_zone(self):
-        res = reader_prn.read_output_balance(
+        res = reader_prn.read_output_water_balance(
             f"{self.example_dir_zone}/histobil_debit.prn"
         )
         self.assertIsInstance(res, pd.DataFrame)
@@ -63,10 +90,9 @@ class TestReaderPrn(unittest.TestCase):
         zone = res.index.get_level_values('zone').unique()
         self.assertIn('2', zone)
 
-    
     def test_read_all_kind(self):
         for f in self.all_files:
-            res = reader_prn.read_output_balance(
+            res = reader_prn.read_output_water_balance(
                 os.path.join(self.example_dir, f)
             )
             self.assertIsInstance(res, pd.DataFrame)

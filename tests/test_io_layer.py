@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from martpy.inputs.io_utils import write_layer
+from martpy.inputs.io_utils import _write_layer
 from martpy.inputs.reader import read_layer
 
 
@@ -20,14 +20,14 @@ def test_multi_layer():
 def test_writer_layer():
     file_layer = 'tests/data/mart_72/Craie_NPC.layer'
     df, dict_geom = read_layer(file_layer)
-    write_layer(df, dict_geom, 'tests/data/tmp_outputs/toto.layer')
+    _write_layer(df, dict_geom, 'tests/data/tmp_outputs/toto.layer')
 
 
-def test():
+def main():
     test_single_layer()
     test_multi_layer()
     test_writer_layer()
 
 
 if __name__ == '__main__':
-    test()
+    main()

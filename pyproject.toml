@@ -34,6 +34,9 @@ requires-python = ">=3.10"
 version = {attr = "martpy.__version__"}
 dependencies = {file = ["requirements.txt"]}
 
+[project.optional-dependencies]
+dev = ['ruff', 'pytest']
+
 #[project.urls]
 #Homepage = 
 #Repository = ""
@@ -45,3 +48,9 @@ include-package-data = true
 
 # [tool.setuptools.packages.find]
 # where = ["src"] # not necessary, with toml, by default, src and flat layout are automatically discovered
+
+[tool.pytest.ini_options]
+addopts = "-s -v"
+testpaths = [
+    "tests",
+]

@@ -377,6 +377,7 @@ Modélisation du bassin de la SOMME Nappe_Libre
          0=[Option supplémentaire 3]
  *** Initialisation avant calcul                     ***
   /!!!!!/!!!!!
+  /PERMEAB/GRILLE          N: =2
   /PERMEAB/ZONE_GEO        Z=      1V=      1e-3;
   /PERMEAB/ZONE_GEO        Z=      2V=      2e-3;
   /PERMEAB/ZONE_GEO        Z=      3V=      1e-3;
@@ -405,7 +406,6 @@ Modélisation du bassin de la SOMME Nappe_Libre
   /FLUX_DEBIT/GRILLE       N: =24
   /BESOIN_NO3/ZONE_SOL     Z=      2V=         *;
   /PERM_LIT_RIVI/TRONCON   A=      *T=      *V=         *;
-  /PERMEAB/GRILLE          N: =2
   /DEBIT/COUCHE            C=  1:2  V=         *;
   /FLUX_DEBIT/ZONE_GEO2    Z=      *V=         3;
   /CHARGE/ZONE_GEO3/FIX=NAQ;       Z=      *V=         *;
