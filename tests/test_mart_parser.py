@@ -6,6 +6,7 @@ import re
 from martpy.inputs._mart_parser import (
     _parse_mart_file,
     _write_mart_file,
+    get_parameter_help,
     BLOCK_MART
 )
 
@@ -88,6 +89,12 @@ def test_reader():
         'Error while parsing block parameters'
 
 
+def test_get_parameter_help():
+    dict_res = _parse_mart_file(MART_FILE, verbose=True)
+    res = get_parameter_help('max_num_drains')
+    assert res is not None, 'Error while getting parameter help'
+
+
 def test_build_line():
     test = {'grid_id': 0, 'layer': 1, 'value': '*'}
     test_str = _build_parameter_line('DEBIT', 'COUCHE', **test)
@@ -101,11 +108,11 @@ def test_build_line():
 def test_writer():
     fout = './tests/data/tmp_outputs/test_writer.mart'
     dict_value = _parse_mart_file(MART_FILE)
-    dict_value['outputs']['gen_list']['value'] = 1
+    dict_value['outputs']['gen_list'] = 1
     # dict_value['toto'] = 1
     _write_mart_file(dict_value, fout)
     tmp = _parse_mart_file(fout)
-    assert tmp['outputs']['gen_list']['value'] == 1, 'Error with writer/re parsed.'
+    assert tmp['outputs']['gen_list'] == 1, 'Error with writer/re parsed.'
 
 
 def test_parse_modin():
@@ -120,10 +127,11 @@ def test_parse_modin():
 
 
 def main():
-    # test_parse_parameter_line()
-    # test_reader()
+    test_parse_parameter_line()
+    test_reader()
+    test_get_parameter_help()
+    test_parse_modin()
     test_writer()
-    # test_parse_modin()
 
 
 if __name__ == '__main__':
