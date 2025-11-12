@@ -1,333 +1,333 @@
-id	is_grid	code_var_fr	code_var_en	code_abb	ext	surface_field	descr	is_file
-  1	1	PERMEAB	PERMEAB	PERMH	permh	0	 Perméabilité	1
-  2	1	DEBIT	DISCHARGE	DEBIT	debit	0	 Débit d'eau aquifère	1
-  3	1	CHARGE	HYDR_HEAD	CHARG	charg	0	 Charge hydraulique	1
-  4	1	EMMAG_CAPT	CONF_STOR_COE	EMMCA	emmca	0	 Coefficient d'emmagasinement en nappe captive	1
-  5	1	EMMAG_LIBR	UNCONF_STORAG	EMMLI	emmli	0	 Coefficient d'emmagasinement en nappe libre	1
-  6	1	ZONE_GEOM	GEOM_ZONE	ZONEG	zgeom	0	 Numéro de Zone de Géométrie	1
-  7	1	H_SUBSTRAT	SUBSTRATUM	HSUBS	hsubs	0	 Altitude du Substratum	1
-  8	1	Z_EQUIPOT	EQUIPOT_ZON	EQUIP	equip	0	 Numéro de Zone Équipotentielle	1
-  9	1	H_TOPOGR	TOPOGR_ELEV	TOPOG	topog	1	 Altitude Topographique	1
- 10	1	ZONE_SOL	SOIL_ZONE	ZONEP	zonep	1	 Numéro de Zone de Sol [param hydroclimatiques]	1
- 11	1	ZONE_IRRIG	IRRIG_ZONE	ZONEI	zonei	1	 Numéro de Zone d'Excès d'Irrigation	1
- 12	1	IND_DEBORD	OVERFLOW_IND	IDEBO	idebo	1	 Index de Débordement	1
- 13	1	SUBS_EPONTE	AQUITARD_SUBS	HTOIT	sepon	0	 Substratum de l'Éponte Superposée	1
- 14	1	PERM_EPONTE	AQUITARD_PERM	PERMV	kepon	0	 Perméabilité de l'Éponte Superposée	1
- 15	0	PARAM	PARAM	PARAM	mart	0	    Paramètres Généraux	1
- 16	0	PAS_TEMPS	TIME_STEP	PASTP	pastp	0	    Pas de Temps	1
- 17	0	LIAISON	TIGHT_CONNECT	LIAIS	liais	0	 Liaisons Étanches	1
- 18	1	ANISO_HORIZ	HORIZ_ANISOT	ANISH	anish	0	 Anisotropie Horizontale de Perméabilité Kx / Ky	1
- 19	1	ANISO_VERTI	VERTIC_ANISOT	ANISV	anisv	0	 Anisotropie Verticale Perméab. K_verti. / K_hori.	1
- 20	0	NOMS_OPTIMIS	OPTIM_NAMES	OPTIM	namopt	0	 Fichier Projet pour Calibration ou Optimisation	1
- 21	1	SALINITE	SALINITY	DENSI	salini	0	 Salinité du fluide [si calcul avec densité]	1
- 22	1	POROSITE	POROSITY	POROS	poros	0	 Porosité = Teneur en eau à Saturation	1
- 23	1	PRESSION	PRESSURE	PRESS	press	0	 Pression de l'eau	1
- 24	1	SATURAT	SATURAT	SATUR	satur	0	 Teneur en eau (Aqueuse) [si schéma ZNS]	1
- 25	0	PARA_NON_SATU	UNSAT_PARAM	UNSAT	unsat	0	 Paramètres des lois Non-Saturé [si schéma ZNS]	1
- 26	1	SALIN_EXT	EXT_SALIN	DENEX	salext	0	 Salinité Extérieure  [si calcul avec densité]	1
- 27	0	SALIN_RECH	RECH_SALIN	DENPL	salipl	0	 Salinité de la Recharge [si calcul avec Densité]	0
- 28	1	CONCENTR	CONCENTR	CONCE	conce	0	 Concentration   [si transport]	1
- 29	1	CONCEN_EXT	EXT_CONCEN	CONEX	conex	0	 Concentration Extérieure   [si transport]	1
- 30	0	CONCEN_RECH	RECH_CONCEN	CONPL	conpl	0	 Concentration de la Recharge  [si transport]	0
- 31	1	IND_SUINTEM	SEEPAGE_INDEX	SUINT	suint	0	 Index de Suintement (ou gradient unitaire)	1
- 32	1	TEMPERAT	TEMPERAT	TEMPE	tempe	0	 Température du fluide  [si Thermique]	1
- 33	1	TEMPER_EXT	EXT_TEMPER	TEMEX	temex	0	 Température du fluide Extérieur [si Thermique]	1
- 34	0	TEMPER_RECH	RECH_TEMPER	TEMPL	tpluv	0	 Température de la Recharge   [si Thermique]	0
- 35	0	PARTIC_SALIN	SALIN_PARTIC	PARTD	parts	0	 Particules de Salinité	1
- 36	0	PARTIC_TEMPER	TEMPER_PARTIC	PARTT	partt	0	 Particules de Température de fluide	1
- 37	0	PARTIC_CONC	CONC_PARTIC	PARTC	partc	0	 Particules de Concentration	1
- 38	0	DEPART_TRAJ	PATH_LIN_DEPA	DEPAR	deptr	0	 Points de départ de Trajectoires	1
- 39	1	PRESS_GAZ	GAS_PRESS	P_GAZ	p_gaz	0	 Pression du Gaz [si gaz]	1
- 40	1	DEBIT_GAZ	GAS_FLOW	Q_GAZ	q_gaz	0	 Débit de fluide gazeux [si gaz]	1
- 41	1	CHARGE_HUILE	OIL_HYDR_HEAD	H_OIL	h_oil	0	 Charge de l'Huile (ou de l'Eau Salée)	1
- 42	1	DEBIT_HUILE	OIL_FLOW	Q_OIL	q_oil	0	 Débit de l'Huile (ou de l'Eau Salée)	1
- 43	1	QMASS_SALIN	SALIN_MASS_FL	QMASD	qmas_s	0	 Débit massique de Salinité [si densité]	1
- 44	1	Q_ENERGIE	ENERGY_FLOW	QENER	qener	0	 Flux de Chaleur  [si thermique]	1
- 45	1	QMASS_CONC	CONC_MASS_FL	QMASC	qmasc	0	 Débit massique de Concentration	1
- 46	0	MODIFIC	MODIFIC	MODIF	modin	0	 Modifications initiales avant calcul	1
- 47	1	MASS_SALIN	SALIN_MASS	MDENS	msali	0	 Dirac de masse de Salinité [si densité]	1
- 48	1	ENERGIE	ENERGY_SLUG	ENERG	energ	0	 Dirac de Chaleur  [si Thermique]	1
- 49	1	MASS_CONCEN	CONCEN_MASS	MCONC	mconc	0	 Dirac de masse de Concentration	1
- 50	1	PORO_FIX	FIX_PORO	TETFX	porfx	0	 Porosité Fixe [si transport]	1
- 51	1	RHO_KD	RHO_KD	RHOKD	rhokd	0	 Coefficient de Partage Volumique (Rho x Kd)	1
- 52	1	CINET_ECH_KD	EXCH_KINET	CINEC	cinec	0	 Temps de 1/2 Échange de sorption [si Transport]	1
- 53	1	SATUR_RESI	RESID_SATUR	SARES	sares	0	 Teneur en eau Résiduelle [si schéma ZNS]	1
- 54	1	SATUR_LIQ	LIQ_SATUR	SAT_L	sat_l	0	 Teneur en phase Liquide [Multiphasique]	1
- 55	1	SATUR_NAQ	SAQ_SATUR	SAT_N	sat_n	0	 Teneur en phase Non-Aqueuse [Multiphasique]	1
- 56	1	INTERFACE	INTERFACE	INTRF	intrf	0	 Altitude d'Interface Douce-Salée [Multiphasique]	1
- 57	1	AFFLU_RIVI	RIVER_TRIB	AFF_R	aff_r	1	 Numéro d'Affluent de Rivière	1
- 58	1	TRONC_RIVI	RIVER_REACH	TRC_R	trc_r	1	 Numéro de Tronçon de Rivière	1
- 59	1	LONG_RIVI	RIVER_LENGTH	LON_R	lon_r	1	 Longueur de tronçon de Rivière	1
- 60	1	LARG_RIVI	RIVER_WIDTH	LAR_R	lar_r	1	 Largeur de tronçon de Rivière	1
- 61	1	HAUTEU_RIVI	RIVER_STAGE	HAU_R	hau_r	1	 Niveau absolu de l'eau dans la Rivière	1
- 62	1	EPAI_LIT_RIV	RIV_BED_THICK	EPA_R	epai_r	1	 Épaisseur de colmatage de Lit et berges Rivière	1
- 63	1	PERM_LIT_RIVI	RIV_BED_PERM	PER_R	perm_r	1	 Perméabilité de colmatage Lit et berges Rivière	1
- 64	1	Q_EXTER_RIVI	RIV_EXT_FLOW	QEX_R	qext_r	1	 Débit d'Injection (ou de Pompage) dans la Rivière	1
- 65	1	DEBIT_RIVI	RIVER_FLOW	FLO_R	flo_r	1	 Débit (écoulement)  dans la Rivière	1
- 66	1	Q_AMONT_RIVI	RIV_UPST_FLOW	QAMON	qamon	1	 Débit Amont (Source) de Rivière	1
- 67	1	RUGOS_RIVI	RIVER_RUGOS	RUG_R	rug_r	1	 Rugosité de Rivière [si Manning-Strickler]	1
- 68	1	PENTE_RIVI	RIVER_SLOPE	PNT_R	pnt_r	1	 Pente de lit de Rivière [si Manning Strickler]	1
- 69	0	ARBRE_RIVI	RIVER_TREE	ARB_R	arb_r	0	 Arbre (branchem.) des Affluents Rivières et Lacs	1
- 70	1	BAS_TUBE	TUBE_BOTTOM	BATUB	batub	0	 Altitude du bas du forage [si Eau Salée]	1
- 71	1	DIFFUS_MOLEC	MOLEC_DIFFUS	DIMOL	dimol	0	 Coefficient de diffusion moléculaire spatialisé	1
- 72	1	DISPER_LONGI	LONGIT_DISPER	ALFAL	alfal	0	 Dispersivité Longitudinale spatialisée	1
- 73	1	DISPER_TRANSV	TRANSV_DISPER	ALFAT	alfat	0	 Dispersivité Transversale spatialisée	1
- 74	1	CONDUC_THERM	THERM_CONDUC	CDTHM	cndth	0	 Conductivité Thermique des minéraux de la matrice	1
- 75	1	DISP_THER_LON	THER_LON_DISP	ALFTL	alftl	0	 Dispersivité Thermique Longitudinale	1
- 76	1	DISP_THER_TRA	THER_TRA_DISP	ALFTT	alftt	0	 Dispersivité Thermique Transversale	1
- 77	1	CHAL_SPECIF	SPECIF_HEAT	CSPEC	cspec	0	 Capacité Thermique Volumique du minéral	1
- 78	1	FOND_RIVI	RIVER_BOTTOM	FON_R	fon_r	1	 Altitude du Fond de Rivière  (rivière à sec)	1
- 79	0	COUCHE	LAYER	COUCH	layer	0	 Couches aquifères et Gigognes	1
- 80	1	LIM_ETR_NAPP	AQU_AET_LIMIT	E_ETP	e_etp	1	 Profondeur limite pour évaporation maillage maxi	1
- 81	1	ZERO_ETR_NAPP	AQU_ZERO_AET	Z_ETR	z_etr	1	 Profondeur d'Extinction de l'évaporation maillage	1
- 82	1	CONCEN_RIVI	RIVER_CONCEN	CON_R	conc_r	1	 Concentration dans la Rivière	1
- 83	1	CONC_EXT_RIVI	RIV_EXT_CONC	CEX_R	cext_r	1	 Concentration Extérieure de Rivière	1
- 84	1	QMASS_RIVI	RIVER_MASS_FL	QMA_R	qmas_r	1	 Débit massique de Concentration dans la Rivière	1
- 85	1	MASSE_RIVI	RIVER_MASS	MAS_R	mass_r	1	 Dirac de masse de Concentration dans la Rivière	1
- 86	1	TEMPER_RIVI	RIVER_TEMPER	TEM_R	temp_r	1	 Température dans la Rivière	1
- 87	1	TEMP_EXT_RIVI	RIV_EXT_TEMP	TEX_R	text_r	1	 Température Extérieure de Rivière	1
- 88	1	Q_ENERG_RIVI	RIV_ENERG_FL	QNR_R	qnrj_r	1	 Flux de Chaleur dans la Rivière	1
- 89	1	ENERG_RIVI	RIVER_ENERG	NRJ_R	enerj_r	1	 Dirac de Chaleur dans la Rivière	1
- 90	1	SALIN_RIVI	RIVER_SALIN	DEN_R	salin_r	1	 Salinité dans la Rivière	1
- 91	1	SALIN_EXT_RIV	RIV_EXT_SALIN	DEX_R	salex_r	1	 Salinité extérieure de Rivière	1
- 92	1	Q_SALIN_RIVI	RIV_SALIN_FL	QDN_R	qsali_r	1	 Débit massique de Salinité dans la Rivière	1
- 93	1	MASS_SALI_RIV	RIV_SALIN_MAS	MAD_R	msali_r	1	 Dirac de masse de Salinité dans la Rivière	1
- 94	1	AFFLU_DRAIN	DRAIN_TRIB	AFF_D	aff_d	0	 Numéro d'Affluent de Drain	1
- 95	1	TRONC_DRAIN	DRAIN_REACH	TRC_D	trc_d	0	 Numéro de Tronçon de Drain	1
- 96	1	LONG_DRAIN	DRAIN_LENGTH	LON_D	lon_d	0	 Longueur de tronçon de Drain	1
- 97	1	ALTIT_DRAIN	DRAIN_ELEV	ALT_D	z_dra	0	 Altitude du fond de tronçon de Drain	1
- 98	1	PERM_ECH_DRAI	DRAIN_EXC_PER	PER_D	coe_d	0	 Coefficient de Perméabilité d'Échange Nappe-Drain	1
- 99	0	ARBRE_DRAIN	DRAIN_TREE	ARB_D	arb_d	0	 Arbre de branchement des Affluents de Drain	1
-100	1	TRANSM_EST	EAST_TRANSM	T_EST	t_est	0	 Transmissivité Est	1
-101	1	TRANSM_SUD	SOUTH_TRANSM	T_SUD	t_sud	0	 Transmissivité Sud	1
-102	1	TRANSM_BAS	DOWN_TRANSM	T_BAS	t_bas	0	 Transmissivité Bas	1
-103	0	FRACTURE	FRACTURE	FRACT	fract	0	 Fractures ou Failles verticales	1
-104	0	HISTORIQ	TIME_SERIES	HISTO	histo	0	 Mailles à Historique	1
-105	0	PROFIL_UTILI	USER_PROFILE	PROFI	prfu	0	 Profil d'Utilisation	1
-106	1	ZONE_METEO	METEO_ZONE	METEO	meteo	1	 Numéro de Zone Météo (pour Pluie, ETP ...)	1
-107	1	DIRECT_AVAL	DOWNSTR_DIREC	D_AVA	d_ava	1	 Direction Aval pour Ruissellement superficiel	1
-108	1	VITESS_RUISS	RUNOFF_VELOC	V_RUI	v_rui	1	 Vitesse pour Ruissellement superficiel	1
-109	1	RUISSEL	RUNOFF	RUISS	ruiss	1	 Flux de Ruissellement superficiel	1
-110	1	RECHARGE	RECHARGE	RECHA	recha	1	 Flux de Recharge du domaine maillé	1
-111	0	METEO_PLUIE	METEO_RAIN	M_PLU	m_plu	0	 Météo : Fichier séquentiel de Précipitation	1
-112	0	METEO_ETP	METEO_PET	M_ETP	m_etp	0	 Météo : Fichier séquentiel d'Évapotranspi. Poten.	1
-113	0	METEO_TEM_AIR	METEO_AIR_TEM	M_TEM	m_tair	0	 Météo : Fichier séquentiel de Température Air	1
-114	0	NOM_CHIMIE	CHEMIST_NAMES	NOMCH	nomch	0	 Noms des Éléments et Espèces géochimiques	1
-115	0	BASE_CHIMIE	CHEMIST_BASE	NEPTX	neptx	0	 Base thermo de réactions géochimiques	1
-116	0	PARAM_CHIMIE	CHEMIST_PARAM	PARCH	parch	0	 Paramètres géochimiques de la simulation	1
-117	0	REFER_CHIMIE	CHEMIST_REFER	RFCHI	refchi	0	 Référence des Concentrations chimiques Liquides	1
-118	0	DERIV_Q_RIV	RIV_FLO_DERIV	DER_Q	der_qri	0	 Dérivations de débit du Réseau de Rivières	1
-119	1	LARG_DRAIN	DRAIN_WIDTH	LAR_D	lar_d	0	 Largeur de Tronçon de Drain-Conduit	1
-120	1	H_VERT_DRAIN	DRAIN_VERT_H	HVE_D	hvert_d	0	 Hauteur de tronçon de Drain-Conduit horizontal	1
-121	1	CHARGE_DRAIN	DRAIN_H_HEAD	HAU_D	h_dra	0	 Charge de l'eau dans le Drain-Conduit	1
-122	1	Q_EXT_DRAIN	DRAIN_EXT_FLO	QEX_D	qext_d	0	 Débit d'Injection (Pompage) dans le Drain-Conduit	1
-123	1	CONDUC_DRAIN	DRAIN_CONDUC	CND_D	condu_d	0	 Conductivité (Perméabilité) du Drain-Conduit	1
-124	0	NUM_ZON_METEO	METEO_ZON_NUM	NZCLI	nzcli	0	 Numéros des Zones Météo des fichiers Météo séqu.	1
-125	1	DEMI_DEGRAD	HALF_DECAY	DECAY	tdegra	0	 Temps de 1/2 dégradation spatialisé	1
-126	0	DEGRAD_MULTIC	MULTIC_DECAY	DECAC	tdchn	0	 Temps de 1/2 Dégradat. multicomposant (Filiation)	1
-127	0	RETARD_MULTIC	MULTIC_DELAY	RETCH	retch	0	 Coefficients de retard multicomposant (Filiation)	1
-128	0	RHOKD_MULTIC	MULTIC_RHOKD	RKDCH	rkdch	0	 Coefficient de partage Rho_Kd multicomposant	1
-129	0	TAUX_FILIAT	CHAIN_RATE	PFILI	pfilia	0	 Taux de filiation (si Dégradation Parallèle)	1
-130	1	CONCEN_DRAIN	DRAIN_CONCEN	CON_D	conc_d	0	 Concentration de Drain/Conduit	1
-131	1	CONC_EXT_DRAI	DRAI_EXT_CONC	CEX_D	cext_d	0	 Concentration Extérieure de Drain/Conduit	1
-132	1	Q_MASS_DRAIN	DRAIN_MASS_FL	QMA_D	qmas_d	0	 Débit massique de Concentration de Drain/Conduit	1
-133	1	MASSE_DRAIN	DRAIN_MASS	MAS_D	mass_d	0	 Dirac de masse de Concentration de Drain/Conduit	1
-134	1	TEMPER_DRAIN	DRAIN_TEMPER	TEM_D	temp_d	0	 Température de Drain/Conduit	1
-135	1	TEMP_EXT_DRAI	DRAIN_EXT_TEM	TEX_D	text_d	0	 Température Extérieure de Drain/Conduit	1
-136	1	Q_ENERG_DRAI	DRAIN_ENER_FL	QNR_D	qnrj_d	0	 Flux de Chaleur de Drain/Conduit	1
-137	1	ENERG_DRAIN	DRAIN_ENERGY	NRJ_D	enerj_d	0	 Dirac de Chaleur de Drain/Conduit	1
-138	1	SALIN_DRAIN	DRAIN_SALIN	DEN_D	salin_d	0	 Salinité de Drain/Conduit	1
-139	1	SALI_EXT_DRAI	DRAI_EXT_SALI	DEX_D	salex_d	0	 Salinité extérieure de Drain/Conduit	1
-140	1	Q_SALIN_DRAIN	DRAIN_SALI_FL	QDN_D	qsali_d	0	 Débit massique de Salinité de Drain/Conduit	1
-141	1	M_SALIN_DRAIN	DRAIN_SALIN_M	MAD_D	msali_d	0	 Dirac de masse de Salinité de Drain/Conduit	1
-142	0	METEO_RUISSEL	METEO_RUNOFF	M_RUI	m_ruis	0	 Météo : Flux de Ruissellement	1
-143	0	METEO_RECHARG	METEO_RECHARG	M_REC	m_rech	0	 Météo : Flux de Recharge du domaine maillé	1
-144	1	ZONE_CULTUR	CROP_ZONE	ZCULT	zcult	1	 Numéro de Zone de Culture	1
-145	0	PARAM_CULTUR	CROP_PARAM	FCULT	fcult	0	 Paramètres culturaux des Cultures	1
-146	0	F_CONC_RACIN	ROOT_CONC_F	CONRA	conrac	0	 Facteur sur Concentrat. Racinaire multicomposant	1
-147	1	ZONE_2	ZONE_2	ZONE2	zoneg2	0	 Numéro de Zone de Géométrie Bis (2)	1
-148	1	ZONE_3	ZONE_3	ZONE3	zoneg3	0	 Numéro de Zone de Géométrie Ter (3)	1
-149	0	COEF_RELAX	RELAX_COEF	RELAX	relax	0	 Variation du coeff. de relaxation avec les itérat	1
-150	1	POROSI_IMMOB	IMMOB_POROSI	PORFX	por_imm	0	 Porosité (équivalente) immobile avec Cinétique	1
-151	1	CONCEN_IMMOB	IMMOB_CONCEN	CONFX	con_imm	0	 Concentration dans la Porosité immobile (cinét.)	1
-152	1	I_DRAIN_VERTI	I_VERTI_DRAIN	IVE_D	ivert_d	0	 Orientation du Drain-Conduit (0=Horiz ; 1=Verti)	1
-153	1	I_SUINT_DRAIN	DRAI_SEEP_IND	SUI_D	suint_d	0	 Index de Suint./Débord./Grad du Drain-Conduit	1
-154	1	TEMPOR_1	TEMPOR_1	TMP_1	tm1	0	 $ Fichier temporaire n°1	0
-155	1	TEMPOR_2	TEMPOR_2	TMP_2	tm2	0	 $ Fichier temporaire n°2	0
-156	1	NUM_LAC	LAKE_NUM	NULAC	num_lac	1	 Numéro de Lac	1
-157	1	NUM_VOIS_LAC	LAKE_NEIG_NUM	KKKKK	kkk	1	 <<< Champ non-utilisé dans cette version >>>	1
-158	1	EPAI_LIT_LAC	LAK_BED_THICK	EPA_L	epai_l	1	 Épaisseur de colmatage de Lit du Lac	1
-159	1	PERM_LIT_LAC	LAK_BED_PERM	PER_L	k_lac	1	 Perméabilité de colmatage de Lit du Lac	1
-160	1	NIVEAU_LAC	LAKE_LEVEL	HAU_L	haut_l	1	 Altitude absolue de l'eau dans le Lac	1
-161	1	DEBIT_EXT_LAC	LAKE_EXT_FLOW	QEX_L	qext_l	1	 Débit d'Injection (ou de Pompage) dans le Lac	1
-162	1	Q_AMONT_LAC	LAKE_UPST_FLO	QAM_L	qamon_l	1	 Débit Amont (Source) de Lac	1
-163	0	PARA_GLOB_LAC	LAKES_ALL_PAR	LACGL	lac_glo	0	 Paramètres globaux des Lacs	1
-164	1	FLUX_DEBIT	DISCHARG_FLUX	FLUXQ	fluxq	0	 Débit aquif. surfacique (unité de débit par m2)	1
-165	1	DEMI_SUC_DRA	DRAI_HALF_SUC	SUC_D	suc_d	0	 Succion à 1/2 saturation du Drain-Conduit	1
-166	1	EXP_RETE_DRAI	DRAI_RETE_EXP	EXH_D	exph_d	0	 Exposant de la loi de Rétention du Drain-Conduit	1
-167	1	EXP_PERM_DRAI	DRAI_PERM_EXP	EXK_D	expk_d	0	 Exposant de la loi de Perméabil. du Drain-Conduit	1
-168	1	SATUR_DRAIN	DRAIN_SATUR	SAT_D	satu_d	0	 Teneur en eau du Drain-Conduit [si ZNS]	1
-169	1	PRESS_DRAIN	DRAIN_PRESSUR	PRS_D	prs_d	0	 Pression de l'eau du Drain-Conduit [si ZNS]	1
-170	1	POROSI_DRAIN	DRAIN_POROSI	POR_D	por_d	0	 Porosité du Drain-Conduit si ZNS [Déf: 0 => 100%]	1
-171	1	ALTI_LIM_POMP	PUMP_ELEV_LIM	ZLIMQ	zlimq	0	 Altitude limite de maille pompée (crépines)	1
-172	1	IND_EPONTE	CAPROCK_INDEX	KKKKK	i_epo	0	 Indice d'Éponte thermique (solution analytique)	1
-173	1	ZON_NO_GEOCHI	NO_GEOCHE_ZON	KKKKK	no_ch	0	 Index d'exclusion du calcul géochimique	1
-174	0	VOLUM_MOLAIR	MOLAR_VOLUM	KKKKK	kkk	0	 Volume molaire des minéraux (L/mole)	1
-175	1	ZON_NO_SALINI	NO_SALINI_ZON	KKKKK	nosal	0	 Index d'exclusion du transport de Salinité	1
-176	1	ZON_NO_CONCEN	NO_CONCEN_ZON	KKKKK	nocon	0	 Index d'exclusion du transport de Concentration	1
-177	1	ZON_NO_TEMPER	NO_TEMPER_ZON	KKKKK	notem	0	 Index d'exclusion du transfert Thermique	1
-178	0	TEMPER_RE-INJ	TEMPER_RE-INJ	KKKKK	t_reinj	0	 Asservissement Température : Pompage => Injection	1
-179	1	RAYON_PUITS	WELL_RADIUS	KKKKK	rayon	0	 Rayon du puits de pompage ou d'injection (m)	1
-180	0	CONCEN_RE-INJ	CONCEN_RE-INJ	KKKKK	c_reinj	0	 Asservissement Concentration Pompage => Injection	1
-181	0	SALINI_RE-INJ	SALINI_RE-INJ	KKKKK	s_reinj	0	 Asservissement Salinité : Pompage => Injection	1
-182	0	TEM_DRA_REINJ	REINJ_DRA_TEM	KKKKK	t_d_inj	0	 Asservissement Températ Drain Pompage => Inject.	1
-183	1	ZON_INIT_CHIM	ZON_INIT_CHEM	KKKKK	ini_phr	0	 Numéro de Zone d'initialisation géochimie PHREEQC	1
-184	0	LIS_SOLU_CHIM	CHEM_SOLU_LIS	KKKKK	li_solu	0	 Liste de numéros de solutions chimiques	1
-185	1	ALTI_DEBORD	OVERFLOW_ELEV	KKKKK	z_debor	0	 Altitude de Débordement	1
-186	1	H_SEUIL_RIVI	RIV_SILL_HEIG	KKKKK	seuil_r	1	 Hauteur du seuil à l'aval du tronçon de Rivière	1
-187	1	COE_SEUIL_RIV	RIV_SILL_COEF	KKKKK	c_seu_r	1	 Facteur de la loi de débit du seuil de Rivière	1
-188	1	EXP_SEUIL_RIV	RIV_SILL_EXPO	KKKKK	e_seu_r	1	 Exposant de la loi de débit du seuil de Rivière	1
-189	0	PARA_ENGR_ORG	PARA_ORG_FERT	KKKKK	eng_org	0	 Paramètres des engrais organiques	1
-190	0	PARA_RES_RECO	PARA_HARV_RES	KKKKK	re_reco	0	 Paramètres des résidus culturaux après récolte	1
-191	0	NITR_MINE_SOL	SOIL_NITR_MIN	KKKKK	min_sol	0	 Paramètres de nitrif. et minéralisation du sol	1
-192	1	CONCE_MAX_INJ	CONCE_MAX_INJ	KKKKK	conc_mx	0	 Concentration maximale injectable	1
-193	1	SALIN_MAX_INJ	SALIN_MAX_INJ	KKKKK	sali_mx	0	 Salinité maximale injectable	1
-194	1	CONCENTR_GAZ	GAS_CONCENTR	KKKKK	con_gaz	0	 Concentration de composant en phase gazeuse	1
-195	1	CONC_EXT_GAZ	GAS_EXT_CONC	KKKKK	cex_gaz	0	 Concentration extérieure en phase gazeuse	1
-196	1	FLUX_MASS_GAZ	GAS_MASS_FLUX	KKKKK	qma_gaz	0	 Flux massique de composant en phase gazeuse	1
-197	1	MASSE_GAZ	GAS_MASS_SLUG	KKKKK	mas_gaz	0	 Dirac de masse de composant en phase gazeuse	1
-198	0	DIFFUS_GAZ	GAS_DIFFUS	KKKKK	dif_gaz	0	 Coefficient de diffusion des composants gazeux	1
-199	1	SUPERF_BV_EXT	EXT_RIV_CATCH	KKKKK	s_bvext	1	 Superficie du bassin versant de riv. extérieure	1
-200	1	NZON_RIV_EXT	EXT_RIV_ZONEN	KKKKK	z_bvext	1	 Numéro de zone de sol pour rivière extérieure	1
-201	0	MAILL_BV_EXT	EXT_RIV_CELLS	KKKKK	m_bvext	0	 Zones Météo & Pondérations de rivière extérieure	1
-202	1	PERT_CHAR_QUA	HEAD_LOSS_QUA	KKKKK	pdc_qua	0	 Coefficient de perte de charge quadratique puits	1
-203	1	PERT_CHAR_LIN	HEAD_LOSS_LIN	KKKKK	pdc_lin	0	 Coefficient de perte de charge linéaire au puits	1
-204	0	OBSERV_HISTOR	OBSERV_HISTOR	KKKKK	obs_his	0	 Historiques d'observations	1
-205	0	METEO_NEIGE	METEO_SNOW	KKKKK	m_neig	0	 Météo : Fichier séquentiel de flux de Neige	1
-206	1	QRIV_DEBO_LAC	RIVFL_OVF_LAK	KKKKK	qri_ovf	1	 Débit de rivière maxi avant débord -> lac latéral	1
-207	1	NLAC1_LAT_RIV	NLAK1_SID_RIV	KKKKK	lac_db1	1	 Numéro du lac latéral n°1 pour débord. de rivière	1
-208	1	NLAC2_LAT_RIV	NLAK2_SID_RIV	KKKKK	lac_db2	1	 Numéro du lac latéral n°2 pour débord. de rivière	1
-209	1	PERMEAB_FAILL	PERMEAB_FAULT	KKKKK	fai_per	0	 Faille Semi-Perméable : Perméabilité	1
-210	1	%CONTAC_FAILL	%CONTAC_FAULT	KKKKK	fai_con	0	 Faille Semi-Perméable : Pourcentage de Contact	1
-211	0	PERHISTO	PERTIMSER	PERHI	perhi	0	 Pas de Temps de Sauvegarde des Historiques	1
-212	0	RABATTEM	DRAWDOWN	RABAT	rab	0	 Rabattement (différence de charge)	0
-213	0	FLUX_INFILTR	INFILTR_FLUX	INFIL	plu	0	 Flux d'Infiltration (Pluie - ETP) par zone	0
-214	0	FL_EXC_IRRIG	EXC_IRRIG_FL	IRRIG	irr	0	 Flux d'Excès d'Irrigation	0
-215	0	VITESSE	VELOCITY	VELOC	vit	0	 Vitesses réelles (centrées) ou Débit d'échange	0
-216	0	QECH_RIV_NAPP	QEXC_RIV_AQUI	ECH_R	ech	0	 Débit d'Échange Rivière => Nappe (Sauvegarde)	0
-217	0	FLUX_PLUV	RAIN_FLUX	FLPLU	plu	0	 Flux de Précipitation (Pluie)	0
-218	0	FLUX_ETP	PET_FLUX	FLETP	etp	0	 Flux d'Évapotranspiration Potentielle (ETP)	0
-219	0	RUMAX	RUMAX	RUMAX	rmx	0	 Capacité du réservoir sol de type 'Réserve utile'	0
-220	0	CORR_ETP	PET_CORR	CFETP	cet	0	 Coefficient correcteur d'ETP (%)	0
-221	0	EQU_RUIS_PERC	EQU_RUNO_PERC	NRUIP	nru	0	 Niveau d'équi Ruissellement/Percolation	0
-222	0	T_DEMI_PERCOL	PERCOL_HALF_T	TPERC	tpe	0	 Durée de 1/2 Percolation (vers la nappe)	0
-223	0	DEFIC_SOL	SOIL_DEFIC	DISOL	dis	0	 Déficit en eau (initial) du réservoir sol	0
-224	0	NIV_RESERV_H	H_TANK_LEVEL	HISOL	hso	0	 Hauteur (initiale) du Réservoir H	0
-225	0	DEBIT_DRAIN	DRAIN_FLOW	FLO_D	q_d	0	 Débit (Écoulement) dans le Drain	0
-226	0	QECH_DRAI_NAP	QEXC_DRA_AQU	ECH_D	x_d	0	 Débit d'échange Drain => Nappe	0
-227	0	!!!!!	!!!!!	!!!!!	!!!	0	 Commentaire	0
-228	0	CALCUL_CHIMIE	CHEMIST_CALCU	CHIMI	chi	0	 Réaliser un calcul de Géochimie	0
-229	0	TEMPER_AIR	AIR_TEMPER	T_AIR	tai	0	 Température de l'Air (pour Fonte de la Neige)	0
-230	0	CORR_TEMP_AIR	AIR_TEMP_CORR	CORTP	ctp	0	 Correction de Température de l'Air (degrés C)	0
-231	0	RETEN_NEIGE	SNOW_RETEN	RNEIG	rne	0	 Rétention d'Eau maximale dans la Neige (%)	0
-232	0	EVAP_NEIGE	SNOW_EVA_RATE	EVNEI	evn	0	 Taux d'Évaporation de la Neige (%)	0
-233	0	COEF_FONT_PLU	RAIN_MELT_COE	FONPL	fpl	0	 Correction de la Fonte de Neige par la Pluie (%)	0
-234	0	TEMPER_FONTE	MELT_TEMPER	TFONT	tfo	0	 Température seuil de Fonte de la Neige (degrés C)	0
-235	0	DEGR_JOUR_NEI	SNOW_DEGR_DAY	D_JOU	djo	0	 Degré-Jour => Fonte Neige  (mm/degré/jour)	0
-236	0	FONT_SOL_NEIG	SNO_SOIL_MELT	F_SOL	fso	0	 Fonte de la Neige par le Sol   (mm/j)	0
-237	0	STOCK_NEIGE	SNOW_STORE	STNEI	nei	0	 Stock initial de Neige (Équivalent en Eau)	0
-238	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0
-239	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0
-240	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0
-241	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0
-242	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0
-243	0	T_RUISS	T_RUNOFF	TRUIS	tru	0	 Durée de 1/2 Ruissellement	0
-244	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0
-245	0	NIV_RUI	RUN_LEV	N_RUI	nrn	0	 Hauteur initiale du réservoir Ruissellement	0
-246	0	CALCUL_DENSIT	DENSIT_CALCUL	RHOLI	rho	0	 Calcul (mise à jour) de la masse volumique du fluide	0
-247	0	FLUX_ETR	AET_FLUX	FLETR	etr	0	 Flux calculé d'Évapotranspiration Réelle	0
-248	0	FONTE_NEIGE	SNOW_MELT	FNEIG	fne	0	 Flux de Fonte de Neige calculé	0
-249	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0
-250	0	CORREC_PLUIE	RAIN_CORREC	CFPLU	cpl	0	 Coefficient correcteur de Pluie (%)	0
-251	0	CALCUL_HDYNAM	HDYNAM_CALCUL	HDYNA	dyn	0	 Calcul (mise à jour) de l'Hydrodynamique	0
-252	0	NUM_CULTUR	CROP_NUMBER	NCULT	ncu	0	 Numéro de la Culture affectée à une Zone	0
-253	0	TRANSPI_CULT	CROP_TRANSPI	TRPIR	trp	0	 Transpiration des Végétaux	0
-254	0	EVAPORA_MAILL	GRID_EVAPORAT	EVNAP	evn	0	 Évaporation provenant du domaine maillé	0
-255	0	%SATURAT	%SATURAT	%SATU	tsa	0	 Taux de Saturation calculé %	0
-256	0	FL_ETR_SOL	SOIL_AET_FLUX	FLETS	ets	0	 Flux d'Évapotranspiration Réelle dans le réservoir Sol calculé	0
-257	0	QECH_LAC_NAPP	QEXC_LAK_AQU	ECH_L	x_l	0	 Débit d'Échange Lac => Nappe	0
-258	0	DEBIT_LAC	LAKE_OUTFLOW	FLO_L	f_l	0	 Bilan récapitulatif par Lac, et débit extérieur calculé	0
-259	0	PROFOND_NAPP	AQUIF_DEPTH	PRNAP	pna	0	 Profondeur de la Nappe (différence Toit - Charge)	0
-260	0	ETAT_HYD_CLIM	HY_CLIM_STATE	ICLIM	icl	0	 États hydroclimatiques complets	0
-261	0	PAR_MULTIPHAS	MULTIPH_PARA	MPHAS	mphas	0	 Paramètres complémentaires des lois multiphasiques	0
-262	0	CAP_SOL_PROGR	PROG_SOIL_CAP	RUMPR	rm2	0	 Capacité du réservoir sol progressif de Gardénia	0
-263	0	DEF_SOL_PROGR	PROG_SOIL_DEF	RUIPR	rip	0	 Déficit (initial) du réservoir sol progressif	0
-264	0	VITESS_AMPLIT	VELOCI_AMPLIT	AMPVI	amv	0	 Amplitude de la vitesse réelle dans la nappe	0
-265	0	NB_COURANT	COURANT_NB	COURA	nco	0	 Nombre de Courant (Sauvegarde)	0
-266	0	EPAND_NO3	NO3_SPREAD	KKKKK	kkk	0	 Apport d'engrais NO3	0
-267	0	BESOIN_NO3	NO3_NEED	KKKKK	kkk	0	 Besoin des cultures en Nitrate	0
-268	0	MINER_NO3	NO3_MINER	KKKKK	kkk	0	 Minéralisation du sol en Nitrate	0
-269	0	RESID_NO3	NO3_RESID	KKKKK	kkk	0	 Résidu cultural en Nitrate après récolte	0
-270	0	CORR_EPAN_NO3	CORR_NO3_SPRE	KKKKK	kkk	0	 Coefficient correcteur d'apports en Nitrate (%)	0
-271	0	CORR_BES_NO3	CORR_NO3_NEED	KKKKK	kkk	0	 Coefficient correcteur de besoins en Nitrate (%)	0
-272	0	CORR_MINE_NO3	CORR_NO3_MINE	KKKKK	kkk	0	 Coefficient correcteur de minéralisation en Nitrate (%)	0
-273	0	EAU_LIEE_RU	SOIL_FIX_WAT	KKKKK	kkk	0	 Capacité en Eau liée du réservoir sol (pour NO3)	0
-274	0	EAU_LIEE_RU_2	SOIL2_FIX_WAT	KKKKK	kkk	0	 Capacité en Eau liée du réservoir progressif (pour NO3)	0
-275	0	EAU_LIEE_RESH	RESH_FIX_WAT	KKKKK	kkk	0	 Capacité en Eau liée du réservoir intermédiaire H	0
-276	0	T_MELANG_RU	SOIL_MIX_TIM	KKKKK	kkk	0	 Temps de 1/2 mélange du réservoir sol (pour NO3)	0
-277	0	T_MELANG_RU_2	SOIL2_MIX_TIM	KKKKK	kkk	0	 Temps de 1/2 mélange du réservoir progressif (pour NO3)	0
-278	0	T_MELANG_RESH	RESH_MIX_TIM	KKKKK	kkk	0	 Temps de 1/2 mélange du réservoir intermédiaire H	0
-279	0	T_LIBER_RACIN	ROOT_REL_TIME	KKKKK	kkk	0	 Temps de 1/2 libération des résidus automnaux NO3	0
-280	0	NO3_DISS_PLUV	NO3_RAIN_DISS	KKKKK	kkk	0	 Concentration maxim. de la pluie pour dissolution de l'engrais solide	0
-281	0	T_DEGRAD_RU	SOIL_DECAY_T	KKKKK	kkk	0	 Temps de 1/2 dégradation dans le réservoir sol (pour NO3)	0
-282	0	T_DEGRAD_RU_2	SOIL2_DECAY_T	KKKKK	kkk	0	 Temps de 1/2 dégradation dans le réservoir progressif (pour NO3)	0
-283	0	T_DEGRAD_RESH	RESH_DECAY_T	KKKKK	kkk	0	 Temps de 1/2 dégradation dans le réservoir intermédiaire H	0
-284	0	CONC_NO3_SOL	SOIL_NO3_CONC	KKKKK	kkk	0	 Concentration (initiale) en NO3 dans le sol (eau libre)	0
-285	0	CONC_NO3_FIX	FIX_NO3_CONC	KKKKK	kkk	0	 Concentration (initiale) en NO3 dans l'eau liée	0
-286	0	CHARGE_PUITS	WELL_H_HEAD	KKKKK	kkk	0	 Charge au puits (prenant en compte Rayon du puits, Pertes de charge)	0
-287	0	DEBIT_DEBORD	Q_OVERFLOW	KKKKK	kkk	0	 Débit de débordement & de suintement (Sauvegarde)	0
-288	0	DEBIT_LIMITES	BOUNDARY_FLOW	KKKKK	kkk	0	 Débit aux limites (Sauvegarde)	0
-289	0	DEBIT_RESID	RESIDUAL_FLOW	KKKKK	kkk	0	 Débit résiduel (Sauvegarde)	0
-290	0	DEBIT_MANQU	MISSING_FLOW	KKKKK	kkk	0	 Débit de pompage manquant (Sauvegarde)	0
-291	0	DEBIT_LATERAL	LATERAL_FLOW	KKKKK	kkk	0	 Débit latéral : bilan entrée-sortie (Sauvegarde)	0
-292	0	DEBIT_LAT_ENT	LATER_INFLOW	KKKKK	kkk	0	 Débit latéral entrant (Sauvegarde)	0
-293	0	DEBIT_HAU_BAS	TOP_BOTT_FLOW	KKKKK	kkk	0	 Débit entrant par le haut et par le bas (Sauvegarde)	0
-294	0	DEBIT_STOCKAG	STORAGE_FLOW	KKKKK	kkk	0	 Débit de stockage (Sauvegarde)	0
-295	0	EPAISSEUR_EAU	WATER_THICKN	KKKKK	kkk	0	 Épaisseur d'eau dans la couche (Sauvegarde)	0
-296	0	MASSE_VOL_GAZ	GAS_DENSITY	KKKKK	kkk	0	 Masse volumique du Gaz (Sauvegarde)	0
-297	0	MASSE_VOLUMIQ	WATER_DENSITY	KKKKK	kkk	0	 Masse volumique de l'eau F(Salinité, Température) (Sauvegarde)	0
-298	0	QMASSE_RESID	RESID_MASS_FL	KKKKK	kkk	0	 Débit massique résiduel de 'Concentration' (Sauvegarde)	0
-299	0	QENERG_RESID	RESI_ENERG_FL	KKKKK	kkk	0	 Flux de Chaleur résiduel (Sauvegarde)	0
-300	0	QSALIN_RESID	RESI_SALIN_FL	KKKKK	kkk	0	 Débit massique résiduel de 'Salinité' (Sauvegarde)	0
-301	0	ECH_MASS_FACE	MAS_EXCH_FACE	KKKKK	kkk	0	 Débit massique de 'Concentrat.' échangé par Faces (Sauvegarde)	0
-302	0	ECH_CHAL_FACE	HEAT_EXC_FACE	KKKKK	kkk	0	 Flux de chaleur échangé par Faces (Sauvegarde)	0
-303	0	ECH_SALI_FACE	SALI_EXC_FACE	KKKKK	kkk	0	 Débit massique de 'Salinité' échangé par Faces (Sauvegarde)	0
-304	0	NUM_ENGR_ORGA	NUM_FERT_ORGA	KKKKK	kkk	0	 Numéro de l'engrais organique affecté à une Zone	0
-305	0	NUM_RESI_RECO	NUM_RESI_HARV	KKKKK	kkk	0	 N° du type de résidu après récolte dans une Zone	0
-306	0	ENGRAIS_ORGAN	FERTIL_ORGA	KKKKK	kkk	0	 Engrais organique	0
-307	0	ENGRAIS_NO3	FERTIL_NO3	KKKKK	kkk	0	 Engrais inorganique NO3	0
-308	0	ENGRAIS_NH4	FERTIL_NH4	KKKKK	kkk	0	 Engrais inorganique NH4	0
-309	0	RESIDU_RECO	HARV_RESIDUE	KKKKK	kkk	0	 Résidu d'azote organique après récolte	0
-310	0	AZOT_ORGA_SOL	SOIL_ORG_NITR	KKKKK	kkk	0	 Stock d'azote organique dans le sol	0
-311	0	LIST_BIL_DEBI	FLOW_BAL_LIST	KKKKK	kkk	0	 Listing du bilan de débit et de flux massique	0
-312	0	TEMPERAT_SOL	SOIL_TEMPERAT	KKKKK	kkk	0	 Température du sol dans la 'Zone de Sol'	0
-313	0	T_1/2_TARIS_1	T_1/2_RECES_1	KKKKK	kkk	0	 Temps de 1/2 tarissement pour débit rivière extérieur	0
-314	0	T_1/2_PERC_G2	T_1/2_PERC_G2	KKKKK	kkk	0	 Temps de 1/2 percolation profonde pour rivière extérieure	0
-315	0	T_1/2_TARIS_2	T_1/2_RECES_2	KKKKK	kkk	0	 Temps de 1/2 tarissement lent pour le débit rivière extérieure	0
-316	0	FACT_ECH_SOUT	GW_EXCH_FACT	KKKKK	kkk	0	 Facteur d'échange souterrain externe pour rivière extérieure	0
-317	0	NIV_RESERV_G1	G1_TANK_LEVEL	KKKKK	kkk	0	 Niveau (initial) dans le réservoir hydroclimatique G1	0
-318	0	NIV_RESERV_G2	G2_TANK_LEVEL	KKKKK	kkk	0	 Niveau (initial) dans le réservoir hydroclimatique G2	0
-319	0	RET_INI_NEIGE	SNOW_INI_RETE	KKKKK	kkk	0	 Eau (initialement) retenue dans la Neige (%)	0
-320	0	%SATUR_DRAIN	%DRAIN_SATUR	KKKKK	kkk	0	 Taux de Saturation calculé dans le Drain-conduit %	0
-321	0	FLUX_NEIGE	SNOW_FLUX	KKKKK	kkk	0	 Flux de Neige	0
-322	0	NB_S_PAS_TEMP	NB_S_TIM_STEP	KKKKK	kkk	0	 Nombre de Sous-Pas de temps	0
-323	0	ALT_SEUIL_LAC	LAKE_SILL_HEI	KKKKK	kkk	1	 Altitude du seuil à l'exutoire du lac	0
-324	0	COE_SEUIL_LAC	LAK_SILL_COEF	KKKKK	kkk	1	 Facteur de la loi de débit à l'exutoire du Lac	0
-325	0	EXP_SEUIL_LAC	LAK_SILL_EXPO	KKKKK	kkk	1	 Exposant de la loi de débit à l'exutoire du Lac	0
-326	0	CHARGE_DOUCE	FRESH_W_HEAD	KKKKK	kkk	0	 Charge en eau douce [quand effets densitaires] (Sauvegarde)	0
-327	0	DENSIT_CHIM	DENSIT_CHEM	KKKKK	kkk	0	 Densité de la solution calculée par la géochimie (Sauvegarde)	0
-328	0	VAR_CONCENT	CONCENT_VAR	KKKKK	kkk	0	 Variation de Concentration (Sauvegarde)	0
-329	0	VAR_TEMPERAT	VAR_TEMPERAT_	KKKKK	kkk	0	 Variation de Température (Sauvegarde)	0
-330	0	VAR_SALINITE	SALINITY_VAR	KKKKK	kkk	0	 Variation de Salinité (Sauvegarde)	0
-331	0	VAR_CONC_GAZ	VAR_CONC_GAS	KKKKK	kkk	0	 Variation de Concentration en gaz (Sauvegarde)	0
-332	0	EXCÈS_PRS_CO2	CO2_PRS_EXCES	KKKKK	kkk	0	 Excédent de pression de CO2(g) vs pression eau (Sauvegarde)	0
+id	is_grid	code_var_fr	code_var_en	code_abb	ext	surface_field	descr	is_file	descr_en
+1	1	PERMEAB	PERMEAB	PERMH	permh	0	 Perméabilité	1	 Hydraulic conductivity
+2	1	DEBIT	DISCHARGE	DEBIT	debit	0	 Débit d'eau aquifère	1	 Discharge , Aquifer Flow
+3	1	CHARGE	HYDR_HEAD	CHARG	charg	0	 Charge hydraulique	1	 Hydraulic Head
+4	1	EMMAG_CAPT	CONF_STOR_COE	EMMCA	emmca	0	 Coefficient d'emmagasinement en nappe captive	1	 Confined Storage Coefficient
+5	1	EMMAG_LIBR	UNCONF_STORAG	EMMLI	emmli	0	 Coefficient d'emmagasinement en nappe libre	1	 Specific yield
+6	1	ZONE_GEOM	GEOM_ZONE	ZONEG	zgeom	0	 Numéro de Zone de Géométrie	1	 Geometry Zone number
+7	1	H_SUBSTRAT	SUBSTRATUM	HSUBS	hsubs	0	 Altitude du Substratum	1	 Substratum elevation
+8	1	Z_EQUIPOT	EQUIPOT_ZON	EQUIP	equip	0	 Numéro de Zone Équipotentielle	1	 Equipotential Zone number
+9	1	H_TOPOGR	TOPOGR_ELEV	TOPOG	topog	1	 Altitude Topographique	1	 Topographic elevation
+10	1	ZONE_SOL	SOIL_ZONE	ZONEP	zonep	1	 Numéro de Zone de Sol [param hydroclimatiques]	1	 Zone number for Soil [Hydroclimatic parameters]
+11	1	ZONE_IRRIG	IRRIG_ZONE	ZONEI	zonei	1	 Numéro de Zone d'Excès d'Irrigation	1	 Zone number for Excess Irrigation
+12	1	IND_DEBORD	OVERFLOW_IND	IDEBO	idebo	1	 Index de Débordement	1	 Overflow Index
+13	1	SUBS_EPONTE	AQUITARD_SUBS	HTOIT	sepon	0	 Substratum de l'Éponte Superposée	1	 Substratum of upper semi-pervious layer
+14	1	PERM_EPONTE	AQUITARD_PERM	PERMV	kepon	0	 Perméabilité de l'Éponte Superposée	1	 Hydr. Conductivity of upper semi-pervious layer
+15	0	PARAM	PARAM	PARAM	mart	0	    Paramètres Généraux	1	 General Parameters
+16	0	PAS_TEMPS	TIME_STEP	PASTP	pastp	0	    Pas de Temps	1	 Time Steps
+17	0	LIAISON	TIGHT_CONNECT	LIAIS	liais	0	 Liaisons Étanches	1	 Impervious Connections
+18	1	ANISO_HORIZ	HORIZ_ANISOT	ANISH	anish	0	 Anisotropie Horizontale de Perméabilité Kx / Ky	1	 Horizontal Permeability Anisotropy Kx / Ky
+19	1	ANISO_VERTI	VERTIC_ANISOT	ANISV	anisv	0	 Anisotropie Verticale Perméab. K_verti. / K_hori.	1	 Vertical Permeabil. Anisotropy K_vertic / K_horiz
+20	0	NOMS_OPTIMIS	OPTIM_NAMES	OPTIM	namopt	0	 Fichier Projet pour Calibration ou Optimisation	1	 Calibration or optimization Project file
+21	1	SALINITE	SALINITY	DENSI	salini	0	 Salinité du fluide [si calcul avec densité]	1	 Fluid Salinity [when calculation with density]
+22	1	POROSITE	POROSITY	POROS	poros	0	 Porosité = Teneur en eau à Saturation	1	 Porosity = Saturated Water Content
+23	1	PRESSION	PRESSURE	PRESS	press	0	 Pression de l'eau	1	 Pressure head
+24	1	SATURAT	SATURAT	SATUR	satur	0	 Teneur en eau (Aqueuse) [si schéma ZNS]	1	 Water content (Aqueous) [when USZ scheme]
+25	0	PARA_NON_SATU	UNSAT_PARAM	UNSAT	unsat	0	 Paramètres des lois Non-Saturé [si schéma ZNS]	1	 Unsaturated Zones constitutive laws [when USZ]
+26	1	SALIN_EXT	EXT_SALIN	DENEX	salext	0	 Salinité Extérieure  [si calcul avec densité]	1	 External Salinity [when calculation with Density]
+27	0	SALIN_RECH	RECH_SALIN	DENPL	salipl	0	 Salinité de la Recharge [si calcul avec Densité]	0	 Rainfall Salinity [when calculation with density]
+28	1	CONCENTR	CONCENTR	CONCE	conce	0	 Concentration   [si transport]	1	 Concentration [when mass transport]
+29	1	CONCEN_EXT	EXT_CONCEN	CONEX	conex	0	 Concentration Extérieure   [si transport]	1	 External Concentration [when mass transport]
+30	0	CONCEN_RECH	RECH_CONCEN	CONPL	conpl	0	 Concentration de la Recharge  [si transport]	0	 Rainfall Concentratation [when mass transport]
+31	1	IND_SUINTEM	SEEPAGE_INDEX	SUINT	suint	0	 Index de Suintement (ou gradient unitaire)	1	 Seepage Index (or Unit Gradient, free drainage)
+32	1	TEMPERAT	TEMPERAT	TEMPE	tempe	0	 Température du fluide  [si Thermique]	1	 Fluid Temperature      [when Thermal]
+33	1	TEMPER_EXT	EXT_TEMPER	TEMEX	temex	0	 Température du fluide Extérieur [si Thermique]	1	 External fluid Temperature [when Thermal]
+34	0	TEMPER_RECH	RECH_TEMPER	TEMPL	tpluv	0	 Température de la Recharge   [si Thermique]	0	 Rainfall Temperature   [when Thermal]
+35	0	PARTIC_SALIN	SALIN_PARTIC	PARTD	parts	0	 Particules de Salinité	1	 Salinity Particles [when calculat. with density]
+36	0	PARTIC_TEMPER	TEMPER_PARTIC	PARTT	partt	0	 Particules de Température de fluide	1	 Temperature   Particles
+37	0	PARTIC_CONC	CONC_PARTIC	PARTC	partc	0	 Particules de Concentration	1	 Concentration Particles
+38	0	DEPART_TRAJ	PATH_LIN_DEPA	DEPAR	deptr	0	 Points de départ de Trajectoires	1	 Pathlines Departures
+39	1	PRESS_GAZ	GAS_PRESS	P_GAZ	p_gaz	0	 Pression du Gaz [si gaz]	1	 Gas Pressure [when gas]
+40	1	DEBIT_GAZ	GAS_FLOW	Q_GAZ	q_gaz	0	 Débit de fluide gazeux [si gaz]	1	 Gas fluid Flow [when gas]
+41	1	CHARGE_HUILE	OIL_HYDR_HEAD	H_OIL	h_oil	0	 Charge de l'Huile (ou de l'Eau Salée)	1	 Oil (Saltwater, NAQ) Hydraulic Head [when oil]
+42	1	DEBIT_HUILE	OIL_FLOW	Q_OIL	q_oil	0	 Débit de l'Huile (ou de l'Eau Salée)	1	 Oil (or Saltwater) Flow [when oil]
+43	1	QMASS_SALIN	SALIN_MASS_FL	QMASD	qmas_s	0	 Débit massique de Salinité [si densité]	1	 Salinity Mass Flux [when density]
+44	1	Q_ENERGIE	ENERGY_FLOW	QENER	qener	0	 Flux de Chaleur  [si thermique]	1	 Heat Flux [when Thermal]
+45	1	QMASS_CONC	CONC_MASS_FL	QMASC	qmasc	0	 Débit massique de Concentration	1	 Mass Flux of 'concentration' [when mass transp.]
+46	0	MODIFIC	MODIFIC	MODIF	modin	0	 Modifications initiales avant calcul	1	 Preliminary Modifications before simulation
+47	1	MASS_SALIN	SALIN_MASS	MDENS	msali	0	 Dirac de masse de Salinité [si densité]	1	 Salinity Dirac of Mass [when density]
+48	1	ENERGIE	ENERGY_SLUG	ENERG	energ	0	 Dirac de Chaleur  [si Thermique]	1	 Heat Dirac [when Thermal]
+49	1	MASS_CONCEN	CONCEN_MASS	MCONC	mconc	0	 Dirac de masse de Concentration	1	 Dirac of Concentration mass [when mass Transport]
+50	1	PORO_FIX	FIX_PORO	TETFX	porfx	0	 Porosité Fixe [si transport]	1	 Fixed Porosity [when Transport]
+51	1	RHO_KD	RHO_KD	RHOKD	rhokd	0	 Coefficient de Partage Volumique (Rho x Kd)	1	 Volumetric partition coefficient (Rho x Kd)
+52	1	CINET_ECH_KD	EXCH_KINET	CINEC	cinec	0	 Temps de 1/2 Échange de sorption [si Transport]	1	 Sorption 1/2 exchange time [when mass Transport]
+53	1	SATUR_RESI	RESID_SATUR	SARES	sares	0	 Teneur en eau Résiduelle [si schéma ZNS]	1	 Residual water content [when USZ scheme]
+54	1	SATUR_LIQ	LIQ_SATUR	SAT_L	sat_l	0	 Teneur en phase Liquide [Multiphasique]	1	 Liquid phase content [when multiphase]
+55	1	SATUR_NAQ	SAQ_SATUR	SAT_N	sat_n	0	 Teneur en phase Non-Aqueuse [Multiphasique]	1	 Non-Aqueous Phase Content [multiphase]
+56	1	INTERFACE	INTERFACE	INTRF	intrf	0	 Altitude d'Interface Douce-Salée [Multiphasique]	1	 Fresh-Saltwater interface Elevation
+57	1	AFFLU_RIVI	RIVER_TRIB	AFF_R	aff_r	1	 Numéro d'Affluent de Rivière	1	 River Tributary Number
+58	1	TRONC_RIVI	RIVER_REACH	TRC_R	trc_r	1	 Numéro de Tronçon de Rivière	1	 River Reach Number
+59	1	LONG_RIVI	RIVER_LENGTH	LON_R	lon_r	1	 Longueur de tronçon de Rivière	1	 River Length
+60	1	LARG_RIVI	RIVER_WIDTH	LAR_R	lar_r	1	 Largeur de tronçon de Rivière	1	 River Width
+61	1	HAUTEU_RIVI	RIVER_STAGE	HAU_R	hau_r	1	 Niveau absolu de l'eau dans la Rivière	1	 Water (absolute) level in the River
+62	1	EPAI_LIT_RIV	RIV_BED_THICK	EPA_R	epai_r	1	 Épaisseur de colmatage de Lit et berges Rivière	1	 River Bed Thickness
+63	1	PERM_LIT_RIVI	RIV_BED_PERM	PER_R	perm_r	1	 Perméabilité de colmatage Lit et berges Rivière	1	 River Bed Hydraulic conductivity
+64	1	Q_EXTER_RIVI	RIV_EXT_FLOW	QEX_R	qext_r	1	 Débit d'Injection (ou de Pompage) dans la Rivière	1	 River Injection (or withdrawal) discharge
+65	1	DEBIT_RIVI	RIVER_FLOW	FLO_R	flo_r	1	 Débit (écoulement)  dans la Rivière	1	 River Flow
+66	1	Q_AMONT_RIVI	RIV_UPST_FLOW	QAMON	qamon	1	 Débit Amont (Source) de Rivière	1	 River upstream flow (Spring)
+67	1	RUGOS_RIVI	RIVER_RUGOS	RUG_R	rug_r	1	 Rugosité de Rivière [si Manning-Strickler]	1	 River Roughness (when Manning-Strickler)
+68	1	PENTE_RIVI	RIVER_SLOPE	PNT_R	pnt_r	1	 Pente de lit de Rivière [si Manning Strickler]	1	 River slope (when Manning-Strickler)
+69	0	ARBRE_RIVI	RIVER_TREE	ARB_R	arb_r	0	 Arbre (branchem.) des Affluents Rivières et Lacs	1	 River tributaries and Lakes Connection tree
+70	1	BAS_TUBE	TUBE_BOTTOM	BATUB	batub	0	 Altitude du bas du forage [si Eau Salée]	1	 Lower Elevation of pumping screen (when Saltw.)
+71	1	DIFFUS_MOLEC	MOLEC_DIFFUS	DIMOL	dimol	0	 Coefficient de diffusion moléculaire spatialisé	1	 Spatialized molecular Diffusion coefficient
+72	1	DISPER_LONGI	LONGIT_DISPER	ALFAL	alfal	0	 Dispersivité Longitudinale spatialisée	1	 Spatialized Longitudinal Dispersivity
+73	1	DISPER_TRANSV	TRANSV_DISPER	ALFAT	alfat	0	 Dispersivité Transversale spatialisée	1	 Spatialized Transverse Dispersivity
+74	1	CONDUC_THERM	THERM_CONDUC	CDTHM	cndth	0	 Conductivité Thermique des minéraux de la matrice	1	 Thermal Conductivity of matrix minerals
+75	1	DISP_THER_LON	THER_LON_DISP	ALFTL	alftl	0	 Dispersivité Thermique Longitudinale	1	 Longitudinal Thermal Dispersivity
+76	1	DISP_THER_TRA	THER_TRA_DISP	ALFTT	alftt	0	 Dispersivité Thermique Transversale	1	 Transversal Thermal Dispersivity
+77	1	CHAL_SPECIF	SPECIF_HEAT	CSPEC	cspec	0	 Capacité Thermique Volumique du minéral	1	 Mineral Volumetric Heat capacity
+78	1	FOND_RIVI	RIVER_BOTTOM	FON_R	fon_r	1	 Altitude du Fond de Rivière  (rivière à sec)	1	 River bed absolute Elevation (<=> River dried)
+79	0	COUCHE	LAYER	COUCH	layer	0	 Couches aquifères et Gigognes	1	 Layers and Nested Grids
+80	1	LIM_ETR_NAPP	AQU_AET_LIMIT	E_ETP	e_etp	1	 Profondeur limite pour évaporation maillage maxi	1	 Depth: Maximum evaporation from gridded domain
+81	1	ZERO_ETR_NAPP	AQU_ZERO_AET	Z_ETR	z_etr	1	 Profondeur d'Extinction de l'évaporation maillage	1	 Extinction depth: No more grid Evaporation
+82	1	CONCEN_RIVI	RIVER_CONCEN	CON_R	conc_r	1	 Concentration dans la Rivière	1	 River Concentration
+83	1	CONC_EXT_RIVI	RIV_EXT_CONC	CEX_R	cext_r	1	 Concentration Extérieure de Rivière	1	 River External Concentration
+84	1	QMASS_RIVI	RIVER_MASS_FL	QMA_R	qmas_r	1	 Débit massique de Concentration dans la Rivière	1	 River Concentration Mass flux
+85	1	MASSE_RIVI	RIVER_MASS	MAS_R	mass_r	1	 Dirac de masse de Concentration dans la Rivière	1	 River Dirac of 'concentration' Mass
+86	1	TEMPER_RIVI	RIVER_TEMPER	TEM_R	temp_r	1	 Température dans la Rivière	1	 River Temperature
+87	1	TEMP_EXT_RIVI	RIV_EXT_TEMP	TEX_R	text_r	1	 Température Extérieure de Rivière	1	 River External Temperature
+88	1	Q_ENERG_RIVI	RIV_ENERG_FL	QNR_R	qnrj_r	1	 Flux de Chaleur dans la Rivière	1	 River Heat Flux
+89	1	ENERG_RIVI	RIVER_ENERG	NRJ_R	enerj_r	1	 Dirac de Chaleur dans la Rivière	1	 River Heat Dirac
+90	1	SALIN_RIVI	RIVER_SALIN	DEN_R	salin_r	1	 Salinité dans la Rivière	1	 River Salinity
+91	1	SALIN_EXT_RIV	RIV_EXT_SALIN	DEX_R	salex_r	1	 Salinité extérieure de Rivière	1	 River External Salinity
+92	1	Q_SALIN_RIVI	RIV_SALIN_FL	QDN_R	qsali_r	1	 Débit massique de Salinité dans la Rivière	1	 River Salinity Mass Flux
+93	1	MASS_SALI_RIV	RIV_SALIN_MAS	MAD_R	msali_r	1	 Dirac de masse de Salinité dans la Rivière	1	 River Salinity Dirac of Mass
+94	1	AFFLU_DRAIN	DRAIN_TRIB	AFF_D	aff_d	0	 Numéro d'Affluent de Drain	1	 Drain Tributary number
+95	1	TRONC_DRAIN	DRAIN_REACH	TRC_D	trc_d	0	 Numéro de Tronçon de Drain	1	 Drain Reach number
+96	1	LONG_DRAIN	DRAIN_LENGTH	LON_D	lon_d	0	 Longueur de tronçon de Drain	1	 Drain Length
+97	1	ALTIT_DRAIN	DRAIN_ELEV	ALT_D	z_dra	0	 Altitude du fond de tronçon de Drain	1	 Drain Bottom Elevation
+98	1	PERM_ECH_DRAI	DRAIN_EXC_PER	PER_D	coe_d	0	 Coefficient de Perméabilité d'Échange Nappe-Drain	1	 Drain-Aquifer Exchange Conductivity Coefficient
+99	0	ARBRE_DRAIN	DRAIN_TREE	ARB_D	arb_d	0	 Arbre de branchement des Affluents de Drain	1	 Drain Tributaries Connection Tree
+100	1	TRANSM_EST	EAST_TRANSM	T_EST	t_est	0	 Transmissivité Est	1	 East Transmissivity
+101	1	TRANSM_SUD	SOUTH_TRANSM	T_SUD	t_sud	0	 Transmissivité Sud	1	 South Transmissivity
+102	1	TRANSM_BAS	DOWN_TRANSM	T_BAS	t_bas	0	 Transmissivité Bas	1	 Downwards Transmissivity
+103	0	FRACTURE	FRACTURE	FRACT	fract	0	 Fractures ou Failles verticales	1	 Vertical Fractures or Faults
+104	0	HISTORIQ	TIME_SERIES	HISTO	histo	0	 Mailles à Historique	1	 Cells with Time Series
+105	0	PROFIL_UTILI	USER_PROFILE	PROFI	prfu	0	 Profil d'Utilisation	1	 User Profile
+106	1	ZONE_METEO	METEO_ZONE	METEO	meteo	1	 Numéro de Zone Météo (pour Pluie, ETP ...)	1	 Meteo. zone numbers (for Rainfall, PET... data)
+107	1	DIRECT_AVAL	DOWNSTR_DIREC	D_AVA	d_ava	1	 Direction Aval pour Ruissellement superficiel	1	 Downstream Direction for overland runoff
+108	1	VITESS_RUISS	RUNOFF_VELOC	V_RUI	v_rui	1	 Vitesse pour Ruissellement superficiel	1	 Overland runoff Velocity
+109	1	RUISSEL	RUNOFF	RUISS	ruiss	1	 Flux de Ruissellement superficiel	1	 Overland Runoff flux
+110	1	RECHARGE	RECHARGE	RECHA	recha	1	 Flux de Recharge du domaine maillé	1	 Gridded domain Recharge Flux
+111	0	METEO_PLUIE	METEO_RAIN	M_PLU	m_plu	0	 Météo : Fichier séquentiel de Précipitation	1	 Meteo: Precipitations
+112	0	METEO_ETP	METEO_PET	M_ETP	m_etp	0	 Météo : Fichier séquentiel d'Évapotranspi. Poten.	1	 Meteo: Potential Evapotranspiration
+113	0	METEO_TEM_AIR	METEO_AIR_TEM	M_TEM	m_tair	0	 Météo : Fichier séquentiel de Température Air	1	 Meteo: Air Temperature
+114	0	NOM_CHIMIE	CHEMIST_NAMES	NOMCH	nomch	0	 Noms des Éléments et Espèces géochimiques	1	 Chemical Elements and Species names
+115	0	BASE_CHIMIE	CHEMIST_BASE	NEPTX	neptx	0	 Base thermo de réactions géochimiques	1	 Thermo data base for geochemical reactions
+116	0	PARAM_CHIMIE	CHEMIST_PARAM	PARCH	parch	0	 Paramètres géochimiques de la simulation	1	 Géochemistry parameters for the simulation
+117	0	REFER_CHIMIE	CHEMIST_REFER	RFCHI	refchi	0	 Référence des Concentrations chimiques Liquides	1	 Reference for geochemistry Liquid Concentration
+118	0	DERIV_Q_RIV	RIV_FLO_DERIV	DER_Q	der_qri	0	 Dérivations de débit du Réseau de Rivières	1	 Derivations of the River Network
+119	1	LARG_DRAIN	DRAIN_WIDTH	LAR_D	lar_d	0	 Largeur de Tronçon de Drain-Conduit	1	 Pipe-Drain Width
+120	1	H_VERT_DRAIN	DRAIN_VERT_H	HVE_D	hvert_d	0	 Hauteur de tronçon de Drain-Conduit horizontal	1	 Pipe-Drain Height (Horizontal pipes)
+121	1	CHARGE_DRAIN	DRAIN_H_HEAD	HAU_D	h_dra	0	 Charge de l'eau dans le Drain-Conduit	1	 Pipe-Drain Hydraulic head or Level
+122	1	Q_EXT_DRAIN	DRAIN_EXT_FLO	QEX_D	qext_d	0	 Débit d'Injection (Pompage) dans le Drain-Conduit	1	 Pipe-Drain Injection (Withdrawal) Discharge
+123	1	CONDUC_DRAIN	DRAIN_CONDUC	CND_D	condu_d	0	 Conductivité (Perméabilité) du Drain-Conduit	1	 Pipe-Drain Conductivity
+124	0	NUM_ZON_METEO	METEO_ZON_NUM	NZCLI	nzcli	0	 Numéros des Zones Météo des fichiers Météo séqu.	1	 Meteo Zone Numbers in the sequential Meteo files
+125	1	DEMI_DEGRAD	HALF_DECAY	DECAY	tdegra	0	 Temps de 1/2 dégradation spatialisé	1	 Discretized Degradation half-life
+126	0	DEGRAD_MULTIC	MULTIC_DECAY	DECAC	tdchn	0	 Temps de 1/2 Dégradat. multicomposant (Filiation)	1	 Multicomponent Degradation half time (Chain degr.
+127	0	RETARD_MULTIC	MULTIC_DELAY	RETCH	retch	0	 Coefficients de retard multicomposant (Filiation)	1	 Multicomponent Retardation Coeff. (Chain degrad.)
+128	0	RHOKD_MULTIC	MULTIC_RHOKD	RKDCH	rkdch	0	 Coefficient de partage Rho_Kd multicomposant	1	 Multicomponent partition coefficient Rho_Kd
+129	0	TAUX_FILIAT	CHAIN_RATE	PFILI	pfilia	0	 Taux de filiation (si Dégradation Parallèle)	1	 Rate of Filiation (when parallel degradation)
+130	1	CONCEN_DRAIN	DRAIN_CONCEN	CON_D	conc_d	0	 Concentration de Drain/Conduit	1	 Drain/Pipe Concentration
+131	1	CONC_EXT_DRAI	DRAI_EXT_CONC	CEX_D	cext_d	0	 Concentration Extérieure de Drain/Conduit	1	 Drain/Pipe External Concentration
+132	1	Q_MASS_DRAIN	DRAIN_MASS_FL	QMA_D	qmas_d	0	 Débit massique de Concentration de Drain/Conduit	1	 Drain/Pipe (concentration) mass flux
+133	1	MASSE_DRAIN	DRAIN_MASS	MAS_D	mass_d	0	 Dirac de masse de Concentration de Drain/Conduit	1	 Drain/Pipe Dirac of (concentration) mass
+134	1	TEMPER_DRAIN	DRAIN_TEMPER	TEM_D	temp_d	0	 Température de Drain/Conduit	1	 Drain/Pipe Temperature
+135	1	TEMP_EXT_DRAI	DRAIN_EXT_TEM	TEX_D	text_d	0	 Température Extérieure de Drain/Conduit	1	 Drain/Pipe external Temperature
+136	1	Q_ENERG_DRAI	DRAIN_ENER_FL	QNR_D	qnrj_d	0	 Flux de Chaleur de Drain/Conduit	1	 Drain/Pipe heat flux
+137	1	ENERG_DRAIN	DRAIN_ENERGY	NRJ_D	enerj_d	0	 Dirac de Chaleur de Drain/Conduit	1	 Drain/Pipe Dirac of heat
+138	1	SALIN_DRAIN	DRAIN_SALIN	DEN_D	salin_d	0	 Salinité de Drain/Conduit	1	 Drain/Pipe Salinity
+139	1	SALI_EXT_DRAI	DRAI_EXT_SALI	DEX_D	salex_d	0	 Salinité extérieure de Drain/Conduit	1	 Drain/Pipe external Salinity
+140	1	Q_SALIN_DRAIN	DRAIN_SALI_FL	QDN_D	qsali_d	0	 Débit massique de Salinité de Drain/Conduit	1	 Drain/Pipe Salinity mass flux
+141	1	M_SALIN_DRAIN	DRAIN_SALIN_M	MAD_D	msali_d	0	 Dirac de masse de Salinité de Drain/Conduit	1	 Drain/Pipe Dirac of Salinity mass
+142	0	METEO_RUISSEL	METEO_RUNOFF	M_RUI	m_ruis	0	 Météo : Flux de Ruissellement	1	 Meteo: Runoff flux
+143	0	METEO_RECHARG	METEO_RECHARG	M_REC	m_rech	0	 Météo : Flux de Recharge du domaine maillé	1	 Meteo: Recharge flux into the gridded domain
+144	1	ZONE_CULTUR	CROP_ZONE	ZCULT	zcult	1	 Numéro de Zone de Culture	1	 Crop Zone numbers
+145	0	PARAM_CULTUR	CROP_PARAM	FCULT	fcult	0	 Paramètres culturaux des Cultures	1	 Crops development parameters
+146	0	F_CONC_RACIN	ROOT_CONC_F	CONRA	conrac	0	 Facteur sur Concentrat. Racinaire multicomposant	1	 Root concentration factor (multicomponent)
+147	1	ZONE_2	ZONE_2	ZONE2	zoneg2	0	 Numéro de Zone de Géométrie Bis (2)	1	 Geometry Zones bis (2)
+148	1	ZONE_3	ZONE_3	ZONE3	zoneg3	0	 Numéro de Zone de Géométrie Ter (3)	1	 Geometry Zones ter (3)
+149	0	COEF_RELAX	RELAX_COEF	RELAX	relax	0	 Variation du coeff. de relaxation avec les itérat	1	 Relaxation coefficient variation with iterations
+150	1	POROSI_IMMOB	IMMOB_POROSI	PORFX	por_imm	0	 Porosité (équivalente) immobile avec Cinétique	1	 (equivalent) Immob. Porosity with exch. kinetic
+151	1	CONCEN_IMMOB	IMMOB_CONCEN	CONFX	con_imm	0	 Concentration dans la Porosité immobile (cinét.)	1	 Concentration in Immobile porosity (kinetic)
+152	1	I_DRAIN_VERTI	I_VERTI_DRAIN	IVE_D	ivert_d	0	 Orientation du Drain-Conduit (0=Horiz ; 1=Verti)	1	 Pipe-Drain orientation (0= Horizon. ; 1=Vertical)
+153	1	I_SUINT_DRAIN	DRAI_SEEP_IND	SUI_D	suint_d	0	 Index de Suint./Débord./Grad du Drain-Conduit	1	 Pipe-Drain Seepage/Overflow/Unit_Gradient Index
+154	1	TEMPOR_1	TEMPOR_1	TMP_1	tm1	0	 $ Fichier temporaire n°1	0	 $ Temporary File n°1
+155	1	TEMPOR_2	TEMPOR_2	TMP_2	tm2	0	 $ Fichier temporaire n°2	0	 $ Temporary File n°2
+156	1	NUM_LAC	LAKE_NUM	NULAC	num_lac	1	 Numéro de Lac	1	 Lake number
+157	1	NUM_VOIS_LAC	LAKE_NEIG_NUM	KKKKK	kkk	1	 <<< Champ non-utilisé dans cette version >>>	1	 <<< Gridded field no more used in this release >>
+158	1	EPAI_LIT_LAC	LAK_BED_THICK	EPA_L	epai_l	1	 Épaisseur de colmatage de Lit du Lac	1	 Lake Bed Thickness
+159	1	PERM_LIT_LAC	LAK_BED_PERM	PER_L	k_lac	1	 Perméabilité de colmatage de Lit du Lac	1	 Lake Bed Hydraulic conductivity
+160	1	NIVEAU_LAC	LAKE_LEVEL	HAU_L	haut_l	1	 Altitude absolue de l'eau dans le Lac	1	 Lake absolute Stage
+161	1	DEBIT_EXT_LAC	LAKE_EXT_FLOW	QEX_L	qext_l	1	 Débit d'Injection (ou de Pompage) dans le Lac	1	 Lake Injection (or withdrawal) discharge
+162	1	Q_AMONT_LAC	LAKE_UPST_FLO	QAM_L	qamon_l	1	 Débit Amont (Source) de Lac	1	 Lake Upstream flow (Spring)
+163	0	PARA_GLOB_LAC	LAKES_ALL_PAR	LACGL	lac_glo	0	 Paramètres globaux des Lacs	1	 Lakes lumped parameters
+164	1	FLUX_DEBIT	DISCHARG_FLUX	FLUXQ	fluxq	0	 Débit aquif. surfacique (unité de débit par m2)	1	 Aquifer discharge flux (in flow unit per m2)
+165	1	DEMI_SUC_DRA	DRAI_HALF_SUC	SUC_D	suc_d	0	 Succion à 1/2 saturation du Drain-Conduit	1	 Suction at 'Half-Saturation' for USZ Pipe-Drains
+166	1	EXP_RETE_DRAI	DRAI_RETE_EXP	EXH_D	exph_d	0	 Exposant de la loi de Rétention du Drain-Conduit	1	 Exponent of USZ Pipe-Drains retention law
+167	1	EXP_PERM_DRAI	DRAI_PERM_EXP	EXK_D	expk_d	0	 Exposant de la loi de Perméabil. du Drain-Conduit	1	 Exponent of Pipe-Drains Relative Permeability law
+168	1	SATUR_DRAIN	DRAIN_SATUR	SAT_D	satu_d	0	 Teneur en eau du Drain-Conduit [si ZNS]	1	 Water content in Pipe-Drains [when USZ scheme]
+169	1	PRESS_DRAIN	DRAIN_PRESSUR	PRS_D	prs_d	0	 Pression de l'eau du Drain-Conduit [si ZNS]	1	 Pressure head in Pipe-Drains [when USZ scheme]
+170	1	POROSI_DRAIN	DRAIN_POROSI	POR_D	por_d	0	 Porosité du Drain-Conduit si ZNS [Déf: 0 => 100%]	1	 Pipe-Drains Porosity [when USZ] (Def: 0 => 100%)
+171	1	ALTI_LIM_POMP	PUMP_ELEV_LIM	ZLIMQ	zlimq	0	 Altitude limite de maille pompée (crépines)	1	 Elevation limit for pumped cells (screen base)
+172	1	IND_EPONTE	CAPROCK_INDEX	KKKKK	i_epo	0	 Indice d'Éponte thermique (solution analytique)	1	 Caprock index for energy transfer (closed form)
+173	1	ZON_NO_GEOCHI	NO_GEOCHE_ZON	KKKKK	no_ch	0	 Index d'exclusion du calcul géochimique	1	 Index of exclusion of geochemistry calculation
+174	0	VOLUM_MOLAIR	MOLAR_VOLUM	KKKKK	kkk	0	 Volume molaire des minéraux (L/mole)	1	 Molar volume of minerals (L/mole)
+175	1	ZON_NO_SALINI	NO_SALINI_ZON	KKKKK	nosal	0	 Index d'exclusion du transport de Salinité	1	 Index of salinity transport exclusion
+176	1	ZON_NO_CONCEN	NO_CONCEN_ZON	KKKKK	nocon	0	 Index d'exclusion du transport de Concentration	1	 Index of concentration transport exclusion
+177	1	ZON_NO_TEMPER	NO_TEMPER_ZON	KKKKK	notem	0	 Index d'exclusion du transfert Thermique	1	 Index of thermal transfer exclusion
+178	0	TEMPER_RE-INJ	TEMPER_RE-INJ	KKKKK	t_reinj	0	 Asservissement Température : Pompage => Injection	1	 Temperature association: Pumping => Injection
+179	1	RAYON_PUITS	WELL_RADIUS	KKKKK	rayon	0	 Rayon du puits de pompage ou d'injection (m)	1	 Radius of pumping or injection well (m)
+180	0	CONCEN_RE-INJ	CONCEN_RE-INJ	KKKKK	c_reinj	0	 Asservissement Concentration Pompage => Injection	1	 Concentration association: Pumping => Injection
+181	0	SALINI_RE-INJ	SALINI_RE-INJ	KKKKK	s_reinj	0	 Asservissement Salinité : Pompage => Injection	1	 Salinity association: Pumping => Injection
+182	0	TEM_DRA_REINJ	REINJ_DRA_TEM	KKKKK	t_d_inj	0	 Asservissement Températ Drain Pompage => Inject.	1	 Relation: Pumped drain => Inject. drain Temperat.
+183	1	ZON_INIT_CHIM	ZON_INIT_CHEM	KKKKK	ini_phr	0	 Numéro de Zone d'initialisation géochimie PHREEQC	1	 Number of the PHREEQC Zone for initialization
+184	0	LIS_SOLU_CHIM	CHEM_SOLU_LIS	KKKKK	li_solu	0	 Liste de numéros de solutions chimiques	1	 List of chemical solution numbers
+185	1	ALTI_DEBORD	OVERFLOW_ELEV	KKKKK	z_debor	0	 Altitude de Débordement	1	 Overflow elevation
+186	1	H_SEUIL_RIVI	RIV_SILL_HEIG	KKKKK	seuil_r	1	 Hauteur du seuil à l'aval du tronçon de Rivière	1	 Height of the sill downstream the River reach
+187	1	COE_SEUIL_RIV	RIV_SILL_COEF	KKKKK	c_seu_r	1	 Facteur de la loi de débit du seuil de Rivière	1	 River Sill: flow factor
+188	1	EXP_SEUIL_RIV	RIV_SILL_EXPO	KKKKK	e_seu_r	1	 Exposant de la loi de débit du seuil de Rivière	1	 River Sill: exponent of flow relation
+189	0	PARA_ENGR_ORG	PARA_ORG_FERT	KKKKK	eng_org	0	 Paramètres des engrais organiques	1	 Parameters for organic fertilizers
+190	0	PARA_RES_RECO	PARA_HARV_RES	KKKKK	re_reco	0	 Paramètres des résidus culturaux après récolte	1	 Parameters for organic residues after harvest
+191	0	NITR_MINE_SOL	SOIL_NITR_MIN	KKKKK	min_sol	0	 Paramètres de nitrif. et minéralisation du sol	1	 Parameters for soil nitrif. and mineralization
+192	1	CONCE_MAX_INJ	CONCE_MAX_INJ	KKKKK	conc_mx	0	 Concentration maximale injectable	1	 Maximum injectable concentration
+193	1	SALIN_MAX_INJ	SALIN_MAX_INJ	KKKKK	sali_mx	0	 Salinité maximale injectable	1	 Maximum injectable Salinity
+194	1	CONCENTR_GAZ	GAS_CONCENTR	KKKKK	con_gaz	0	 Concentration de composant en phase gazeuse	1	 Concentration of components in gaseous phase
+195	1	CONC_EXT_GAZ	GAS_EXT_CONC	KKKKK	cex_gaz	0	 Concentration extérieure en phase gazeuse	1	 External concentration in gaseous phase
+196	1	FLUX_MASS_GAZ	GAS_MASS_FLUX	KKKKK	qma_gaz	0	 Flux massique de composant en phase gazeuse	1	 Mass flux of components in gaseous phase
+197	1	MASSE_GAZ	GAS_MASS_SLUG	KKKKK	mas_gaz	0	 Dirac de masse de composant en phase gazeuse	1	 Dirac of mass of gaseous phase components
+198	0	DIFFUS_GAZ	GAS_DIFFUS	KKKKK	dif_gaz	0	 Coefficient de diffusion des composants gazeux	1	 Diffusion coefficients of gaseous components
+199	1	SUPERF_BV_EXT	EXT_RIV_CATCH	KKKKK	s_bvext	1	 Superficie du bassin versant de riv. extérieure	1	 Catchment area for external river
+200	1	NZON_RIV_EXT	EXT_RIV_ZONEN	KKKKK	z_bvext	1	 Numéro de zone de sol pour rivière extérieure	1	 Soil Zone number for external river
+201	0	MAILL_BV_EXT	EXT_RIV_CELLS	KKKKK	m_bvext	0	 Zones Météo & Pondérations de rivière extérieure	1	 Meteo zones & Weights for external river
+202	1	PERT_CHAR_QUA	HEAD_LOSS_QUA	KKKKK	pdc_qua	0	 Coefficient de perte de charge quadratique puits	1	 Quadratic well head loss coefficient
+203	1	PERT_CHAR_LIN	HEAD_LOSS_LIN	KKKKK	pdc_lin	0	 Coefficient de perte de charge linéaire au puits	1	 Linear well head loss coefficient
+204	0	OBSERV_HISTOR	OBSERV_HISTOR	KKKKK	obs_his	0	 Historiques d'observations	1	 Observations time series
+205	0	METEO_NEIGE	METEO_SNOW	KKKKK	m_neig	0	 Météo : Fichier séquentiel de flux de Neige	1	 Meteo: Snowfall
+206	1	QRIV_DEBO_LAC	RIVFL_OVF_LAK	KKKKK	qri_ovf	1	 Débit de rivière maxi avant débord -> lac latéral	1	 Maximum river flow before overflow -> side lake
+207	1	NLAC1_LAT_RIV	NLAK1_SID_RIV	KKKKK	lac_db1	1	 Numéro du lac latéral n°1 pour débord. de rivière	1	 Number of side lake No 1 for river overflow
+208	1	NLAC2_LAT_RIV	NLAK2_SID_RIV	KKKKK	lac_db2	1	 Numéro du lac latéral n°2 pour débord. de rivière	1	 Number of side lake No 2 for river overflow
+209	1	PERMEAB_FAILL	PERMEAB_FAULT	KKKKK	fai_per	0	 Faille Semi-Perméable : Perméabilité	1	 Semi-Pervious connection: Hydraulic conductivity
+210	1	%CONTAC_FAILL	%CONTAC_FAULT	KKKKK	fai_con	0	 Faille Semi-Perméable : Pourcentage de Contact	1	 Semi-Pervious connection: Percent contact
+211	0	PERHISTO	PERTIMSER	PERHI	perhi	0	 Pas de Temps de Sauvegarde des Historiques	1	 Time Steps for Time Series Output
+212	0	RABATTEM	DRAWDOWN	RABAT	rab	0	 Rabattement (différence de charge)	0	 Drawdown  (Hydraulic head variation)
+213	0	FLUX_INFILTR	INFILTR_FLUX	INFIL	plu	0	 Flux d'Infiltration (Pluie - ETP) par zone	0	 Infiltration flux (Rainfall - PET) per zone
+214	0	FL_EXC_IRRIG	EXC_IRRIG_FL	IRRIG	irr	0	 Flux d'Excès d'Irrigation	0	 Excess Irrigation flux
+215	0	VITESSE	VELOCITY	VELOC	vit	0	 Vitesses réelles (centrées) ou Débit d'échange	0	 Pore velocity (at Nodes) or Exchange Flows
+216	0	QECH_RIV_NAPP	QEXC_RIV_AQUI	ECH_R	ech	0	 Débit d'Échange Rivière => Nappe (Sauvegarde)	0	 River => Aquifer: Exchange flow
+217	0	FLUX_PLUV	RAIN_FLUX	FLPLU	plu	0	 Flux de Précipitation (Pluie)	0	 Precipitations (Rainfall) flux
+218	0	FLUX_ETP	PET_FLUX	FLETP	etp	0	 Flux d'Évapotranspiration Potentielle (ETP)	0	 Potential evapotranspiration (PET) flux
+219	0	RUMAX	RUMAX	RUMAX	rmx	0	 Capacité du réservoir sol de type 'Réserve utile'	0	 Soil tank capacity
+220	0	CORR_ETP	PET_CORR	CFETP	cet	0	 Coefficient correcteur d'ETP (%)	0	 PET Correction Factor (%)
+221	0	EQU_RUIS_PERC	EQU_RUNO_PERC	NRUIP	nru	0	 Niveau d'équi Ruissellement/Percolation	0	 Level of equal Runoff/Percolation
+222	0	T_DEMI_PERCOL	PERCOL_HALF_T	TPERC	tpe	0	 Durée de 1/2 Percolation (vers la nappe)	0	 Half-Percolation duration
+223	0	DEFIC_SOL	SOIL_DEFIC	DISOL	dis	0	 Déficit en eau (initial) du réservoir sol	0	 Initial Soil water deficit
+224	0	NIV_RESERV_H	H_TANK_LEVEL	HISOL	hso	0	 Hauteur (initiale) du Réservoir H	0	 Initial level in H tank
+225	0	DEBIT_DRAIN	DRAIN_FLOW	FLO_D	q_d	0	 Débit (Écoulement) dans le Drain	0	 Drain Flow
+226	0	QECH_DRAI_NAP	QEXC_DRA_AQU	ECH_D	x_d	0	 Débit d'échange Drain => Nappe	0	 Drain => Aquifer: Exchange flow
+227	0	!!!!!	!!!!!	!!!!!	!!!	0	 Commentaire	0	 Comment
+228	0	CALCUL_CHIMIE	CHEMIST_CALCU	CHIMI	chi	0	 Réaliser un calcul de Géochimie	0	 Perform a Geochemistry calculation
+229	0	TEMPER_AIR	AIR_TEMPER	T_AIR	tai	0	 Température de l'Air (pour Fonte de la Neige)	0	 Air Temperature (for Snow melt)
+230	0	CORR_TEMP_AIR	AIR_TEMP_CORR	CORTP	ctp	0	 Correction de Température de l'Air (degrés C)	0	 Air Temperature correction (Deg C)
+231	0	RETEN_NEIGE	SNOW_RETEN	RNEIG	rne	0	 Rétention d'Eau maximale dans la Neige (%)	0	 Snow: Maximum water retention  (%)
+232	0	EVAP_NEIGE	SNOW_EVA_RATE	EVNEI	evn	0	 Taux d'Évaporation de la Neige (%)	0	 Snow: Evaporation rate (%)
+233	0	COEF_FONT_PLU	RAIN_MELT_COE	FONPL	fpl	0	 Correction de la Fonte de Neige par la Pluie (%)	0	 Snow: Rainfall melt correction coefficient (%)
+234	0	TEMPER_FONTE	MELT_TEMPER	TFONT	tfo	0	 Température seuil de Fonte de la Neige (degrés C)	0	 Snow: Natural melt Threshold (Deg C)
+235	0	DEGR_JOUR_NEI	SNOW_DEGR_DAY	D_JOU	djo	0	 Degré-Jour => Fonte Neige  (mm/degré/jour)	0	 Snow: Degre-Day coefficient (mm/deg/day)
+236	0	FONT_SOL_NEIG	SNO_SOIL_MELT	F_SOL	fso	0	 Fonte de la Neige par le Sol   (mm/j)	0	 Snow: Melt at Soil Contact (mm/day)
+237	0	STOCK_NEIGE	SNOW_STORE	STNEI	nei	0	 Stock initial de Neige (Équivalent en Eau)	0	 Snow: Initial pack (Water equivalent)
+238	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0	 <<< Parameter unused in this release >>>
+239	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0	 <<< Parameter unused in this release >>>
+240	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0	 <<< Parameter unused in this release >>>
+241	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0	 <<< Parameter unused in this release >>>
+242	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0	 <<< Parameter unused in this release >>>
+243	0	T_RUISS	T_RUNOFF	TRUIS	tru	0	 Durée de 1/2 Ruissellement	0	 Runoff Half-Time duration
+244	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0	 <<< Parameter unused in this release >>>
+245	0	NIV_RUI	RUN_LEV	N_RUI	nrn	0	 Hauteur initiale du réservoir Ruissellement	0	 Runoff tank Initial level
+246	0	CALCUL_DENSIT	DENSIT_CALCUL	RHOLI	rho	0	 Calcul (mise à jour) de la masse volumique du fluide	0	 Density Update (Calculation of density)
+247	0	FLUX_ETR	AET_FLUX	FLETR	etr	0	 Flux calculé d'Évapotranspiration Réelle	0	 Computed Actual Evapotranspation (AET) Flux
+248	0	FONTE_NEIGE	SNOW_MELT	FNEIG	fne	0	 Flux de Fonte de Neige calculé	0	 Computed Snow melt flux
+249	0	UNUSED	UNUSED	KKKKK	kkk	0	 <<< Paramètre non utilisé dans cette version >>>	0	 <<< Parameter unused in this release >>>
+250	0	CORREC_PLUIE	RAIN_CORREC	CFPLU	cpl	0	 Coefficient correcteur de Pluie (%)	0	 Rainfall correction factor (%)
+251	0	CALCUL_HDYNAM	HDYNAM_CALCUL	HDYNA	dyn	0	 Calcul (mise à jour) de l'Hydrodynamique	0	 Hydraulic calculation (update)
+252	0	NUM_CULTUR	CROP_NUMBER	NCULT	ncu	0	 Numéro de la Culture affectée à une Zone	0	 Number of the Crop assigned to a zone
+253	0	TRANSPI_CULT	CROP_TRANSPI	TRPIR	trp	0	 Transpiration des Végétaux	0	 Crop transpiration
+254	0	EVAPORA_MAILL	GRID_EVAPORAT	EVNAP	evn	0	 Évaporation provenant du domaine maillé	0	 Evaporation from the gridded domain
+255	0	%SATURAT	%SATURAT	%SATU	tsa	0	 Taux de Saturation calculé %	0	 Computed saturation rate %
+256	0	FL_ETR_SOL	SOIL_AET_FLUX	FLETS	ets	0	 Flux d'Évapotranspiration Réelle dans le réservoir Sol calculé	0	 Computed actual evapotranspiration Flux in Soil capacity
+257	0	QECH_LAC_NAPP	QEXC_LAK_AQU	ECH_L	x_l	0	 Débit d'Échange Lac => Nappe	0	 Lake => Aquifer: Exchange flow
+258	0	DEBIT_LAC	LAKE_OUTFLOW	FLO_L	f_l	0	 Bilan récapitulatif par Lac, et débit extérieur calculé	0	 Flow Balance for each Lake, and computed external flow
+259	0	PROFOND_NAPP	AQUIF_DEPTH	PRNAP	pna	0	 Profondeur de la Nappe (différence Toit - Charge)	0	 Water table depth (difference Top - Hydraulic Head)
+260	0	ETAT_HYD_CLIM	HY_CLIM_STATE	ICLIM	icl	0	 États hydroclimatiques complets	0	 Full hydro-climatic states
+261	0	PAR_MULTIPHAS	MULTIPH_PARA	MPHAS	mphas	0	 Paramètres complémentaires des lois multiphasiques	0	 Additional parameters for multiphase laws
+262	0	CAP_SOL_PROGR	PROG_SOIL_CAP	RUMPR	rm2	0	 Capacité du réservoir sol progressif de Gardénia	0	 Capacity of Gardenis 'soil progressive tank'
+263	0	DEF_SOL_PROGR	PROG_SOIL_DEF	RUIPR	rip	0	 Déficit (initial) du réservoir sol progressif	0	 Initial 'Soil progressive tank' deficit
+264	0	VITESS_AMPLIT	VELOCI_AMPLIT	AMPVI	amv	0	 Amplitude de la vitesse réelle dans la nappe	0	 Aquifer pore velocity magnitude
+265	0	NB_COURANT	COURANT_NB	COURA	nco	0	 Nombre de Courant (Sauvegarde)	0	 Courant Number
+266	0	EPAND_NO3	NO3_SPREAD	KKKKK	kkk	0	 Apport d'engrais NO3	0	 Input of fertilizer as NO3
+267	0	BESOIN_NO3	NO3_NEED	KKKKK	kkk	0	 Besoin des cultures en Nitrate	0	 Nitrate crop need
+268	0	MINER_NO3	NO3_MINER	KKKKK	kkk	0	 Minéralisation du sol en Nitrate	0	 Nitrate soil mineralization
+269	0	RESID_NO3	NO3_RESID	KKKKK	kkk	0	 Résidu cultural en Nitrate après récolte	0	 Nitrate retained in roots after harvest
+270	0	CORR_EPAN_NO3	CORR_NO3_SPRE	KKKKK	kkk	0	 Coefficient correcteur d'apports en Nitrate (%)	0	 Nitrate fertilizer input correction factor (%)
+271	0	CORR_BES_NO3	CORR_NO3_NEED	KKKKK	kkk	0	 Coefficient correcteur de besoins en Nitrate (%)	0	 Nitrate need correction factor (%)
+272	0	CORR_MINE_NO3	CORR_NO3_MINE	KKKKK	kkk	0	 Coefficient correcteur de minéralisation en Nitrate (%)	0	 Nitrate mineralization correction factor (%)
+273	0	EAU_LIEE_RU	SOIL_FIX_WAT	KKKKK	kkk	0	 Capacité en Eau liée du réservoir sol (pour NO3)	0	 Fixed water in the soil tank (for NO3)
+274	0	EAU_LIEE_RU_2	SOIL2_FIX_WAT	KKKKK	kkk	0	 Capacité en Eau liée du réservoir progressif (pour NO3)	0	 Fixed water in the 'progressive soil tank' (for NO3)
+275	0	EAU_LIEE_RESH	RESH_FIX_WAT	KKKKK	kkk	0	 Capacité en Eau liée du réservoir intermédiaire H	0	 Fixed water in the 'intermediate tank H' (for NO3)
+276	0	T_MELANG_RU	SOIL_MIX_TIM	KKKKK	kkk	0	 Temps de 1/2 mélange du réservoir sol (pour NO3)	0	 1/2 Mixing time in the soil tank (for NO3)
+277	0	T_MELANG_RU_2	SOIL2_MIX_TIM	KKKKK	kkk	0	 Temps de 1/2 mélange du réservoir progressif (pour NO3)	0	 1/2 Mixing time in the 'progressive soil tank' (for NO3) (%)
+278	0	T_MELANG_RESH	RESH_MIX_TIM	KKKKK	kkk	0	 Temps de 1/2 mélange du réservoir intermédiaire H	0	 1/2 Mixing time in the 'intermediate tank H' (for NO3)
+279	0	T_LIBER_RACIN	ROOT_REL_TIME	KKKKK	kkk	0	 Temps de 1/2 libération des résidus automnaux NO3	0	 1/2 Time for NO3 post-harvest release by roots
+280	0	NO3_DISS_PLUV	NO3_RAIN_DISS	KKKKK	kkk	0	 Concentration maxim. de la pluie pour dissolution de l'engrais solide	0	 Maximal rainfall concentration for solid nitrate dissolution
+281	0	T_DEGRAD_RU	SOIL_DECAY_T	KKKKK	kkk	0	 Temps de 1/2 dégradation dans le réservoir sol (pour NO3)	0	 Degradation Half-Life in soil tank (for NO3)
+282	0	T_DEGRAD_RU_2	SOIL2_DECAY_T	KKKKK	kkk	0	 Temps de 1/2 dégradation dans le réservoir progressif (pour NO3)	0	 Degradation Half-Life in 'progressive soil tank' (for NO3)
+283	0	T_DEGRAD_RESH	RESH_DECAY_T	KKKKK	kkk	0	 Temps de 1/2 dégradation dans le réservoir intermédiaire H	0	 Degradation Half-Life in 'intermediate H tank' (NO3)
+284	0	CONC_NO3_SOL	SOIL_NO3_CONC	KKKKK	kkk	0	 Concentration (initiale) en NO3 dans le sol (eau libre)	0	 (Initial) Nitrate concentration in soil mobile water
+285	0	CONC_NO3_FIX	FIX_NO3_CONC	KKKKK	kkk	0	 Concentration (initiale) en NO3 dans l'eau liée	0	 (Initial) Nitrate concentration in soil fixed water
+286	0	CHARGE_PUITS	WELL_H_HEAD	KKKKK	kkk	0	 Charge au puits (prenant en compte Rayon du puits, Pertes de charge)	0	 Hydraulic head in the well (considering well radius, Head losses)
+287	0	DEBIT_DEBORD	Q_OVERFLOW	KKKKK	kkk	0	 Débit de débordement & de suintement (Sauvegarde)	0	 Overflow and seepage flow (Output only)
+288	0	DEBIT_LIMITES	BOUNDARY_FLOW	KKKKK	kkk	0	 Débit aux limites (Sauvegarde)	0	 Boundary flow (Output only)
+289	0	DEBIT_RESID	RESIDUAL_FLOW	KKKKK	kkk	0	 Débit résiduel (Sauvegarde)	0	 Residual flow (Output only)
+290	0	DEBIT_MANQU	MISSING_FLOW	KKKKK	kkk	0	 Débit de pompage manquant (Sauvegarde)	0	 Missing pumping flow (Output only)
+291	0	DEBIT_LATERAL	LATERAL_FLOW	KKKKK	kkk	0	 Débit latéral : bilan entrée-sortie (Sauvegarde)	0	 Lateral flow [inflow-outflow] (Output only)
+292	0	DEBIT_LAT_ENT	LATER_INFLOW	KKKKK	kkk	0	 Débit latéral entrant (Sauvegarde)	0	 Lateral inflow (Output only)
+293	0	DEBIT_HAU_BAS	TOP_BOTT_FLOW	KKKKK	kkk	0	 Débit entrant par le haut et par le bas (Sauvegarde)	0	 Vertical Top and Bottom inflow (Output only)
+294	0	DEBIT_STOCKAG	STORAGE_FLOW	KKKKK	kkk	0	 Débit de stockage (Sauvegarde)	0	 Storage flow (Output only)
+295	0	EPAISSEUR_EAU	WATER_THICKN	KKKKK	kkk	0	 Épaisseur d'eau dans la couche (Sauvegarde)	0	 Water thickness in the layer (Output only)
+296	0	MASSE_VOL_GAZ	GAS_DENSITY	KKKKK	kkk	0	 Masse volumique du Gaz (Sauvegarde)	0	 Gas density (kg/m3)
+297	0	MASSE_VOLUMIQ	WATER_DENSITY	KKKKK	kkk	0	 Masse volumique de l'eau F(Salinité, Température) (Sauvegarde)	0	 Calculated Water density F(Salinity, Temperature)
+298	0	QMASSE_RESID	RESID_MASS_FL	KKKKK	kkk	0	 Débit massique résiduel de 'Concentration' (Sauvegarde)	0	 Concentration residual mass flow (Calculated)
+299	0	QENERG_RESID	RESI_ENERG_FL	KKKKK	kkk	0	 Flux de Chaleur résiduel (Sauvegarde)	0	 Thermal residual Heat flow (Calculated)
+300	0	QSALIN_RESID	RESI_SALIN_FL	KKKKK	kkk	0	 Débit massique résiduel de 'Salinité' (Sauvegarde)	0	 Salinity residual mass flow (Calculated)
+301	0	ECH_MASS_FACE	MAS_EXCH_FACE	KKKKK	kkk	0	 Débit massique de 'Concentrat.' échangé par Faces (Sauvegarde)	0	 Mass flow 'Concentration' exchanged per cell faces (Calculated)
+302	0	ECH_CHAL_FACE	HEAT_EXC_FACE	KKKKK	kkk	0	 Flux de chaleur échangé par Faces (Sauvegarde)	0	 Heat flow exchanged per Faces (Calculated)
+303	0	ECH_SALI_FACE	SALI_EXC_FACE	KKKKK	kkk	0	 Débit massique de 'Salinité' échangé par Faces (Sauvegarde)	0	 Salinity mass flow exchanged per Faces (Calculated)
+304	0	NUM_ENGR_ORGA	NUM_FERT_ORGA	KKKKK	kkk	0	 Numéro de l'engrais organique affecté à une Zone	0	 Number of the organic fertilizer used in a Zone
+305	0	NUM_RESI_RECO	NUM_RESI_HARV	KKKKK	kkk	0	 N° du type de résidu après récolte dans une Zone	0	 No. of the residue after harvest defined in a Zone
+306	0	ENGRAIS_ORGAN	FERTIL_ORGA	KKKKK	kkk	0	 Engrais organique	0	 Organic fertilizer
+307	0	ENGRAIS_NO3	FERTIL_NO3	KKKKK	kkk	0	 Engrais inorganique NO3	0	 NO3 inorganic fertilizer
+308	0	ENGRAIS_NH4	FERTIL_NH4	KKKKK	kkk	0	 Engrais inorganique NH4	0	 NH4 inorganic fertilizer spread
+309	0	RESIDU_RECO	HARV_RESIDUE	KKKKK	kkk	0	 Résidu d'azote organique après récolte	0	 Organic Nitrogen residue after harvest
+310	0	AZOT_ORGA_SOL	SOIL_ORG_NITR	KKKKK	kkk	0	 Stock d'azote organique dans le sol	0	 Soil organic nitrogen pool
+311	0	LIST_BIL_DEBI	FLOW_BAL_LIST	KKKKK	kkk	0	 Listing du bilan de débit et de flux massique	0	 Listing of flow and mass balance
+312	0	TEMPERAT_SOL	SOIL_TEMPERAT	KKKKK	kkk	0	 Température du sol dans la 'Zone de Sol'	0	 Soil temperature in the 'Soil Zone'
+313	0	T_1/2_TARIS_1	T_1/2_RECES_1	KKKKK	kkk	0	 Temps de 1/2 tarissement pour débit rivière extérieur	0	 Half recession time for external river
+314	0	T_1/2_PERC_G2	T_1/2_PERC_G2	KKKKK	kkk	0	 Temps de 1/2 percolation profonde pour rivière extérieure	0	 Half deep percolation duration for external river
+315	0	T_1/2_TARIS_2	T_1/2_RECES_2	KKKKK	kkk	0	 Temps de 1/2 tarissement lent pour le débit rivière extérieure	0	 Half slow recession time for external river flow
+316	0	FACT_ECH_SOUT	GW_EXCH_FACT	KKKKK	kkk	0	 Facteur d'échange souterrain externe pour rivière extérieure	0	 Groundwater exchange factor for external river
+317	0	NIV_RESERV_G1	G1_TANK_LEVEL	KKKKK	kkk	0	 Niveau (initial) dans le réservoir hydroclimatique G1	0	 Initial level in hydroclimatic tank G1
+318	0	NIV_RESERV_G2	G2_TANK_LEVEL	KKKKK	kkk	0	 Niveau (initial) dans le réservoir hydroclimatique G2	0	 Initial level in hydroclimatic tank G2
+319	0	RET_INI_NEIGE	SNOW_INI_RETE	KKKKK	kkk	0	 Eau (initialement) retenue dans la Neige (%)	0	 Water (initially) retained in the snow pack (%)
+320	0	%SATUR_DRAIN	%DRAIN_SATUR	KKKKK	kkk	0	 Taux de Saturation calculé dans le Drain-conduit %	0	 Taux de Saturation rate the pipe-drain %
+321	0	FLUX_NEIGE	SNOW_FLUX	KKKKK	kkk	0	 Flux de Neige	0	 Snowfall Flux
+322	0	NB_S_PAS_TEMP	NB_S_TIM_STEP	KKKKK	kkk	0	 Nombre de Sous-Pas de temps	0	 Number of sub time steps
+323	0	ALT_SEUIL_LAC	LAKE_SILL_HEI	KKKKK	kkk	1	 Altitude du seuil à l'exutoire du lac	0	 Elevation of the sill at the Lake outlet
+324	0	COE_SEUIL_LAC	LAK_SILL_COEF	KKKKK	kkk	1	 Facteur de la loi de débit à l'exutoire du Lac	0	 Lake outlet Sill: flow factor
+325	0	EXP_SEUIL_LAC	LAK_SILL_EXPO	KKKKK	kkk	1	 Exposant de la loi de débit à l'exutoire du Lac	0	 Lake outlet Sill: exponent of flow relation
+326	0	CHARGE_DOUCE	FRESH_W_HEAD	KKKKK	kkk	0	 Charge en eau douce [quand effets densitaires] (Sauvegarde)	0	 Fresh water hydraulic head [when density effects] (Output)
+327	0	DENSIT_CHIM	DENSIT_CHEM	KKKKK	kkk	0	 Densité de la solution calculée par la géochimie (Sauvegarde)	0	 Solution density from the geochemistry engine (output only)
+328	0	VAR_CONCENT	CONCENT_VAR	KKKKK	kkk	0	 Variation de Concentration (Sauvegarde)	0	 Concentration variation (output only)
+329	0	VAR_TEMPERAT	VAR_TEMPERAT_	KKKKK	kkk	0	 Variation de Température (Sauvegarde)	0	 Temperature variation (output only)
+330	0	VAR_SALINITE	SALINITY_VAR	KKKKK	kkk	0	 Variation de Salinité (Sauvegarde)	0	 Salinity variation (output only)
+331	0	VAR_CONC_GAZ	VAR_CONC_GAS	KKKKK	kkk	0	 Variation de Concentration en gaz (Sauvegarde)	0	 Gas concentration variation (output only)
+332	0	EXCÈS_PRS_CO2	CO2_PRS_EXCES	KKKKK	kkk	0	 Excédent de pression de CO2(g) vs pression eau (Sauvegarde)	0	 CO2(g) pressure exceedance vs water pressiure (output)
