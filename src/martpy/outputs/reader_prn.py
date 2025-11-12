@@ -28,16 +28,20 @@ def read_output_time_series(ts_file):
         If the marthe model is nested, the header will be 4 levels (field, grid, coords, name)
         else 3 levels (field, coords, name)
     """
-    
     # read first 5 lines to guess nested
     with open(ts_file, encoding='cp1252', mode='r') as f:
-        head = [next(f) for x in range(5)]
+        # max 6 line of headers if nested grids + river_afluent
+        head = [next(f) for x in range(6)]  
     
-    nested = bool(re.match(".*(Main_Grid|Gigogne).*", "\n".join(head), re.DOTALL|re.I)) 
+    nested = bool(re.match(r".*(Main_Grid|Gigogne).*", "\n".join(head), re.DOTALL|re.I)) 
+    has_riv_afl = bool(re.match(r".*(AF\d+_TR\d+).*", "\n".join(head), re.DOTALL|re.I)) 
     
     levels_name = ['field', 'coords', 'name']
     if nested:
         levels_name.insert(2, 'grid')
+    if has_riv_afl:
+        levels_name.insert(levels_name.index('name'), 'riv_afluent')
+    
     if not re.match('^#', head[len(levels_name)]):
         levels_name.pop(-1)  # if no name, drop last header / header start with #
     

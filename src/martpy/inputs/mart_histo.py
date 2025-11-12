@@ -11,9 +11,13 @@ from martpy.inputs.io_utils import _build_header
 _HISTO_PARSER = (
     r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*'
     r'/(?P<mode>[A-Za-z]+):'
-    r'(?P<coord_x>[A-Za-z])=\s*(?P<x>[-\d.]+)'
-    r'(?P<coord_y>[A-Za-z])=\s*(?P<y>[-\d.]+)'
-    r'P=\s*(?P<layer>\d+);\s*'
+    r'(?P<coord_x>[A-Za-z]+)=\s*'
+    # r'(?P<y>[-\d.]+)'  # v1
+    r'(?P<x>[+-]?\d+(?:\.\d+)?),*'  # v2: float,int,pos-neg parsing, no e+- notation here
+    # https://stackoverflow.com/questions/2124010/grep-regex-to-match-non-ascii-characters
+    r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'  # Marthe f****** non ASCII char!
+    r'(?P<y>[+-]?\d+(?:\.\d+)?),*'
+    r'(?:P=\s*(?P<layer>\d+);)?\s*'   # now optional if tronc/afl
     r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
     r'(?:Name=(?P<name>[^ ]+))?'
     r'(?P<name_old>[^\s;]+)?'  # get name, even if "Name=" is not here (marthe<v7.8)
@@ -33,7 +37,7 @@ class MartHisto(pd.DataFrame):
         x=None,
         y=None,
         col=None,
-        lig=None,
+        row=None,
         layer=1,
         Name=None,
         obs=None,
@@ -49,7 +53,7 @@ class MartHisto(pd.DataFrame):
         x=None,
         y=None,
         col=None,
-        lig=None,
+        row=None,
         layer=None
     ):
         pass
@@ -98,12 +102,20 @@ class MartHisto(pd.DataFrame):
         """
         df_histo = df.copy()
         df_histo_cells = df_histo.dropna(subset=['x', 'y'])
+        # TODO pd.DataFrame.update() ? Perf... avoid search zone and loop
         for i, row in df_histo_cells.iterrows():
             _grid_loc = grid.gm.search_zone(x=row['x'], y=row['y'])
             # get only first x,y; even if multilayer, it's the same coordinates
             df_histo.loc[row.name, 'col'] = _grid_loc['col'].data[0]
-            df_histo.loc[row.name, 'row'] = _grid_loc['lig'].data[0]
+            df_histo.loc[row.name, 'row'] = _grid_loc['lig'].data[0]  # TODO change lig to row when gridmarthe does that too
         return df_histo
+    
+    @staticmethod
+    def _set_coords_from_river_cell(df, grid_river):
+        # TODO
+        raise NotImplementedError(
+            'Setting coordinates from river cells is not yet available'
+        )
     
     def fill_coordinates_from_grid(self, grid):
         """ Get missing coordinates (x,y or row,col) from grid
@@ -125,9 +137,60 @@ class MartHisto(pd.DataFrame):
         df_histo = self._set_col_row_from_grid(df_histo, grid)
         df_histo = self._set_xy_from_grid(df_histo, grid)
         return df_histo
+    
+    def to_shapefile(
+        self,
+        filename='histo.gpkg',
+        epsg=27572,
+        fill_coords=False,
+        grid=None
+    ):
+        """ Export a MartHisto object to shapefile/geopackage
+
+        Parameters
+        ----------
+        filename : str, optional
+            the name of the file to be written, by default 'histo.gpkg'
+        epsg : int, optional
+            EPSG code to set CRS, by default 27572
+        fill_coords : bool, optional
+            fill coordinates from grid, by default False
+        grid : xarray.Dataset, optional
+            marthe grid dataset, with col/rows variables, by default None.
+            Used if `fill_coords=True`
+        """
+        import geopandas as gpd
+        df = self.copy()
+        if fill_coords:
+            assert grid is not None, (
+                'Please provide a permh grid file, with columns and rows, '
+                'grid to fill coordinates.'
+            )
+            df = self.fill_coordinates_from_grid(grid)
+        gdf = gpd.GeoDataFrame(
+            df,
+            geometry=gpd.points_from_xy(df['x'].values, df['y'].values, crs=epsg)
+        )
+        gdf.to_file(filename, driver='GPKG')
+        return
+    
+    @classmethod
+    def from_histo_file(self, filename, encoding='ISO-8859-1', verbose=False):
+        """ Read a .histo file from Marthe model
+        """
+        return read_histo_file(filename, encoding=encoding, verbose=verbose)
+    
+    @classmethod
+    def from_shapefile(self, filename, epsg=27572):
+        """ Read a .gpkg file from Marthe model
+        to create a MartHisto object
+        """
+        import geopandas as gpd
+        # TODO: check validity of values in columns ?
+        return gpd.read_file(filename).set_crs(epsg)
 
 
-def read_histo_file(histo_file, encoding='ISO-8859-1'):
+def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
     """ Read a .histo file from Marthe model
 
     Parameters
@@ -145,7 +208,7 @@ def read_histo_file(histo_file, encoding='ISO-8859-1'):
         - variable: the variable to extract from simulation
         - name: name of the observation
         - mode: mode of the observation (XCOO, GRID, etc.)
-        - x, y or col, lig: coordinates of the observation
+        - x, y or col, row: coordinates of the observation
         - layer: layer of the observation
         - interp: wether the simulation extracted at obs location is interpolated or not
     """
@@ -155,8 +218,10 @@ def read_histo_file(histo_file, encoding='ISO-8859-1'):
     data = []
     for line in lines:
         _match = re.search(_HISTO_PARSER, line)
-        # if not _match:
-        #     break  # debug
+        if not _match:
+            if verbose:
+                print("Error while parsing histo line")
+                raise ValueError('debug')
         if _match:
             parsed_vals = _match.groupdict()
 
@@ -197,6 +262,8 @@ def _set_histo_df_dtype(data):
         'Y': 'y',
         'C': 'col',
         'L': 'row',
+        'Tronç': 'river_cell',
+        'Afflu': 'river_afluent'
     }, axis=1)
     data = data.astype({
         'id_grid': int,
@@ -206,7 +273,7 @@ def _set_histo_df_dtype(data):
         'y': float,
         'col': 'Int64',
         'row': 'Int64',
-        'layer': int,
+        'layer': 'Int64',
         'interp': bool,
         'obs': 'Int64',
         'name': str,
@@ -227,9 +294,11 @@ def _build_histo_line(
     name='',
     obs=None,
     interp=None,  # dummy here but in df columns
+    river_cell=None,
+    river_afluent=None,
 ):
     gig = str(id_grid)
-    layer = int(layer)
+    layer = int(layer) if layer is not None else ''
     if gig == '0':
         gig = ''
     
@@ -244,9 +313,10 @@ def _build_histo_line(
         line += "X={:7g}Y={:7g}P={:7d};".format(
             x, y, layer
         )
+    # TODO: add writer for afluent
     else:
         raise ValueError(
-            'Unknown `mode` for marthe time serie (*.histo). '
+            'Unknown `mode` for marthe time serie writer (*.histo). '
             'Valid modes are: MAIL (cell), XCOO (coordinates with interpolation)'
             'or COOR (xy without interpolation)'
         )
