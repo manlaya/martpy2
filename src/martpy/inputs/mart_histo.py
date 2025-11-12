@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import re
+import numpy as np
 import pandas as pd
-from numpy import nan
 
 from martpy.inputs.io_utils import _build_header
 
@@ -80,34 +80,36 @@ class MartHisto(pd.DataFrame):
         histo_lines.extend(_build_histo_from_dataframe(self))
         with open(file_name, mode='w', encoding=encoding) as f:
             f.write('\n'.join(histo_lines))
-
-    @staticmethod
-    def _set_xy_from_grid(df, grid):
-        """ memo: grid is a marthe grid file, read with gm library
-        and add_col_row=True
-        """
-        df_histo = df.copy()
-        df_histo_cells = df_histo.dropna(subset=['col', 'row'])
-        for i, row in df_histo_cells.iterrows():
-            _grid_loc = grid.gm.search_zone(i=row['col'], j=row['row'])
-            # get only first x,y; even if multilayer, it's the same coordinates
-            df_histo.loc[row.name, 'x'] = _grid_loc['x'].data[0]
-            df_histo.loc[row.name, 'y'] = _grid_loc['y'].data[0]
-        return df_histo
     
     @staticmethod
-    def _set_col_row_from_grid(df, grid):
+    def _set_coords_from_grid(df, grid, mode='xy'):
         """ memo: grid is a marthe grid file, read with gm library
         and add_col_row=True
         """
+        if mode.lower() == 'xy':
+            # X-column, Y-column, Join-col1, Join-col2
+            XCOL, YCOL, JCOL1, JCOL2 = 'x', 'y', 'col', 'row'
+        elif mode.lower() == 'cell':
+            XCOL, YCOL, JCOL1, JCOL2 = 'col', 'row', 'x', 'y'
+        else:
+            raise ValueError(f"mode must be 'xy' or 'cell', got {mode}")
+        
         df_histo = df.copy()
-        df_histo_cells = df_histo.dropna(subset=['x', 'y'])
-        # TODO pd.DataFrame.update() ? Perf... avoid search zone and loop
-        for i, row in df_histo_cells.iterrows():
-            _grid_loc = grid.gm.search_zone(x=row['x'], y=row['y'])
-            # get only first x,y; even if multilayer, it's the same coordinates
-            df_histo.loc[row.name, 'col'] = _grid_loc['col'].data[0]
-            df_histo.loc[row.name, 'row'] = _grid_loc['lig'].data[0]  # TODO change lig to row when gridmarthe does that too
+
+        # treat only rows with missing coords
+        df_histo_cells = df_histo.loc[np.isnan(df_histo[XCOL]) | np.isnan(df_histo[YCOL]), :]
+        # Get grid coords dataframe
+        _grid_loc = grid.to_dataframe()[['col', 'lig', 'x', 'y']].rename({"lig": 'row'}, axis=1)  # TODO rename lig to row when gridmarthe make the change
+        # Merge to get coords
+        df_histo_cells = df_histo_cells.reset_index().merge(
+            _grid_loc, how='left', on=[JCOL1, JCOL2], suffixes=('', '_grid')
+        ).set_index('index')
+        # replace columns
+        df_histo_cells = df_histo_cells.drop(columns=['x', 'y']).rename(
+            {f'{XCOL}_grid': XCOL, f'{YCOL}_grid': YCOL}, axis=1
+        )
+        # return updated dataframe
+        df_histo.update(df_histo_cells)
         return df_histo
     
     @staticmethod
@@ -134,8 +136,8 @@ class MartHisto(pd.DataFrame):
             DataFrame with coordinates filled
         """
         df_histo = self.copy()
-        df_histo = self._set_col_row_from_grid(df_histo, grid)
-        df_histo = self._set_xy_from_grid(df_histo, grid)
+        df_histo = self._set_coords_from_grid(df_histo, grid, mode='xy')
+        df_histo = self._set_coords_from_grid(df_histo, grid, mode='cell')
         return df_histo
     
     def to_shapefile(
@@ -186,8 +188,19 @@ class MartHisto(pd.DataFrame):
         to create a MartHisto object
         """
         import geopandas as gpd
+        gdf = gpd.read_file(filename).set_crs(epsg)
         # TODO: check validity of values in columns ?
-        return gpd.read_file(filename).set_crs(epsg)
+        expected_columns = [
+            'id_grid', 'variable', 'mode', 'x', 'y',
+            'col', 'row', 'layer', 'name',
+            # 'interp', 'obs', 'river_cell', 'river_afluent'  # not mandatory
+        ]
+        assert np.isin(expected_columns, gdf.columns).all(), (
+            'The geopackage file does not contain all expected columns '
+            'to build a MartHisto object.'
+            ' Expected columns are: {}'.format(expected_columns)
+        )
+        return gdf
 
 
 def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
@@ -278,7 +291,7 @@ def _set_histo_df_dtype(data):
         'obs': 'Int64',
         'name': str,
     })
-    data = data.replace('None', nan)
+    data = data.replace('None', np.nan)
     return data
 
 

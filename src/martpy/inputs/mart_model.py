@@ -11,6 +11,9 @@ from martpy.inputs._rma_parser import (
 
 
 # class for RMA/ MartModel
+# TODO: two classes: MartProject (object for rma file) and 
+# MartModel (storing MartProject + grid + histo + forcings + timesteps, methods to run,
+# postprocess, etc).
 # read rma file, check for defrma, optionaly read permh with gridmarthe and get dimensions
 class MartModel:
     def __init__(self, file_rma=None):
@@ -32,8 +35,7 @@ class MartModel:
         pass
 
     def run(self, martbin=None, workdir=None, wait=True):
-        """ Run marthe model with current rma file
-
+        """ Run marthe model with current rma file  - THIS HAS TO BE TESTED
         Parameters
         ----------
         martbin : str, Path, optional

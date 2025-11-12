@@ -108,7 +108,7 @@ class MartheTimeSteps:
         as_ext_file=False,
         as_freq_param=False,
     ):
-        # TODO this exists in pymarthe
+        # TODO this exists in pymarthe - check first
         return
 
 
@@ -291,3 +291,32 @@ def _build_pastp(dates, dactions):
 #  0 : défaut, pas d'action (calcul à chaque pas de temps par défaut, si désactivé précédemment poursuite sans calcul)
 # check for frequency in .mart
 # for perman: check if 0 iter in mart
+
+
+def write_evolution_file(df, filename):
+    """ Write an external evolution file for Marthe HDYNAM computation
+    or editions during simulation.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame with date as index, value in column.
+        e.g:
+          - 0, 1, 2, -1 for HDYNAM computation. See Marthe documentation
+          for details.
+          - 0/1 for editions
+
+    filename : str
+        name of the file to write
+    """
+    df = pd.DataFrame(df.copy())  # force dataframe type
+    col_date = df.index.name
+    cols = list(df.columns)
+    df_tmp = df.reset_index()
+    df_tmp = df_tmp.assign(num_step=df_tmp.index+1)
+    df[cols + ['num_step', col_date]].to_csv(
+        filename,
+        sep='\t',
+        index=None,
+        header=False
+    )

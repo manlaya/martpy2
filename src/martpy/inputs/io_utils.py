@@ -4,17 +4,16 @@
 import re
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
-
 from ..version import MART_VERSION
 from martpy.utils.config import (
-    ACTIONS_FMT, _ACTION_PARSER, EDITIONS_FMT, LIST_MAIL_OPT, _OPT_MAIL_PARSER,
-    _get_resource_file
+    ACTIONS_FMT, _ACTION_PARSER, EDITIONS_FMT,
+    LIST_MAIL_OPT, _OPT_MAIL_PARSER,
 )
 from martpy.utils.helper import _check_mart_key
 
 
+# English header (Future implementation)
+#  #<V7.8.4># --- End of Header lines --- ; Do not modify/delete this line
 def _build_header(title):
     lines = [title]
     lines.append(
@@ -29,7 +28,7 @@ def _parse_param_value(val, typ):
     (fmt /VARIABLE/ACTION ...C=VALUE V=VALUE2)
     
     Value:
-    - \*   : unchanged
+    - *   : unchanged
     - 1:2 : range from 1 to 2
     - =24 : uniform value (for a grid mode)
     - 1e2 : just a float value
@@ -86,10 +85,14 @@ def _parse_list_mail_opt(line: str):
 
 
 def _parse_units_time(unit_line):
+    # objective: parse 'day', 'hour', 'min', 's', etc.
+    # return a dict with base unit and multiplier if any
     raise NotImplementedError
 
 
 def _parse_units_si(unit_line):
+    # objective: parse 'm/s', 'm3/s', 'mm/day', '°C', 'W/m2', etc.
+    # return a dict with base unit and multiplier if any
     raise NotImplementedError
 
 
@@ -166,9 +169,20 @@ def _parse_parameter_line(line, verbose=False):
 
 def _parse_parameter_block(block_lines, path=None, verbose=False):
     """ Parse a params/actions block for .mart or .pastp
-    => loop over lines in block to call :py:func:`_parse_parameter_line`
+    
+    This function loop over lines in block to call :py:func:`_parse_parameter_line`
     and merge results
-    path_param to store path of file if needed (add it to file referenced in params)
+    
+    Parameters
+    ----------
+    block_lines : list of str
+        lines in the block to parse
+    path : str, optional
+        path to the mart/pastp file, by default None
+        it is useful to store path of file if needed (add it to file referenced in params)
+        e.g. for MODIFIC key, to be able to read the '*.modin' file
+    verbose : bool, optional
+        whether to print debug information, by default False
     """
     params = {}
     for line in block_lines:
@@ -214,7 +228,8 @@ def _format_params_for_writer(dict_args):
             # do not change these parameters
             continue
         if isinstance(v, (list, tuple)) and len(v) > 0:
-            _val = '{}:{}'.format(min(v), max(v))  # WARNING: not perfect... but if range, take only min/max
+            # WARNING: not perfect... but if range, take only min/max
+            _val = '{}:{}'.format(min(v), max(v))
         elif isinstance(v, bool):
             _val = int(v)
         else:
@@ -261,7 +276,8 @@ def _build_parameter_line(variable, action, **kwargs):
         file_col = '; Col={0}'.format(file_col)
     
     if action == 'EDITION':
-        opts = ['star', 'V', 'L', 'S', 'Z', 'I', 'F', 'B', 'C', 'P', 'Gig']  # TODO !!
+        # TODO: complete options for EDITION
+        opts = ['star', 'V', 'L', 'S', 'Z', 'I', 'F', 'B', 'C', 'P', 'Gig']
         dtemp = {opt: kwargs.get(opt, ' ') for opt in opts}
         if variable in EDITIONS_FMT.keys():
             dopt = EDITIONS_FMT[variable]
@@ -286,32 +302,6 @@ def _build_parameter_line(variable, action, **kwargs):
             option_str = '{0}{1}{2}'.format(option_str, filename, file_col)
     
     return '  {0:25}{1}'.format(var_type, option_str)
-
-
-def set_edit_file(filename, entete, start, end, dates):
-    # from JPV, TODO edit/adapt ; goal = external file for edition
-    # TODO, same for hdynam, see mart_timesteps.py
-    """
-    Build an editions file
-
-    Parameters
-    ----------
-    filename : str
-        name of the pastp file
-    entete : str
-        first lines of the pastp file
-    start : datetime.datetime
-    end : datetime.datetime
-    dates : list of datetime.datetime
-        date for which an edition will be set
-    """
-    with open(filename, 'w') as f:
-        f.write('{0}\n'.format(entete))
-        for date in pd.date_range(start, end):
-            if date in dates:
-                f.write('1\t{0}\n'.format(date.strftime("%Y/%m/%d")))
-            else:
-                f.write('0\t{0}\n'.format(date.strftime("%Y/%m/%d")))
 
 
 def write_nzcli(clim_zone: list, file_nzcli):
@@ -367,51 +357,3 @@ def _write_layer(layer_df, dict_geom, file_layer, title='marthe layer file'):
         )
         f.write(' *** Fin du fichier \'Description des couches\'        ***\n')
     return
-
-
-def read_zone_safran():
-    """ Read X, Y center of cells and num safran """
-    dfxy = pd.read_csv(
-        _get_resource_file('_coordonnees_france_safran_9892.txt'),
-        sep=r'\s+',
-        header=None,
-        skiprows=2,
-        names=['zone', 'lat', 'lon', 'xc', 'yc', 'zc'],
-        dtype={
-            'zone' : np.int32,
-            'lat'  : np.float64,
-            'lon'  : np.float64,
-            'xc'   : np.int32,
-            'yc'   : np.int32,
-            'zc'   : np.float32
-        },
-    )
-    return dfxy
-
-
-def write_met_forcings(df, fname):
-    """ Write a DataFrame to Marthe sequential forcing file
-    
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame with date as index, grid cell/met zone as columns
-    fname : str
-    
-    """
-    date_col = df.index.name  # get date name
-    cols = df.columns  # save met zone for reorder
-    df = df.copy().reset_index()
-    df = df[list(cols) + [date_col]]  # reorder cols to make date the last one, ignored by marthe
-    # write with a '#' at the begining of file, for marthe
-    with open(fname, mode="w", newline='') as f:
-        f.write("# ")
-        df.to_csv(
-            f,
-            date_format="%Y-%m-%d",
-            sep="\t",
-            float_format='%.2f',
-            index=False,
-        )
-    return
-
