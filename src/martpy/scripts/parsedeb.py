@@ -4,14 +4,17 @@
 import argparse
 from martpy.outputs.bilandeb import extract_layer_transfers
 
+from common import init_parser
+
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(
-        description='Extract layer transfers from MARTHE "bilandeb.txt" file'
-                    'to a netCDF file'
+    parser = init_parser(
+        prog_name='parsedeb',
+        descr='Extract layer transfers from MARTHE "bilandeb.txt" file'
+            'to a netCDF file'
     )
-
+    
     parser.add_argument(
         'marthe_file', type=str,
         help='MARTHE "bilandeb.txt" file to parse'
