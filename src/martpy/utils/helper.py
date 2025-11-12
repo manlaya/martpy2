@@ -6,14 +6,14 @@ import difflib
 from martpy.utils.config import MART_VARIABLES
 
 
-def _get_suggested_key_error(key, valid_keys):
+def _get_closest_suggestion(key, valid_keys, n=3):
     """ Get suggestion for key error using difflib
     """
     # Use difflib from stdlib to get close matches if wrong user input
     # 'n=1' is number of suggestions
-    suggestions = difflib.get_close_matches(key, valid_keys, n=3, cutoff=0.6) 
+    suggestions = difflib.get_close_matches(key, valid_keys, n=n, cutoff=0.6) 
     if suggestions:
-        return suggestions[:3]  # 3 best suggestions
+        return suggestions[:n]  # n best suggestions
     return None  # otherwise None
 
 
@@ -37,7 +37,7 @@ class MartKeyError(KeyError):
     
     def _get_message(self, variable, valid_keys):
         msg = f'Variable `{variable}` is not a Marthe variable. '
-        closest = _get_suggested_key_error(variable.upper(), valid_keys)
+        closest = _get_closest_suggestion(variable.upper(), valid_keys)
         if closest is not None:
             msg += 'Possible closest value: {}. '.format(', '.join(closest))
         msg += 'Check for all Marthe variables with `get_mart_variables()`'

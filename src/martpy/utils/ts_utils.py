@@ -25,6 +25,7 @@ def dt_replace(series, year=None, month=None, day=None):
         }
     )
 
+
 def dt_index_replace(df):
     df.index = [
          datetime(d.year, d.month, 1) for d in df.index

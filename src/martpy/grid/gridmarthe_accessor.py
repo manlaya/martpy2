@@ -84,3 +84,7 @@ class MartheGrid(object):
     def plot_nested_grid(self, ax=None, varname='charge', **kwargs):
         gm.plot_nested_grid(self.obj, ax, varname, **kwargs)
 
+
+# @wraps(gm.load_marthe_grid)
+# def load_marthe_grid(*args, **kwargs):
+#     return MartheGrid(gm.load_marthe_grid(*args, **kwargs))

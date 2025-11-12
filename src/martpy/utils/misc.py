@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # copy from aquida lib (python lib for data assimilation in Aqui-FR modelling platform)
-# released under GPLv3 licence (and from the same author as this lib)
+# released under GPLv3 licence (and from one of the same author as this lib)
 def getattr_nested(some_dict, key, key2=None):
     """ Extension of get method (or getattr function) for nested dict
 
@@ -12,7 +12,7 @@ def getattr_nested(some_dict, key, key2=None):
         a nested dictionnary to query
     key : str or list
         the key(s) to get :
-        - if it is a string, it can be a nested key separated by '/'
+        - if it is a string, it can be a nested key separated by '/' or '.'
         - if it is a list, it is a list of keys in the order of nested keys
     key2 : str, optional
         the second level key to get, by default None
@@ -48,6 +48,8 @@ def getattr_nested(some_dict, key, key2=None):
     # set list of nested keys
     if '/' in key:
         _key = key.split('/')
+    elif '.' in key:
+        _key = key.split('.')
     elif isinstance(key, list):
         _key = key
     elif key2 is not None:
@@ -69,3 +71,12 @@ def getattr_nested(some_dict, key, key2=None):
                 'value: {}'.format(_dict)
             )
     return _dict.get(_key[-1], None)
+
+
+# def _combine_dict(d1, d2, key=None):
+#     """ combine two dicts with same keys"""
+#     if key is None:
+#         key = list(d1.keys())
+#     if isinstance(key, str):
+#         key = [key]
+#     return {k: {**d1[k], **d2[k]} for k in key}

@@ -13,7 +13,8 @@ class MartheParams:
 
     def __init__(self,
         controls={},
-        init_parameters={}
+        init_parameters={},
+        **params,
     ):
         
         self.init_parameters = init_parameters
@@ -25,7 +26,8 @@ class MartheParams:
     def __setitem__(self, key, value):
         setattr(self, key, value)
     
-    def to_dict(self,):
+    def to_dict(self, ):
+        # 
         return 
 
     def write_file(self, mart_file, title='marthe parameters'):
@@ -47,10 +49,7 @@ def read_general_parameters(mart_file):
     
     Example
     -------
-
     >>> mpar = read_general_parameters('toto.mart')
-    >>> print(mpar)
-    ...
     """
     parsed_params = _parse_mart_file(mart_file)
     return MartheParams(**parsed_params)

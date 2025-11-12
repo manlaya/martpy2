@@ -15,3 +15,11 @@ def create_grid_domain(
 def create_grid_from_xy():
     raise NotImplementedError()
 
+
+def create_grid_from_bbox():
+    raise NotImplementedError()
+
+
+def create_grid_from_shape():
+    raise NotImplementedError()
+

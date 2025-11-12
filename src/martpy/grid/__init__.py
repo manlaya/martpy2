@@ -11,10 +11,12 @@ from gridmarthe import (
     compute_geometry,
 )
 
-from .gridmarthe_accessor import MartheGrid
+from .gridmarthe_accessor import (
+    MartheGrid,
+    # load_marthe_grid
+)
 
 # from create_grid import (
 #     create_grid_domain,
 #     create_grid_from_xy,
-#     # create_from_gmsh, # TODO
 # )
