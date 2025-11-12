@@ -77,19 +77,21 @@ ACTIONS_FMT = {
     'FICHIER'   : 'N: {file}',
     'GRILLE'    : 'N: {grid}',
     'LIST_MAIL' : 'N: {file}',
-    'COUCHE'    : 'C={layer:>7d}V={value:>10};',
-    'MAILLE'    : 'C={col:>7d}L={lig:>7d}P={layer:>7d}V={value:>10};',
-    'MAILL'     : 'C={col:>7d}L={lig:>7d}P={layer:>7d}V={value:>10};',  # old version
+    'COUCHE'    : 'C={layer:>7}V={value:>10};',
+    'MAILLE'    : 'C={col:>7}L={row:>7}P={layer:>7}V={value:>10};',
+    'MAILL'     : 'C={col:>7}L={row:>7}P={layer:>7}V={value:>10};',  # old version
     'FICH_METE' : 'N={step:>7}',
     'ZONEP'     : 'Z={zone:>7}V={value:>10};',
-    'ZONE_SOL'  : 'Z={zone:>7d}V={value:>10};',
-    'ZONE_CLIM' : 'Z={zone:>7d}V={value:>10};',
-    'ZONE_IRRI' : 'Z={zone:>7d}V={value:>10};',
-    'ZONE_GEO'  : 'Z={zone:>7d}V={value:>10};',
-    'ZONE_GEO2' : 'Z={zone:>7d}V={value:>10};',
-    'ZONE_GEO3' : 'Z={zone:>7d}V={value:>10};',
+    'ZONE_SOL'  : 'Z={zone:>7}V={value:>10};',
+    'ZONE_CLIM' : 'Z={zone:>7}V={value:>10};',
+    'ZONE_IRRI' : 'Z={zone:>7}V={value:>10};',
+    'ZONE_GEO'  : 'Z={zone:>7}V={value:>10};',
+    'ZONE_GEO2' : 'Z={zone:>7}V={value:>10};',
+    'ZONE_GEO3' : 'Z={zone:>7}V={value:>10};',
     'EDITION'   : 'I={edit:>2};',
     'TRONCON'   : 'A={afluent:>7}T={tronc:>7}V={value:>10};',
+    'LAC_GLOB'  : 'L={lake:>7}V={value:>10};',
+    'LAC_EXUT'  : 'L={lake:>7}A={afluent:>7}V={value:>10};',
 }
 
 _ACTION_PARSER = {
@@ -97,7 +99,7 @@ _ACTION_PARSER = {
     'GRILLE'    : r'N:\s*(?P<grid>\S+?)\s*$',  # value or file todo gérer le cas avec '=' est-ce qu'on force la regex à ne pas le prendre ou est qu'on garde et met un if pour typer le res ?
     'LIST_MAIL' : r'N:\s+(?P<file>.*?)(?:\s+<[^>]+>|$)',   # file - opt
     'COUCHE'    : r'C=\s*(?P<layer>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',  # possible '*' or ':' in value, \S then if in parsing func
-    'MAILLE'    : r'C=\s*(?P<col>\d+)\s*L=\s*(?P<lig>\d+)\s*P=\s*(?P<layer>\d+)\s*V=\s*(?P<value>\S+)\s*;',  # \d+\.*\d ?
+    'MAILLE'    : r'C=\s*(?P<col>\S+)\s*L=\s*(?P<row>\S+)\s*P=\s*(?P<layer>\S+)\s*V=\s*(?P<value>\S+)\s*;',  # \d+\.*\d ?
     'FICH_METE' : r'N=\s*(?P<step>\S*)',
     'ZONEP'     : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'ZONE_SOL'  : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
@@ -110,7 +112,7 @@ _ACTION_PARSER = {
     'FICHIER'   : r'N:\s*(?P<file>\S+)',
     'TRONCON'   : r'A=\s*(?P<afluent>\S+)\s*T=\s*(?P<tronc>\S+)\s*V=\s*(?P<value>\S+)\s*;',
     'LAC_GLOB'  : r'L=\s*(?P<lake>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
-    'LAC_EXUT'  : r'L=\s*(?P<lake>\d+)\s*A=\s*(?P<afluent>\d+)\s*V=\s*(?P<value>\S+)\s*;',
+    'LAC_EXUT'  : r'L=\s*(?P<lake>\S+)\s*A=\s*(?P<afluent>\S+)\s*V=\s*(?P<value>\S+)\s*;',
 }
 
 
