@@ -2,11 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import re
+from pathlib import Path
+
+import numpy as np
 import pandas as pd
 
-from martpy import MART_VERSION
+from ..version import MART_VERSION
 from martpy.utils.config import (
-    ACTIONS_FMT, _ACTION_PARSER, EDITIONS_FMT, LIST_MAIL_OPT, _OPT_MAIL_PARSER
+    ACTIONS_FMT, _ACTION_PARSER, EDITIONS_FMT, LIST_MAIL_OPT, _OPT_MAIL_PARSER,
+    _get_resource_file
 )
 from martpy.utils.helper import _check_mart_key
 
@@ -25,7 +29,7 @@ def _parse_param_value(val, typ):
     (fmt /VARIABLE/ACTION ...C=VALUE V=VALUE2)
     
     Value:
-    - *   : unchanged
+    - \*   : unchanged
     - 1:2 : range from 1 to 2
     - =24 : uniform value (for a grid mode)
     - 1e2 : just a float value
@@ -160,25 +164,69 @@ def _parse_parameter_line(line, verbose=False):
     return parsed_params
 
 
-def _parse_parameter_block(block_lines, verbose=False):
-    """ parse a params/actions block for .mart or .pastp
+def _parse_parameter_block(block_lines, path=None, verbose=False):
+    """ Parse a params/actions block for .mart or .pastp
     => loop over lines in block to call :py:func:`_parse_parameter_line`
     and merge results
+    path_param to store path of file if needed (add it to file referenced in params)
     """
     params = {}
     for line in block_lines:
+        
         iparam = _parse_parameter_line(line, verbose=verbose)
         if iparam is None or len(list(iparam.keys())) == 0:
             continue
+        
         key = list(iparam.keys())[0]  # one line has always one key here
-        list_vals = params.get(key, [])
-        iparam[key] =  [iparam[key]] + list_vals  # make it a list if several option for same variable
-        params = {**params, **iparam}  # combine results
+        iparam[key]['as_external_file'] = False
+
+        if key == 'MODIFIC':
+            # MODIFIC allow user to set more parameter in external file '*.modin'
+            fmodin = iparam[key].get('file')
+            with open(Path(path, fmodin), mode='r', encoding='ISO-8859-1') as f:
+                fmodin_lines = f.readlines()
+            # => recursive call to parse this file
+            modin_params = _parse_parameter_block(fmodin_lines)
+            # add external file flag for all values, for writers
+            for k, v in modin_params.items():
+                modin_params[k] = [
+                    {**x, 'as_external_file': True, 'external_file': fmodin} for x in v
+                ]
+            iparam = modin_params  # replace parsed params
+        
+        # here we combine dict for all keys, if MODIFIC several keys, only one otherwise
+        for k, v  in iparam.items():
+            list_vals = params.get(k, [])
+            if not isinstance(iparam[k], list):
+                # make it a list if several option for same variable
+                # but if modific was there, already a list
+                iparam[k] = [iparam[k]]  
+            iparam[k] = iparam[k] + list_vals  # combine previous lines with current
+            params = {**params, **iparam}  # combine dict results
+    
     return params
+
+
+def _format_params_for_writer(dict_args):
+    clean_dict = {}
+    for k, v in dict_args.items():
+        if k in ['as_external_file', 'opt_list_mail']:
+            # do not change these parameters
+            continue
+        if isinstance(v, (list, tuple)) and len(v) > 0:
+            _val = '{}:{}'.format(min(v), max(v))  # WARNING: not perfect... but if range, take only min/max
+        elif isinstance(v, bool):
+            _val = int(v)
+        else:
+            _val = v
+        clean_dict[k] = _val
+    return clean_dict
 
 
 def _build_parameter_line(variable, action, **kwargs):
     """ Edit a line of a Marthe time step file or mart file (general parameters)
+
+    TODO (?) deal with external_file option, 'MODIFIC' key, and '*.modin' file
 
     Parameters
     ----------
@@ -197,6 +245,7 @@ def _build_parameter_line(variable, action, **kwargs):
     action, variable = action.upper(), variable.upper()  # force uppercase
     _check_mart_key(variable)  # assert is a valid marthe variable
     var_type = '/{0}/{1}'.format(variable, action)
+    kwargs = _format_params_for_writer(kwargs)
 
     # Case we have a time serie file after a modification
     # this does not concern actions with file required
@@ -222,16 +271,21 @@ def _build_parameter_line(variable, action, **kwargs):
         option_str = '{0}{1}'.format(option_str, filename)
     
     else:
-        option_srt = ACTIONS_FMT[action].format(**kwargs)
+        if action == 'GRILLE' and isinstance(kwargs.get('grid'), (int, float)):
+            # special case for grid uniform value
+            kwargs['grid'] = '={0}'.format(kwargs['grid'])
+        
+        option_str = ACTIONS_FMT[action].format(**kwargs)
+        
         if action == 'LIST_MAIL':
             opts = kwargs.get('opt_list_mail', [])
             available_opts = [re.sub('[<|>]', '', x) for x in LIST_MAIL_OPT]
             opts = [f'<{opt}>' for opt in opts if opt in available_opts]
-            option_srt = '{0} {1}'.format(option_srt, ' '.join(opts))
-        if action in ['COUCHE', 'ZONE_GEO', 'ZONEP', 'ZONE_METEO', 'ZONE_SOL', 'MAILLE', 'TRONCON']:
-            option_srt = '{0}{1}{2}'.format(option_srt, filename, file_col)
+            option_str = '{0} {1}'.format(option_str, ' '.join(opts))
+        elif action in ['COUCHE', 'ZONE_GEO', 'ZONEP', 'ZONE_METEO', 'ZONE_SOL', 'MAILLE', 'TRONCON']:
+            option_str = '{0}{1}{2}'.format(option_str, filename, file_col)
     
-    return '  {0:25}{1}'.format(var_type, option_srt)
+    return '  {0:25}{1}'.format(var_type, option_str)
 
 
 def set_edit_file(filename, entete, start, end, dates):
@@ -279,7 +333,7 @@ def write_nzcli(clim_zone: list, file_nzcli):
     return
 
 
-def write_river_tree(tree_df, file_tree, title='Branchement affluents'):
+def _write_river_tree(tree_df, file_tree, title='Branchement affluents'):
     """ Write a river tree file (`*.arb_r`)
     """
     with open(file_tree, mode='w', encoding='ISO-8859-1') as f:
@@ -289,26 +343,75 @@ def write_river_tree(tree_df, file_tree, title='Branchement affluents'):
     return
 
 
-def write_layer(layer_df, dict_geom, file_layer):
+def _write_layer(layer_df, dict_geom, file_layer, title='marthe layer file'):
     """ Write a layer file (`*.layer`)
     """
     with open(file_layer, mode='w', encoding='ISO-8859-1') as f:
+        f.write(f'{title}\n')
         f.write(' *** Description des couches aquifères               ***\n')
         for row in layer_df.to_dict('records'):
             f.write(
-                'Cou={0:2d};Épais={1:6.0f};Épon Sup ={2:3d};//////////=     0;'
+                'Cou={0:3d};Épais={1:6.0f};Épon Sup ={2:3d};//////////=     0;'
                 'Uni Ke={3:7.2f};Anisot= {4:7.2f}\n'.format(
-                    int(row['COU']), float(row['EPAIS']), int(row['EPON_SUP']),
-                    float(row['UNI_KE']), float(row['ANISOT'])
+                    int(row['layer']), float(row['thickness']), int(row['epon_sup']),
+                    float(row['ke']), float(row['anisotropy'])
                 )
             )
         f.write(' *** Sous-maillages Gigognes, Coupe, Radial          ***\n')
-        f.write('{:>10}=Nombre de sous-maillages Gigognes\n'.format(dict_geom.get('nb_gig', 0)))
+        f.write('{:>10}=Nombre de sous-maillages Gigognes\n'.format(dict_geom.get('n_subgrid', 0)))
         f.write('{:>10}=Coupe Verticale à Substratums Irréguliers (0=Non ; 1 => Coupe verticale)\n'.format(
-            dict_geom.get('coupe', 0))
+            dict_geom.get('is_cross_sect', 0))
         )
         f.write('{:>10}=Maillage Radial [Rayon , Angle] (0=Non ; 1 => Maillage radial)\n'.format(
-            dict_geom.get('radial', 0))
+            dict_geom.get('radial_grid', 0))
         )
         f.write(' *** Fin du fichier \'Description des couches\'        ***\n')
     return
+
+
+def read_zone_safran():
+    """ Read X, Y center of cells and num safran """
+    dfxy = pd.read_csv(
+        _get_resource_file('_coordonnees_france_safran_9892.txt'),
+        sep=r'\s+',
+        header=None,
+        skiprows=2,
+        names=['zone', 'lat', 'lon', 'xc', 'yc', 'zc'],
+        dtype={
+            'zone' : np.int32,
+            'lat'  : np.float64,
+            'lon'  : np.float64,
+            'xc'   : np.int32,
+            'yc'   : np.int32,
+            'zc'   : np.float32
+        },
+    )
+    return dfxy
+
+
+def write_met_forcings(df, fname):
+    """ Write a DataFrame to Marthe sequential forcing file
+    
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame with date as index, grid cell/met zone as columns
+    fname : str
+    
+    """
+    date_col = df.index.name  # get date name
+    cols = df.columns  # save met zone for reorder
+    df = df.copy().reset_index()
+    df = df[list(cols) + [date_col]]  # reorder cols to make date the last one, ignored by marthe
+    # write with a '#' at the begining of file, for marthe
+    with open(fname, mode="w", newline='') as f:
+        f.write("# ")
+        df.to_csv(
+            f,
+            date_format="%Y-%m-%d",
+            sep="\t",
+            float_format='%.2f',
+            index=False,
+        )
+    return
+
