@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools", "setuptools-scm", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -20,10 +20,12 @@ dynamic = [
 ]
 
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Hydrology",
+    "Intended Audience :: Science/Research",
 ]
 
 keywords = ["hydrology", "groundwater", "modelling", "marthe"]
@@ -31,8 +33,11 @@ keywords = ["hydrology", "groundwater", "modelling", "marthe"]
 requires-python = ">=3.10"
 
 [tool.setuptools.dynamic]
-version = {attr = "martpy.__version__"}
+# version = {attr = "martpy.__version__"}  # now with setuptools-scm
 dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools_scm]
+version_file = "src/martpy/_version.py"
 
 [project.optional-dependencies]
 dev = ['ruff', 'pytest']

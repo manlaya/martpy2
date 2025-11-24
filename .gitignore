@@ -147,6 +147,9 @@ cython_debug/
 .vscode/
 .lprof/
 
+# setuptools-scm
+_version.py
+
 # ------ others
 *.bak
 
@@ -160,3 +163,5 @@ num_riv_aval.out
 surf_drainee_riv.out
 
 external/
+# multiple test cases for Marthe tutorials... too much files
+test_cases/

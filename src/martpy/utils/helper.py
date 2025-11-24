@@ -50,7 +50,7 @@ def _check_mart_key(variable):
         raise MartKeyError(variable, valid_keys)
 
 
-def get_mart_variable():
+def get_mart_variables_list():
     """ Help function to get informations on all Marthe variables
 
     Returns
@@ -65,23 +65,27 @@ def get_mart_variable():
     return MART_VARIABLES
 
 
-def get_variable_help(variable):
+def get_variable_help(variable, locale='fr'):
     """ Help function to get informations on a specific Marthe variable
     
     Parameters
     ----------
     variable : str
         Marthe variable code
+    locale : str, optional
+        locale for the variable code, by default 'fr'
+        accepted values are 'fr' and 'en'
     
     Returns
     -------
-    pd.Series
-       Series with information on the variable
+    dict
+       dict with information on the variable
     
     See Also
     --------
     get_mart_variable : get information on all Marthe variables
     """
     _check_mart_key(variable)
-    return MART_VARIABLES.loc[MART_VARIABLES['code_var_fr'] == variable.upper()]
+    subset = MART_VARIABLES.loc[MART_VARIABLES[f'code_var_{locale}'] == variable.upper()]
+    return subset.to_dict('records')[0]
 

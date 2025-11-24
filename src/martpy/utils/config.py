@@ -33,6 +33,7 @@ def _get_resource_file(filename):
 # cf. modumar_Objets_Marth.f90
 # pour les histo, modumar_Histor_et_Optimis.f90 (pour les historiq et nom des champs: modumar_Marlibfi.f90/L3894
 
+MART_VERSION = '7.8.4'
 LC_ALL  = 'fr'  # TODO guess lang install marthe + trad outputs/keys
 NAN_VALUES = [9999., -9999., 8888.]  # Example NaN values, can be modified as needed
 MART_VARIABLES = read_csv(_get_resource_file('marthe_variables.csv'), sep='\t', encoding='ISO-8859-1')

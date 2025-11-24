@@ -4,10 +4,10 @@
 import re
 from pathlib import Path
 
-from ..version import MART_VERSION
 from martpy.utils.config import (
     ACTIONS_FMT, _ACTION_PARSER, EDITIONS_FMT,
     LIST_MAIL_OPT, _OPT_MAIL_PARSER,
+    MART_VERSION
 )
 from martpy.utils.helper import _check_mart_key
 
