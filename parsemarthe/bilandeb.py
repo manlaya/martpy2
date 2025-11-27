@@ -120,6 +120,20 @@ def extract_layer_transfers(
     dfs.index.names = ['time', 'layer']
     dfs.columns.names = ['contributor']
 
+    # turn column index into categorical to make sure order will be
+    # preserved in dimension of xarray dataset
+    dfs.index = dfs.index.set_levels(
+        pd.Categorical(
+            dfs.index.levels[1], categories=dfs.index.levels[1], ordered=True
+        ),
+        level=1
+    )
+
+    dfs.columns = pd.Index(
+        pd.Categorical(dfs.columns, categories=dfs.columns, ordered=True),
+        name=dfs.columns.name
+    )
+
     # add contributor as a third level to multi-index
     dfs = pd.melt(dfs, value_name='transfer', ignore_index=False)
     dfs = dfs.set_index('contributor', append=True)
