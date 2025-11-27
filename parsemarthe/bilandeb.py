@@ -88,7 +88,7 @@ def extract_layer_transfers(
             )
 
             # rename given columns
-            df_ = df_.rename(columns={'Recharg': 'Recharge'})
+            df_ = df_.rename(columns={'Recharg': 'recharge'})
 
             # deal with scientific notation problem
             df_ = df_.replace('-', 'e-', regex=True)
@@ -118,7 +118,7 @@ def extract_layer_transfers(
 
     # rename axes
     dfs.index.names = ['time', 'layer']
-    dfs.columns.names = ['contributor']
+    dfs.columns.names = ['destination']
 
     # turn column index into categorical to make sure order will be
     # preserved in dimension of xarray dataset
@@ -134,12 +134,18 @@ def extract_layer_transfers(
         name=dfs.columns.name
     )
 
-    # add contributor as a third level to multi-index
-    dfs = pd.melt(dfs, value_name='transfer', ignore_index=False)
-    dfs = dfs.set_index('contributor', append=True)
+    # split into two dataframes for layer transfers and for recharge
+    dfs_lyr = dfs.iloc[:, :-1]
+    dfs_rch = dfs.iloc[:, -1]
+
+    # add destination as a third level to multi-index
+    dfs_lyr = pd.melt(dfs_lyr, value_name='transfer', ignore_index=False)
+    dfs_lyr = dfs_lyr.set_index('destination', append=True)
 
     # convert to xarray
-    ds = dfs.to_xarray()
+    ds = xr.merge(
+        [dfs_lyr.to_xarray(), dfs_rch.to_xarray()]
+    )
 
     if netcdf_file is not None:
         ds.to_netcdf(netcdf_file)
