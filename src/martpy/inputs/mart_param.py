@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import pandas as pd
+
 from martpy.inputs._mart_parser import (
     _parse_mart_file,
     _write_mart_file
@@ -53,6 +55,18 @@ def read_general_parameters(mart_file):
     """
     parsed_params = _parse_mart_file(mart_file)
     return MartheParams(**parsed_params)
+
+
+def read_relax(file_relax, encoding='ISO-8859-1'):
+    # TODO better: not always 1 row to skip ?
+    return pd.read_csv(
+        file_relax,
+        sep=r'\s+',
+        header=None,
+        names=['iteration', 'relax'],
+        encoding=encoding,
+        skiprows=1,
+    )
 
 
 def _set_restart(dict_param):

@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# reader for:
-#   arb_r, layer, nzcli, etc.
-
 import re
 import pandas as pd
-
 
 # from pymarthe "marthe_utils.py:L140" / slightly modified
 #def get_layers_infos(layfile, base = 1):
@@ -95,35 +91,27 @@ def read_layer(file_layer, encoding='ISO-8859-1', base=1):
     return layers_infos, geom_infos
 
 
-def read_nzcli(file_nzcli, encoding='ISO-8859-1'):
-    with open(file_nzcli, 'r', encoding=encoding) as f:
-        nzcli = f.readlines()
-    nzcli = '\n'.join([x for x  in nzcli if re.match(r'(\d+\s*)+', x)])  # skip header(s)
-    forcing_cells = [int(x) for x in re.split(r'\s+', nzcli.strip())]
-    return forcing_cells
-
-
-def read_river_tree(file_tree, encoding='ISO-8859-1'):
-    # TODO better: not always 1 row to skip ?
-    return pd.read_csv(
-        file_tree,
-        sep=r'\s+',
-        header=None,
-        names=['affluent', 'outlet'],
-        encoding=encoding,
-        skiprows=1,
-        skipfooter=1,
-        engine='python'  # c-engine does not support skipfooter
-    )
-
-
-def read_relax(file_relax, encoding='ISO-8859-1'):
-    # TODO better: not always 1 row to skip ?
-    return pd.read_csv(
-        file_relax,
-        sep=r'\s+',
-        header=None,
-        names=['iteration', 'relax'],
-        encoding=encoding,
-        skiprows=1,
-    )
+def _write_layer(layer_df, dict_geom, file_layer, title='marthe layer file'):
+    """ Write a layer file (`*.layer`)
+    """
+    with open(file_layer, mode='w', encoding='ISO-8859-1') as f:
+        f.write(f'{title}\n')
+        f.write(' *** Description des couches aquifères               ***\n')
+        for row in layer_df.to_dict('records'):
+            f.write(
+                'Cou={0:3d};Épais={1:6.0f};Épon Sup ={2:3d};//////////=     0;'
+                'Uni Ke={3:7.2f};Anisot= {4:7.2f}\n'.format(
+                    int(row['layer']), float(row['thickness']), int(row['epon_sup']),
+                    float(row['ke']), float(row['anisotropy'])
+                )
+            )
+        f.write(' *** Sous-maillages Gigognes, Coupe, Radial          ***\n')
+        f.write('{:>10}=Nombre de sous-maillages Gigognes\n'.format(dict_geom.get('n_subgrid', 0)))
+        f.write('{:>10}=Coupe Verticale à Substratums Irréguliers (0=Non ; 1 => Coupe verticale)\n'.format(
+            dict_geom.get('is_cross_sect', 0))
+        )
+        f.write('{:>10}=Maillage Radial [Rayon , Angle] (0=Non ; 1 => Maillage radial)\n'.format(
+            dict_geom.get('radial_grid', 0))
+        )
+        f.write(' *** Fin du fichier \'Description des couches\'        ***\n')
+    return

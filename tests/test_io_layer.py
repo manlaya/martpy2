@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from martpy.inputs.io_utils import _write_layer
-from martpy.inputs.reader import read_layer
+from martpy.inputs.mart_layer import read_layer, _write_layer
 
 
 def test_single_layer():
