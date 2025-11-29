@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+import numpy as np
 import pandas as pd
 
 from datetime import datetime
@@ -20,20 +21,39 @@ _DATE_FMT = r'(\d{2}/\d{2}/\d{4})( \d{2}:\d{2})?'
 
 PATTERN_STEADY_STEP = (
     r' \*\*\* D.*but de la simulation.*:\s*'
-    r'(?P<date>\d+\.\d+|\d{2}/\d{2}/\d{4}( \d{2}:\d{2})?)\s*;'
+    r'(?P<time>\d+\.\d+|\d{2}/\d{2}/\d{4}( \d{2}:\d{2})?)\s*;'
 )
 PATTERN_TRANSIENT_STEP = (
     r"Le pas\s*:\s*(?P<step>\d+):\s*se termine.*la date\s*:\s*"
-    r"(?P<date>\d+\.\d+|\d{2}/\d{2}/\d{4}(\s\d{2}:\d{2})?)\s*;"
+    r"(?P<time>\d+\.\d+|\d{2}/\d{2}/\d{4}(\s\d{2}:\d{2})?)\s*;"
 )
 PATTERN_END_STEP = r'\s{2}/\*{5}/\*{5} Fin de ce pas'
 PATTERN_END_SIM = r'.*Fin de la simulation.*'
 
 #  ---- Writer format ---- #
-FMT_START_SIM  = ' *** Début de la simulation    à la date :{init_date}; ***'
-FMT_START_TIMESTEP = ' *** Le pas :{istep:5d}: se termine à la date :{date_step}; ***'
+FMT_START_SIM  = ' *** Début de la simulation    à la date :{init_time}; ***'
+FMT_START_TIMESTEP = ' *** Le pas :{istep:5d}: se termine à la date :{time_step}; ***'
 FMT_END_TIMESTEP = '  /*****/***** Fin de ce pas'
 FMT_END_SIM = ' ***        :     : Fin de la simulation :            ; ***'
+
+
+def _create_times(dates, date_min, date_max, freq, step=0):
+    # creation of date sequence for time steps
+    # either with dates or range of dates
+    if dates is not None:
+        dt = pd.Series(pd.to_datetime(dates)).reset_index()
+        dt.columns = ['step', 'time']
+        dt = dt.assign(has_action=False)
+    elif (date_min is not None and date_max is not None):
+        dt = pd.date_range(date_min, date_max, freq=freq)
+        dt = pd.DataFrame(dt).reset_index()
+        dt.columns = ['step', 'time']
+        dt = dt.assign(has_action=False)
+    else:
+        raise ValueError('Either dates or date_min and date_max must be provided')
+    if step != 0:
+        dt['step'] = np.arange(step, step + len(dt))  # reset step number
+    return dt
 
 
 class MartheTimeSteps:
@@ -42,7 +62,7 @@ class MartheTimeSteps:
     Parameters
     ----------
     times: pd.DataFrame
-        DataFrame with columns ['step', 'date', 'has_action']
+        DataFrame with columns ['step', 'time', 'has_action']
     actions: dict, optional
         keys are dates in 'YYYY-MM-DD' format, values are list of actions (dicts)
     """
@@ -51,20 +71,161 @@ class MartheTimeSteps:
         self.times = times
         self.actions = actions
 
-        min_date = self.times['date'].min()
-        max_date = self.times['date'].max()
+        min_date = self.times['time'].min()
+        max_date = self.times['time'].max()
         self.time_window = (min_date, max_date)
+    
+    def get_timesteps(self):
+        """ Get times and steps number"""
+        return self.times
+    
+    def get_times(self):
+        """ Get datetime of the timesteps"""
+        return self.times['time']
+    
+    def add_times(self, date_min=None, date_max=None, freq='D', dates=None):
+        """ Add times to the timesteps
+        
+        Parameters
+        ----------
+        dates : pandas.DateTimeIndex or pandas.Series, optional
+            a times/dates sequence to use, by default None. If None, use date_min and date_max
+            to create a sequence of times with the frequency provided in parameter 
+            `freq`.
+        date_min : str or datetime, optional
+            date of the first step to create a sequence, by default None.
+        date_max : str or datetime, optional
+            date of the last step to create a sequence, by default None
+        freq : _type_, optional
+            frequency of the sequence to create, by default 'D' (Daily).
+            See pandas documentation for more information on available frequencies:
+            https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases
+        
+        Returns
+        -------
+        None
+            Add dates to the timestep instance, in 'times' attribute
+        """
+        istep = self.times['step'].max() + 1
+        dt = _create_times(dates, date_min, date_max, freq, step=istep)
+        self.times = pd.concat([self.times, dt], ignore_index=True)
+        self.time_window = (self.times['time'].min(), self.times['time'].max())
+    
+    def remove_times(self, time=None, step=None, min_date=None, max_date=None):
+        """ Remove times from the timesteps
+
+        Parameters
+        ----------
+        time : datetime, optional
+            time to remove, by default None
+        step : int, optional
+            timestep number to remove, by default None
+        min_date : datetime, optional
+            min date for slice
+        max_date : datetime, optional
+            max date for slice
+
+        Returns
+        -------
+        None
+            Remove the timestep(s) from the timestep instance
+        """
+        if time is not None:
+            time_key = _convert_date_to_str_iso(time)
+            self.times = self.times.loc[self.times['time'] != time_key]
+            self.actions.pop(time_key, None)
+        elif step is not None:
+            self.times = self.times.loc[~self.times['step'].isin(step)]
+            self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
+            self.times = self.times.sort_values(by='step')
+            self.actions = {
+                k: v for k, v in self.actions.items() if k in self.times['time'].dt.strftime('%Y-%m-%d')
+            }
+        elif min_date is not None or max_date is not None:
+            if min_date is not None:
+                self.times = self.times.loc[self.times['time'] >= min_date]
+            if max_date is not None:
+                self.times = self.times.loc[self.times['time'] <= max_date]
+            self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
+            self.times = self.times.sort_values(by='step')
+            self.actions = {
+                k: v for k, v in self.actions.items() if k in self.times['time'].dt.strftime('%Y-%m-%d')
+            }
+        else:
+            pass
+
+    def get_actions(self, time=None, step=None):
+        """ Get actions for all or selected timestep
+
+        Parameters
+        ----------
+        time : datetime, optional
+            time to get actions for, by default None
+        step : int, optional
+            timestep number to get actions for, by default None
+        
+        Returns
+        -------
+        dict
+            dictionnary of actions for the timestep(s) requested.
+        """
+        if time is not None:
+            time_key = _convert_date_to_str_iso(time)
+            return self.actions.get(time_key, {})
+        elif step is not None:
+            time_key = self.times.loc[self.times['step'].isin(step), 'time']
+            if len(time_key) == 0:
+                return {}
+            time_key = _convert_date_to_str_iso(time_key.iloc[0])
+            return self.actions.get(time_key, {})
+        else:
+            return self.actions
 
     def add_action(
         self,
         times=None,
         steps=None,
-        freq=None,
         variable=None,
         action=None,
         **kwargs
     ):
-        pass
+        """ Add actions to any timesteps
+
+        Parameters
+        ----------
+        times : datetime or pandas.DateTimeIndex or pandas.Series, optional
+            times to add actions, by default None.
+        steps : int or list, optional
+            timesteps number if no times are provided, by default None
+        variable : str, optional
+            marthe variable for the action, by default None
+        action : str, optional
+            action to do, by default None
+        **kwargs
+            parameters to the VARIABLE/ACTION to add.
+            TODO: add documentation to implement kwargs for users.
+            TODO: check action/variable and kwargs validity
+        """
+        new_actions = {}
+        if times is None:
+            if steps is not None:
+                times = self.times.loc[self.times['step'].isin(steps), :]
+        if isinstance(times, (str, datetime)):
+            if type(times) is str:
+                times = datetime.strptime(times, '%Y-%m-%d')
+            times = [times]
+        for time in times:
+            key = _convert_date_to_str_iso(time)
+            new_actions[key] = {
+                # keep previous actions if any, order matters
+                **self.actions.get(key, {}),
+                variable.upper(): self.actions.get(key, {}).get(variable.upper(), [])+
+                [
+                    {**{'mode': action.upper()}, **kwargs}
+                ],
+            }
+        self.actions = {**self.actions, **new_actions}
+        self.times.loc[self.times['time'].isin(times), 'has_action'] = True
 
     def remove_action(
         self,
@@ -75,7 +236,10 @@ class MartheTimeSteps:
         action=None,
         **kwargs
     ):
-        pass
+        raise NotImplementedError(
+            'Method is not yet implemented. '
+            'You can remove actions in self.actions dictionnary'
+        )
 
     def write_file(self, filename, title='Marthe TimeSteps', encoding='ISO-8859-1'):
         """ Build a Timestep (`*.pastp`) file
@@ -91,7 +255,7 @@ class MartheTimeSteps:
         """
         lines = []
         lines.extend(_build_header(title))
-        lines.extend(_build_pastp(self.times['date'].to_list(), self.actions))
+        lines.extend(_build_pastp(self.times['time'].to_list(), self.actions))
         lines.append(FMT_END_SIM)
         with open(filename, 'w', encoding=encoding) as f:
             f.write('\n'.join(lines))
@@ -99,6 +263,33 @@ class MartheTimeSteps:
     @staticmethod
     def from_file(file_pastp, encoding='ISO-8859-1'):
         return read_mart_timesteps(file_pastp, encoding)
+    
+    @classmethod
+    def from_dates(self, date_min=None, date_max=None, freq='D', dates=None,):
+        """ Create a MartheTimeSteps instance based on a list of dates or a frequency
+
+        Parameters
+        ----------
+        dates : pandas.DateTimeIndex or pandas.Series, optional
+            a dates sequence to use, by default None. If None, use date_min and date_max
+            to create a sequence of dates with the frequency provided in parameter 
+            `freq`.
+        date_min : str or datetime, optional
+            date of the first step to create a sequence, by default None.
+        date_max : str or datetime, optional
+            date of the last step to create a sequence, by default None
+        freq : str, optional
+            frequency of the sequence to create, by default 'D' (Daily).
+            See pandas documentation for more information on available frequencies:
+            https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases
+
+        Returns
+        -------
+        MartheTimeSteps
+            a time step instance with the dates provided
+        """
+        dt = _create_times(dates, date_min, date_max, freq)
+        return MartheTimeSteps(dt)
     
     def set_hdynam_computation(
         self,
@@ -109,7 +300,15 @@ class MartheTimeSteps:
         as_freq_param=False,
     ):
         # TODO this exists in pymarthe - check first
-        return
+        raise NotImplementedError('Not yet available.... But Soon ! :)')
+    
+    def __repr__(self):
+        print('\nMarthe timesteps')
+        print('================')
+        print('Datetime From: {}, to: {}'.format(self.time_window[0], self.time_window[1]))
+        print('Number of steps: {}'.format(len(self.times)))
+        print('Number of steps with action: {}'.format(len(self.actions)))
+        return ''
 
 
 def _parse_date_pastp(date_str):
@@ -195,7 +394,7 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
             _pastp_dict = _match.groupdict()
             # at steady step, istep is not in pattern, add it
             _pastp_dict['step'] = int(_pastp_dict.get('step', i))
-            _pastp_dict['date'] = _parse_date_pastp(_pastp_dict.get('date'))
+            _pastp_dict['time'] = _parse_date_pastp(_pastp_dict.get('time'))
             
             # split lines to parse action in timestep
             # only parse after the time, otherwise it's not action
@@ -208,7 +407,7 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
             #     _actions.append(_parse_parameter_line(line))
             
             if len(_actions) > 0:
-                actions[_convert_date_to_str_iso(_pastp_dict['date'])] = _actions
+                actions[_convert_date_to_str_iso(_pastp_dict['time'])] = _actions
                 _pastp_dict['has_action'] = True
             else:
                 _pastp_dict['has_action'] = False
@@ -240,9 +439,9 @@ def _build_timestep(istep, date, dactions):
     date_key_fmt = _convert_date_to_str_iso(date)
     
     if istep == 0:
-        _start_step_str = FMT_START_SIM.format(init_date=date_str)
+        _start_step_str = FMT_START_SIM.format(init_time=date_str)
     else:
-        _start_step_str = FMT_START_TIMESTEP.format(istep=istep, date_step=date_str)
+        _start_step_str = FMT_START_TIMESTEP.format(istep=istep, time_step=date_str)
     
     lines = [_start_step_str]
     actions_step = dactions.get(date_key_fmt, {})
