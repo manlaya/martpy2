@@ -109,7 +109,7 @@ _ACTION_PARSER = {
     'ZONE_GEO'  : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'ZONE_GEO2' : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'ZONE_GEO3' : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
-    'EDITION'   : r'I=\s*(?P<edit>\d+)\s*;',
+    'EDITION'   : r'[I|\*]=\s*(?P<edit>\d+)\s*;',  # TODO complete edition parsing dict
     'FICHIER'   : r'N:\s*(?P<file>\S+)',
     'TRONCON'   : r'A=\s*(?P<afluent>\S+)\s*T=\s*(?P<tronc>\S+)\s*V=\s*(?P<value>\S+)\s*;',
     'LAC_GLOB'  : r'L=\s*(?P<lake>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
@@ -120,17 +120,17 @@ _ACTION_PARSER = {
 # 1=NAQ ; 2=AQU ; 3=Sat ; 4=S_Liq ; 5=S_NAQ ; 99=Rien
 
 EDITIONS_FMT = {
-    'CHARGE'      : 'I={I:>2};',
-    'VITESSE'     : 'I={I:>2} [C={C:>7d};L={L:>7d};P={P:>7d};Gig={Gig:>2d}]',
-    'FLUX_INFILTR': 'I={I:>2};Z={Z:>2};C={C:>2};',
-    'DEBIT'       : '*={star:>2};V={I:>2};L={L:>2};S={F:>2};Z={Z:>2};',
-    'DEBIT_RIVI'  : 'I={I:>2};L={L:>2};F={F:>2};B={B:>2};',
-    'RUISSEL'     : 'I={I:>2};Z={Z:>2};C={C:>2};',
-    'RECHARGE'    : 'I={I:>2};Z={Z:>2};C={C:>2};',
-    'FLUX_PLUV'   : 'I={I:>2};Z={Z:>2};C={C:>2};',
-    'PROFOND_NAPP': 'I={I:>2};Z={S:>2};',
-    'HAUTEU_RIVI' : 'I={I:>2};P={P:>2};',
-    'SATUR_NAQ'   : 'I={I:>2};R={P:>2};',
+    'CHARGE'      : 'I={edit:>2};',
+    'VITESSE'     : 'I={edit:>2} [C={C:>7d};L={L:>7d};P={P:>7d};Gig={Gig:>2d}]',
+    'FLUX_INFILTR': 'I={edit:>2};Z={Z:>2};C={C:>2};',
+    'DEBIT'       : '*={edit:>2};V={V:>2};L={L:2};S={F:>2};Z={Z:>2};',
+    'DEBIT_RIVI'  : 'I={edit:>2};L={L:>2};F={F:>2};B={B:>2};',
+    'RUISSEL'     : 'I={edit:>2};Z={Z:>2};C={C:>2};',
+    'RECHARGE'    : 'I={edit:>2};Z={Z:>2};C={C:>2};',
+    'FLUX_PLUV'   : 'I={edit:>2};Z={Z:>2};C={C:>2};',
+    'PROFOND_NAPP': 'I={edit:>2};Z={S:>2};',
+    'HAUTEU_RIVI' : 'I={edit:>2};P={P:>2};',
+    'SATUR_NAQ'   : 'I={edit:>2};R={P:>2};',
     # '%SATURAT':
     # 'ETAT_HYD_CLIM'  # en lecture = que fichier
 }

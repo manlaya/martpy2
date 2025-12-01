@@ -60,6 +60,11 @@ def test_parse_parameter_line():
     assert res['mode'] == 'EDITION', 'Error while parsing mode edition'
     assert res['edit'] == 2, 'Error while parsing edit'
 
+    line = '  /DEBIT/EDITION           *= 1;V= 0;L= 0;S= 0;Z= 0;'
+    res = _parse_parameter_line(line)['DEBIT']
+    assert res['mode'] == 'EDITION', 'Error while parsing mode edition'
+    assert res['edit'] == 1, 'Error while parsing edit'
+
     line = '  /EMMAG_LIBR/ZONE_GEO     Z=      1V=     1.271;'
     res = _parse_parameter_line(line)['EMMAG_LIBR']
     assert res['mode'] == 'ZONE_GEO', 'Error while parsing mode zone geo'
@@ -105,6 +110,14 @@ def test_build_line():
     test_str = _build_parameter_line('DEBIT', 'LIST_MAIL', **test)
     expected = '  /DEBIT/LIST_MAIL         N: toto.txt <Init_a_Zero> <Keep_9999> <X_Y_C> <Moyenne>'
     assert test_str == expected, 'Error while building parameter line'
+
+
+def test_edition_fmt():
+    test = {'edit': 1}
+    test_str = _build_parameter_line('DEBIT', 'EDITION', **test)
+    assert test_str == '  /DEBIT/EDITION           *= 1;V=  ;L=  ;S=  ;Z=  ;'
+    test_str = _build_parameter_line('CHARGE', 'EDITION', **test)
+    assert test_str == '  /CHARGE/EDITION          I= 1;'
 
 
 # TODO: check format when writing list of cell, layer, etc.: use same spacing as in MART file?

@@ -277,8 +277,8 @@ def _build_parameter_line(variable, action, **kwargs):
         file_col = '; Col={0}'.format(file_col)
     
     if action == 'EDITION':
-        # TODO: complete options for EDITION
-        opts = ['star', 'V', 'L', 'S', 'Z', 'I', 'F', 'B', 'C', 'P', 'Gig']
+        # TODO: complete options for EDITION, edit config._ACTION_PARSER first
+        opts = ['edit', 'V', 'L', 'S', 'Z', 'I', 'F', 'B', 'C', 'P', 'Gig']
         dtemp = {opt: kwargs.get(opt, ' ') for opt in opts}
         if variable in EDITIONS_FMT.keys():
             dopt = EDITIONS_FMT[variable]
