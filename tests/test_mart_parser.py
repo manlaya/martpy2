@@ -100,6 +100,11 @@ def test_build_line():
     test_str = _build_parameter_line('DEBIT', 'COUCHE', **test)
     expected = '  /DEBIT/COUCHE            C=      1V=         *;'
     assert test_str == expected, 'Error while building parameter line'
+    
+    test = {'grid_id': 0, 'file': 'toto.txt', 'opt_list_mail': ['Init_a_Zero', 'Keep_9999', 'X_Y_C', 'Moyenne']}
+    test_str = _build_parameter_line('DEBIT', 'LIST_MAIL', **test)
+    expected = '  /DEBIT/LIST_MAIL         N: toto.txt <Init_a_Zero> <Keep_9999> <X_Y_C> <Moyenne>'
+    assert test_str == expected, 'Error while building parameter line'
 
 
 # TODO: check format when writing list of cell, layer, etc.: use same spacing as in MART file?

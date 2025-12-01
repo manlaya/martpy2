@@ -226,14 +226,15 @@ def _format_params_for_writer(dict_args):
     for k, v in dict_args.items():
         if k in ['as_external_file', 'opt_list_mail']:
             # do not change these parameters
-            continue
-        if isinstance(v, (list, tuple)) and len(v) > 0:
-            # WARNING: not perfect... but if range, take only min/max
-            _val = '{}:{}'.format(min(v), max(v))
-        elif isinstance(v, bool):
-            _val = int(v)
-        else:
             _val = v
+        else:
+            if isinstance(v, (list, tuple)) and len(v) > 0:
+                # WARNING: not perfect... but if range, take only min/max
+                _val = '{}:{}'.format(min(v), max(v))
+            elif isinstance(v, bool):
+                _val = int(v)
+            else:
+                _val = v
         clean_dict[k] = _val
     return clean_dict
 

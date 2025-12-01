@@ -108,7 +108,12 @@ class MartheTimeSteps:
         """
         istep = self.times['step'].max() + 1
         dt = _create_times(dates, date_min, date_max, freq, step=istep)
-        self.times = pd.concat([self.times, dt], ignore_index=True)
+        times = pd.concat([self.times, dt], ignore_index=True)
+        if not times[times.duplicated(subset='time')].empty:
+            # security if user add existing times
+            times = times.drop_duplicates(subset='time', keep='first')  # keep previous
+            times['step'] = np.arange(1, len(times)+1)
+        self.times = times
         self.time_window = (self.times['time'].min(), self.times['time'].max())
     
     def remove_times(self, time=None, step=None, min_date=None, max_date=None):
