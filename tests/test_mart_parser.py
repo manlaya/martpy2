@@ -38,7 +38,8 @@ def test_parse_parameter_line():
     line = '  /EMMAG_LIBR/LIST_MAIL    N: tata.emmli <Init_a_Zero> <X_Y_C> <Moyenne> <Keep_9999>'
     res = _parse_parameter_line(line)['EMMAG_LIBR']
     assert res['file'] == 'tata.emmli', 'Error while parsing list mail file'
-    assert res['opt_list_mail'] == ['Init_a_Zero', 'X_Y_C', 'Moyenne', 'Keep_9999'], \
+    # assert res['opt_list_mail'] == ['Init_a_Zero', 'X_Y_C', 'Moyenne', 'Keep_9999'], \
+    assert res['opt_list_mail'] == ['init_zero', 'xyc', 'mean', 'keep_9999'], \
         'Error while parsing list mail options'
 
     line = '  /ALT_SEUIL_LAC/LAC_EXUT  L=      *A=      0V=         *;'
@@ -70,6 +71,16 @@ def test_parse_parameter_line():
     assert res['mode'] == 'ZONE_GEO', 'Error while parsing mode zone geo'
     assert res['zone'] == 1, 'Error while parsing zone'
     assert abs(res['value'] - 1.271) < 1e-6, 'Error while parsing value'
+
+    line = '  /CALCUL_HDYNAM/ACTION    I= 1;'
+    res = _parse_parameter_line(line)['CALCUL_HDYNAM']
+    assert res['mode'] == 'ACTION'
+    assert res['value'] == 1
+
+    line = '  /CALCUL_HDYNAM/ACTION    I=-1;'
+    res = _parse_parameter_line(line)['CALCUL_HDYNAM']
+    assert res['mode'] == 'ACTION'
+    assert res['value'] == -1
 
 
 def test_parse_block_param():
@@ -106,7 +117,7 @@ def test_build_line():
     expected = '  /DEBIT/COUCHE            C=      1V=         *;'
     assert test_str == expected, 'Error while building parameter line'
     
-    test = {'grid_id': 0, 'file': 'toto.txt', 'opt_list_mail': ['Init_a_Zero', 'Keep_9999', 'X_Y_C', 'Moyenne']}
+    test = {'grid_id': 0, 'file': 'toto.txt', 'opt_list_mail': ['init_zero', 'keep_9999', 'xyc', 'mean']}
     test_str = _build_parameter_line('DEBIT', 'LIST_MAIL', **test)
     expected = '  /DEBIT/LIST_MAIL         N: toto.txt <Init_a_Zero> <Keep_9999> <X_Y_C> <Moyenne>'
     assert test_str == expected, 'Error while building parameter line'

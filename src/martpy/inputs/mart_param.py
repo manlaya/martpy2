@@ -5,7 +5,8 @@ import pandas as pd
 
 from martpy.inputs._mart_parser import (
     _parse_mart_file,
-    _write_mart_file
+    _write_mart_file,
+    BLOCK_MART
 )
 
 
@@ -14,13 +15,13 @@ class MartheParams:
     """
 
     def __init__(self,
-        controls={},
-        init_parameters={},
         **params,
     ):
         
-        self.init_parameters = init_parameters
-        pass
+        for k, v in params.items():
+            self[k] = v
+        
+        self.keys = {v: k for k,v in BLOCK_MART.items() if v != 'dummy'}.keys()
     
     def __getitem__(self, key):
         return getattr(self, key)
@@ -28,9 +29,15 @@ class MartheParams:
     def __setitem__(self, key, value):
         setattr(self, key, value)
     
-    def to_dict(self, ):
-        # 
-        return 
+    def to_dict(self):
+        d = {}
+        for k in self.keys:
+            d[k] = self[k]
+        return d
+
+    @classmethod
+    def from_file(cls, mart_file):
+        return read_general_parameters(mart_file)
 
     def write_file(self, mart_file, title='marthe parameters'):
         _write_mart_file(self.to_dict(), mart_file, title=title)

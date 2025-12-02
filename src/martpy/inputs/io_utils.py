@@ -6,7 +6,7 @@ from pathlib import Path
 
 from martpy.utils.config import (
     ACTIONS_FMT, _ACTION_PARSER, EDITIONS_FMT,
-    LIST_MAIL_OPT, _OPT_MAIL_PARSER,
+    OPT_LIST_MAIL, _OPT_MAIL_PARSER,
     MART_VERSION
 )
 from martpy.utils.helper import _check_mart_key
@@ -81,7 +81,9 @@ def _infer_variable_dtype(var, value):
 def _parse_list_mail_opt(line: str):
     """ Parse successive options for a LIST_MAIL action
     """
-    return re.findall(_OPT_MAIL_PARSER, line)
+    _keys = {re.sub(r'[<|>]', '', v): k for k, v in OPT_LIST_MAIL.items()}
+    _opts = re.findall(_OPT_MAIL_PARSER, line)
+    return [_keys.get(x) for x in _opts]
 
 
 def _parse_units_time(unit_line):
@@ -151,7 +153,7 @@ def _parse_parameter_line(line, verbose=False):
             if _submatch:
                 _param_values = {}
                 for k, v in _submatch.groupdict().items():
-                    _type = _infer_variable_dtype(k, v)
+                    _type = _infer_variable_dtype(k, v) if mode != 'ACTION' else int
                     _param_values[k] = _parse_param_value(v, _type)
                 if mode == 'LIST_MAIL':
                     _param_values['opt_list_mail'] = _parse_list_mail_opt(line)
@@ -179,7 +181,8 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
         lines in the block to parse
     path : str, optional
         path to the mart/pastp file, by default None
-        it is useful to store path of file if needed (add it to file referenced in params)
+        it is useful to store path of file if needed (add it to file referenced in
+        params).
         e.g. for MODIFIC key, to be able to read the '*.modin' file
     verbose : bool, optional
         whether to print debug information, by default False
@@ -215,7 +218,7 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
                 # make it a list if several option for same variable
                 # but if modific was there, already a list
                 iparam[k] = [iparam[k]]  
-            iparam[k] = iparam[k] + list_vals  # combine previous lines with current
+            iparam[k] = list_vals + iparam[k]  # combine previous lines with current
             params = {**params, **iparam}  # combine dict results
     
     return params
@@ -237,6 +240,24 @@ def _format_params_for_writer(dict_args):
                 _val = v
         clean_dict[k] = _val
     return clean_dict
+
+
+def _filter_valid_opt_list_mail(opts, errors='ignore'):
+    # errors = ignore (default) or raise
+    available_opts = OPT_LIST_MAIL.keys()
+    _opts = [opt for opt in opts if opt.lower() in available_opts]
+    if errors == 'raise':
+        invalid = [f'<{opt}>' for opt in opts if opt.lower() not in available_opts]
+        if len(invalid) != 0:
+            raise ValueError(
+                'Unknow option for `list_mail` action: {} '.format(', '.join(invalid)) +
+                'Please use: {}'.format(', '.join(list(available_opts)))
+            )
+    return _opts
+
+
+def _format_opt_list_mail(opts):
+    return [OPT_LIST_MAIL.get(opt.lower()) for opt in opts]
 
 
 def _build_parameter_line(variable, action, **kwargs):
@@ -295,11 +316,12 @@ def _build_parameter_line(variable, action, **kwargs):
         option_str = ACTIONS_FMT[action].format(**kwargs)
         
         if action == 'LIST_MAIL':
-            opts = kwargs.get('opt_list_mail', [])
-            available_opts = [re.sub('[<|>]', '', x) for x in LIST_MAIL_OPT]
-            opts = [f'<{opt}>' for opt in opts if opt in available_opts]
+            opts = _filter_valid_opt_list_mail(kwargs.get('opt_list_mail', []))
+            opts = _format_opt_list_mail(opts)
             option_str = '{0} {1}'.format(option_str, ' '.join(opts))
-        elif action in ['COUCHE', 'ZONE_GEO', 'ZONEP', 'ZONE_METEO', 'ZONE_SOL', 'MAILLE', 'TRONCON']:
+        elif action in ['COUCHE', 'MAILLE', 'TRONCON', \
+                        'ZONE_GEO', 'ZONE_METEO', 'ZONE_SOL', 'ZONEP']:
             option_str = '{0}{1}{2}'.format(option_str, filename, file_col)
     
     return '  {0:25}{1}'.format(var_type, option_str)
+

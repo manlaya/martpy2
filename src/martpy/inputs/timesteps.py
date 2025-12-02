@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import re
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
@@ -10,8 +12,11 @@ from datetime import datetime
 from martpy.inputs.io_utils import (
     _build_header,
     _parse_parameter_block,
-    _build_parameter_line
+    _build_parameter_line,
+    _filter_valid_opt_list_mail
 )
+
+from martpy.utils.helper import _check_mart_key
 
 
 # --- Parser pattern --- #
@@ -54,6 +59,50 @@ def _create_times(dates, date_min, date_max, freq, step=0):
     if step != 0:
         dt['step'] = np.arange(step, step + len(dt))  # reset step number
     return dt
+
+
+def _subset_times(times, step=1, freq='Y', day=1, month=8):
+    """ subset times with options
+
+    Parameters
+    ----------
+    times: pd.Serie
+        serie with timestamp
+    step: int (istep) or datetime
+        when to start subset
+    freq: str
+    day : int
+        (used if freq=M or freq=Y)
+    month: int
+        (used if freq=Y)
+    """
+    times = times.copy()
+    if isinstance(step, int):
+        times = times.iloc[step:]
+    elif isinstance(step, datetime):
+        times = times.loc[times >= step]
+    else:
+        raise TypeError('step argument must be int or datetime')
+    
+    # TODO: create a date_range with user freq and use to subset times?
+    if freq is None:
+        times = times.iloc[0]
+    elif freq.upper() == 'Y':
+        query = (times.dt.day == day) & (times.dt.month == month)
+        times = times[query]
+    elif freq.upper() == 'M':
+        query = (times.dt.day == day)
+        times = times[query]
+    elif freq.upper() == 'W':
+        times = times[times.day_of_week == 0]
+    elif freq.upper() == 'D':
+        query = (times.dt.hour == 0) & (times.dt.minute == 0)
+        times = times[query]
+    else:
+        raise NotImplementedError(
+            "Method not yet available. Use freq=None or freq='Y'"
+        )
+    return times
 
 
 class MartheTimeSteps:
@@ -208,17 +257,44 @@ class MartheTimeSteps:
             action to do, by default None
         **kwargs
             parameters to the VARIABLE/ACTION to add.
-            TODO: add documentation to implement kwargs for users.
-            TODO: check action/variable and kwargs validity
+            Available kwargs for each ACTION:
+            - ACTION : `active` (`0,1,2,-1`),
+            - FICHIER: `file`,
+            - GRILLE : `grid`,
+            - LIST_MAIL : `file`,
+            - COUCHE : `layer`, `value`,
+            - MAILLE : `col`, `row`, `layer`, `value`,
+            - FICH_METE : `step`,
+            - ZONEP     : `zone`, `value`,
+            - ZONE_SOL  : `zone`, `value`,
+            - ZONE_CLIM : `zone`, `value`,
+            - ZONE_IRRI : `zone`, `value`,
+            - ZONE_GEO  : `zone`, `value`,
+            - ZONE_GEO2 : `zone`, `value`,
+            - ZONE_GEO3 : `zone`, `value`,
+            - EDITION   : `edit`,
+            - TRONCON   : `afluent`, `tronc`, `value`,
+            - LAC_GLOB  : `lake`, `value`,
+            - LAC_EXUT  : `lake`, `afluent`, `value`,
+            
+            For available variable, please check
+            :py:func:`martpy.get_mart_variables_list`
         """
         new_actions = {}
+        _check_mart_key(variable)
+        # TODO _check_mart_action(variable, action)
         if times is None:
             if steps is not None:
-                times = self.times.loc[self.times['step'].isin(steps), :]
+                # times = self.times.loc[self.times['step'].isin(steps), :]
+                times = self.times.iloc[steps,:]['time']
+            else:
+                raise ValueError('Please provide times or steps')
+        
         if isinstance(times, (str, datetime)):
             if type(times) is str:
                 times = datetime.strptime(times, '%Y-%m-%d')
             times = [times]
+        
         for time in times:
             key = _convert_date_to_str_iso(time)
             new_actions[key] = {
@@ -245,6 +321,146 @@ class MartheTimeSteps:
             'Method is not yet implemented. '
             'You can remove actions in self.actions dictionnary'
         )
+    
+    def set_met_forcings(
+        self,
+        tpl_name,
+        path_data='./',
+        mode=1,
+        step=1,
+        freq='Y',
+        day=1,
+        month=8
+    ):
+        """ Set meteorological forcings with sequential [yearly] files
+
+        Parameters
+        ----------
+        tpl_name : list or tuple
+            list or tuple of two template string for file names.
+            Order matters: [precip, evap] if mode=1, or [infiltr, runoff] if mode
+            is 2 or 4. See example below.
+            Template will be filled with year and year+1
+        path_data: str or Path, optional
+            path to met data. By default current dir.
+        mode: int, optional
+            Hydroclimatic forcings mode. Depend of the hydroclimatic balance
+            used in user's model. See MARTHE guide for more explanations.
+            Accepted values:
+                - 1: Gardenia coupled balance, use Rainfall and potential
+                evaporatranspiration as forcings;
+                - 2 or 4: Use infiltration and runoff fluxes.
+        setp: int or datetime, optional
+            Step to start adding forcings. If int is passed, it is used to find
+            the step indice ; if datetime is passed, it used to find the date
+            in timesteps.
+        freq : str, optional
+            frequency to add meteorological forcings, by default 'Y' for yearly
+            (based on yearly files from Météo-France). If None, data are only
+            added to the 0 timestep (steady state).
+        
+        Returns
+        -------
+        None
+            Set new actions to current instance.
+        
+        Notes
+        -----
+        To add meteorological forcings only to the 1st timestep with constant
+        files name use arguments `step=1` and `freq=None` together with tpl_name
+        without format tags (eg `['File1', 'File2']`).
+        
+        Example
+        -------
+        >>> pastp.set_forcings(
+        ...     [
+        ...         'DRAIN_SURFEX_V8F_JOU_{}_{}_ASCII',
+        ...         'RUNOFF_SURFEX_V8F_JOU_{}_{}_ASCII'
+        ...     ],
+        ...     '/gpfs/projets/poseidon/SAFRAN/',
+        ...     mode=4,
+        ... )
+        """
+        # from pandas.tseries.offsets import DateOffset
+
+        if mode == 1:
+            var1, var2 = 'METEO_PLUIE', 'METEO_ETP'
+            flux1, flux2 = 'FLUX_PLUV', 'FLUX_ETP'
+        elif mode in [2,4]:
+            var1, var2 = 'METEO_RECHARG', 'METEO_RUISSEL'
+            flux1, flux2 = 'RECHARGE', 'RUISSEL'
+        else:
+            raise ValueError('Unknow mode. Accepted values: 1,2,4')
+        
+        times = self.get_times()
+        times = _subset_times(times, step, freq, day, month)
+
+        for t in times:
+            self.add_action(
+                times=t,
+                variable=var1,
+                action='FICHIER',
+                file=Path(path_data, tpl_name[0].format(t.year, t.year+1))
+            )
+            self.add_action(
+                times=t,
+                variable=var2,
+                action='FICHIER',
+                file=Path(path_data, tpl_name[1].format(t.year, t.year+1))
+            )
+            self.add_action(
+                times=t,
+                variable=flux1,
+                action='FICH_METE',
+                step='*'
+            )
+            self.add_action(
+                times=t,
+                variable=flux2,
+                action='FICH_METE',
+                step='*'
+            )
+        return
+
+    def set_pumping_data(self, file_tpl, step=1, freq='M', opt=[]):
+        """ Add pumping data to Marthe Timesteps, with XY format,
+        based on frequency
+
+        Parameters
+        ----------
+        file_tpl : str
+            file name template to add data. Template will be filled with
+            year, month [day].
+        step : int, optional
+            initial step when adding data, by default 1
+        freq : str, optional
+            frequency to add data, by default 'M' (monthly)
+        opt : list, optional
+            List of options to use when reading data, by default no options are used.
+            Available options are:
+                - sum (in Marthe files: Somm_Mail) : aggregate (sum) pumping by cell
+                - mean (Moyenne) : aggregate in cell (average)
+                - keep_9999 (Keep_9999) : keep special values (9999., ie do not
+                overwrite with new data)
+                - init_zero (Init_a_Zero): initialize values with 0.
+                - xyv (X_Y_V) : fmt X,Y,Value
+                - xyc (X_Y_C) : fmt X,Y,Layer
+                - xyz (X_Y_Z) : fmt X,Y,Z
+        """
+        # use default opts ? <X_Y_C> <Somm_Mail> <Keep_9999>
+        # TODO make opt list mail case insensitive
+        times = self.get_times()
+        times = _subset_times(times, step, freq, day=1)
+        opt = _filter_valid_opt_list_mail(opt, errors='raise')
+        for t in times:
+            self.add_action(
+                times=t,
+                variable='DEBIT',
+                action='LIST_MAIL',
+                file=file_tpl.format(t.year, t.month, t.day),
+                opt_list_mail=opt
+            )
+        return
 
     def write_file(self, filename, title='Marthe TimeSteps', encoding='ISO-8859-1'):
         """ Build a Timestep (`*.pastp`) file
@@ -440,8 +656,12 @@ def _build_timestep(istep, date, dactions):
     -------
     lines : list of str
     """
+    # from copy import deepcopy
+
     date_str = _convert_date_to_str(date)
     date_key_fmt = _convert_date_to_str_iso(date)
+    # _dactions = deepcopy(dactions)  # deep copy to limit side effect and allow rewrite // perf?
+    _dactions = dactions
     
     if istep == 0:
         _start_step_str = FMT_START_SIM.format(init_time=date_str)
@@ -449,7 +669,7 @@ def _build_timestep(istep, date, dactions):
         _start_step_str = FMT_START_TIMESTEP.format(istep=istep, time_step=date_str)
     
     lines = [_start_step_str]
-    actions_step = dactions.get(date_key_fmt, {})
+    actions_step = _dactions.get(date_key_fmt, {})
     for variable, actions in actions_step.items():
         for action in actions:
             mode = action.pop('mode')

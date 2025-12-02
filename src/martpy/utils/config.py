@@ -74,7 +74,7 @@ MART_OUTPUTS = [
 ]
 
 ACTIONS_FMT = {
-    'ACTION'    : 'I= {active};',
+    'ACTION'    : 'I={value:>2};',
     'FICHIER'   : 'N: {file}',
     'GRILLE'    : 'N: {grid}',
     'LIST_MAIL' : 'N: {file}',
@@ -96,7 +96,7 @@ ACTIONS_FMT = {
 }
 
 _ACTION_PARSER = {
-    'ACTION'    : r'I=\s*(?P<active>\d+);',
+    'ACTION'    : r'I=\s*(?P<value>(-)?\d+);',
     'GRILLE'    : r'N:\s*(?P<grid>\S+?)\s*$',  # value or file todo gérer le cas avec '=' est-ce qu'on force la regex à ne pas le prendre ou est qu'on garde et met un if pour typer le res ?
     'LIST_MAIL' : r'N:\s+(?P<file>.*?)(?:\s+<[^>]+>|$)',   # file - opt
     'COUCHE'    : r'C=\s*(?P<layer>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',  # possible '*' or ':' in value, \S then if in parsing func
@@ -136,15 +136,15 @@ EDITIONS_FMT = {
 }
 
 
-LIST_MAIL_OPT = [
-    '<Somm_Mail>',
-    '<Keep_9999>',
-    '<Moyenne>',
-    '<Init_a_Zero>',
-    '<X_Y_V>',
-    '<X_Y_C>',
-    '<X_Y_Z>'
-]
+OPT_LIST_MAIL = {
+    'sum': '<Somm_Mail>',
+    'keep_9999': '<Keep_9999>',
+    'mean': '<Moyenne>',
+    'init_zero': '<Init_a_Zero>',
+    'xyv': '<X_Y_V>',
+    'xyc': '<X_Y_C>',
+    'xyz': '<X_Y_Z>'
+}
 
 _OPT_MAIL_PARSER = r'<([^>]+)>'  # to use with re.findall()
 
@@ -170,21 +170,17 @@ HISTO_BIL_HEAD = [
 HISTO_BIL_ZONE_HEAD = [
        "Entr_Limit_ext ", "Sort_Limit_ext ", "Glob_Limit_ext " ,
        "Entr_Limit_Zon ", "Sort_Limit_Zon ", "Glob_Limit_Zon " ,
-       "Entr_Inject_fix", "Sort_Pompag_fix", "Glob_Intern_fix" ,  # ok
-       "Réduct_Pompage " , "Désaturation   " , #ok
-       "Recharge_Maill ", "Évaporat_Maill ", "Excès_Irrigat  " , # ok
-       "Transpir_Racin " , # ok
+       "Entr_Inject_fix", "Sort_Pompag_fix", "Glob_Intern_fix" ,
+       "Réduct_Pompage " , "Désaturation   " ,
+       "Recharge_Maill ", "Évaporat_Maill ", "Excès_Irrigat  " ,
+       "Transpir_Racin " ,
        "Entr_Résiduel  ", "Sort_résiduel  ", "Glob_Résiduel  " ,
-       "Débord/Suintem ", # ok
-       "Déb._de_Transit" ,
-       "Rivière->Napp  ", "Napp->Rivière  ", "Glob_Riv-Nappe " , # e manquant ou _ devient - ...
-       "Drains->Napp   ", "Napp->Drains   ", "Glob_Drain-Napp" , # idem
-       "Lacs->Nappe    ", "Nappe->Lacs    ", # ok!
-       "Glob_Lacs-Napp " , # ko !!!!
-       "Éch_Phas_Posit ", "Éch_Phas_Négat ", # ok 
-       "Glob_Éch_Phase " ,
-       "Stockage       " ,  # Glob_Stock
-       "Somme=Bil_Glob." ,
+       "Débord/Suintem ", "Déb._de_Transit" ,
+       "Rivière->Napp  ", "Napp->Rivière  ", "Glob_Riv-Nappe " ,
+       "Drains->Napp   ", "Napp->Drains   ", "Glob_Drain-Napp" ,
+       "Lacs->Nappe    ", "Nappe->Lacs    ", "Glob_Lacs-Napp " ,
+       "Éch_Phas_Posit ", "Éch_Phas_Négat ",
+       "Glob_Éch_Phase " , "Stockage       " , "Somme=Bil_Glob." ,
        "Entr_Lim_Z_Hau ", "Sort_Lim_Z_Hau ", "Glob_Lim_Z_Hau " ,
        "Entr_Lim_Z_Bas ", "Sort_Lim_Z_Bas ", "Glob_Lim_Z_Bas " ,
 ]

@@ -9,7 +9,7 @@ from .config import (
     NAN_VALUES,
     ACTIONS_FMT,
     _ACTION_PARSER,
-    LIST_MAIL_OPT,
+    OPT_LIST_MAIL,
     _OPT_MAIL_PARSER,
     HISTO_BIL_HEAD,
     HISTO_BIL_ZONE_HEAD,

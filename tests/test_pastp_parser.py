@@ -86,6 +86,7 @@ def test_add_action():
             action='FICH_METE',
             step='*'
         )
+    pastp.add_action(new_dt.iloc[0], variable='CALCUL_HDYNAM', action='ACTION', value=2)
     d = pastp.get_actions()
     assert '2012-08-01' in d, 'Error while adding actions'
     assert 'METEO_PLUIE' in d['2012-08-01'], 'Error while adding actions'
@@ -96,6 +97,28 @@ def test_add_action():
     assert d['2012-08-01']['FLUX_PLUV'][0]['step'] == '*', 'Error while adding actions'
     #
     pastp.write_file('tests/data/tmp_outputs/test_add_actions.pastp')
+
+
+def test_add_action_with_istep():
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(steps=-1, variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    act = pastp.get_actions()
+    assert len(list(act.keys())) == 2
+    pastp.add_action(steps=[1,2], variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    act = pastp.get_actions()
+    assert len(list(act.keys())) == 4
+
+
+def test_wrapper_method():
+    # test wrapper method
+    import pytest
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.set_met_forcings(['TOTO_{}_{}', 'TOTO2_{}_{}'])
+    # pastp.write_file('tests/data/tmp_outputs/test_add_actions2.pastp')
+    pastp.set_pumping_data('fake_pumping_{}_{:02d}.txt', opt=['xyv', 'init_zero'])
+    pastp.write_file('tests/data/tmp_outputs/test_add_actions3.pastp')
+    with pytest.raises(ValueError):
+        pastp.set_pumping_data('fake_pumping_{}_{:02d}.txt', opt=['tata'])
 
 
 def test_write_pastp():
@@ -110,14 +133,13 @@ def test_write_pastp():
 
 def main():
     print('Test MARTHE pastp reader')
-    
-    test_parse_date_fmt()
-    
-    test_read_pastp()
-    print('Pastp read: (head only)')
-
-    print('Test Marthe pastp writer')
-    test_write_pastp()
+    # test_parse_date_fmt()
+    # test_read_pastp()
+    # print('Pastp read: (head only)')
+    # print('Test Marthe pastp writer')
+    # test_write_pastp()
+    # test_wrapper_method()
+    test_add_action_with_istep()
     print('============')
     print('Test success')
 
