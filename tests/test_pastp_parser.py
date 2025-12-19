@@ -99,6 +99,37 @@ def test_add_action():
     pastp.write_file('tests/data/tmp_outputs/test_add_actions.pastp')
 
 
+def test_get_actions():
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(steps=-1, variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    act = pastp.get_actions()
+    assert 'CALCUL_HDYNAM' in act['1995-07-31'], 'Error while getting actions'
+    assert 'CALCUL_HDYNAM' in act['2012-07-31'], 'Error while getting actions'
+    act = pastp.get_actions(time='2012-07-31')
+    assert len(act) == 1, 'Error while getting actions for specific time'
+    assert 'CALCUL_HDYNAM' in act['2012-07-31'], 'Error while getting actions for specific time'
+    act = pastp.get_actions(step=[0,-1])
+    assert len(act) == 2, 'Error while getting actions for specific step'
+    assert list(act.keys()) == ['1995-07-31', '2012-07-31'], 'Error while getting actions for specific step'
+
+
+def test_get_actions_with_variable():
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(steps=-1, variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    pastp.add_action(steps=[1,2], variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    # act_all = pastp.get_actions()
+    act_var = pastp.get_actions(variable='CALCUL_HDYNAM')
+    assert len(act_var) == 4, 'Error while getting actions with variable filter'
+
+
+def test_slice_times():
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp_slice = pastp.slice_times('2000-01-01', '2010-12-31')
+    times = pastp_slice.get_times()
+    assert times.iloc[0] == pd.Timestamp('2000-01-01'), 'Error while slicing times'
+    assert times.iloc[-1] == pd.Timestamp('2010-12-31'), 'Error while slicing times'
+
+
 def test_add_action_with_istep():
     pastp = read_mart_timesteps(FILE_PASTP)
     pastp.add_action(steps=-1, variable='CALCUL_HDYNAM', action='ACTION', value=2)
@@ -139,7 +170,8 @@ def main():
     # print('Test Marthe pastp writer')
     # test_write_pastp()
     # test_wrapper_method()
-    test_add_action_with_istep()
+    # test_add_action_with_istep()
+    test_get_actions()
     print('============')
     print('Test success')
 

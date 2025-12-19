@@ -30,6 +30,9 @@ def _parse_marthe_project(file_rma, encoding='ISO-8859-1'):
     with open(file_rma, 'r', encoding=encoding) as f:
         content = f.readlines()
     
+    # parse title
+    title = content.pop(0).strip()
+
     # parse files in marthe project
     rma = {k: None for k in PARSER.keys()}  # init with None
     # rma = OrderedDict({k: None for k in PARSER.keys()})  # init with None
@@ -49,6 +52,7 @@ def _parse_marthe_project(file_rma, encoding='ISO-8859-1'):
                 break
             else:
                 continue
+    rma['title'] = title
     return rma
 
 

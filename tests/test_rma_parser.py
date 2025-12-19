@@ -10,7 +10,7 @@ FOUT = './tests/data/tmp_outputs/hallue_write.rma'
 def test_reader():
     dict_rma = _parse_marthe_project(RMA_FILE)
     assert isinstance(dict_rma, dict), 'Error in parse RMA file: not a dict'
-    assert len(dict_rma) == 205, 'Error in parse RMA file: wrong number of parameters'  # expert level testing... :)
+    assert len(dict_rma) == 206, 'Error in parse RMA file: wrong number of parameters'  # expert level testing... :)
 
 
 def test_writer():

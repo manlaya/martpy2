@@ -1,0 +1,80 @@
+Didacticiel 3 : Hydraulique Permanent + Transport
+ #<V7.8># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+ *** Paramètres généraux d'optimisation [Nombre de Simulations, Méthode] ***
+         1=Optimisation : 0=Non ; 1=Calage par Zones ; 3=Perméabilités par Mod. Inverse ; 4=Coeff. d'Infl.
+        27=Nombre maximal de simulations pour le calage (0 = Uniquement analyse)
+         0=Seuil d'arrêt sur le critère d'erreur de calage (Déf=0)
+         0=Seuil d'arrêt sur la variation des paramètres (en nombre d'incréments) (Déf=0.05)
+         0=Méthode pour le calage par Zones : (Déf 0 => Méthode directe)
+         0=Correction minimale des paramètres en nombre d'incréments  (Déf= 1)
+         0=Correction maximale des paramètres en nombre d'incréments  (Déf = 9999)
+         0=Pourcentage de variation de débit (pour un calcul de 'Coefficients d'Influence') (Déf = 20)
+         0=Coefficient de relaxation (Déf = 1)
+         0=Perméabilité minimale : pour un calage de perméabilités maille par maille
+         0=Perméabilité maximale : pour un calage de perméabilités maille par maille
+         0=Poids de lissage par rapport aux mailles voisines [%] (Perméabilités maille par maille)
+         0=Variable pour un calcul de Coeff. d'Influence [0=Débits, 1=Q_mass ; 2=Q_Chaleur ; 3=Q_salinité]
+         0=Type de 'Zones de Géométrie' par défaut [0=Zones classiques ; 2=Zones_Type_2 ; 3=Zones_Type_3]
+ *** Paramètres généraux d'optimisation [Pas de temps, Affichage]        ***
+         0=Numéro du pas de temps <==> Champ d'observations n°1
+         0=Numéro du pas de temps <==> Champ d'observations n°2
+         0=Affichage à l'écran (0=Normal ; 1=Pas d'affichage ; -1=Détails)
+         0=Affichage dans le fichier listing (0=Normal ; 1=Allégement ; -1=Détails)
+ *** Paramètres généraux d'optimisation [pondérations]                   ***
+         0=Poids sur les Champs      de Charge hydraulique observées %
+         0=Poids sur les Champs      de Salinité      observée %
+         0=Poids sur les Champs      de Pression      observée %
+         0=Poids sur les Champs      de Teneur en Eau observée %
+         0=Poids sur les Champs      de Concentration observée %
+         0=Poids sur les Champs      de Température   observée %
+         0=Poids sur les Historiques de Charge hydraulique observée % (0<=>100%)
+         0=Poids sur les Historiques de Débit observé % (0<=>100%)
+         0=Poids sur les Historiques de Salinité observée % (0<=>100%)
+         0=Poids sur les Historiques de Pression d'eau observée % (0<=>100%)
+         0=Poids sur les Historiques de Teneur en eau observée % (0<=>100%)
+         0=Poids sur les Historiques de Concentration observée % (0<=>100%)
+         0=Poids sur les Historiques de Température observée % (0<=>100%)
+         0=Poids sur les Historiques de Pression de Gaz observée % (0<=>100%)
+         0=Poids sur les Historiques de Débit de Gaz observé % (0<=>100%)
+         0=Poids sur les Historiques de Salinité_sortante observée % (0<=>100%)
+         0=Poids sur les Historiques de Concentration_sortante observée % (0<=>100%)
+         0=Poids sur les Historiques de Température_Sortante observées % (0<=>100%)
+         0=Poids sur les Historiques de Charge d'Huile observée % (0<=>100%)
+         0=Poids sur les Historiques de Débit d'Huile observé % (0<=>100%)
+         0=Poids sur les Historiques de Saturation de Liquide observée % (0<=>100%)
+         0=Poids sur les Historiques de Saturation de NAQ observée % (0<=>100%)
+         0=Poids sur les Historiques  d'Interface salée observée % (0<=>100%)
+         0=Poids sur les Historiques de Niveau d'eau Rivière observé % (0<=>100%)
+         0=Poids sur les Historiques de Débit de Rivière observé % (0<=>100%)
+         0=Poids sur les Historiques de Débit de Drain observé % (0<=>100%)
+         0=Poids sur les Historiques de Concentration de Rivière observée % (0<=>100%)
+         0=Poids sur les Historiques de Température de Rivière observée % (0<=>100%)
+         0=Poids sur les Historiques de Salinité de Rivière observée % (0<=>100%)
+         0=Poids sur les Historiques de Stock Neige observé % (0<=>100%)
+         0=Poids sur les Historiques de Charge hydraulique de Drain observée % (0<=>100%)
+         0=Poids sur les Historiques de Concentration de Drain observée % (0<=>100%)
+         0=Poids sur les Historiques de Température de Drain observée % (0<=>100%)
+         0=Poids sur les Historiques de Salinité de Drain observée % (0<=>100%)
+         0=Poids sur les Historiques de Concentration Immobile observée % (0<=>100%)
+         0=Poids sur les Historiques de Débordement/Suintem de Drain observé % (0<=>100%)
+         0=Poids sur les Historiques de Niveau absolu de Lac observé % (0<=>100%)
+         0=Poids sur les Historiques de Profondeur de Lac observée % (0<=>100%)
+         0=Poids sur les Historiques de Superficie du Lac observée % (0<=>100%)
+         0=Poids sur les Historiques de Débit d'exutoire de Lac observé % (0<=>100%)
+         0=Poids sur les Historiques de Rabattement observé % (0<=>100%)
+         0=Poids sur les Historiques de Flux Massique 'Concentration' observé % (0<=>100%)
+         0=Poids sur les Historiques de Flux de Chaleur observé % (0<=>100%)
+         0=Poids sur les Historiques de Flux (Massique) de Salinité observé % (0<=>100%)
+         0=Poids sur les Historiques de Charge hydraulique au Puits observée % (0<=>100%)
+ *** Écarts-type , Matrice de corrélation, Intervalles de confiance      ***
+         1=Calcul des écarts-type des paramètres et de la matrice de corrélation
+         1=Calcul des intervalles de confiance de simulation
+         1=Type d'intervalles de confiance : 0=Écart-Type ; 1=Intervalle à 80% ; 2=à 95%
+         0=Pourcentage d'observations indépendantes pour calcul des écarts-type des paramètres [Déf=100%]
+ *** Fin des paragraphes                             $$$
+ *** Paramètres à optimiser ou à analyser                                ***
+ Type         Zone Arith Même_que    Val.Init   Val.Mini   Val.Maxi    Pas_Val Mult
+PERMEAB          3    0          0   15.00000          1        100          0    0
+DISPER_LONGI     0    0          0    3.00000          1         50          0    0
+DISPER_TRANSV    0    0          0   0.300000        0.1         10          0    0
+ANISO_VER_GLO    0    0          0   0.300000       2e-2          1          0    0

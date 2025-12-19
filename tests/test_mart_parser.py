@@ -3,6 +3,7 @@
 
 import re
 
+from martpy.inputs.mart_param import MartheParams
 from martpy.inputs._mart_parser import (
     _parse_mart_file,
     _write_mart_file,
@@ -155,12 +156,25 @@ def test_parse_modin():
     assert test2, 'Error while parsing external file'
 
 
+def test_from_tpl():
+    mart = MartheParams.from_template()
+    assert len(mart.get_param_groups()) == 21, 'Wrong block param number from template'
+
+
+def test_get_parameter_help_method():
+    mart = MartheParams.from_template()
+    help = mart.get_param_help(group='outputs', key='gen_list', locale='en')
+    assert help['outputs']['gen_list'].keys() == {'default', 'type', 'description'}, \
+        'Error while getting parameter help from MartheParams class'
+
+
 def main():
-    test_parse_parameter_line()
-    test_reader()
-    test_get_parameter_help()
-    test_parse_modin()
-    test_writer()
+    # test_parse_parameter_line()
+    # test_reader()
+    # test_get_parameter_help()
+    # test_parse_modin()
+    # test_writer()
+    test_from_tpl()
 
 
 if __name__ == '__main__':

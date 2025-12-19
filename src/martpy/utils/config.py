@@ -97,7 +97,7 @@ ACTIONS_FMT = {
 
 _ACTION_PARSER = {
     'ACTION'    : r'I=\s*(?P<value>(-)?\d+);',
-    'GRILLE'    : r'N:\s*(?P<grid>\S+?)\s*$',  # value or file todo gérer le cas avec '=' est-ce qu'on force la regex à ne pas le prendre ou est qu'on garde et met un if pour typer le res ?
+    'GRILLE'    : r'N:\s*(?P<grid>\S+?)\s*$',
     'LIST_MAIL' : r'N:\s+(?P<file>.*?)(?:\s+<[^>]+>|$)',   # file - opt
     'COUCHE'    : r'C=\s*(?P<layer>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',  # possible '*' or ':' in value, \S then if in parsing func
     'MAILLE'    : r'C=\s*(?P<col>\S+)\s*L=\s*(?P<row>\S+)\s*P=\s*(?P<layer>\S+)\s*V=\s*(?P<value>\S+)\s*;',  # \d+\.*\d ?

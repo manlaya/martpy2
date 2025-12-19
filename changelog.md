@@ -1,7 +1,7 @@
 <!-- martpy changelog -->
 
-Version 0.0.1
--------------
+Version 0.1
+-----------
 
 Released on XXXX-XX-XX.
 
@@ -15,4 +15,4 @@ Released on XXXX-XX-XX.
     + `histobil_*.prn` (Marthe output balance file),
     + `historiq.prn` (Marthe output time series),
 - Add wrapper for grid management (based on `gridmarthe` library)
-- 
+- Add methods to run marthe from python

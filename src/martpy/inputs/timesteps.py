@@ -207,9 +207,36 @@ class MartheTimeSteps:
             }
         else:
             pass
+    
+    def slice_times(self, min_date=None, max_date=None):
+        """ Slice times from the timesteps
 
-    def get_actions(self, time=None, step=None):
-        """ Get actions for all or selected timestep
+        Parameters
+        ----------
+        min_date : datetime, optional
+            min date for slice
+        max_date : datetime, optional
+            max date for slice
+
+        Returns
+        -------
+        MartheTimeSteps
+            A new marthe time step instance with the sliced the timestep(s)
+        """
+        times = self.times.copy()
+        if min_date is not None:
+            times = times.loc[times['time'] >= min_date]
+        if max_date is not None:
+            times = times.loc[times['time'] <= max_date]
+        times['step'] = times['step'].rank(method='first').astype(int) - 1
+        times = times.sort_values(by='step')
+        actions = {
+            k: v for k, v in self.actions.items() if k in times['time'].dt.strftime('%Y-%m-%d')
+        }
+        return MartheTimeSteps(times, actions)
+
+    def get_actions(self, time=None, step=None, variable=None):
+        """ Get actions for all or selected timesteps/variables
 
         Parameters
         ----------
@@ -217,21 +244,50 @@ class MartheTimeSteps:
             time to get actions for, by default None
         step : int, optional
             timestep number to get actions for, by default None
+        variable : str, optional
+            marthe variable to get actions for, by default None
         
         Returns
         -------
         dict
             dictionnary of actions for the timestep(s) requested.
+        
+        Examples
+        --------
+        >>> pastp = read_mart_timesteps('hallue.pastp')
+        >>> act = pastp.get_actions()  # get all actions
+        >>> act = pastp.get_actions(time='2012-07-31')  # get actions for specific time
+        >>> act = pastp.get_actions(step=[0,-1])  # get actions for specific step
+        >>> act = pastp.get_actions(variable='CALCUL_HDYNAM')  # get actions for specific variable
         """
         if time is not None:
-            time_key = _convert_date_to_str_iso(time)
-            return self.actions.get(time_key, {})
+            if isinstance(time, (list, tuple, pd.Series, pd.DatetimeIndex)):
+                time_keys = [_convert_date_to_str_iso(t) for t in time]
+            elif isinstance(time, datetime):
+                time_keys = [_convert_date_to_str_iso(time)]
+            elif isinstance(time, str):
+                time_keys = [time]
+            return {k: v for k, v in self.actions.items() if k in time_keys}
+        
         elif step is not None:
-            time_key = self.times.loc[self.times['step'].isin(step), 'time']
-            if len(time_key) == 0:
-                return {}
-            time_key = _convert_date_to_str_iso(time_key.iloc[0])
-            return self.actions.get(time_key, {})
+            time_keys = self.times.iloc[step, :]['time']
+            if isinstance(time_keys, pd.Series):
+                time_keys = [_convert_date_to_str_iso(t) for t in time_keys]
+            elif isinstance(time_keys, pd.Timestamp):
+                time_keys = [_convert_date_to_str_iso(time_keys)]
+            else:
+                time_keys = [time_keys]
+            return  {k: v for k, v in self.actions.items() if k in time_keys}
+        
+        elif variable is not None:
+            variable = variable.upper()
+            filtered_actions = {}
+            for time_key, actions in self.actions.items():
+                if variable in actions:
+                    filtered_actions[time_key] = {
+                        variable: actions[variable]
+                    }
+            return filtered_actions
         else:
             return self.actions
 

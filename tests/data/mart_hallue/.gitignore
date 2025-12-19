@@ -1,0 +1,7 @@
+# here we do not track output files
+# as it might change depending on tests scripts
+restart_*
+*.prn
+mart_ver.txt
+bilandeb.txt
+reseau_riv_drains_lacs.txt
