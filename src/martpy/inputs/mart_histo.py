@@ -99,7 +99,7 @@ class MartHisto(pd.DataFrame):
         # treat only rows with missing coords
         df_histo_cells = df_histo.loc[np.isnan(df_histo[XCOL]) | np.isnan(df_histo[YCOL]), :]
         # Get grid coords dataframe
-        _grid_loc = grid.to_dataframe()[['col', 'lig', 'x', 'y']].rename({"lig": 'row'}, axis=1)  # TODO rename lig to row when gridmarthe make the change
+        _grid_loc = grid.to_dataframe()[['col', 'row', 'x', 'y']]
         # Merge to get coords
         df_histo_cells = df_histo_cells.reset_index().merge(
             _grid_loc, how='left', on=[JCOL1, JCOL2], suffixes=('', '_grid')
