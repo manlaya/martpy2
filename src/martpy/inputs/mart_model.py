@@ -12,56 +12,84 @@ from martpy.inputs._rma_parser import (
 from martpy.utils.os_utils import mv_res
 
 
-def read_rma_file(file_rma):
-    """
-    Docstring for read_rma_file
+def read_rma_file(rma_file):
+    """Shortcut function to create a MARTHE project.
     
     Parameters
     ----------
-    file_rma: str
-        Path to the rma project to read
+    rma_file: `str`
+        Path to the RMA file to read.
     """
-    return MartProject.from_rma_file(file_rma)
+    return MartProject.from_rma_file(rma_file)
 
 
 class MartProject:
-    
-    # Object to store MARTHE project information from .rma file
+    """Object to store MARTHE project information from *.rma file."""
 
-    def __init__(self, rma, files={}, title='MARTHE Project'):
-        self.rma   = rma
-        self.files = files
-        self.title = title
-    
-    def get_files(self, only_active=True):
-        """ Get a dictionnary of files in RMA project
+    def __init__(self, rma_file, files=None, title='MARTHE Project'):
+        """Instantiation.
 
         Parameters
         ----------
-        only_active : bool, optional
-            filter files to get only the current activated files,
-            by default True
+        rma_file: `str`
+            Path to the RMA file to write.
+
+        files: `dict`
+            Dictionary containing the files the RMA project points to.
+
+        title: `str`
+            Title of the MARTHE project to insert in the RMA file.
+        """
+        self._rma_file = rma_file
+        self._files = files if files else {}
+        self.title = title
+    
+    def get_files(self, only_active=True):
+        """Get a dictionary of the files in the RMA project.
+
+        Parameters
+        ----------
+        only_active: `bool`, optional
+            Whether to filter files to get only the current activated
+            files. By default, it does.
 
         Returns
         -------
-        dict
-            dict with files stored in RMA project
+        `dict`
+            Dictionary containing the files the RMA project points to.
         """
         if only_active:
-            return {k: v for k, v in self.files.items() if v}
+            return {k: v for k, v in self._files.items() if v}
         else:
-            return self.files
+            return self._files.copy()
 
     @classmethod
     def from_rma_file(cls, rma_file):
+        """Instantiate a MARTHE project from an RMA file.
+
+        Parameters
+        ----------
+        rma_file: `str`
+            Path to the RMA file to read.
+        """
         files = _parse_marthe_project(rma_file)
         title = files.pop('title', 'MARTHE Project')
         return MartProject(rma_file, files, title)
     
-    def write_file(self, file_rma=None, title='MARTHE Project'):
-        if file_rma is None:
-            file_rma = self.file_rma
-        _write_rma_file(self.rma, file_rma, title=title)
+    def to_rma_file(self, rma_file=None, title='MARTHE Project'):
+        """Write a MARTHE project into an RMA file.
+
+        Parameters
+        ----------
+        rma_file: `str`
+            Path to the RMA file to write.
+
+        title: `str`
+            Title of the MARTHE project to insert in the RMA file.
+        """
+        if rma_file is None:
+            rma_file = self._rma_file
+        _write_rma_file(self._rma_file, rma_file, title=title)
 
 
 class MartModel:
