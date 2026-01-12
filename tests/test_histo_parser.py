@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import numpy as np
+import pandas as pd
+
 from martpy.inputs.mart_histo import (
     MartHisto,
     read_histo_file
@@ -29,7 +32,6 @@ def test_writer():
 
 
 def test_get_xy_from_grid():
-    import numpy as np
     from martpy import grid as mgrid
 
     histo = read_histo_file(HISTO_FILE)
@@ -37,8 +39,8 @@ def test_get_xy_from_grid():
     histo2 = histo.fill_coordinates_from_grid(grid)
     assert not np.any(np.isnan(histo2.x)), 'Error while getting x from grid'
     assert not np.any(np.isnan(histo2.y)), 'Error while getting y from grid'
-    assert not np.any(np.isnan(histo2.col)), 'Error while getting col from grid'
-    assert not np.any(np.isnan(histo2.row)), 'Error while getting row from grid'
+    assert not np.any(pd.isna(histo2.col)), 'Error while getting col from grid'
+    assert not np.any(pd.isna(histo2.row)), 'Error while getting row from grid'
 
 
 def main():

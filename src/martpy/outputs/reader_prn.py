@@ -9,12 +9,8 @@ import pandas as pd
 from martpy.utils.config import RENAME_HISTOBIL_HEAD_ZONE
 
 
-# def date_parser(x):
-#     return datetime.strptime(x, '%d/%m/%Y')
-
-
 def read_output_time_series(ts_file):
-    """ Read a time series output file (historiq.prn) 
+    """ Read a time series output file (historiq.prn)
     
     Parameters
     ----------
@@ -24,17 +20,17 @@ def read_output_time_series(ts_file):
     Returns
     -------
     pd.DataFrame
-        DataFrame with index=Date and multiheader 
-        If the marthe model is nested, the header will be 4 levels (field, grid, coords, name)
-        else 3 levels (field, coords, name)
+        DataFrame with index=Date and multiheader
+        If the marthe model is nested, the header will be 4 levels:
+        (field, grid, coords, name) else 3 levels (field, coords, name)
     """
     # read first 5 lines to guess nested
     with open(ts_file, encoding='cp1252', mode='r') as f:
         # max 6 line of headers if nested grids + river_afluent
-        head = [next(f) for x in range(6)]  
+        head = [next(f) for x in range(6)]
     
-    nested = bool(re.match(r".*(Main_Grid|Gigogne).*", "\n".join(head), re.DOTALL|re.I)) 
-    has_riv_afl = bool(re.match(r".*(AF\d+_TR\d+).*", "\n".join(head), re.DOTALL|re.I)) 
+    nested = bool(re.match(r".*(Main_Grid|Gigogne).*", "\n".join(head), re.DOTALL|re.I))
+    has_riv_afl = bool(re.match(r".*(AF\d+_TR\d+).*", "\n".join(head), re.DOTALL|re.I))
     
     levels_name = ['field', 'coords', 'name']
     if nested:
@@ -99,7 +95,7 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
         if re.match(r'.*^\s*Date\s+', block, re.MULTILINE|re.DOTALL|re.IGNORECASE):
             # if block contain Date header, it is a data block
             # get index of Date line (i.e remove any comment before)
-            istart = re.search(r'^\s*Date\s+', block, re.MULTILINE|re.IGNORECASE).start()
+            istart = re.search(r'^\s*Date\s+', block, re.M|re.I).start()
             
             # parse header to get zones
             header = block[:istart]

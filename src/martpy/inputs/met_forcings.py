@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+
 import numpy as np
 import pandas as pd
 
@@ -45,7 +46,8 @@ def write_met_forcings(df, fname):
     date_col = df.index.name  # get date name
     cols = df.columns  # save met zone for reorder
     df = df.copy().reset_index()
-    df = df[list(cols) + [date_col]]  # reorder cols to make date the last one, ignored by marthe
+    # reorder cols to make date the last one, ignored by marthe
+    df = df[list(cols) + [date_col]]
     # write with a '#' at the begining of file, for marthe
     with open(fname, mode="w", newline='') as f:
         f.write("# ")
@@ -62,7 +64,7 @@ def write_met_forcings(df, fname):
 def read_nzcli(file_nzcli, encoding='ISO-8859-1'):
     with open(file_nzcli, 'r', encoding=encoding) as f:
         nzcli = f.readlines()
-    nzcli = '\n'.join([x for x  in nzcli if re.match(r'(\d+\s*)+', x)])  # skip header(s)
+    nzcli = '\n'.join([x for x  in nzcli if re.match(r'(\d+\s*)+', x)])  # skip header
     forcing_cells = [int(x) for x in re.split(r'\s+', nzcli.strip())]
     return forcing_cells
 

@@ -13,12 +13,11 @@ _HISTO_PARSER = (
     r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*'
     r'/(?P<mode>[A-Za-z]+):'
     r'(?P<coord_x>[A-Za-z]+)=\s*'
-    # r'(?P<y>[-\d.]+)'  # v1
-    r'(?P<x>[+-]?\d+(?:\.\d+)?),*'  # v2: float,int,pos-neg parsing, no e+- notation here
+    r'(?P<x>[+-]?\d+(?:\.\d+)?),*'  # float,int,pos-neg parsing, no e+- notation here
     # https://stackoverflow.com/questions/2124010/grep-regex-to-match-non-ascii-characters
     r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'  # Marthe f****** non ASCII char!
     r'(?P<y>[+-]?\d+(?:\.\d+)?),*'
-    r'(?:P=\s*(?P<layer>\d+);)?\s*'   # now optional if tronc/afl
+    r'(?:P=\s*(?P<layer>\d+);)?\s*'   # optional if tronc/afl
     r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
     r'(?:Name=(?P<name>[^ ]+))?'
     r'(?P<name_old>[^\s;]+)?'  # get name, even if "Name=" is not here (marthe<v7.8)
@@ -97,8 +96,8 @@ class MartHisto(pd.DataFrame):
         
         df_histo = df.copy()
 
-        # treat only rows with missing coords
-        df_histo_cells = df_histo.loc[np.isnan(df_histo[XCOL]) | np.isnan(df_histo[YCOL]), :]
+        # treat only rows with missing coords - use pd.isna (not np.isnanà for Int64 NaN
+        df_histo_cells = df_histo.loc[pd.isna(df_histo[XCOL]) | pd.isna(df_histo[YCOL]), :]
         # Get grid coords dataframe
         _grid_loc = grid.to_dataframe()[['col', 'row', 'x', 'y']]
         # Merge to get coords
@@ -111,6 +110,20 @@ class MartHisto(pd.DataFrame):
         )
         # return updated dataframe
         df_histo.update(df_histo_cells)
+        return df_histo
+    
+    @staticmethod
+    def _search_col_row_from_xy(df, grid):
+        # less efficient than set_coords_from_grid but allow to query xy inside cells
+        df_histo = df.copy()
+        df_histo_cells = df_histo.loc[
+            pd.isna(df_histo['col']) | pd.isna(df_histo['row']), :
+        ]
+        for idx, row in df_histo_cells.to_dict('index').items():
+            _grid_loc = grid.gm.search_zone(x=row['x'], y=row['y'])
+            # get only first x,y; even if multilayer, it's the same coordinates
+            df_histo.loc[idx, 'col'] = _grid_loc['col'].data[0]
+            df_histo.loc[idx, 'row'] = _grid_loc['row'].data[0]
         return df_histo
     
     @staticmethod
@@ -139,6 +152,8 @@ class MartHisto(pd.DataFrame):
         df_histo = self.copy()
         df_histo = self._set_coords_from_grid(df_histo, grid, mode='xy')
         df_histo = self._set_coords_from_grid(df_histo, grid, mode='cell')
+        if np.any(pd.isna(df_histo['col'])) or np.any(pd.isna(df_histo['row'])):
+            df_histo = self._search_col_row_from_xy(df_histo, grid)
         return df_histo
     
     def to_shapefile(
@@ -270,6 +285,7 @@ def _set_histo_df_dtype(data):
     for x in ['X', 'Y', 'C', 'L']:
         if x not in data.columns:
             data[x] = pd.NA
+    # data = data.fillna(np.nan)  # assert no 'None'
     data = data.rename({
         'X': 'x',
         'Y': 'y',
@@ -284,7 +300,7 @@ def _set_histo_df_dtype(data):
         'mode': str,
         'x': float,
         'y': float,
-        'col': 'Int64',
+        'col': 'Int64',  # Int64 to allow nan in integer column
         'row': 'Int64',
         'layer': 'Int64',
         'interp': bool,
