@@ -5,21 +5,28 @@ import re
 from pathlib import Path
 
 from martpy.utils.config import (
-    ACTIONS_FMT, _ACTION_PARSER, EDITIONS_FMT,
-    OPT_LIST_MAIL, _OPT_MAIL_PARSER,
-    MART_VERSION
+    _ACTION_PARSER,
+    _OPT_MAIL_PARSER,
+    ACTIONS_FMT,
+    EDITIONS_FMT,
+    MART_VERSION,
+    OPT_LIST_MAIL,
 )
 from martpy.utils.helper import _check_mart_key
 
 
-# English header (Future implementation)
-#  #<V7.8.4># --- End of Header lines --- ; Do not modify/delete this line
-def _build_header(title):
+def _build_header(title, lang='fr'):
     lines = [title]
-    lines.append(
-        f' #<V{MART_VERSION}># --- Fin du texte libre --- ;'
-        ' Ne pas modifier/retirer cette ligne '
-    )
+    if lang.lower() == 'fr':
+        lines.append(
+            f' #<V{MART_VERSION}># --- Fin du texte libre --- ;'
+            ' Ne pas modifier/retirer cette ligne '
+        )
+    else:
+        lines.append(
+            f' #<V{MART_VERSION}># --- End of Header lines --- ;'
+            ' Do not modify/delete this line '
+        )
     return lines
 
 
@@ -217,7 +224,7 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
             if not isinstance(iparam[k], list):
                 # make it a list if several option for same variable
                 # but if modific was there, already a list
-                iparam[k] = [iparam[k]]  
+                iparam[k] = [iparam[k]]
             iparam[k] = list_vals + iparam[k]  # combine previous lines with current
             params = {**params, **iparam}  # combine dict results
     
@@ -301,10 +308,7 @@ def _build_parameter_line(variable, action, **kwargs):
         # TODO: complete options for EDITION, edit config._ACTION_PARSER first
         opts = ['edit', 'V', 'L', 'S', 'Z', 'I', 'F', 'B', 'C', 'P', 'Gig']
         dtemp = {opt: kwargs.get(opt, ' ') for opt in opts}
-        if variable in EDITIONS_FMT.keys():
-            dopt = EDITIONS_FMT[variable]
-        else:
-            dopt =  "I= 1;"  # old: ACTIONS_FMT[action]
+        dopt = EDITIONS_FMT.get(variable, 'I= 1;')
         option_str = dopt.format(**dtemp)
         option_str = '{0}{1}'.format(option_str, filename)
     
@@ -325,3 +329,53 @@ def _build_parameter_line(variable, action, **kwargs):
     
     return '  {0:25}{1}'.format(var_type, option_str)
 
+
+def _build_parameter_block(dict_param, mode='str'):
+    """ Build a block of parameters for MARTHE general parameters, timesteps
+    of initial modifications (modin)
+
+    Parameters
+    ----------
+
+    dict_param: dict
+        dictionnary of parameters to write as a block (init param, modin, timestep),
+        as read with :py:func:`_parse_parameter_block`.
+    mode: str, optional
+        `str` (default) or `list` to return parameters as a multiline string
+        or as a list of lines
+    
+    Returns
+    -------
+    str or list
+        str or list of str containing the parameter to write in MARTHE fmt
+    """
+    
+    if mode == 'str':
+        params = ''
+    elif mode == 'list':
+        params = []
+    else:
+        raise ValueError('Unknown mode. Please use `str` or `list`')
+    
+    for variable, actions in dict_param.items():
+        for action in actions:
+            _mode = action.pop('mode')
+            line = _build_parameter_line(variable, _mode, **action)
+            if mode == 'str':
+                params += f"{line}\n"
+            elif mode == 'list':
+                params.append(line)
+    return params
+
+
+def _write_modin(dict_action, fname, lang='fr'):
+    
+    lines = _build_parameter_block(dict_action)
+    if lang.lower() == 'fr':
+        lines += '  /*****/***** Fin d\'Initialisation\n'
+    else:
+        lines += '  /*****/***** End of Initialization\n'
+    
+    with open(fname, encoding='ISO-8859-1', mode='w') as f:
+        f.write(lines)
+    return 0

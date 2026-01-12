@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import re
 import builtins
+import re
 from pathlib import Path
-# from collections import OrderedDict  # not necessary after py37
 
 import pandas as pd
 
 from martpy.inputs.io_utils import (
     _build_header,
+    _build_parameter_block,
     _parse_parameter_block,
-    _build_parameter_line,
-    _parse_param_value
 )
 from martpy.utils.config import _get_resource_file
 from martpy.utils.helper import _get_closest_suggestion
@@ -49,14 +47,6 @@ WRITE_FMT_MART = '{0:>10}={1}\n'
 
 MART_TEMPLATE = pd.read_table(_get_resource_file('parameters_template.csv'), encoding='ISO-8859-1', sep='\t')
 
-# _type_mapping = {
-#     'int': int,
-#     'float': float,
-#     'str': str,
-#     'bool': lambda x: bool(int(x)),  # marthe uses 0/1 for boolean
-# }
-# MART_TEMPLATE['type'] = MART_TEMPLATE['type'].map(type_mapping)
-
 # type are read as string, convert to actual python type
 MART_TEMPLATE['type'] = MART_TEMPLATE['type'].apply(
     lambda x: getattr(builtins, x) if pd.notna(x) else str
@@ -86,7 +76,7 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False):
     >>> _parse_mart('some_file.mart')
     {
         'outputs': {
-            'restart': {'value': 0, 'descr': '...'}
+            'restart': 0
             ...
         },
         ...
@@ -103,12 +93,12 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False):
         content = f.read()
     
     blocks = re.split(r'\*\*\* (.*?)\*\*\*', content)
-    header = blocks[0]
+    # header = blocks[0]  # unused
     blocks = blocks[1:]
     
     parsed_data = {}
     for i in range(0, len(blocks), 2):
-        title = re.sub(r'\[.*\]', '', blocks[i]).strip()  # old version have [Param MARTHE 7.X] in 1st block title
+        title = re.sub(r'\[.*\]', '', blocks[i]).strip()  # memo: old version have [Param MARTHE 7.X] in 1st block title
         params_content = blocks[i+1].strip()
 
         # allow slightly different titles (eg 'calculs' vs 'calcul', diff V7.7 et 7.8)
@@ -199,40 +189,6 @@ def _set_type_general_parameter(value, _type):
             return convert
 
 
-def get_parameter_help(param_key, verbose=False):
-    """ Get help description for a given mart parameter key
-    
-    Parameters
-    ----------
-    param_key : str
-        mart parameter key
-    verbose : bool, optional
-        whether to print warning if key not found, by default False
-    
-    Returns
-    -------
-    str
-        description of the parameter
-    """
-    row = MART_TEMPLATE[MART_TEMPLATE['key'] == param_key]
-    if not row.empty:
-        return row.iloc[0]['descr']
-    else:
-        if verbose:
-            print(f"Warning: parameter key '{param_key}' not found in template")
-        return None
-
-
-def _build_init_parameters(dict_param):
-    str_init = ''
-    for k, v in dict_param.items():
-        for param in v:
-            typ = param.pop('mode')
-            line = _build_parameter_line(k, typ, **param)
-            str_init += f"{line}\n"
-    return str_init
-
-
 def _set_valid_value(value, valid_value):
     """ Set value to be valid according to valid_value specification from template
     
@@ -242,6 +198,10 @@ def _set_valid_value(value, valid_value):
         parameter value
     valid_value : str
         valid value specification from template
+    
+    Returns
+    -------
+    value if valid
     
     Raises
     ------
@@ -266,7 +226,7 @@ def _write_mart_file(dict_mart, mart_file, encoding='ISO-8859-1', title='mart pa
     Notes
     -----
     - dict_mart should follow the structure returned by _parse_mart_file
-    - This function currently only works for French version of Marthe 
+    - This function currently only works for French version of Marthe
     (need internationalization)
 
     Parameters
@@ -326,7 +286,7 @@ def _write_mart_file(dict_mart, mart_file, encoding='ISO-8859-1', title='mart pa
         '         0=[Option supplémentaire 3]\n'
     )
     mart_str += ' *** Initialisation avant calcul                     ***\n'
-    mart_str += _build_init_parameters(dict_mart.get('init_parameters'))
+    mart_str += _build_parameter_block(dict_mart.get('init_parameters'))
     mart_str += (
         '  /*****/***** Fin d\'Initialisation\n'
         ' *** Fin du fichier des Paramètres Généraux          ***\n'

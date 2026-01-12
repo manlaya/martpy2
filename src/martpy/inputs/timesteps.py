@@ -2,23 +2,22 @@
 # -*- coding: utf-8 -*-
 
 import re
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-from datetime import datetime
-
 from martpy.inputs.io_utils import (
     _build_header,
+    _build_parameter_block,
+    _filter_valid_opt_list_mail,
     _parse_parameter_block,
-    _build_parameter_line,
-    _filter_valid_opt_list_mail
 )
-
 from martpy.utils.helper import _check_mart_key
 
 
+# Memo: check fmt here in MARTHE src/edi_pastp_prepro.f90:L752
 # --- Parser pattern --- #
 # more regex hell
 _FLOAT_FMT = r'\d+\.\d+'
@@ -209,6 +208,7 @@ class MartheTimeSteps:
             pass
     
     def slice_times(self, min_date=None, max_date=None):
+        # TODO for slice: add keep_init bool (keep file read at timestep 0 for ex)
         """ Slice times from the timesteps
 
         Parameters
@@ -358,7 +358,7 @@ class MartheTimeSteps:
                 **self.actions.get(key, {}),
                 variable.upper(): self.actions.get(key, {}).get(variable.upper(), [])+
                 [
-                    {**{'mode': action.upper()}, **kwargs}
+                    {'mode': action.upper(), **kwargs}
                 ],
             }
         self.actions = {**self.actions, **new_actions}
@@ -549,7 +549,7 @@ class MartheTimeSteps:
         ----------
         dates : pandas.DateTimeIndex or pandas.Series, optional
             a dates sequence to use, by default None. If None, use date_min and date_max
-            to create a sequence of dates with the frequency provided in parameter 
+            to create a sequence of dates with the frequency provided in parameter
             `freq`.
         date_min : str or datetime, optional
             date of the first step to create a sequence, by default None.
@@ -599,10 +599,7 @@ def _parse_date_pastp(date_str):
         return float(date_str)
     elif re.match(_DATE_FMT, date_str):
         date, time = re.search(_DATE_FMT, date_str).groups()
-        if time is not None:
-            date_fmt = '%d/%m/%Y %H:%M'
-        else:
-            date_fmt = '%d/%m/%Y'
+        date_fmt = '%d/%m/%Y %H:%M' if time is not None else '%d/%m/%Y'
         return datetime.strptime(date_str, date_fmt)
 
 
@@ -726,11 +723,7 @@ def _build_timestep(istep, date, dactions):
     
     lines = [_start_step_str]
     actions_step = _dactions.get(date_key_fmt, {})
-    for variable, actions in actions_step.items():
-        for action in actions:
-            mode = action.pop('mode')
-            action_str = _build_parameter_line(variable, mode, **action)
-            lines.append(action_str)
+    lines.extend(_build_parameter_block(actions_step, mode='list'))
     lines.append(FMT_END_TIMESTEP)
     return lines
 

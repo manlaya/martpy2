@@ -7,7 +7,6 @@ from martpy.inputs.mart_param import MartheParams
 from martpy.inputs._mart_parser import (
     _parse_mart_file,
     _write_mart_file,
-    get_parameter_help,
     BLOCK_MART
 )
 
@@ -106,12 +105,6 @@ def test_reader():
         'Error while parsing block parameters'
 
 
-def test_get_parameter_help():
-    dict_res = _parse_mart_file(MART_FILE, verbose=True)
-    res = get_parameter_help('max_num_drains')
-    assert res is not None, 'Error while getting parameter help'
-
-
 def test_build_line():
     test = {'grid_id': 0, 'layer': 1, 'value': '*'}
     test_str = _build_parameter_line('DEBIT', 'COUCHE', **test)
@@ -161,9 +154,23 @@ def test_from_tpl():
     assert len(mart.get_param_groups()) == 21, 'Wrong block param number from template'
 
 
+def test_mart_class_attrs():
+    mart = MartheParams.from_file(MART_FILE)
+    assert hasattr(mart, 'groups')
+    mart.get_param_groups()
+    mart.get_param_keys()
+    print(mart)
+
+    mart = MartheParams.from_template()
+    assert hasattr(mart, 'groups')
+    mart.get_param_groups()
+    mart.get_param_keys()
+    print(mart)
+    
+
 def test_get_parameter_help_method():
     mart = MartheParams.from_template()
-    help = mart.get_param_help(group='outputs', key='gen_list', locale='en')
+    help = mart.get_param_help(group='outputs', key='gen_list', lang='en')
     assert help['outputs']['gen_list'].keys() == {'default', 'type', 'description'}, \
         'Error while getting parameter help from MartheParams class'
 

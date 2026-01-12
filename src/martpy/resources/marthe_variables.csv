@@ -172,7 +172,7 @@ id	is_grid	code_var_fr	code_var_en	code_abb	ext	surface_field	descr	is_file	desc
 171	1	ALTI_LIM_POMP	PUMP_ELEV_LIM	ZLIMQ	zlimq	0	 Altitude limite de maille pompée (crépines)	1	 Elevation limit for pumped cells (screen base)
 172	1	IND_EPONTE	CAPROCK_INDEX	KKKKK	i_epo	0	 Indice d'Éponte thermique (solution analytique)	1	 Caprock index for energy transfer (closed form)
 173	1	ZON_NO_GEOCHI	NO_GEOCHE_ZON	KKKKK	no_ch	0	 Index d'exclusion du calcul géochimique	1	 Index of exclusion of geochemistry calculation
-174	0	VOLUM_MOLAIR	MOLAR_VOLUM	KKKKK	kkk	0	 Volume molaire des minéraux (L/mole)	1	 Molar volume of minerals (L/mole)
+174	0	VOLUM_MOLAIR	MOLAR_VOLUM	KKKKK	kkkx	0	 Volume molaire des minéraux (L/mole)	1	 Molar volume of minerals (L/mole)
 175	1	ZON_NO_SALINI	NO_SALINI_ZON	KKKKK	nosal	0	 Index d'exclusion du transport de Salinité	1	 Index of salinity transport exclusion
 176	1	ZON_NO_CONCEN	NO_CONCEN_ZON	KKKKK	nocon	0	 Index d'exclusion du transport de Concentration	1	 Index of concentration transport exclusion
 177	1	ZON_NO_TEMPER	NO_TEMPER_ZON	KKKKK	notem	0	 Index d'exclusion du transfert Thermique	1	 Index of thermal transfer exclusion

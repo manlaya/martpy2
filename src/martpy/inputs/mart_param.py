@@ -4,15 +4,22 @@
 import pandas as pd
 
 from martpy.inputs._mart_parser import (
+    BLOCK_MART,
+    MART_TEMPLATE,
     _parse_mart_file,
     _write_mart_file,
-    BLOCK_MART,
-    MART_TEMPLATE
 )
 
 
 class MartheParams:
-    """ Object to create/edit Marthe parameters
+    """ Object to create/edit Marthe general parameters
+
+    Examples
+    --------
+    >>> mart_params = MartheParams.from_template()
+    >>> mart_params.write_file('params.mart')
+    >>> params = MartheParams.from_file('params.mart')
+    >>> params['general_params']
     """
 
     def __init__(self,
@@ -23,14 +30,8 @@ class MartheParams:
         Parameters
         ----------
         **params : dict
-            nested dictionnary with marthe parameters by block
-        
-        Examples
-        --------
-        >>> mart_params = MartheParams.from_template()
-        >>> mart_params.write_file('params.mart')
-        >>> params = MartheParams.from_file('params.mart')
-        >>> params['general_params']
+            nested dictionnary with marthe parameters by block, see
+            :py:func:`read_general_parameters` outputs format
         """
         for k, v in params.items():
             self[k] = v
@@ -56,26 +57,24 @@ class MartheParams:
             (will only return keys)
         """
         all_keys = []
-        for g in self.keys:
-            for k in self[g].keys():
-                if nested:
-                    _tmp = f'{g}/{k}'
-                else:
-                    _tmp = k
+        for g in self.groups:
+            if g == 'init_parameters':
+                continue
+            for k in self[g]:
+                _tmp = f'{g}/{k}' if nested else k
                 all_keys.append(_tmp)
         return all_keys
     
-    def get_param_help(self, group=None, key=None, locale='fr'):
-        """ Get help information on marthe parameters
-        # TODO use get_parameter_help function ?
+    def get_param_help(self, key=None, group=None, lang='fr'):
+        """ Get help informations on marthe parameters
 
         Parameters
         ----------
-        group : str, optional
-            marthe parameter group, by default None
         key : str, optional
             marthe parameter key, by default None
-        locale : str, optional
+        group : str, optional
+            marthe parameter group, by default None
+        lang : str, optional
             language for the parameter description, by default 'fr'
             accepted values are 'fr' and 'en'
         
@@ -95,8 +94,12 @@ class MartheParams:
             df = df.loc[df['key'] == key]
         
         _descr = 'descr'
-        if locale == 'en':
+        if lang == 'en':
             _descr += '_en'
+        
+        if df.empty:
+            print(f"Warning: parameter key '{key}' not found in template")
+            return None
         
         help_dict = {}
         for _, row in df.iterrows():
@@ -112,7 +115,7 @@ class MartheParams:
     
     def to_dict(self):
         d = {}
-        for k in self.keys:
+        for k in self.groups:
             d[k] = self[k]
         return d
 
@@ -133,10 +136,16 @@ class MartheParams:
                 if row['type'] is not None and not pd.isna(row['type']) and value != '':
                     value = row['type'](value)
                 params[g][row['key']] = value
+        params['init_parameters'] = {}
         return MartheParams(**params)
 
     def write_file(self, mart_file, title='marthe parameters'):
         _write_mart_file(self.to_dict(), mart_file, title=title)
+    
+    def __repr__(self):
+        import pprint
+        pp = pprint.PrettyPrinter(indent=2, sort_dicts=False)
+        return pp.pformat(self.to_dict())
 
 
 def read_general_parameters(mart_file):
@@ -177,4 +186,3 @@ def _set_restart(dict_param):
     if current is not None:
         dict_param['general_params']['edit_restart'] = 1
     return dict_param
-

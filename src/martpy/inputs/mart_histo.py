@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+
 import numpy as np
 import pandas as pd
 
@@ -125,10 +126,10 @@ class MartHisto(pd.DataFrame):
         Parameters
         ----------
         grid : xr.Dataset with gridmarthe accessor
-            gridfile as read by gridmarthe wrappers. See 
-            :py:func:`martpy.grid.load_marthe_grid`
-            grid need col/row variables, so `add_col_row=True` must be set in
-            load_marthe_grid call.
+            gridfile as read by gridmarthe wrappers.
+            See :py:func:`martpy.grid.load_marthe_grid` ; grid need col/row
+            variables, so `add_col_row=True` must be set in load_marthe_grid
+            call.
 
         Returns
         -------
@@ -231,10 +232,9 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
     data = []
     for line in lines:
         _match = re.search(_HISTO_PARSER, line)
-        if not _match:
-            if verbose:
-                print("Error while parsing histo line")
-                raise ValueError('debug')
+        if not _match and verbose:
+            print("Error while parsing histo line")
+            raise ValueError('debug')
         if _match:
             parsed_vals = _match.groupdict()
 
@@ -318,7 +318,7 @@ def _build_histo_line(
     line = "{0:>2s}/{1:<13s}/HISTO/   =   /{2:>4s}:".format(
         gig, variable, mode
     )
-    if mode.upper() == 'MAIL':
+    if mode.upper() in ['MAIL', 'CELL']:
         line += "C={:7d}L={:7d}P={:7d};".format(
             col, row, layer
         )
@@ -330,7 +330,7 @@ def _build_histo_line(
     else:
         raise ValueError(
             'Unknown `mode` for marthe time serie writer (*.histo). '
-            'Valid modes are: MAIL (cell), XCOO (coordinates with interpolation)'
+            'Valid modes are: MAIL or CELL (cell), XCOO (coordinates with interpolation)'
             'or COOR (xy without interpolation)'
         )
     

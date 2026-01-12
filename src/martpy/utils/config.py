@@ -30,6 +30,13 @@ def _get_resource_file(filename):
     return (impresources.files('martpy.resources') / filename)
 
 
+def _get_descr_field(lang='fr'):
+    _descr_field = 'descr'
+    if not lang == 'fr':
+        _descr_field += '_en'
+    return _descr_field
+
+
 # cf. modumar_Objets_Marth.f90
 # pour les histo, modumar_Histor_et_Optimis.f90 (pour les historiq et nom des champs: modumar_Marlibfi.f90/L3894
 
@@ -73,6 +80,8 @@ MART_OUTPUTS = [
     "reseau_riv_drains_lacs.txt",
 ]
 
+# memo: look into modumar_marlibfi.f90:L86 for list of actions
+# TODO english version ? (modumar_marlibfi.f90:L92)
 ACTIONS_FMT = {
     'ACTION'    : 'I={value:>2};',
     'FICHIER'   : 'N: {file}',
@@ -116,6 +125,11 @@ _ACTION_PARSER = {
     'LAC_EXUT'  : r'L=\s*(?P<lake>\S+)\s*A=\s*(?P<afluent>\S+)\s*V=\s*(?P<value>\S+)\s*;',
 }
 
+# LIB_ACTION_9_UK = [
+#     "GRID     " , "LAYER    " , "GEO_ZONE " , "CELL     " , "OUTPUT   ",
+#     "SOIL_ZONE" , "IRRI_ZONE" , "UNS_ZONE " , "TRIBUTAR " , "METE_FILE",
+#     "LIST_CELL" , "CLIM_ZONE" , "LAKE_GLOB" , "LAKE_OUTL" , "FILE     ",
+# ]
 
 # 1=NAQ ; 2=AQU ; 3=Sat ; 4=S_Liq ; 5=S_NAQ ; 99=Rien
 

@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, subprocess
+import os
+import subprocess
 from pathlib import Path
 
 # from martpy.utils.config import MARTBIN
-from martpy.inputs._rma_parser import (
-    _parse_marthe_project,
-    _write_rma_file
-) 
+from martpy.inputs._rma_parser import _parse_marthe_project, _write_rma_file
 from martpy.utils.os_utils import mv_res
 
 
@@ -40,8 +38,8 @@ class MartProject:
         title: `str`
             Title of the MARTHE project to insert in the RMA file.
         """
-        self._rma_file = rma_file
-        self._files = files if files else {}
+        self.rma_file = rma_file
+        self.project_files = files if files else {}
         self.title = title
     
     def get_files(self, only_active=True):
@@ -59,9 +57,25 @@ class MartProject:
             Dictionary containing the files the RMA project points to.
         """
         if only_active:
-            return {k: v for k, v in self._files.items() if v}
+            return {k: v for k, v in self.project_files.items() if v}
         else:
-            return self._files.copy()
+            return self.project_files.copy()
+    
+    @classmethod
+    def from_template(cls, rma_file='new_project.rma', title='Marthe Project'):
+        """ Create a Marthe Project from scratch
+
+        Parameters
+        ----------
+        rma_file : str, optional
+            the name that will be used for storage, by default 'new_project.rma'
+
+        Returns
+        -------
+        MartProject
+        """
+        tpl_files = {}
+        return cls(rma_file, tpl_files, title)
 
     @classmethod
     def from_rma_file(cls, rma_file):
@@ -74,25 +88,29 @@ class MartProject:
         """
         files = _parse_marthe_project(rma_file)
         title = files.pop('title', 'MARTHE Project')
-        return MartProject(rma_file, files, title)
+        return cls(rma_file, files, title)
     
-    def to_rma_file(self, rma_file=None, title='MARTHE Project'):
+    def to_rma_file(self, rma_file=None, title=None):
         """Write a MARTHE project into an RMA file.
 
         Parameters
         ----------
         rma_file: `str`
-            Path to the RMA file to write.
+            Path to the RMA file to write. Default is the rma file of
+            the class instance (i.e overwrite!)
 
         title: `str`
             Title of the MARTHE project to insert in the RMA file.
+            default is None (i.e use existing title)
         """
         if rma_file is None:
-            rma_file = self._rma_file
-        _write_rma_file(self._rma_file, rma_file, title=title)
+            rma_file = self.rma_file
+        if title is None:
+            title = self.title
+        _write_rma_file(self.project_files, rma_file, title=title)
 
 
-class MartModel:
+class MartModel(MartProject):
 
     # Object to store MARTHE model information and run the model
     # using rma, mart, permh, pastp, layer files/informations
@@ -104,20 +122,24 @@ class MartModel:
         Parameters
         ----------
         name : str
-            The name of current model. It should correspond to the `.rma` file
-            if existing.
-            If the file does not exist, only the model name is stored. You can
-            create a MartProject object later and assign it to the model.
+            The name of current model. It should correspond to the `.rma` file,
+            if existing. If the file does not exist, an empty one is created.
+            You can later set any variable.
         """
-        self.model_name = name.replace('.rma', '')
-        self.file_rma = f"{self.model_name}.rma"
-        if os.path.exists(self.file_rma):
-            self.model_path = os.path.dirname(self.model_name)
-            self.model_name = os.path.basename(self.model_name)
-            self.project = MartProject.from_rma_file(self.file_rma)
+        _model_name = name.replace('.rma', '')
+        _rma_file = f"{_model_name}.rma"
+        
+        if os.path.exists(_rma_file):
+            # factory... TODO switch back to super().__init__() ? Changes needed
+            obj = MartProject.from_rma_file(_rma_file)
+            self.__dict__ = obj.__dict__
         else:
-            self.model_path = os.getcwd()
-            self.project = None
+            obj = MartProject.from_template()
+            self.__dict__ = obj.__dict__
+        
+        self.model_path = os.path.dirname(_model_name)
+        self.model_name = os.path.basename(_model_name)
+        os.makedirs(self.model_path, exist_ok=True)
     
     def load_model(self,):
         # load .mart, .pastp, .layer, .permh
@@ -143,12 +165,10 @@ class MartModel:
             Write the batch file path to run marthe without arguments
             and automatically set restarts.
         """
-        if not hasattr(self, 'project') or self.project is None:
-            raise ValueError("No MartProject associated with this MartModel.")
         batch_file = 'nom_proj_marthe.defrma'
         if not os.path.exists(Path(self.model_path, batch_file)) or overwrite:
             with open(Path(self.model_path, batch_file), 'w') as bf:
-                bf.write(f"{self.file_rma}\n")
+                bf.write(f"{self.rma_file}\n")
                 bf.write(f"{restart}\n")  # automatic restart
         else:
             print(f"Batch file {batch_file} already exists.")
@@ -163,15 +183,13 @@ class MartModel:
             Path to the output directory where results will be stored,
             by default None (model directory)
         martbin : str, optional
-            Path to the MARTHE binary executable, by default 'marthe'
+            Path to the MARTHE binary executable, by default 'marthe'. This
+            means the program called 'marthe' needs to be in your `$PATH`
         mute : bool, optional
             If True, suppress the output of the MARTHE run, by default False
         debug : bool, optional
             If True, print debug information, by default False
         """
-        
-        if not hasattr(self, 'project') or self.project is None:
-            raise ValueError("No MartProject associated with this MartModel.")
         
         cmd = [martbin]
         cmd_kwargs = {}
@@ -181,7 +199,7 @@ class MartModel:
             # the `nom_proj_marthe.defrma` is a special file for CLI
             cmd_kwargs['cwd'] = self.model_path
         else:
-            cmd += [self.file_rma]
+            cmd += [self.rma_file]
         
         if mute:
             # TODO: better use of mute options in marthe parameters ?
@@ -193,25 +211,22 @@ class MartModel:
             print(f"Running command: {' '.join(map(str, cmd))}")
             print(cmd_kwargs)
         
-        status = subprocess.run(cmd, **cmd_kwargs).returncode  # returncode to mimic .call() return status
+        status = subprocess.run(cmd, **cmd_kwargs).returncode  # memo: returncode to mimic .call() return status
         
         if status != 0:
             print(f"Error: MARTHE run failed with status code {status}.")
         
         if output_dir is not None:
             # move output files to output_dir
-            mv_res(dst=output_dir)
+            mv_res(src_dir=self.model_path, dst_dir=output_dir)
         
         return status
     
     def __repr__(self):
         _str = f"MartModel: {self.model_name}\n"
         _str += f"    Path: {self.model_path}\n"
-        if self.project is not None:
-            _str += f"    Title: {self.project.title}\n"
-            _str +=  "    Files:\n"
-            for k, v in self.project.get_files(only_active=True).items():
-                _str += f"        {k}: {v}\n"
-        else:
-            _str += "    No MartProject associated.\n"
+        _str += f"    Title: {self.title}\n"
+        _str +=  "    Files:\n"
+        for k, v in self.get_files(only_active=True).items():
+            _str += f"        {k}: {v}\n"
         return _str

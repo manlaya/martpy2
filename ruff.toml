@@ -13,32 +13,53 @@ extend-exclude = [
     ".git",
     "__pycache__",
     "docs/source/conf.py",
-    "src/martpy/utils/config.py"
+    "src/martpy/utils/config.py",
+    "**/*.ipynb",
+    "tests/*"
 ]
 
 [lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`) codes by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-# blank lines E303 (too many), E305 (two)
+# https://docs.astral.sh/ruff/rules/
 select = [
-    "E4", "E7", "E9", "F", "E303", "E501", "E305",
-    "NPY", # NumPy specific rules
+    "W",     # warnings
+    "F",     # pyflakes
+    "E4",    # pycodestyle
+    "E7",    # pycodestyle: 
+    "E9",    # pycodestyle: 
+    "E501",  # pycodestyle: 
+    "E303",  # pycodestyle: too many blank lines
+    "E305",  # pycodestyle: two blank lines between func
+    "ARG",   # flake8-unused-arguments
+    "B",     # flake8-bugbear, B950
+    "C4",    # flake8-comprehensions
+    "I",     # isort
+    "ICN",   # flake8-import-conventions
+    "NPY",   # NumPy specific rules
+    "PD",    # pandas-vet
+    "PIE",   # flake8-pie
+    "SIM",   # flake8-simplify
+    "YTT",   # flake8-2020
+    # "C901",  # McCabe complexity
+    # "DOC",   # pydoclint
+    # "EM",    # flake8-errmsg
+    # "EXE",   # flake8-executable // remove shebangs
+    # "PT",    # flake8-pytest-style
+    # "PTH",   # flake8-use-pathlib
+    # "RET",   # flake8-return
+    # "UP",    # pyupgrade
+    # # "RUF",   # Ruff-specific
 ]
 
-# extend-select = B950  : 'B'                                                                                                   
-# https://github.com/PyCQA/flake8-bugbear#opinionated-warnings#    
-
-# multiple import in one line (E401)
-ignore = ["E401"]
-# E501,E221,W293,W503,E701,E704,E203,E401,E231
-# E501: line > 79 char                                                          
-# E221: multiplespaces before operator; ok, this may be not pythonnic but so much convenient with vim
-# W293: blank line contains whitespace                                          
-# W503: line break before binary operator: no, this PEP8                        
-# E701,704,203: https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#labels-why-pycodestyle-warnings 
-# E401: multiple import on one line                                             
-# E231: missing whitespace after , => in slice, not so good  
+ignore = [
+    "E401",  # multiple import in one line
+    "W293",  # blank line with whitespace
+    "E203",  # whitespace before ':' https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#labels-why-pycodestyle-warnings
+    "E226",  # missing space before arithmetic
+    "E221",  # mutliple space before operator; ok, this may be not pythonnic but so much convenient with vim
+    "E227",  # missing white space around operatro
+    "E231",  # missing whitespace after , => in slice, not so good
+    "E721",  # isinstance and not type ==
+]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 # fixable = ["ALL"]
@@ -48,15 +69,22 @@ unfixable = ["B"]
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
+# allow comment too long
+pycodestyle.ignore-overlong-task-comments = true
+task-tags = ["memo"]
+
 preview = true
+
 
 # 4. Ignore `E402` (import violations) in all `__init__.py` files, and in selected subdirectories.
 [lint.per-file-ignores]
 "__init__.py" = ["E402", "F403", "F401"]
 "**/{tests,docs,tools}/*" = ["E402"]
 
+
 [lint.flake8-quotes]
 docstring-quotes = "double"
+
 
 [format]
 line-ending = "lf"
@@ -85,4 +113,6 @@ docstring-code-format = false
 # enabled.
 docstring-code-line-length = "dynamic"
 
-
+[lint.isort]
+# Use a single line after each import block.
+lines-after-imports = 2
