@@ -580,12 +580,12 @@ class MartheTimeSteps:
         raise NotImplementedError('Not yet available.... But Soon ! :)')
     
     def __repr__(self):
-        print('\nMarthe timesteps')
-        print('================')
-        print('Datetime From: {}, to: {}'.format(self.time_window[0], self.time_window[1]))
-        print('Number of steps: {}'.format(len(self.times)))
-        print('Number of steps with action: {}'.format(len(self.actions)))
-        return ''
+        msg = '\nMarthe timesteps\n'
+        msg += '================\n'
+        msg += 'Datetime From: {}, to: {}\n'.format(self.time_window[0], self.time_window[1])
+        msg += 'Number of steps: {}\n'.format(len(self.times))
+        msg += 'Number of steps with action: {}\n'.format(len(self.actions))
+        return msg
 
 
 def _parse_date_pastp(date_str):
