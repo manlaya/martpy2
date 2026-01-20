@@ -144,6 +144,8 @@ class MartModel(MartProject):
             self.__dict__ = obj.__dict__
 
         self.model_path = os.path.dirname(_model_name)
+        if self.model_path == '':
+            self.model_path = '.'
         self.model_name = os.path.basename(_model_name)
         os.makedirs(self.model_path, exist_ok=True)
 

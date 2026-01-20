@@ -1,25 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, shutil
-from platform import uname
 from pandas import read_csv
-
-
-def _get_martbin(bin='marthe'):
-    """
-    Function to retrieve the path to the MART binary.
-    This function can be modified to change the path as needed.
-    """
-    if uname().system == 'Windows':
-        martbin = os.path.join(os.environ.get('Bin_Marthe'), '{}.exe'.format(bin))
-        if martbin is None or not os.path.exists(martbin):
-            raise FileNotFoundError(f"MART binary not found at {martbin}")
-    else:
-        martbin = shutil.which(bin)
-        if not martbin:
-            raise FileNotFoundError("MART binary not found in PATH")
-    return martbin
 
 
 def _get_resource_file(filename):
@@ -30,23 +12,12 @@ def _get_resource_file(filename):
     return (impresources.files('martpy.resources') / filename)
 
 
-def _get_descr_field(lang='fr'):
-    _descr_field = 'descr'
-    if not lang == 'fr':
-        _descr_field += '_en'
-    return _descr_field
-
-
-# cf. modumar_Objets_Marth.f90
-# pour les histo, modumar_Histor_et_Optimis.f90 (pour les historiq et nom des champs: modumar_Marlibfi.f90/L3894
-
 MART_VERSION = '7.8.4'
-LC_ALL  = 'fr'  # TODO guess lang install marthe + trad outputs/keys
 NAN_VALUES = [9999., -9999., 8888.]  # Example NaN values, can be modified as needed
-MART_VARIABLES = read_csv(_get_resource_file('marthe_variables.csv'), sep='\t', encoding='ISO-8859-1')
-
-# MARTBIN = _get_martbin()
-MARTBIN = None
+MART_VARIABLES = read_csv(
+    _get_resource_file('marthe_variables.csv'),
+    sep='\t', encoding='ISO-8859-1'
+)
 
 COMMENT_BLOCK = '/!!!!!/!!!!!'
 COMMENTS = ['!', '#']
@@ -132,7 +103,9 @@ _ACTION_PARSER = {
 # ]
 
 # 1=NAQ ; 2=AQU ; 3=Sat ; 4=S_Liq ; 5=S_NAQ ; 99=Rien
-
+# cf. modumar_Objets_Marth.f90
+# pour les histo, modumar_Histor_et_Optimis.f90
+# (pour les historiq et nom des champs: modumar_Marlibfi.f90/L3894
 EDITIONS_FMT = {
     'CHARGE'      : 'I={edit:>2};',
     'VITESSE'     : 'I={edit:>2} [C={C:>7d};L={L:>7d};P={P:>7d};Gig={Gig:>2d}]',
@@ -203,10 +176,62 @@ RENAME_HISTOBIL_HEAD_ZONE = {
     # k=BILZONE_KEY, v='BIL_KEY' (stripped)
     "Stockage": "Glob_Stock",
     "Glob_Lacs-Napp" : "Glob_Lacs-Nappe",
-    "Rivière->Napp"  : "Rivière->Nappe", 
-    "Napp->Rivière"  : "Nappe->Rivière", 
+    "Rivière->Napp"  : "Rivière->Nappe",
+    "Napp->Rivière"  : "Nappe->Rivière",
     "Glob_Riv-Nappe" : "Glob_Riv_Nappe",
-    "Drains->Napp"   : "Drains->Nappe", 
+    "Drains->Napp"   : "Drains->Nappe",
     "Napp->Drains"   : "Nappe->Drains",
     "Glob_Drain-Napp": "Glob_Drain_Napp",
+}
+BLOCK_MART = {
+    'Sauvegardes et contrôles' : 'outputs',
+    'Pas de Temps et sous-pas de temps' : 'timesteps',
+    'Contrôle de la Résolution Hydrodynamique de Nappe' : 'solver',
+    'Unités des données' : 'units',
+    'Options de Géométrie, États de Référence, Processeurs' : 'geometry_process',
+    'Couplage et Transport : Concentration, Chaleur, Salinité' : 'transport',
+    'Salinité, Densité' : 'density',
+    'Température , effets Thermiques': 'thermal',
+    'Concentration et Trajectoires' : 'trajectory_concentr',
+    'Zone Non-Saturée et Multiphasique': 'unsat_multiphas',
+    'Eau, Gaz, Huile, Eau Salée': 'gaz_oil_salt',
+    'Écoulement d\'Huile, Eau Salée, NAQ': 'oil_naq_flow',
+    'Écoulement de Gaz' : 'gaz_flow',
+    'Géochimie' : 'geochemistry',
+    'Calibration automatique / Analyse de sensibilité / Optimisation' : 'optim',
+    'Réseau de Rivières, Drains, Lacs': 'river',
+    'Hydroclimatologie': 'climatology',
+    'Contrôles sur écran en cours de calcul': 'stdout',
+    'Allégements des écritures du fichier bilandeb': 'log_level',
+    'Cultures, Nitrate' : 'agriculture',
+    'Fin des paragraphes': 'dummy',
+    'Initialisation avant calcul' : 'init_parameters',
+    'Fin d\'Initialisation': 'dummy',
+    'Fin du fichier des Paramètres Généraux': 'dummy',
+}
+BLOCK_MART_EN = {
+    'Outputs and controls' : 'outputs',
+    'Time Steps and sub-steps' : 'timesteps',
+    'Control of Aquifer Hydraulic solving process' : 'solver',
+    'Data units' : 'units',
+    'Geometric options, Data reference, Processors' : 'geometry_process',
+    'Transport/Coupling: Concentration, Heat, Salinity' : 'transport',
+    'Salinity, Density' : 'density',
+    'Temperature , Thermal effects' : 'thermal',
+    'Concentration and Pathlines' : 'trajectory_concentr',
+    'Unsaturated Zone and Multiphase flow' : 'unsat_multiphas',
+    'Water, Gas, Oil, Salt Water' : 'gaz_oil_salt',
+    'Oil Flow (Oil, Salt Water, NAQ)' : 'oil_naq_flow',
+    'Gas Flow' : 'gaz_flow',
+    'Geochemistry' : 'geochemistry',
+    'Automatic Calibration / Sensitivity analysis / Optimization' : 'optim',
+    'River Network, Drains, Lakes' : 'river',
+    'Hydroclimatology' : 'climatology',
+    'Screen display during the run' : 'stdout',
+    'Shorter version of the flowbalance file' : 'log_level',
+    'Crops, Nitrate' : 'agriculture',
+    'End of paragraphs' : 'dummy',
+    'Initialization before simulation' : 'init_parameters',
+    'End of Initialization' : 'dummy',
+    'End General Parameters file' : 'dummy',
 }

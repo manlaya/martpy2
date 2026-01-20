@@ -15,6 +15,7 @@ from martpy.inputs.io_utils import (
     _parse_parameter_block,
 )
 from martpy.utils.helper import _check_mart_key
+from martpy.utils.config import get_lang
 
 
 # Memo: check fmt here in MARTHE src/edi_pastp_prepro.f90:L752
@@ -24,21 +25,33 @@ _FLOAT_FMT = r'\d+\.\d+'
 _DATE_FMT = r'(\d{2}/\d{2}/\d{4})( \d{2}:\d{2})?'
 
 PATTERN_STEADY_STEP = (
-    r' \*\*\* D.*but de la simulation.*:\s*'
+    r' \*\*\* (?:D.*but de la simulation|Beginning of simulation).*:\s*'
     r'(?P<time>\d+\.\d+|\d{2}/\d{2}/\d{4}( \d{2}:\d{2})?)\s*;'
 )
 PATTERN_TRANSIENT_STEP = (
-    r"Le pas\s*:\s*(?P<step>\d+):\s*se termine.*la date\s*:\s*"
+    r"(?:Le pas|Step)\s*:\s*(?P<step>\d+):\s*(?:se termine.*la date|Ends at date)\s*:\s*"
     r"(?P<time>\d+\.\d+|\d{2}/\d{2}/\d{4}(\s\d{2}:\d{2})?)\s*;"
 )
-PATTERN_END_STEP = r'\s{2}/\*{5}/\*{5} Fin de ce pas'
-PATTERN_END_SIM = r'.*Fin de la simulation.*'
+PATTERN_END_STEP = r'\s{2}/\*{5}/\*{5} (?:Fin de ce pas|End of this Time Step)'
+PATTERN_END_SIM = r'.*(?:Fin de la simulation|End of simulation).*'
 
 #  ---- Writer format ---- #
-FMT_START_SIM  = ' *** Début de la simulation    à la date :{init_time}; ***'
-FMT_START_TIMESTEP = ' *** Le pas :{istep:5d}: se termine à la date :{time_step}; ***'
-FMT_END_TIMESTEP = '  /*****/***** Fin de ce pas'
-FMT_END_SIM = ' ***        :     : Fin de la simulation :            ; ***'
+FMT_START_SIM  = {
+    'fr': ' *** Début de la simulation    à la date :{init_time}; ***',
+    'en': ' *** Beginning of simulation  at date    :{init_time}; ***'
+}
+FMT_START_TIMESTEP = {
+    'fr': ' *** Le pas :{istep:5d}: se termine à la date :{time_step}; ***',
+    'en': ' *** Step   :{istep:5d}:      Ends at date    :{time_step}; ***'
+}
+FMT_END_TIMESTEP = {
+    'fr': '  /*****/***** Fin de ce pas',
+    'en': '  /*****/***** End of this Time Step'
+}
+FMT_END_SIM = {
+    'fr': ' ***        :     : Fin de la simulation :            ; ***',
+    'en': ' ***        :     : End of simulation    :            ; ***'
+}
 
 
 def _create_times(dates, date_min, date_max, freq, step=0):
@@ -82,7 +95,7 @@ def _subset_times(times, step=1, freq='Y', day=1, month=8):
         times = times.loc[times >= step]
     else:
         raise TypeError('step argument must be int or datetime')
-    
+
     # TODO: create a date_range with user freq and use to subset times?
     if freq is None:
         times = times.iloc[0]
@@ -122,23 +135,23 @@ class MartheTimeSteps:
         min_date = self.times['time'].min()
         max_date = self.times['time'].max()
         self.time_window = (min_date, max_date)
-    
+
     def get_timesteps(self):
         """ Get times and steps number"""
         return self.times
-    
+
     def get_times(self):
         """ Get datetime of the timesteps"""
         return self.times['time']
-    
+
     def add_times(self, date_min=None, date_max=None, freq='D', dates=None):
         """ Add times to the timesteps
-        
+
         Parameters
         ----------
         dates : pandas.DateTimeIndex or pandas.Series, optional
             a times/dates sequence to use, by default None. If None, use date_min and date_max
-            to create a sequence of times with the frequency provided in parameter 
+            to create a sequence of times with the frequency provided in parameter
             `freq`.
         date_min : str or datetime, optional
             date of the first step to create a sequence, by default None.
@@ -148,7 +161,7 @@ class MartheTimeSteps:
             frequency of the sequence to create, by default 'D' (Daily).
             See pandas documentation for more information on available frequencies:
             https://pandas.pydata.org/docs/user_guide/timeseries.html#timeseries-offset-aliases
-        
+
         Returns
         -------
         None
@@ -163,7 +176,7 @@ class MartheTimeSteps:
             times['step'] = np.arange(1, len(times)+1)
         self.times = times
         self.time_window = (self.times['time'].min(), self.times['time'].max())
-    
+
     def remove_times(self, time=None, step=None, min_date=None, max_date=None):
         """ Remove times from the timesteps
 
@@ -206,7 +219,7 @@ class MartheTimeSteps:
             }
         else:
             pass
-    
+
     def slice_times(self, min_date=None, max_date=None):
         # TODO for slice: add keep_init bool (keep file read at timestep 0 for ex)
         """ Slice times from the timesteps
@@ -246,12 +259,12 @@ class MartheTimeSteps:
             timestep number to get actions for, by default None
         variable : str, optional
             marthe variable to get actions for, by default None
-        
+
         Returns
         -------
         dict
             dictionnary of actions for the timestep(s) requested.
-        
+
         Examples
         --------
         >>> pastp = read_mart_timesteps('hallue.pastp')
@@ -268,7 +281,7 @@ class MartheTimeSteps:
             elif isinstance(time, str):
                 time_keys = [time]
             return {k: v for k, v in self.actions.items() if k in time_keys}
-        
+
         elif step is not None:
             time_keys = self.times.iloc[step, :]['time']
             if isinstance(time_keys, pd.Series):
@@ -278,7 +291,7 @@ class MartheTimeSteps:
             else:
                 time_keys = [time_keys]
             return  {k: v for k, v in self.actions.items() if k in time_keys}
-        
+
         elif variable is not None:
             variable = variable.upper()
             filtered_actions = {}
@@ -332,7 +345,7 @@ class MartheTimeSteps:
             - TRONCON   : `afluent`, `tronc`, `value`,
             - LAC_GLOB  : `lake`, `value`,
             - LAC_EXUT  : `lake`, `afluent`, `value`,
-            
+
             For available variable, please check
             :py:func:`martpy.get_mart_variables_list`
         """
@@ -345,12 +358,12 @@ class MartheTimeSteps:
                 times = self.times.iloc[steps,:]['time']
             else:
                 raise ValueError('Please provide times or steps')
-        
+
         if isinstance(times, (str, datetime)):
             if type(times) is str:
                 times = datetime.strptime(times, '%Y-%m-%d')
             times = [times]
-        
+
         for time in times:
             key = _convert_date_to_str_iso(time)
             new_actions[key] = {
@@ -377,7 +390,7 @@ class MartheTimeSteps:
             'Method is not yet implemented. '
             'You can remove actions in self.actions dictionnary'
         )
-    
+
     def set_met_forcings(
         self,
         tpl_name,
@@ -414,18 +427,18 @@ class MartheTimeSteps:
             frequency to add meteorological forcings, by default 'Y' for yearly
             (based on yearly files from Météo-France). If None, data are only
             added to the 0 timestep (steady state).
-        
+
         Returns
         -------
         None
             Set new actions to current instance.
-        
+
         Notes
         -----
         To add meteorological forcings only to the 1st timestep with constant
         files name use arguments `step=1` and `freq=None` together with tpl_name
         without format tags (eg `['File1', 'File2']`).
-        
+
         Example
         -------
         >>> pastp.set_forcings(
@@ -438,16 +451,24 @@ class MartheTimeSteps:
         ... )
         """
         # from pandas.tseries.offsets import DateOffset
-
+        lang = get_lang()
         if mode == 1:
-            var1, var2 = 'METEO_PLUIE', 'METEO_ETP'
-            flux1, flux2 = 'FLUX_PLUV', 'FLUX_ETP'
+            if lang == 'fr':
+                var1, var2 = 'METEO_PLUIE', 'METEO_ETP'
+                flux1, flux2 = 'FLUX_PLUV', 'FLUX_ETP'
+            else:
+                var1, var2 = 'METEO_RAIN', 'METEO_PET'
+                flux1, flux2 = 'RAIN_FLUX', 'PET_FLUX'
         elif mode in [2,4]:
-            var1, var2 = 'METEO_RECHARG', 'METEO_RUISSEL'
-            flux1, flux2 = 'RECHARGE', 'RUISSEL'
+            if lang == 'fr':
+                var1, var2 = 'METEO_RECHARG', 'METEO_RUISSEL'
+                flux1, flux2 = 'RECHARGE', 'RUISSEL'
+            else:
+                var1, var2 = 'METEO_RECHARG', 'METEO_RUNOFF'
+                flux1, flux2 = 'RECHARGE', 'RUNOFF'
         else:
             raise ValueError('Unknow mode. Accepted values: 1,2,4')
-        
+
         times = self.get_times()
         times = _subset_times(times, step, freq, day, month)
 
@@ -455,25 +476,25 @@ class MartheTimeSteps:
             self.add_action(
                 times=t,
                 variable=var1,
-                action='FICHIER',
+                action='FICHIER' if lang == 'fr' else 'FILE',
                 file=Path(path_data, tpl_name[0].format(t.year, t.year+1))
             )
             self.add_action(
                 times=t,
                 variable=var2,
-                action='FICHIER',
+                action='FICHIER' if lang == 'fr' else 'FILE',
                 file=Path(path_data, tpl_name[1].format(t.year, t.year+1))
             )
             self.add_action(
                 times=t,
                 variable=flux1,
-                action='FICH_METE',
+                action='FICH_METE' if lang == 'fr' else 'METE_FILE',
                 step='*'
             )
             self.add_action(
                 times=t,
                 variable=flux2,
-                action='FICH_METE',
+                action='FICH_METE' if lang == 'fr' else 'METE_FILE',
                 step='*'
             )
         return
@@ -507,18 +528,25 @@ class MartheTimeSteps:
         # TODO make opt list mail case insensitive
         times = self.get_times()
         times = _subset_times(times, step, freq, day=1)
+        lang = get_lang()
         opt = _filter_valid_opt_list_mail(opt, errors='raise')
         for t in times:
             self.add_action(
                 times=t,
-                variable='DEBIT',
-                action='LIST_MAIL',
+                variable='DEBIT' if lang == 'fr' else 'DISCHARGE',
+                action='LIST_MAIL' if lang == 'fr' else 'LIST_CELL',
                 file=file_tpl.format(t.year, t.month, t.day),
                 opt_list_mail=opt
             )
         return
 
-    def write_file(self, filename, title='Marthe TimeSteps', encoding='ISO-8859-1'):
+    def write_file(
+        self,
+        filename,
+        title='Marthe TimeSteps',
+        encoding='ISO-8859-1',
+        lang=None
+    ):
         """ Build a Timestep (`*.pastp`) file
 
         Parameters
@@ -529,11 +557,16 @@ class MartheTimeSteps:
             First line of file (description, title)
         encoding : str, optional.
             encoding for file to write. Default
+        lang: str, optional
+            language of pastp file. Default is
+            the current language of the configuration. See :py:func:`get_lang`.
+            and :py:func:`set_lang`.
         """
+        lang = get_lang() if lang is None else lang
         lines = []
         lines.extend(_build_header(title))
-        lines.extend(_build_pastp(self.times['time'].to_list(), self.actions))
-        lines.append(FMT_END_SIM)
+        lines.extend(_build_pastp(self.times['time'].to_list(), self.actions, lang))
+        lines.append(FMT_END_SIM.get(lang))
         with open(filename, 'w', encoding=encoding) as f:
             f.write('\n'.join(lines))
 
@@ -542,7 +575,7 @@ class MartheTimeSteps:
         return read_mart_timesteps(file_pastp, encoding)
     
     @classmethod
-    def from_dates(self, date_min=None, date_max=None, freq='D', dates=None,):
+    def from_dates(cls, date_min=None, date_max=None, freq='D', dates=None,):
         """ Create a MartheTimeSteps instance based on a list of dates or a frequency
 
         Parameters
@@ -578,7 +611,7 @@ class MartheTimeSteps:
     ):
         # TODO this exists in pymarthe - check first
         raise NotImplementedError('Not yet available.... But Soon ! :)')
-    
+
     def __repr__(self):
         msg = '\nMarthe timesteps\n'
         msg += '================\n'
@@ -641,58 +674,60 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
         path to the timestep file (`*.pastp`)
     encoding : str, optional
         encoding used to read the file, by default 'ISO-8859-1'
-    
+
     Returns
     -------
     MartTimeStep
     """
-    
+
     with open(file_pastp, mode='r', encoding=encoding) as f:
         text_pastp = f.read()
-    
-    timesteps = re.split(PATTERN_END_STEP, text_pastp, flags=re.MULTILINE|re.DOTALL)
+
+    timesteps = re.split(
+        PATTERN_END_STEP, text_pastp, flags=re.MULTILINE|re.DOTALL|re.IGNORECASE
+    )
     dtime = []
     actions = {}
     for i, pastp in enumerate(timesteps):
         pastp = pastp.strip()
-        
+
         if len(pastp) == 0 or re.match(PATTERN_END_SIM, pastp, re.I):
             continue
-        
+
         if i == 0:
-            _match = re.search(PATTERN_STEADY_STEP, pastp)
+            _match = re.search(PATTERN_STEADY_STEP, pastp, re.IGNORECASE)
         else:
-            _match = re.search(PATTERN_TRANSIENT_STEP, pastp)
-        
+            _match = re.search(PATTERN_TRANSIENT_STEP, pastp, re.IGNORECASE)
+
         if _match:
             _pastp_dict = _match.groupdict()
             # at steady step, istep is not in pattern, add it
             _pastp_dict['step'] = int(_pastp_dict.get('step', i))
             _pastp_dict['time'] = _parse_date_pastp(_pastp_dict.get('time'))
-            
+
             # split lines to parse action in timestep
             # only parse after the time, otherwise it's not action
             # and after 1-index -> cause pattern leave '***\n' after time
             block = pastp[_match.end():].splitlines()[1:]
-            
+
             _actions = _parse_parameter_block(block)
             # _actions = []
             # for line in block:
             #     _actions.append(_parse_parameter_line(line))
-            
+
             if len(_actions) > 0:
                 actions[_convert_date_to_str_iso(_pastp_dict['time'])] = _actions
                 _pastp_dict['has_action'] = True
             else:
                 _pastp_dict['has_action'] = False
-            
+
             dtime.append(_pastp_dict)
-    
+
     dtime = pd.DataFrame(dtime)  # more efficient than append a DataFrame then concat...
     return MartheTimeSteps(dtime, actions)
 
 
-def _build_timestep(istep, date, dactions):
+def _build_timestep(istep, date, dactions, lang='fr'):
     """ Build the lines for one time step of MARTHE pastp file.
 
     Parameters
@@ -704,31 +739,34 @@ def _build_timestep(istep, date, dactions):
     dactions : dict
         dictionnary containing actions for current timestep.
         Keys are string dates in iso format (YYYY-MM-DDTHH:MM:SS)
+    lang: str, optional
+        language to use (fr, en). Default is 'fr'
 
     Returns
     -------
     lines : list of str
     """
-    # from copy import deepcopy
+    # from copy import deepcopy  # TODO assert untouched ?
+    lang = lang.lower()
 
     date_str = _convert_date_to_str(date)
     date_key_fmt = _convert_date_to_str_iso(date)
     # _dactions = deepcopy(dactions)  # deep copy to limit side effect and allow rewrite // perf?
     _dactions = dactions
-    
+
     if istep == 0:
-        _start_step_str = FMT_START_SIM.format(init_time=date_str)
+        _start_step_str = FMT_START_SIM.get(lang).format(init_time=date_str)
     else:
-        _start_step_str = FMT_START_TIMESTEP.format(istep=istep, time_step=date_str)
-    
+        _start_step_str = FMT_START_TIMESTEP.get(lang).format(istep=istep, time_step=date_str)
+
     lines = [_start_step_str]
     actions_step = _dactions.get(date_key_fmt, {})
     lines.extend(_build_parameter_block(actions_step, mode='list'))
-    lines.append(FMT_END_TIMESTEP)
+    lines.append(FMT_END_TIMESTEP.get(lang))
     return lines
 
 
-def _build_pastp(dates, dactions):
+def _build_pastp(dates, dactions, lang='fr'):
     """ Build all lines of a pastp file
 
     Parameters
@@ -738,25 +776,28 @@ def _build_pastp(dates, dactions):
     dactions : dict
         dictionnary containing actions for all timesteps.
         Keys are string dates in iso format (YYYY-MM-DDTHH:MM:SS)
+    lang : str, optional
+        language of pastp file. Default is french ('fr').
+        Other option is 'en' for english.
 
     Return
     ------
     list of str
         list of lines to write in pastp file. One line per parameter per timestep.
         Lines are ordered by timestep and then by parameter.
-        It Does NOT contains header/footer for pastp file 
+        It Does NOT contains header/footer for pastp file
         (see `MartheTimeStep.write_file` method to write a full pastp file)
     """
     lines = []
     for i, date in enumerate(dates):
         lines.extend(
-            _build_timestep(i, date, dactions)
+            _build_timestep(i, date, dactions, lang)
         )
     return lines
 
 
 # TODO: def get_hdynam():
-# from parsed pastp or parsed mart detect if external file, 
+# from parsed pastp or parsed mart detect if external file,
 # if not detect step with HDYNAM (deal with 1,0,2,-1)
 #  1 : activation (et pour les pas suivants),
 #  2 : activation à ce pas de temps,

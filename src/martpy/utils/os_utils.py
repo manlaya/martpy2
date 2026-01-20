@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, shutil
-from pathlib import Path
+import os
+import shutil
 from datetime import datetime
+from pathlib import Path
 
-from .config import MART_OUTPUTS
+from .constant import MART_OUTPUTS
 
 
 def mk_run_dir(resdir=None):

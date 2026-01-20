@@ -62,7 +62,8 @@ class MartHisto(pd.DataFrame):
         self,
         file_name='file.histo',
         title='Marthe Time series',
-        encoding='ISO-8859-1'
+        encoding='ISO-8859-1',
+        lang='fr'
     ):
         """ Write a .histo file
         To extract simulation results at specific locations
@@ -75,9 +76,11 @@ class MartHisto(pd.DataFrame):
             a custom header in file, by default 'Marthe Time series'
         encoding : str, optional
             encoding for the file, by default 'ISO-8859-1'
+        lang: str, optional
+            Language of the file, by default 'fr' (french) or 'en' for english
         """
-        histo_lines = _build_header(title)
-        histo_lines.extend(_build_histo_from_dataframe(self))
+        histo_lines = _build_header(title, lang)
+        histo_lines.extend(_build_histo_from_dataframe(self, lang))
         with open(file_name, mode='w', encoding=encoding) as f:
             f.write('\n'.join(histo_lines))
     
@@ -359,16 +362,21 @@ def _build_histo_line(
     return line
 
 
-def _build_histo_from_dataframe(df):
+def _build_histo_from_dataframe(df, lang='fr'):
     """ Build histo file string content from martpy dataframe convention
     
     Returns
     -------
-    list:
+    list: list
         list of strings (lines).
+    lang: str, optional
+        language of the file (fr or en)
     """
     lines = []
     for row in df.to_dict('records'):
         lines.append(_build_histo_line(**row))
-    lines.append(' *** Fin du fichier des \'Mailles à Historique\'       ***')
+    if lang.lower() == 'fr':
+        lines.append(' *** Fin du fichier des \'Mailles à Historique\'       ***')
+    else:
+        lines.append(' *** End of file: \'Cells with Time Series\'           ***')
     return lines

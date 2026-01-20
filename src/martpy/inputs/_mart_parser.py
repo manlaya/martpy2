@@ -12,40 +12,16 @@ from martpy.inputs.io_utils import (
     _build_parameter_block,
     _parse_parameter_block,
 )
-from martpy.utils.constant import _get_resource_file
+from martpy.utils.config import get_lang
+from martpy.utils.constant import BLOCK_MART, BLOCK_MART_EN, _get_resource_file
 from martpy.utils.helper import _get_closest_suggestion
 
 
-BLOCK_MART = {
-    'Sauvegardes et contrôles' : 'outputs',
-    'Pas de Temps et sous-pas de temps' : 'timesteps',
-    'Contrôle de la Résolution Hydrodynamique de Nappe' : 'solver',
-    'Unités des données' : 'units',
-    'Options de Géométrie, États de Référence, Processeurs' : 'geometry_process',
-    'Couplage et Transport : Concentration, Chaleur, Salinité' : 'transport',
-    'Salinité, Densité' : 'density',
-    'Température , effets Thermiques': 'thermal',
-    'Concentration et Trajectoires' : 'trajectory_concentr',
-    'Zone Non-Saturée et Multiphasique': 'unsat_multiphas',
-    'Eau, Gaz, Huile, Eau Salée': 'gaz_oil_salt',
-    'Écoulement d\'Huile, Eau Salée, NAQ': 'oil_naq_flow',
-    'Écoulement de Gaz' : 'gaz_flow',
-    'Géochimie' : 'geochemistry',
-    'Calibration automatique / Analyse de sensibilité / Optimisation' : 'optim',
-    'Réseau de Rivières, Drains, Lacs': 'river',
-    'Hydroclimatologie': 'climatology',
-    'Contrôles sur écran en cours de calcul': 'stdout',
-    'Allégements des écritures du fichier bilandeb': 'log_level',
-    'Cultures, Nitrate' : 'agriculture',
-    'Fin des paragraphes': 'dummy',
-    'Initialisation avant calcul' : 'init_parameters',
-    'Fin d\'Initialisation': 'dummy',
-    'Fin du fichier des Paramètres Généraux': 'dummy',
-}
-
 WRITE_FMT_MART = '{0:>10}={1}\n'
 
-MART_TEMPLATE = pd.read_table(_get_resource_file('parameters_template.csv'), encoding='ISO-8859-1', sep='\t')
+MART_TEMPLATE = pd.read_table(
+    _get_resource_file('parameters_template.csv'), encoding='ISO-8859-1', sep='\t'
+)
 
 # type are read as string, convert to actual python type
 MART_TEMPLATE['type'] = MART_TEMPLATE['type'].apply(
@@ -54,7 +30,7 @@ MART_TEMPLATE['type'] = MART_TEMPLATE['type'].apply(
 )
 
 
-def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False):
+def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False, lang=None):
     """ Parse mart file into nested dictionnary
 
     Parameters
@@ -63,6 +39,10 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False):
         path to mart file
     encoding : str, optional
         encoding of the file
+    verbose : bool, optional
+        verbose mode
+    lang : str, optional
+        language of the file
 
     Returns
     -------
@@ -89,6 +69,8 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False):
         }
     }
     """
+    lang = get_lang() if lang is None else lang
+    _BLOCK_MART = BLOCK_MART if lang == 'fr' else BLOCK_MART_EN
     with open(mart_file, mode='r', encoding=encoding) as f:
         content = f.read()
 
@@ -102,8 +84,8 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False):
         params_content = blocks[i+1].strip()
 
         # allow slightly different titles (eg 'calculs' vs 'calcul', diff V7.7 et 7.8)
-        title2 = _get_closest_suggestion(title, list(BLOCK_MART.keys()), n=1)
-        key_block = BLOCK_MART.get(title2[0] if title2 is not None else title)
+        title2 = _get_closest_suggestion(title, list(_BLOCK_MART.keys()), n=1)
+        key_block = _BLOCK_MART.get(title2[0] if title2 is not None else title)
         if key_block is None or key_block == 'dummy':
             continue
 
@@ -220,7 +202,13 @@ def _set_valid_value(value, valid_value):
         raise ValueError(f"Value {value} not in valid values: {valid_value}")
 
 
-def _write_mart_file(dict_mart, mart_file, encoding='ISO-8859-1', title='mart parameter file'):
+def _write_mart_file(
+    dict_mart,
+    mart_file,
+    encoding='ISO-8859-1',
+    title='mart parameter file',
+    lang=None
+):
     """ Write a marthe parameter file from a dictionnary of parameters
 
     Notes
@@ -239,9 +227,13 @@ def _write_mart_file(dict_mart, mart_file, encoding='ISO-8859-1', title='mart pa
         Encoding of the file, by default 'ISO-8859-1'
     title : str, optional
         Title of the file, by default 'mart parameter file'
+    lang : str, optional
+        Language of the file, by default None (user config)
     """
 
-    block_names = {v: k for k,v in BLOCK_MART.items()}  # reversed dict
+    lang = get_lang() if lang is None else lang
+    _BLOCK_MART = BLOCK_MART if lang == 'fr' else BLOCK_MART_EN
+    block_names = {v: k for k,v in _BLOCK_MART.items()}  # reversed dict
 
     mart_str = '\n'.join(_build_header(title)) + '\n'
 
@@ -262,7 +254,7 @@ def _write_mart_file(dict_mart, mart_file, encoding='ISO-8859-1', title='mart pa
                 continue
 
             value = params_block.get(param_key, row['default'])
-            descr = row['descr']
+            descr = row['descr'] if lang == 'fr' else row['descr_en']
 
             # Check for range validity in general parameters
             value = _set_valid_value(value, row['valid_value'])
@@ -278,19 +270,38 @@ def _write_mart_file(dict_mart, mart_file, encoding='ISO-8859-1', title='mart pa
             text = fmt.format(value, descr)
             mart_str += text
 
-    mart_str += ' *** Fin des paragraphes                             $$$\n'
-    mart_str += (
-        ' *** Options supplémentaires (3) (pour accessoires)  ***\n'
-        '         0=[Option supplémentaire 1]\n'
-        '         0=[Option supplémentaire 2]\n'
-        '         0=[Option supplémentaire 3]\n'
-    )
-    mart_str += ' *** Initialisation avant calcul                     ***\n'
+    if lang == 'fr':
+        mart_str += ' *** Fin des paragraphes                             $$$\n'
+        mart_str += (
+            ' *** Options supplémentaires (3) (pour accessoires)  ***\n'
+            '         0=[Option supplémentaire 1]\n'
+            '         0=[Option supplémentaire 2]\n'
+            '         0=[Option supplémentaire 3]\n'
+        )
+        mart_str += ' *** Initialisation avant calcul                     ***\n'
+    else:
+        mart_str += ' *** End of paragraphs                               $$$\n'
+        mart_str += (
+            ' *** Extra options (3) for future use  (not used)    ***\n'
+            '         0=[Complementary Option  1]\n'
+            '         0=[Complementary Option  2]\n'
+            '         0=[Complementary Option  3]\n'
+        )
+        mart_str += ' *** Initialization before simulation                ***\n'
+
+    # build init parameters block
     mart_str += _build_parameter_block(dict_mart.get('init_parameters'))
-    mart_str += (
-        '  /*****/***** Fin d\'Initialisation\n'
-        ' *** Fin du fichier des Paramètres Généraux          ***\n'
-    )
+
+    if lang == 'fr':
+        mart_str += (
+            '  /*****/***** Fin d\'Initialisation\n'
+            ' *** Fin du fichier des Paramètres Généraux          ***\n'
+        )
+    else:
+        mart_str += (
+            '  /*****/***** End of Initialization\n'
+            ' *** End General Parameters file                     ***\n'
+        )
 
     with open(mart_file, 'w', encoding=encoding) as f:
         f.write(mart_str)

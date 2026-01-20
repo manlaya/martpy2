@@ -61,7 +61,7 @@ def read_output_time_series(ts_file):
 def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8859-1'):
     """ Read a water balance output file
 
-    This function reads histobil_debit.prn or any balance *.prn file
+    This function reads histobil_debit.prn/histoclim.prn or any balance *.prn file
     and return a pandas DataFrame with a multiindex columns: date, zone.
 
     If the balance file is zonal, zone level will take the zone number.
@@ -134,3 +134,33 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
     if not add_multiindex:
         df = df.droplevel(0)  # drop zone level, keep only global zone
     return df
+
+
+def read_prn(prn_file):
+    """ Generic function to read a marthe output prn file
+
+    It dispatches to specialized readers based on filename:
+    - historiq.prn -> read_output_time_series
+    - histobil*.prn -> read_output_water_balance
+
+    Parameters
+    ----------
+    prn_file : str
+        Path to the prn file
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with the content of the prn file
+    """
+    import os
+    basename = os.path.basename(prn_file).lower()
+
+    if 'historiq' in basename:
+        return read_output_time_series(prn_file)
+    elif 'histobil' in basename or 'histoclim' in basename:
+        return read_output_water_balance(prn_file)
+    else:
+        raise ValueError(
+            'File is neither a historiq (time series) or histobil/histoclim (water balance)'
+        )

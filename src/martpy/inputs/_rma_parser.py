@@ -4,24 +4,26 @@
 import re
 
 from martpy.utils import MART_VARIABLES
-from martpy.utils.constant import _get_descr_field
+from martpy.utils.config import get_lang, _get_descr_field
 
 
 WRITE_FMT = '{0:<70}={1}\n'
 
 
-def _parse_marthe_project(file_rma, encoding='ISO-8859-1', lang='fr'):
+def _parse_marthe_project(file_rma, encoding='ISO-8859-1', lang=None):
+    if lang is None:
+        lang = get_lang()
 
     _descr_field = _get_descr_field(lang)
     _parser = MART_VARIABLES.loc[
             MART_VARIABLES['is_file'] == 1, [_descr_field, 'ext']
     ]
     _descr_784 = _parser[_descr_field].str.strip().values
-
+    
     # read raw content
     with open(file_rma, 'r', encoding=encoding) as f:
         content = f.readlines()
-
+    
     # parse title
     title = content.pop(0).strip()
 
@@ -54,7 +56,8 @@ def _parse_marthe_project(file_rma, encoding='ISO-8859-1', lang='fr'):
     return rma
 
 
-def _write_rma_file(dict_rma, file_rma, title=None, lang='fr'):
+def _write_rma_file(dict_rma, file_rma, title=None, lang=None):
+
     """ Write a rma file from a dict of files
 
     Parameters
@@ -67,13 +70,17 @@ def _write_rma_file(dict_rma, file_rma, title=None, lang='fr'):
         title to use, by default None (use existing one or 'Marthe Project' if
         none)
     lang : str, optional
-        locale to use to write file, by default 'fr'. Accepted values 'fr','en'
-
+        locale to use to write file, by default None (use user config).
+        Accepted values 'fr','en'
+    
     Returns
     -------
     int
         status (0 if ok)
     """
+    if lang is None:
+        lang = get_lang()
+        
     _descr_field = _get_descr_field(lang)
     tpl = MART_VARIABLES.loc[
         MART_VARIABLES['is_file'] == 1, ['ext', _descr_field]

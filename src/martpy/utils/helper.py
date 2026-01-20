@@ -88,4 +88,3 @@ def get_variable_help(variable, locale='fr'):
     _check_mart_key(variable)
     subset = MART_VARIABLES.loc[MART_VARIABLES[f'code_var_{locale}'] == variable.upper()]
     return subset.to_dict('records')[0]
-

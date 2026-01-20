@@ -13,9 +13,13 @@ from martpy.utils.constant import (
     OPT_LIST_MAIL,
 )
 from martpy.utils.helper import _check_mart_key
+from martpy.utils.config import get_lang
 
 
-def _build_header(title, lang='fr'):
+
+def _build_header(title, lang=None):
+    if lang is None:
+        lang = get_lang()
     lines = [title]
     if lang.lower() == 'fr':
         lines.append(
@@ -162,7 +166,7 @@ def _parse_parameter_line(line, verbose=False):
                 for k, v in _submatch.groupdict().items():
                     _type = _infer_variable_dtype(k, v) if mode != 'ACTION' else int
                     _param_values[k] = _parse_param_value(v, _type)
-                if mode == 'LIST_MAIL':
+                if mode in ['LIST_MAIL', 'LIST_CELL']:
                     _param_values['opt_list_mail'] = _parse_list_mail_opt(line)
                 file_evol_dict = _parse_param_file_and_col(line)
                 parsed_params[variable] = {
@@ -313,13 +317,13 @@ def _build_parameter_line(variable, action, **kwargs):
         option_str = '{0}{1}'.format(option_str, filename)
 
     else:
-        if action == 'GRILLE' and isinstance(kwargs.get('grid'), (int, float)):
+        if action in ['GRILLE', 'GRID'] and isinstance(kwargs.get('grid'), (int, float)):
             # special case for grid uniform value
             kwargs['grid'] = '={0}'.format(kwargs['grid'])
 
         option_str = ACTIONS_FMT[action].format(**kwargs)
-
-        if action == 'LIST_MAIL':
+        
+        if action in ['LIST_MAIL', 'LIST_CELL']:
             opts = _filter_valid_opt_list_mail(kwargs.get('opt_list_mail', []))
             opts = _format_opt_list_mail(opts)
             option_str = '{0} {1}'.format(option_str, ' '.join(opts))
@@ -368,14 +372,16 @@ def _build_parameter_block(dict_param, mode='str'):
     return params
 
 
-def _write_modin(dict_action, fname, lang='fr'):
-
+def _write_modin(dict_action, fname, lang=None):
+    if lang is None:
+        lang = get_lang()
+    
     lines = _build_parameter_block(dict_action)
     if lang.lower() == 'fr':
         lines += '  /*****/***** Fin d\'Initialisation\n'
     else:
         lines += '  /*****/***** End of Initialization\n'
-
+    
     with open(fname, encoding='ISO-8859-1', mode='w') as f:
         f.write(lines)
     return 0
