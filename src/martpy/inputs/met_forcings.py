@@ -6,7 +6,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from martpy.utils.config import _get_resource_file
+from martpy.utils.constant import _get_resource_file
 
 
 # TODO: copy SafranGrid dataclass from aquida here, and add methods to
@@ -35,7 +35,7 @@ def read_zone_safran():
 
 def write_met_forcings(df, fname):
     """ Write a DataFrame to Marthe sequential forcing file
-    
+
     Parameters
     ----------
     df : pd.DataFrame

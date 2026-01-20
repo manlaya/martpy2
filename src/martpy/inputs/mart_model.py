@@ -5,14 +5,17 @@ import os
 import subprocess
 from pathlib import Path
 
-# from martpy.utils.config import MARTBIN
-from martpy.inputs._rma_parser import _parse_marthe_project, _write_rma_file
+from martpy.inputs._rma_parser import (
+    MART_VARIABLES,
+    _parse_marthe_project,
+    _write_rma_file,
+)
 from martpy.utils.os_utils import mv_res
 
 
 def read_rma_file(rma_file):
     """Shortcut function to create a MARTHE project.
-    
+
     Parameters
     ----------
     rma_file: `str`
@@ -41,7 +44,7 @@ class MartProject:
         self.rma_file = rma_file
         self.project_files = files if files else {}
         self.title = title
-    
+
     def get_files(self, only_active=True):
         """Get a dictionary of the files in the RMA project.
 
@@ -60,7 +63,7 @@ class MartProject:
             return {k: v for k, v in self.project_files.items() if v}
         else:
             return self.project_files.copy()
-    
+
     @classmethod
     def from_template(cls, rma_file='new_project.rma', title='Marthe Project'):
         """ Create a Marthe Project from scratch
@@ -74,7 +77,10 @@ class MartProject:
         -------
         MartProject
         """
-        tpl_files = {}
+        _tpl_vars = MART_VARIABLES.loc[
+            MART_VARIABLES['is_file'] == 1, 'ext'
+        ].values
+        tpl_files = dict.fromkeys(_tpl_vars)  # init with None
         return cls(rma_file, tpl_files, title)
 
     @classmethod
@@ -89,7 +95,7 @@ class MartProject:
         files = _parse_marthe_project(rma_file)
         title = files.pop('title', 'MARTHE Project')
         return cls(rma_file, files, title)
-    
+
     def to_rma_file(self, rma_file=None, title=None):
         """Write a MARTHE project into an RMA file.
 
@@ -128,7 +134,7 @@ class MartModel(MartProject):
         """
         _model_name = name.replace('.rma', '')
         _rma_file = f"{_model_name}.rma"
-        
+
         if os.path.exists(_rma_file):
             # factory... TODO switch back to super().__init__() ? Changes needed
             obj = MartProject.from_rma_file(_rma_file)
@@ -136,19 +142,19 @@ class MartModel(MartProject):
         else:
             obj = MartProject.from_template()
             self.__dict__ = obj.__dict__
-        
+
         self.model_path = os.path.dirname(_model_name)
         self.model_name = os.path.basename(_model_name)
         os.makedirs(self.model_path, exist_ok=True)
-    
+
     def load_model(self,):
         # load .mart, .pastp, .layer, .permh
         raise NotImplementedError
-    
+
     def get_outputs(self,):
         # load historiq, histobil*.prn
         raise NotImplementedError
-    
+
     def set_batch_file(self, restart='restart.rma', overwrite=False):
         """ Set the batch file path (nom_proj_marthe.defrma) for the model run
 
@@ -158,7 +164,7 @@ class MartModel(MartProject):
             name of the restart file to create, by default 'restart.rma'
         overwrite : bool, optional
             If True, overwrite existing batch file, by default False
-        
+
         Returns
         -------
         None
@@ -190,7 +196,7 @@ class MartModel(MartProject):
         debug : bool, optional
             If True, print debug information, by default False
         """
-        
+
         cmd = [martbin]
         cmd_kwargs = {}
 
@@ -200,28 +206,28 @@ class MartModel(MartProject):
             cmd_kwargs['cwd'] = self.model_path
         else:
             cmd += [self.rma_file]
-        
+
         if mute:
             # TODO: better use of mute options in marthe parameters ?
             # for now, just do #$ cmd > /dev/null 2>&1
             cmd_kwargs['stdout'] = subprocess.DEVNULL
             cmd_kwargs['stderr'] = subprocess.DEVNULL
-        
+
         if debug:
             print(f"Running command: {' '.join(map(str, cmd))}")
             print(cmd_kwargs)
-        
+
         status = subprocess.run(cmd, **cmd_kwargs).returncode  # memo: returncode to mimic .call() return status
-        
+
         if status != 0:
             print(f"Error: MARTHE run failed with status code {status}.")
-        
+
         if output_dir is not None:
             # move output files to output_dir
             mv_res(src_dir=self.model_path, dst_dir=output_dir)
-        
+
         return status
-    
+
     def __repr__(self):
         _str = f"MartModel: {self.model_name}\n"
         _str += f"    Path: {self.model_path}\n"

@@ -3,7 +3,7 @@
 
 import difflib
 
-from martpy.utils.config import MART_VARIABLES
+from martpy.utils.constant import MART_VARIABLES
 
 
 def _get_closest_suggestion(key, valid_keys, n=3):
@@ -11,7 +11,7 @@ def _get_closest_suggestion(key, valid_keys, n=3):
     """
     # Use difflib from stdlib to get close matches if wrong user input
     # 'n=1' is number of suggestions
-    suggestions = difflib.get_close_matches(key, valid_keys, n=n, cutoff=0.6) 
+    suggestions = difflib.get_close_matches(key, valid_keys, n=n, cutoff=0.6)
     if suggestions:
         return suggestions[:n]  # n best suggestions
     return None  # otherwise None
@@ -34,7 +34,7 @@ class MartKeyError(KeyError):
         super().__init__(self.message)
         self.variable = variable
         self.valid_keys = valid_keys
-    
+
     def _get_message(self, variable, valid_keys):
         msg = f'Variable `{variable}` is not a Marthe variable. '
         closest = _get_closest_suggestion(variable.upper(), valid_keys)
@@ -57,7 +57,7 @@ def get_mart_variables_list():
     -------
     pd.DataFrame
         DataFrame with information on all Marthe variables
-    
+
     See Also
     --------
     get_variable_help : get information on a specific Marthe variable
@@ -67,7 +67,7 @@ def get_mart_variables_list():
 
 def get_variable_help(variable, locale='fr'):
     """ Help function to get informations on a specific Marthe variable
-    
+
     Parameters
     ----------
     variable : str
@@ -75,12 +75,12 @@ def get_variable_help(variable, locale='fr'):
     locale : str, optional
         locale for the variable code, by default 'fr'
         accepted values are 'fr' and 'en'
-    
+
     Returns
     -------
     dict
        dict with information on the variable
-    
+
     See Also
     --------
     get_mart_variable : get information on all Marthe variables

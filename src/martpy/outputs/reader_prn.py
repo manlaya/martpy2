@@ -6,17 +6,17 @@ from io import StringIO
 
 import pandas as pd
 
-from martpy.utils.config import RENAME_HISTOBIL_HEAD_ZONE
+from martpy.utils.constant import RENAME_HISTOBIL_HEAD_ZONE
 
 
 def read_output_time_series(ts_file):
     """ Read a time series output file (historiq.prn)
-    
+
     Parameters
     ----------
     ts_file : str, Path
         path to historiq.prn file
-    
+
     Returns
     -------
     pd.DataFrame
@@ -28,19 +28,19 @@ def read_output_time_series(ts_file):
     with open(ts_file, encoding='cp1252', mode='r') as f:
         # max 6 line of headers if nested grids + river_afluent
         head = [next(f) for x in range(6)]
-    
+
     nested = bool(re.match(r".*(Main_Grid|Gigogne).*", "\n".join(head), re.DOTALL|re.I))
     has_riv_afl = bool(re.match(r".*(AF\d+_TR\d+).*", "\n".join(head), re.DOTALL|re.I))
-    
+
     levels_name = ['field', 'coords', 'name']
     if nested:
         levels_name.insert(2, 'grid')
     if has_riv_afl:
         levels_name.insert(levels_name.index('name'), 'riv_afluent')
-    
+
     if not re.match('^#', head[len(levels_name)]):
         levels_name.pop(-1)  # if no name, drop last header / header start with #
-    
+
     headers = [i+1 for i, _ in enumerate(levels_name)]
 
     df = pd.read_csv(
@@ -48,7 +48,7 @@ def read_output_time_series(ts_file):
         header=headers, index_col=0,
         parse_dates=True, dayfirst=True, #infer_datetime_format=True
     )
-    
+
     df = df.dropna(how='all', axis=1)  # drop empty col at the end
     #rename columns levels and index
     df.columns = df.columns.rename(levels_name, level=[i-1 for i in headers])
@@ -68,16 +68,16 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
     Additionally, a 'global' zone will be created with the sum of all zones.
 
     If the balance file is not zonal, only a 'global' zone level will be created.
-    
+
     Parameters
     ----------
     balance_file : str, Path
         path to bilan.prn file
-    
+
     add_multiindex : bool, optional
         if True, add a multiindex to columns (date, zone), by default True
         if False, return a single index with date only (only 'global' zone is kept)
-    
+
     Returns
     -------
     pd.DataFrame
@@ -96,7 +96,7 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
             # if block contain Date header, it is a data block
             # get index of Date line (i.e remove any comment before)
             istart = re.search(r'^\s*Date\s+', block, re.M|re.I).start()
-            
+
             # parse header to get zones
             header = block[:istart]
             zone = re.search(r'zone\s+(\d+)', header, re.IGNORECASE)
@@ -114,13 +114,13 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
                 dayfirst=True,  # infer_datetime_format is deprecated
             )
             df = df.dropna(axis=1, how='all')  # empty col at the end
-            
+
             if zone != 'global':
                 # remove unused level of columns
                 df.columns = df.columns.droplevel(1)
                 # rename columns, to match 'global' zone
                 df = df.rename(RENAME_HISTOBIL_HEAD_ZONE, axis=1)
-            
+
             # clean dataframe
             # drop int date col if present
             df = df.loc[:, [x for x in df.columns if not re.match('Date.*', x)]]

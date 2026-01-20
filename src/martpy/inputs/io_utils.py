@@ -4,7 +4,7 @@
 import re
 from pathlib import Path
 
-from martpy.utils.config import (
+from martpy.utils.constant import (
     _ACTION_PARSER,
     _OPT_MAIL_PARSER,
     ACTIONS_FMT,
@@ -33,7 +33,7 @@ def _build_header(title, lang='fr'):
 def _parse_param_value(val, typ):
     """ Parse value in a parameter line from mart or pastp file
     (fmt /VARIABLE/ACTION ...C=VALUE V=VALUE2)
-    
+
     Value:
     - *   : unchanged
     - 1:2 : range from 1 to 2
@@ -46,7 +46,7 @@ def _parse_param_value(val, typ):
         Value to parse
     typ : type
         Expected type of the value.
-    
+
     Returns
     -------
     list or str
@@ -67,7 +67,7 @@ def _parse_param_value(val, typ):
 def _infer_variable_dtype(var, value):
     """ Try to guess type for a value based on variable in
     an Action Parameter (in .mart or .pastp)
-    
+
     all indices (column, row, grid, zone, etc.) should be integer
     a file should be a string,
     a fixed value is a float
@@ -135,12 +135,12 @@ def _parse_parameter_line(line, verbose=False):
 
     if '!' in line or re.match(r'^\s*[#|!]', line):
         return None
-    
+
     pattern = r'^\s*(\d?)?/(\w+)/(\w+)\s*.*$'
-    # TODO match for syntax /VAR/MODE/[FIX=NAQ;]   N=...  ; 
+    # TODO match for syntax /VAR/MODE/[FIX=NAQ;]   N=...  ;
     # here [] design optional pattern
     # only (re) god knows what it does:
-    # pattern = r'^\s*(\d?)?/(\w+)/(\w+)(?:\s*/FIX=(\w+);)?\s*.*$' 
+    # pattern = r'^\s*(\d?)?/(\w+)/(\w+)(?:\s*/FIX=(\w+);)?\s*.*$'
     # beside jokes:
     #   - `(?:...)` should exclude pattern,
     #   - then nested `(...?)` should return the pattern inside,
@@ -178,10 +178,10 @@ def _parse_parameter_line(line, verbose=False):
 
 def _parse_parameter_block(block_lines, path=None, verbose=False):
     """ Parse a params/actions block for .mart or .pastp
-    
+
     This function loop over lines in block to call :py:func:`_parse_parameter_line`
     and merge results
-    
+
     Parameters
     ----------
     block_lines : list of str
@@ -196,11 +196,11 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
     """
     params = {}
     for line in block_lines:
-        
+
         iparam = _parse_parameter_line(line, verbose=verbose)
         if iparam is None or len(list(iparam.keys())) == 0:
             continue
-        
+
         key = list(iparam.keys())[0]  # one line has always one key here
         iparam[key]['as_external_file'] = False
 
@@ -217,7 +217,7 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
                     {**x, 'as_external_file': True, 'external_file': fmodin} for x in v
                 ]
             iparam = modin_params  # replace parsed params
-        
+
         # here we combine dict for all keys, if MODIFIC several keys, only one otherwise
         for k, v  in iparam.items():
             list_vals = params.get(k, [])
@@ -227,7 +227,7 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
                 iparam[k] = [iparam[k]]
             iparam[k] = list_vals + iparam[k]  # combine previous lines with current
             params = {**params, **iparam}  # combine dict results
-    
+
     return params
 
 
@@ -280,7 +280,7 @@ def _build_parameter_line(variable, action, **kwargs):
         Geometry. Possible values are in ACTIONS_FMT dictionnary keys.
     kwargs : dict
         Other options depending on the typ. See ACTIONS_FMT and EDITIONS dictionnaries.
-    
+
     Returns
     -------
     line : str
@@ -296,14 +296,14 @@ def _build_parameter_line(variable, action, **kwargs):
     filename = kwargs.get('file_evol', '')
     if filename and action not in ['FICH_METE', 'GRILLE', 'FICHIER', 'LIST_MAIL']:
         filename =' File= {0}'.format(filename)
-    
+
     # Case we select a specific column in a tabular time serie file
     file_col = kwargs.get('file_column', '')
     if file_col and int(file_col) == 1:
         file_col = ''
     elif file_col and int(file_col) > 1:
         file_col = '; Col={0}'.format(file_col)
-    
+
     if action == 'EDITION':
         # TODO: complete options for EDITION, edit config._ACTION_PARSER first
         opts = ['edit', 'V', 'L', 'S', 'Z', 'I', 'F', 'B', 'C', 'P', 'Gig']
@@ -311,14 +311,14 @@ def _build_parameter_line(variable, action, **kwargs):
         dopt = EDITIONS_FMT.get(variable, 'I= 1;')
         option_str = dopt.format(**dtemp)
         option_str = '{0}{1}'.format(option_str, filename)
-    
+
     else:
         if action == 'GRILLE' and isinstance(kwargs.get('grid'), (int, float)):
             # special case for grid uniform value
             kwargs['grid'] = '={0}'.format(kwargs['grid'])
-        
+
         option_str = ACTIONS_FMT[action].format(**kwargs)
-        
+
         if action == 'LIST_MAIL':
             opts = _filter_valid_opt_list_mail(kwargs.get('opt_list_mail', []))
             opts = _format_opt_list_mail(opts)
@@ -326,7 +326,7 @@ def _build_parameter_line(variable, action, **kwargs):
         elif action in ['COUCHE', 'MAILLE', 'TRONCON', \
                         'ZONE_GEO', 'ZONE_METEO', 'ZONE_SOL', 'ZONEP']:
             option_str = '{0}{1}{2}'.format(option_str, filename, file_col)
-    
+
     return '  {0:25}{1}'.format(var_type, option_str)
 
 
@@ -343,20 +343,20 @@ def _build_parameter_block(dict_param, mode='str'):
     mode: str, optional
         `str` (default) or `list` to return parameters as a multiline string
         or as a list of lines
-    
+
     Returns
     -------
     str or list
         str or list of str containing the parameter to write in MARTHE fmt
     """
-    
+
     if mode == 'str':
         params = ''
     elif mode == 'list':
         params = []
     else:
         raise ValueError('Unknown mode. Please use `str` or `list`')
-    
+
     for variable, actions in dict_param.items():
         for action in actions:
             _mode = action.pop('mode')
@@ -369,13 +369,13 @@ def _build_parameter_block(dict_param, mode='str'):
 
 
 def _write_modin(dict_action, fname, lang='fr'):
-    
+
     lines = _build_parameter_block(dict_action)
     if lang.lower() == 'fr':
         lines += '  /*****/***** Fin d\'Initialisation\n'
     else:
         lines += '  /*****/***** End of Initialization\n'
-    
+
     with open(fname, encoding='ISO-8859-1', mode='w') as f:
         f.write(lines)
     return 0
