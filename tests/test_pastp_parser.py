@@ -11,6 +11,7 @@ from martpy.inputs.timesteps import (
 )
 
 FILE_PASTP = './tests/data/mart_hallue/hallue.pastp'
+FILE_PASTP_UK = './tests/data/mart_uk/mart_uk_files.pastp'
 
 
 def test_parse_date_fmt():
@@ -162,6 +163,15 @@ def test_write_pastp():
     assert pastp.times['has_action'].to_list() == verif.times['has_action'].to_list(), "{} - actions do not match".format(msg_error)
 
 
+def test_pastp_uk():
+    pastp = read_mart_timesteps(FILE_PASTP_UK)
+    
+    min_date = pastp.times['time'].min().strftime('%Y-%m-%d')
+    max_date = pastp.times['time'].max().strftime('%Y-%m-%d')
+    assert min_date == '2025-11-25', "Wrong start date read"
+    assert max_date == '2026-03-05', "Wrong end date read"
+
+
 def main():
     print('Test MARTHE pastp reader')
     # test_parse_date_fmt()
@@ -171,7 +181,8 @@ def main():
     # test_write_pastp()
     # test_wrapper_method()
     # test_add_action_with_istep()
-    test_get_actions()
+    # test_get_actions()
+    test_pastp_uk()
     print('============')
     print('Test success')
 

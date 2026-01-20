@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
-import subprocess
+import os, subprocess
+from glob import glob
 from pathlib import Path
 
 from martpy.inputs._rma_parser import (
@@ -11,6 +11,7 @@ from martpy.inputs._rma_parser import (
     _write_rma_file,
 )
 from martpy.utils.os_utils import mv_res
+from martpy.outputs import read_prn
 
 
 def read_rma_file(rma_file):
@@ -153,9 +154,34 @@ class MartModel(MartProject):
         # load .mart, .pastp, .layer, .permh
         raise NotImplementedError
 
-    def get_outputs(self,):
-        # load historiq, histobil*.prn
-        raise NotImplementedError
+    def get_outputs(self, output_dir=None):
+        """ Load standard outputs from the model run
+
+        Parameters
+        ----------
+        output_dir : str, optional
+            Directory where outputs are stored. If None, use model directory.
+
+        Returns
+        -------
+        dict
+            Dictionary containing loaded outputs (historiq, etc.)
+        """
+        out_dir = output_dir if output_dir else self.model_path
+        outputs = {}
+
+        # get time series
+        f_hist = os.path.join(out_dir, 'historiq.prn')
+        if os.path.exists(f_hist):
+            outputs['historiq'] = read_prn(f_hist)
+
+        # get balance files
+        histobils = glob(os.path.join(out_dir, 'histo[bil|clim]*.prn'))
+        for f in histobils:
+            key = os.path.basename(f).replace('.prn', '')
+            outputs[key] = read_prn(f)
+
+        return outputs
 
     def set_batch_file(self, restart='restart.rma', overwrite=False):
         """ Set the batch file path (nom_proj_marthe.defrma) for the model run

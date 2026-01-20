@@ -20,7 +20,12 @@ def test_writer_layer():
     file_layer = 'tests/data/mart_72/Craie_NPC.layer'
     df, dict_geom = read_layer(file_layer)
     _write_layer(df, dict_geom, 'tests/data/tmp_outputs/toto.layer')
+    _write_layer(df, dict_geom, 'tests/data/tmp_outputs/toto_uk.layer', lang='en')
 
+def test_uk_reader():
+    file_layer = 'tests/data/mart_uk/mart_uk_files.layer'
+    df, dict_geom = read_layer(file_layer)
+    assert len(df) == 1, 'layer reader failed: wrong number of layers'
 
 def main():
     test_single_layer()

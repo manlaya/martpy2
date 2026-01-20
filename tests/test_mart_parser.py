@@ -175,6 +175,12 @@ def test_get_parameter_help_method():
         'Error while getting parameter help from MartheParams class'
 
 
+# def test_param_uk():
+#     MART_FILE_UK = './tests/data/mart_uk/mart_uk_files.mart'
+#     mart = MartheParams.from_file(MART_FILE_UK)
+#     print(mart)
+
+
 def main():
     # test_parse_parameter_line()
     # test_reader()
