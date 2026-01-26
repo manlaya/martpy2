@@ -322,7 +322,7 @@ def _build_parameter_line(variable, action, **kwargs):
             kwargs['grid'] = '={0}'.format(kwargs['grid'])
 
         option_str = ACTIONS_FMT[action].format(**kwargs)
-        
+
         if action in ['LIST_MAIL', 'LIST_CELL']:
             opts = _filter_valid_opt_list_mail(kwargs.get('opt_list_mail', []))
             opts = _format_opt_list_mail(opts)
@@ -375,13 +375,27 @@ def _build_parameter_block(dict_param, mode='str'):
 def _write_modin(dict_action, fname, lang=None):
     if lang is None:
         lang = get_lang()
-    
+
     lines = _build_parameter_block(dict_action)
     if lang.lower() == 'fr':
         lines += '  /*****/***** Fin d\'Initialisation\n'
     else:
         lines += '  /*****/***** End of Initialization\n'
-    
+
     with open(fname, encoding='ISO-8859-1', mode='w') as f:
         f.write(lines)
     return 0
+
+
+def _fmt_nchar(n, nchar=7):
+    """ Force float format to X char
+    """
+    # s = "{:.7g}".format(n)
+    # edit: compute max dec and use f by default
+    # modified from https://stackoverflow.com/questions/57007807/format-display-of-a-floating-number-to-a-fixed-length
+    mantissa_length = max(nchar - len(str(int(n))) - 1, 0)
+    s = '{:{nchar}.{man}f}'.format(n, nchar=nchar, man=mantissa_length)
+    # check and cut if necessary
+    if len(s) > 7:
+        s = "{:.1e}".format(n) if abs(n) >= 1e7 or abs(n) < 1e-4 else s[:7]
+    return s.rjust(7)

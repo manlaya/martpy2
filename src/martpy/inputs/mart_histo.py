@@ -6,17 +6,17 @@ import re
 import numpy as np
 import pandas as pd
 
-from martpy.inputs.io_utils import _build_header
+from martpy.inputs.io_utils import _build_header, _fmt_nchar
 
 
 _HISTO_PARSER = (
     r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*'
     r'/(?P<mode>[A-Za-z]+):'
     r'(?P<coord_x>[A-Za-z]+)=\s*'
-    r'(?P<x>[+-]?\d+(?:\.\d+)?),*'  # float,int,pos-neg parsing, no e+- notation here
+    r'(?P<x>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'  # float,int,pos-neg parsing,e+- allowed
     # https://stackoverflow.com/questions/2124010/grep-regex-to-match-non-ascii-characters
     r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'  # Marthe f****** non ASCII char!
-    r'(?P<y>[+-]?\d+(?:\.\d+)?),*'
+    r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
     r'(?:P=\s*(?P<layer>\d+);)?\s*'   # optional if tronc/afl
     r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
     r'(?:Name=(?P<name>[^ ]+))?'
@@ -44,7 +44,7 @@ class MartHisto(pd.DataFrame):
     ):
         # nb check that field is a Marthe field
         return
-    
+
     def remove_observation(
         self,
         name=None,
@@ -83,7 +83,7 @@ class MartHisto(pd.DataFrame):
         histo_lines.extend(_build_histo_from_dataframe(self, lang))
         with open(file_name, mode='w', encoding=encoding) as f:
             f.write('\n'.join(histo_lines))
-    
+
     @staticmethod
     def _set_coords_from_grid(df, grid, mode='xy'):
         """ memo: grid is a marthe grid file, read with gm library
@@ -96,7 +96,7 @@ class MartHisto(pd.DataFrame):
             XCOL, YCOL, JCOL1, JCOL2 = 'col', 'row', 'x', 'y'
         else:
             raise ValueError(f"mode must be 'xy' or 'cell', got {mode}")
-        
+
         df_histo = df.copy()
 
         # treat only rows with missing coords - use pd.isna (not np.isnanà for Int64 NaN
@@ -114,7 +114,7 @@ class MartHisto(pd.DataFrame):
         # return updated dataframe
         df_histo.update(df_histo_cells)
         return df_histo
-    
+
     @staticmethod
     def _search_col_row_from_xy(df, grid):
         # less efficient than set_coords_from_grid but allow to query xy inside cells
@@ -128,14 +128,14 @@ class MartHisto(pd.DataFrame):
             df_histo.loc[idx, 'col'] = _grid_loc['col'].data[0]
             df_histo.loc[idx, 'row'] = _grid_loc['row'].data[0]
         return df_histo
-    
+
     @staticmethod
     def _set_coords_from_river_cell(df, grid_river):
         # TODO
         raise NotImplementedError(
             'Setting coordinates from river cells is not yet available'
         )
-    
+
     def fill_coordinates_from_grid(self, grid):
         """ Get missing coordinates (x,y or row,col) from grid
 
@@ -158,7 +158,7 @@ class MartHisto(pd.DataFrame):
         if np.any(pd.isna(df_histo['col'])) or np.any(pd.isna(df_histo['row'])):
             df_histo = self._search_col_row_from_xy(df_histo, grid)
         return df_histo
-    
+
     def to_shapefile(
         self,
         filename='histo.gpkg',
@@ -194,13 +194,13 @@ class MartHisto(pd.DataFrame):
         )
         gdf.to_file(filename, driver='GPKG')
         return
-    
+
     @classmethod
     def from_histo_file(self, filename, encoding='ISO-8859-1', verbose=False):
         """ Read a .histo file from Marthe model
         """
         return read_histo_file(filename, encoding=encoding, verbose=verbose)
-    
+
     @classmethod
     def from_shapefile(self, filename, epsg=27572):
         """ Read a .gpkg file from Marthe model
@@ -231,7 +231,7 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
         Path to the .histo file
     encoding : str, optional
         File encoding, by default 'ISO-8859-1'
-    
+
     Returns
     -------
     pd.DataFrame
@@ -246,7 +246,7 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
     """
     with open(histo_file, encoding=encoding) as f:
         lines = [line.rstrip() for line in f if '/HISTO/' in line]
-    
+
     data = []
     for line in lines:
         _match = re.search(_HISTO_PARSER, line)
@@ -265,7 +265,7 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
                 parsed_vals['interp'] = True
             else:
                 parsed_vals['interp'] = False
-            
+
             # case where Name= is not present but still value
             _name_old = parsed_vals.pop('name_old')
             if _name_old is not None:
@@ -274,9 +274,9 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
             # convert id_grid to '0' if empty
             if parsed_vals['id_grid'] == '':
                 parsed_vals['id_grid'] = '0'
-            
+
             data.append(pd.DataFrame(parsed_vals, index=[0]))
-    
+
     data = pd.concat(data, ignore_index=True)
     data = _set_histo_df_dtype(data)
     return MartHisto(data)
@@ -310,6 +310,10 @@ def _set_histo_df_dtype(data):
         'obs': 'Int64',
         'name': str,
     })
+    if 'river_cell' in data.columns:
+        data = data.astype({'river_cell': 'Int64'})
+    if 'river_afluent' in data.columns:
+        data = data.astype({'river_afluent': 'Int64'})
     data = data.replace('None', np.nan)
     return data
 
@@ -333,7 +337,7 @@ def _build_histo_line(
     layer = int(layer) if layer is not None else ''
     if gig == '0':
         gig = ''
-    
+
     line = "{0:>2s}/{1:<13s}/HISTO/   =   /{2:>4s}:".format(
         gig, variable, mode
     )
@@ -342,29 +346,31 @@ def _build_histo_line(
             col, row, layer
         )
     elif mode.upper() in ['XCOO', 'COOR']:
-        line += "X={:7g}Y={:7g}P={:7d};".format(
-            x, y, layer
+        _x, _y = _fmt_nchar(x, nchar=7), _fmt_nchar(y, nchar=7)
+        line += "X={}Y={}P={:7d};".format(
+            _x, _y, layer
         )
-    # TODO: add writer for afluent
+    elif mode.upper() in ['AFFL', 'TRONC']:
+        line += "Afflu={:7d},Tronç={:7d}".format(river_afluent, river_cell)
     else:
         raise ValueError(
             'Unknown `mode` for marthe time serie writer (*.histo). '
             'Valid modes are: MAIL or CELL (cell), XCOO (coordinates with interpolation)'
             'or COOR (xy without interpolation)'
         )
-    
+
     if obs is not None and not pd.isna(obs):
         line += ' Col_Obs={};'.format(obs)
-    
+
     if name is not None and not pd.isna(name):
         line += ' Name={}'.format(name)
-    
+
     return line
 
 
 def _build_histo_from_dataframe(df, lang='fr'):
     """ Build histo file string content from martpy dataframe convention
-    
+
     Returns
     -------
     list: list
