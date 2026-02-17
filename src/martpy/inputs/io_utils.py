@@ -123,6 +123,9 @@ def _parse_param_file_and_col(line):
 def _parse_parameter_line(line, verbose=False):
     """ Parse a parameter line in Marthe files (*.mart or  *.pastp)
 
+    Lines are in the form of '  [GRID_ID]/VARIABLE/ACTION/[FIX=MODE;] ...'
+    and can contain several parameters depending on the action.
+
     Parameters
     ----------
     line : str
@@ -140,23 +143,35 @@ def _parse_parameter_line(line, verbose=False):
     if '!' in line or re.match(r'^\s*[#|!]', line):
         return None
 
-    pattern = r'^\s*(\d?)?/(\w+)/(\w+)\s*.*$'
-    # TODO match for syntax /VAR/MODE/[FIX=NAQ;]   N=...  ;
-    # here [] design optional pattern
-    # only (re) god knows what it does:
-    # pattern = r'^\s*(\d?)?/(\w+)/(\w+)(?:\s*/FIX=(\w+);)?\s*.*$'
-    # beside jokes:
-    #   - `(?:...)` should exclude pattern,
-    #   - then nested `(...?)` should return the pattern inside,
-    #   - final `?` should make it optional
+    # line in form of '  [GRID_ID]/VARIABLE/ACTION/[FIX=MODE;] ...'
+    # pattern = r'^\s*(\d?)?/(\w+)/(\w+)\s*.*$'
+    # edit: actually, VARIABLE can also contain '/', e.g. '/T_1/2_TARIS_1/ZONE_SOL',
+    # parsing every case in one regex might be possible, but not functional here.
+    # and not so easy to maintain with all cases.
+    # So let's split parsing in two cases: with or without FIX=MODE;
+    # FIX=MODE is only for some multiphase flow parameters,
+    # and T_1/2_something is only for 3 parameters of soil balance in external basins.
+    if '/FIX=' in line:
+        pattern = r'^\s*(\d?)?/(\w+)/(\w+)/FIX=(\w+);.*$'
+    else:
+        # also deal with '/' in variable name, e.g. '/T_1/2_TARIS_1/ZONE_SOL'
+        pattern = r'^\s*(\d?)?/(\w+(?:/\w+)?)/(\w+)\s+.*$'
+
     _match = re.search(pattern, line)
     if _match:
-        grid, variable, mode = _match.groups()
-        # grid, variable, mode, fix = _match.groups()
+        _groups = _match.groups()
+        grid, variable, mode = _groups[0], _groups[1], _groups[2]
+
         parsed_params[variable] = {
             'mode': mode,
             'grid_id': int(grid) if grid != '' else 0
         }
+
+        if len(_groups) == 4:
+            # TODO use fix for something ? currently not used, but it is a
+            # parameter for multiphase flow parameters
+            parsed_params[variable]['fix'] = _groups[3]
+
         _line_parser = _ACTION_PARSER.get(mode)
         if _line_parser is not None:
             pattern = re.compile(_line_parser)
@@ -164,9 +179,9 @@ def _parse_parameter_line(line, verbose=False):
             if _submatch:
                 _param_values = {}
                 for k, v in _submatch.groupdict().items():
-                    _type = _infer_variable_dtype(k, v) if mode != 'ACTION' else int
+                    _type = _infer_variable_dtype(k, v) if mode.upper() != 'ACTION' else int
                     _param_values[k] = _parse_param_value(v, _type)
-                if mode in ['LIST_MAIL', 'LIST_CELL']:
+                if mode.upper() in ['LIST_MAIL', 'LIST_CELL']:
                     _param_values['opt_list_mail'] = _parse_list_mail_opt(line)
                 file_evol_dict = _parse_param_file_and_col(line)
                 parsed_params[variable] = {

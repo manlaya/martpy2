@@ -221,6 +221,50 @@ class MartHisto(pd.DataFrame):
         )
         return gdf
 
+    @classmethod
+    def from_pd(cls, df=None):
+        """ Create a MartHisto object from a pandas DataFrame
+
+        Useful if you already have a DataFrame with the expected columns and dtypes,
+        or want to convert after a manipulation of the DataFrame (e.g. pd.concat
+        of several histo files and/or dataframes).
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            DataFrame with columns:
+            - id_grid: the grid index in which is located the observation in model domain
+            - variable: the variable to extract from simulation
+            - name: name of the observation
+            - mode: mode of the observation (XCOO, GRID, etc.)
+            - x, y or col, row: coordinates of the observation
+            - layer: layer of the observation
+            - interp: wether the simulation extracted at obs location is interpolated or not
+
+        Returns
+        -------
+        MartHisto
+            MartHisto object created from the input DataFrame
+
+        Example
+        -------
+        >>> res = MartHisto.from_pd(pd.concat([df, previous_histo_df]))
+        """
+        if df is None or df.empty:
+            df = pd.DataFrame(columns=[
+                'id_grid', 'variable', 'mode', 'x', 'y',
+                'col', 'row', 'layer', 'name', 'interp', 'obs',
+                'river_cell', 'river_afluent'
+            ])
+        # df = _set_histo_df_dtype(df)  # FIXME add duplicate cols for x,y,col,row
+        return cls(df)
+
+    @property
+    def _constructor(self):
+        # should ensure that operations on MartHisto return a MartHisto
+        # (e.g. df.copy(), df.loc[], etc.)
+        return MartHisto
+
 
 def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
     """ Read a .histo file from Marthe model
@@ -352,11 +396,15 @@ def _build_histo_line(
         )
     elif mode.upper() in ['AFFL', 'TRONC']:
         line += "Afflu={:7d},Tronç={:7d}".format(river_afluent, river_cell)
+    elif mode.upper() in ['LAKE', 'LAC']:
+        line += "N_Lac={},"
+        # Aval = ; Globa=
+        raise NotImplementedError('Lake in histo file are not yet supported.')
     else:
         raise ValueError(
             'Unknown `mode` for marthe time serie writer (*.histo). '
             'Valid modes are: MAIL or CELL (cell), XCOO (coordinates with interpolation)'
-            'or COOR (xy without interpolation)'
+            'or COOR (xy without interpolation). AFFL for river.'
         )
 
     if obs is not None and not pd.isna(obs):

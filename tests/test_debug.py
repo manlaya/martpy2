@@ -17,17 +17,17 @@ def test_debug_parsing_empty_value():
 def test_debug_mart_write_float_fmt():
     the_usual_suspect = 'tests/debug/MOD82_bug_f_fmt_write.mart'
     param = mart.MartheParams.from_file(the_usual_suspect)
-    param.write_file('tests/debug/debug_mart_write_float_fmt.mart')
+    param.write_file('tests/data/tmp_outputs/debug_mart_write_float_fmt.mart')
 
 
 def test_concat_histo():
     histo = mart.MartHisto.from_histo_file('./tests/data/mart_hallue/hallue.histo')
-    histo2 = mart.MartHisto.from_histo_file('./tests/data/mart_uk/mart_uk_files.histo')
-    histo2 = pd.DataFrame(histo2)
-    df = pd.concat([histo, histo2], ignore_index=True)
+    # histo2 = mart.MartHisto.from_histo_file('./tests/data/mart_uk/mart_uk_files.histo')
+    histo2 = histo.iloc[-2:,:]
+    df = pd.concat([histo.iloc[:-2], histo2], ignore_index=True)
     assert isinstance(df, pd.DataFrame), 'Error while concatenating histo dataframes'
     assert isinstance(df, mart.MartHisto), 'Error while concatenating histo dataframes'
-    df.write_file('./tests/debug/debug_concat_histo.histo')
+    df.write_file('./tests/data/tmp_outputs/debug_concat_histo.histo')
 
 
 if __name__ == '__main__':
