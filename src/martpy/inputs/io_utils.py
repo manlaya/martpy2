@@ -378,7 +378,7 @@ def _build_parameter_block(dict_param, mode='str'):
 
     for variable, actions in dict_param.items():
         for action in actions:
-            _mode = action.pop('mode')
+            _mode = action.get('mode')
             line = _build_parameter_line(variable, _mode, **action)
             if mode == 'str':
                 params += f"{line}\n"

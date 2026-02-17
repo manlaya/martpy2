@@ -46,6 +46,7 @@ class MartKeyError(KeyError):
 
 def _check_mart_key(variable):
     valid_keys = MART_VARIABLES['code_var_fr'].to_list()
+    valid_keys += MART_VARIABLES['code_var_en'].to_list()
     if variable.upper() not in valid_keys:
         raise MartKeyError(variable, valid_keys)
 
