@@ -63,11 +63,11 @@ id	group	key	type	fmt	default	valid_value	pattern	descr	descr_en
 62	solver	reduced_emmag	int	>10	0	0,1		Prise en compte réduite du coefficient d'emmagasin. captif en Nappe Libre ou ZNS (Déf=0 => Non ; 1 => Oui)	Reduce influence of the confined storage coefficient when unconfined or in USZ (Def=0 => No ; 1: => Yes)
 63	units	unit_k_aquifer	str	>10	m/s			Unité de Perméabilité des aquifères en m/s (ou m2)	Aquifer Hydraulic conductivity   unit in m/s (or m2)
 64	units	unit_flow	str	>10	m3/s			Unité de Débit                    en m3/s (ou en kg/s si Gaz)	Flow (Discharge, Yield)        unit in m3/s (in Kg/s for Gas flow)
-65	units	unit_head	float	>10.3g				Unité de Charge, Altitude, Pression  en m	Hydraulic Head, Elevation, Pressure   unit in meter
-66	units	unit_storage_confined	float	>10.3g				Unité de coefficient d'Emmagasinement Captif en [-] ou [m-1]	Confined Storage Coefficient unit in [-] or [m-1]
-67	units	unit_storage_unconfined	float	>10.3g				Unité de coefficient d'Emmagasinement Libre en [-] ['%' si en %]	Specific yield               unit in [-] ['%' when in %]
-68	units	unit_clim_flux	float	>10.3g				Unité de Hauteur Hydroclimatique (pour Pluie, ETP, Infiltration, Recharge) en mm	Hydroclimatic (Rainfall, PET, Infiltration, Recharge) Height unit in mm
-69	units	unit_irrig_flux	float	>10.3g				Unité de Hauteur d'Excédent d'Irrigation en mm	Excess Irrigation Height unit in mm
+65	units	unit_head	str	>10				Unité de Charge, Altitude, Pression  en m	Hydraulic Head, Elevation, Pressure   unit in meter
+66	units	unit_storage_confined	str	>10				Unité de coefficient d'Emmagasinement Captif en [-] ou [m-1]	Confined Storage Coefficient unit in [-] or [m-1]
+67	units	unit_storage_unconfined	str	>10				Unité de coefficient d'Emmagasinement Libre en [-] ['%' si en %]	Specific yield               unit in [-] ['%' when in %]
+68	units	unit_clim_flux	str	>10				Unité de Hauteur Hydroclimatique (pour Pluie, ETP, Infiltration, Recharge) en mm	Hydroclimatic (Rainfall, PET, Infiltration, Recharge) Height unit in mm
+69	units	unit_irrig_flux	str	>10				Unité de Hauteur d'Excédent d'Irrigation en mm	Excess Irrigation Height unit in mm
 70	units	unit_time_clim	str	>10			seconde,second,sec,minute,minut,min,heure,hour,heur,hou,heu,jour,jou,day,semaine,semain,week,décade,décad,déca,decade,decad,deca,dec,mois,moi,month,mon,année,annee,ann,year,yea	Unité de Durée Hydroclimatique (seconde, minute, heure, jour, semaine, décade, mois, année)	Duration unit for hydroclimatic data (second, minute, hour, day, week, decade, month, year)
 71	units	unit_time_step	str	>10			seconde,second,sec,minute,minut,min,heure,hour,heur,hou,heu,jour,jou,day,semaine,semain,week,décade,décad,déca,decade,decad,deca,dec,mois,moi,month,mon,année,annee,ann,year,yea	Unité de Temps (des pas de temps de modèle) (seconde, minute, heure, jour, décade, mois, année)	Time unit (for model time steps) (second, minute, hour, day, week, decade, month, year)
 72	units	unit_coords	int	>10	0			Unité de Coordonnées Horizontales en m	Grid horizontal coordinate unit in m

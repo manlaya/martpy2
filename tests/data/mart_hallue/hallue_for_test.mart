@@ -409,6 +409,7 @@ Modélisation du bassin de la SOMME Nappe_Libre
   /DEBIT/COUCHE            C=  1:2  V=         *;
   /FLUX_DEBIT/ZONE_GEO2    Z=      *V=         3;
   /CHARGE/ZONE_GEO3/FIX=NAQ;       Z=      *V=         *;
+  !!!!!!!/OIL_HYDR_HEAD/GEO_ZONE2/FIX=NAQ;Z=  1:2  V=         3;  !! do not mix en/fr for writer
   /EMMAG_CAPT/MAILLE       C=      *L=      2P=      1V=        12;
   /EMMAG_CAPT/LIST_MAIL    N: toto.emmca
   /EMMAG_LIBR/LIST_MAIL    N: tata.emmli <Init_a_Zero> <X_Y_C> <Moyenne> <Keep_9999>

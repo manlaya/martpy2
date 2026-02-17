@@ -106,7 +106,7 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False, lang=None)
 
             for i, line in enumerate(lines):
                 # look for value=description
-                match = re.match(r'(\S+)=([^\[]+)', line.strip())
+                match = re.match(r'(\S+|\s*)=([^\[]+)', line.strip())
 
                 if match:
                     value = match.group(1).strip()
@@ -194,7 +194,7 @@ def _set_valid_value(value, valid_value):
         return value  # no restriction
 
     # parse valid_value specification
-    valid_values = [part.strip() for part in valid_value.split(',')] + [' ']  # add empty str
+    valid_values = [part.strip() for part in valid_value.split(',')] + [' ', '']  # add empty str
     str_val = str(value) if not pd.isna(value) else ' '
     if str_val.lower() in valid_values:
         return value
@@ -253,6 +253,7 @@ def _write_mart_file(
             if param_key == '' or pd.isna(param_key) or param_key is None:
                 continue
 
+            # default value if not present in dict_mart - TODO parse full dict
             value = params_block.get(param_key, row['default'])
             descr = row['descr'] if lang == 'fr' else row['descr_en']
 
@@ -261,7 +262,7 @@ def _write_mart_file(
 
             # format line
             fmt = row.get('fmt')
-            if pd.isna(fmt) or fmt is None:
+            if pd.isna(fmt) or fmt is None or value == '':
                 fmt = WRITE_FMT_MART
             else:
                 fmt = f"{{0:{fmt}}}={{{1}}}\n"  # triple brackets to escape
