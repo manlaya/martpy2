@@ -1,0 +1,19 @@
+  /CAP_SOL_PROGR/ZONE_SOL  Z=    101V=    89.283;
+  /EQU_RUIS_PERC/ZONE_SOL  Z=    101V=    51.519;
+  /T_DEMI_PERCOL/ZONE_SOL  Z=    101V=     3.939;
+  /T_1/2_TARIS_1/ZONE_SOL  Z=    101V=    36.068;
+  /FACT_ECH_SOUT/ZONE_SOL  Z=    101V=        60;
+  /RETEN_NEIGE/ZONE_SOL    Z=    101V=         5;
+  /TEMPER_FONTE/ZONE_SOL   Z=    101V=        -3;
+  /DEGR_JOUR_NEI/ZONE_SOL  Z=    101V=     5.873;
+  /FONT_SOL_NEIG/ZONE_SOL  Z=    101V=      1.87;
+  /CAP_SOL_PROGR/ZONE_SOL  Z=    102V=   205.776;
+  /EQU_RUIS_PERC/ZONE_SOL  Z=    102V=     9.903;
+  /T_DEMI_PERCOL/ZONE_SOL  Z=    102V=     5.247;
+  /T_1/2_TARIS_1/ZONE_SOL  Z=    102V=     6.812;
+  /FACT_ECH_SOUT/ZONE_SOL  Z=    102V=   -45.068;
+  /RETEN_NEIGE/ZONE_SOL    Z=    102V=         5;
+  /TEMPER_FONTE/ZONE_SOL   Z=    102V=     2.106;
+  /DEGR_JOUR_NEI/ZONE_SOL  Z=    102V=         7;
+  /FONT_SOL_NEIG/ZONE_SOL  Z=    102V=         0;
+  /*****/***** Fin d'Initialisation

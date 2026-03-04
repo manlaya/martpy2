@@ -238,14 +238,14 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
             iparam = modin_params  # replace parsed params
 
         # here we combine dict for all keys, if MODIFIC several keys, only one otherwise
-        for k, v  in iparam.items():
+        for k, _  in iparam.items():
             list_vals = params.get(k, [])
             if not isinstance(iparam[k], list):
                 # make it a list if several option for same variable
                 # but if modific was there, already a list
                 iparam[k] = [iparam[k]]
             iparam[k] = list_vals + iparam[k]  # combine previous lines with current
-            params = {**params, **iparam}  # combine dict results
+        params = {**params, **iparam}  # combine dict results
 
     return params
 
