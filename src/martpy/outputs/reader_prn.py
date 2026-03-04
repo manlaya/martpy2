@@ -99,7 +99,8 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
 
             # parse header to get zones
             header = block[:istart]
-            zone = re.search(r'zone\s+(\d+)', header, re.IGNORECASE)
+            # match Zone X or Zone = X (different version of Marthe)
+            zone = re.search(r'zone\s+(?:=\s*)?(\d+)', header, re.IGNORECASE)
             zone = zone.group(1) if zone is not None else 'global'
 
             if not add_multiindex and zone != 'global':

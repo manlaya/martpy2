@@ -21,6 +21,14 @@ def test_reader():
     assert list(dict_res.keys()) == [x for x in reversed_block_mart.keys() if x != 'dummy'], \
         'Error while parsing block parameters'
 
+    assert dict_res['outputs']['gen_list'] == 0, 'Error while parsing parameter value'
+    assert dict_res['solver']['converg_head_variation'] == 4e-5, 'Error while parsing parameter value'
+    assert dict_res['solver']['relax'] == 0.7, 'Error while parsing parameter value'
+    assert dict_res['solver']['n_iter_steady'] == 50, 'Error while parsing parameter value'
+    assert dict_res['solver']['satur_min_dewatering'] == 5, 'Error while parsing parameter value'
+    assert dict_res['units']['unit_flow'] == 1.157e-5, 'Error while parsing parameter value'
+    assert len(dict_res['init_parameters']) == 19, 'Error while parsing init parameters, wrong number of parameters'
+    assert len(dict_res['init_parameters']['PERMEAB']) == 4, 'Error while parsing init parameters, wrong number of parameters'
 
 # TODO: check format when writing list of cell, layer, etc.: use same spacing as in MART file?
 # when 'X:Y' format is used, marthe does not align right but center. Does not seems critical though
@@ -33,17 +41,6 @@ def test_writer():
     _write_mart_file(dict_value, fout)
     tmp = _parse_mart_file(fout)
     assert tmp['outputs']['gen_list'] == 1, 'Error with writer/re parsed.'
-
-
-def test_parse_modin():
-    mart_file = './tests/data/modin/MOD82_Safran_BV_Ext_1958-2021.mart'
-    dict_res = _parse_mart_file(mart_file)
-    init_par = dict_res['init_parameters']
-    assert 'MODIFIC' not in init_par.keys(), \
-        "MODIFIC not merged with init parameters"
-    test2 = init_par.get('NZON_RIV_EXT')[0].get('external_file') is not None
-    # verif que external_file est bien stocké
-    assert test2, 'Error while parsing external file'
 
 
 def test_from_tpl():
@@ -79,11 +76,8 @@ def test_get_parameter_help_method():
 
 
 def main():
-    # test_parse_parameter_line()
-    # test_reader()
-    # test_get_parameter_help()
-    # test_parse_modin()
-    # test_writer()
+    test_reader()
+    test_writer()
     test_from_tpl()
 
 

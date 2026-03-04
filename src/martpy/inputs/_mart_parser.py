@@ -13,7 +13,12 @@ from martpy.inputs.io_utils import (
     _parse_parameter_block,
 )
 from martpy.utils.config import get_lang
-from martpy.utils.constant import BLOCK_MART, BLOCK_MART_EN, _get_resource_file
+from martpy.utils.constant import (
+    _FLOAT_PATTERN,
+    BLOCK_MART,
+    BLOCK_MART_EN,
+    _get_resource_file,
+)
 from martpy.utils.helper import _get_closest_suggestion
 
 
@@ -131,10 +136,7 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False, lang=None)
 
                     # apply type conversion, according to template
                     _type = i_tpl.get('type')
-                    if _type is not None:
-                        # TODO allow type detection based on two possible types?
-                        # (e.g: int/float or '*' or 'm/s' value)
-                        value = _set_type_general_parameter(value, _type)
+                    value = _set_type_general_parameter(value, _type)
 
                     # add results to block
                     params[key] = value
@@ -145,7 +147,7 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False, lang=None)
     return parsed_data
 
 
-def _set_type_general_parameter(value, _type):
+def _set_type_general_parameter(value, _type=None):
     """ Convert general mart parameter value to given type
 
     Parameters
@@ -160,15 +162,31 @@ def _set_type_general_parameter(value, _type):
     any
         parameter value converted to target type
     """
-    if _type == bool:
-        return bool(int(value))
-    else:
-        try:
-            convert = _type(value)
-        except ValueError:
-            return value  # return as is if conversion fails / eg for str
+
+    if re.match(r'^\d+$', value):
+        # force int conversion if value looks like an integer
+        # in some cases (state for example: 0,1 or transi/perman)
+        # but default is string
+        _type = int if _type == str or _type is None else _type
+    elif re.match(_FLOAT_PATTERN, value):
+        # force float conversion if value looks like a number
+        # in some cases (units for example) default is string
+        # because value can be non numeric (m/s for example)
+        # but we want to convert to float if it is a number
+        _type = float if _type == str or _type is None else _type
+
+    if _type is not None:
+        if _type == bool:
+            return bool(int(value))
         else:
-            return convert
+            try:
+                convert = _type(value)
+            except ValueError:
+                return value  # return as is if conversion fails / eg for str
+            else:
+                return convert
+    else:
+        return value
 
 
 def _set_valid_value(value, valid_value):

@@ -53,6 +53,8 @@ MART_OUTPUTS = [
 
 # memo: look into modumar_marlibfi.f90:L86 for list of actions
 # TODO english version ? (modumar_marlibfi.f90:L92)
+# memo: when sequence (eg 1:2), mart align to center but right align
+# is still ok (parsed by marthe)
 ACTIONS_FMT = {
     'ACTION'    : 'I={value:>2};',
     'FICHIER'   : 'N: {file}',
@@ -74,6 +76,8 @@ ACTIONS_FMT = {
     'LAC_GLOB'  : 'L={lake:>7}V={value:>10};',
     'LAC_EXUT'  : 'L={lake:>7}A={afluent:>7}V={value:>10};',
 }
+
+_FLOAT_PATTERN = r'[+-]?\d+(?:\.\d+)?(?:e[+-]?\d+)?'
 
 _ACTION_PARSER = {
     'ACTION'    : r'I=\s*(?P<value>(-)?\d+);',
