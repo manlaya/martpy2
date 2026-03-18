@@ -5,6 +5,7 @@ import re
 
 from martpy.utils import MART_VARIABLES
 from martpy.utils.config import get_lang, _get_descr_field
+from martpy.utils.constant import _FLOAT_PATTERN
 
 
 WRITE_FMT = '{0:<70}={1}\n'
@@ -19,11 +20,11 @@ def _parse_marthe_project(file_rma, encoding='ISO-8859-1', lang=None):
             MART_VARIABLES['is_file'] == 1, [_descr_field, 'ext']
     ]
     _descr_784 = _parser[_descr_field].str.strip().values
-    
+
     # read raw content
     with open(file_rma, 'r', encoding=encoding) as f:
         content = f.readlines()
-    
+
     # parse title
     title = content.pop(0).strip()
 
@@ -46,7 +47,7 @@ def _parse_marthe_project(file_rma, encoding='ISO-8859-1', lang=None):
             # parse uniform value as float
             # (positive or negative with or without decimals,
             # scientific notation allowed)
-            if re.match(r'[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?', value):
+            if re.match(_FLOAT_PATTERN, value):
                 # if result is '=[0-9]' it is a constant value
                 value = float(value)
 
@@ -72,7 +73,7 @@ def _write_rma_file(dict_rma, file_rma, title=None, lang=None):
     lang : str, optional
         locale to use to write file, by default None (use user config).
         Accepted values 'fr','en'
-    
+
     Returns
     -------
     int
@@ -80,7 +81,7 @@ def _write_rma_file(dict_rma, file_rma, title=None, lang=None):
     """
     if lang is None:
         lang = get_lang()
-        
+
     _descr_field = _get_descr_field(lang)
     tpl = MART_VARIABLES.loc[
         MART_VARIABLES['is_file'] == 1, ['ext', _descr_field]

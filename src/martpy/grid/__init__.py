@@ -12,7 +12,6 @@ from gridmarthe import (
     write_marthe_grid,
 )
 
-from .create_grid import create_grid_domain
 from .gridmarthe_accessor import (
     MartheGrid,
 )
