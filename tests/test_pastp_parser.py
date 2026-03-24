@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+import numpy as np
 import pandas as pd
 
 from martpy.inputs.timesteps import (
@@ -89,6 +90,7 @@ def test_add_action():
         )
     pastp.add_action(new_dt.iloc[0], variable='CALCUL_HDYNAM', action='ACTION', value=2)
     d = pastp.get_actions()
+    
     assert '2012-08-01' in d, 'Error while adding actions'
     assert 'METEO_PLUIE' in d['2012-08-01'], 'Error while adding actions'
     assert len(d['2012-08-01']['METEO_PLUIE']) == 1, 'Error while adding actions'
@@ -100,18 +102,45 @@ def test_add_action():
     pastp.write_file('tests/data/tmp_outputs/test_add_actions.pastp')
 
 
+def test_add_action_freq():
+    pastp = read_mart_timesteps(FILE_PASTP)
+    # here also test action in lowercase and no value (should be automatic for edition)
+    pastp.add_action(freq='ME', variable='ETAT_HYD_CLIM', action='edition')
+    d = pastp.get_actions(variable='ETAT_HYD_CLIM', as_dataframe=True)
+    assert len(d) == 205, 'monthly actions failed'
+    assert np.all(d.index.get_level_values(0).is_month_end), 'frequency not respected in actions'
+
+
 def test_get_actions():
     pastp = read_mart_timesteps(FILE_PASTP)
     pastp.add_action(steps=-1, variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    
     act = pastp.get_actions()
     assert 'CALCUL_HDYNAM' in act['1995-07-31'], 'Error while getting actions'
     assert 'CALCUL_HDYNAM' in act['2012-07-31'], 'Error while getting actions'
+    
     act = pastp.get_actions(time='2012-07-31')
     assert len(act) == 1, 'Error while getting actions for specific time'
     assert 'CALCUL_HDYNAM' in act['2012-07-31'], 'Error while getting actions for specific time'
+    
     act = pastp.get_actions(step=[0,-1])
     assert len(act) == 2, 'Error while getting actions for specific step'
     assert list(act.keys()) == ['1995-07-31', '2012-07-31'], 'Error while getting actions for specific step'
+
+    act = pastp.get_actions(variable='CALCUL_HDYNAM')
+    assert len(act) == 2, 'get actions for a specific variable failed'
+    assert list(act.keys()) == ['1995-07-31', '2012-07-31'], 'Error while getting actions for specific step'
+
+    act = pastp.get_actions(variable='CALCUL_HDYNAM', as_dataframe=True)
+    assert isinstance(act, pd.DataFrame), 'get actions as dataframe failed. Res is no DF'
+    assert len(act)==2, 'get actions as dataframe failed. wrong row number'
+    assert isinstance(act.index, pd.MultiIndex), "multiindex expected for actions as df"
+
+    # just test execution
+    act = pastp.get_actions(step=[0,-1], as_dataframe=True)
+    act = pastp.get_actions(time='2012-07-31', as_dataframe=True)
+    act = pastp.get_actions(time=['1995-07-31', '2012-07-31'], as_dataframe=True)
+    assert len(act) == 9, 'get actions for multiple times as df failed'
 
 
 def test_get_actions_with_variable():
@@ -181,8 +210,8 @@ def main():
     # test_write_pastp()
     # test_wrapper_method()
     # test_add_action_with_istep()
-    # test_get_actions()
-    test_pastp_uk()
+    test_get_actions()
+    # test_pastp_uk()
     print('============')
     print('Test success')
 

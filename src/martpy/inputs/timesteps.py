@@ -19,6 +19,7 @@ from martpy.utils.config import get_lang
 
 
 # Memo: check fmt here in MARTHE src/edi_pastp_prepro.f90:L752
+# TODO add parsing for timestep (optional) names? useful? eg: *** thename // or ***; Nom=thename
 # --- Parser pattern --- #
 # more regex hell
 _FLOAT_FMT = r'\d+\.\d+'
@@ -248,8 +249,10 @@ class MartheTimeSteps:
         }
         return MartheTimeSteps(times, actions)
 
-    def get_actions(self, time=None, step=None, variable=None):
+    def get_actions(self, *, time=None, step=None, variable=None, as_dataframe=False):
         """ Get actions for all or selected timesteps/variables
+
+        Only keywords argument accepted (key=value).
 
         Parameters
         ----------
@@ -259,6 +262,8 @@ class MartheTimeSteps:
             timestep number to get actions for, by default None
         variable : str, optional
             marthe variable to get actions for, by default None
+        as_dataframe : bool, optional
+            return actions as a dataframe, by default False
 
         Returns
         -------
@@ -273,24 +278,23 @@ class MartheTimeSteps:
         >>> act = pastp.get_actions(step=[0,-1])  # get actions for specific step
         >>> act = pastp.get_actions(variable='CALCUL_HDYNAM')  # get actions for specific variable
         """
-        if time is not None:
-            if isinstance(time, (list, tuple, pd.Series, pd.DatetimeIndex)):
-                time_keys = [_convert_date_to_str_iso(t) for t in time]
-            elif isinstance(time, datetime):
-                time_keys = [_convert_date_to_str_iso(time)]
-            elif isinstance(time, str):
-                time_keys = [time]
-            return {k: v for k, v in self.actions.items() if k in time_keys}
-
-        elif step is not None:
-            time_keys = self.times.iloc[step, :]['time']
-            if isinstance(time_keys, pd.Series):
+        if time is not None or step is not None:
+            if time is not None:
+                time_keys = self.times.set_index('time').loc[time, :]
+                time_keys = time_keys.name if isinstance(time_keys, pd.Series) else time_keys.index
+            elif step is not None:
+                time_keys = self.times.iloc[step, :]['time']
+            
+            if isinstance(time_keys, (list, tuple, pd.Series, pd.DatetimeIndex)):
                 time_keys = [_convert_date_to_str_iso(t) for t in time_keys]
-            elif isinstance(time_keys, pd.Timestamp):
+            elif isinstance(time_keys, (datetime, pd.Timestamp)):
                 time_keys = [_convert_date_to_str_iso(time_keys)]
             else:
                 time_keys = [time_keys]
-            return  {k: v for k, v in self.actions.items() if k in time_keys}
+            
+            filtered_actions = {
+                k: v for k, v in self.actions.items() if k in time_keys
+            }
 
         elif variable is not None:
             variable = variable.upper()
@@ -300,14 +304,35 @@ class MartheTimeSteps:
                     filtered_actions[time_key] = {
                         variable: actions[variable]
                     }
+        
+        else:
+            filtered_actions = self.actions
+        
+        if not as_dataframe:
             return filtered_actions
         else:
-            return self.actions
+            return self._get_actions_as_dataframe(filtered_actions)
+    
+    def _get_actions_as_dataframe(self, actions):
+        # data = pd.DataFrame.from_dict(d, orient='index')
+        df = []
+        for date, values in actions.items():
+            for variable, list_values in values.items():
+                tmp = pd.DataFrame(
+                    list_values,
+                    index=pd.MultiIndex.from_tuples(
+                        [(pd.to_datetime(date), variable) for x in list_values]
+                    )
+                )
+                df.append(tmp)
+        df = pd.concat(df)
+        return df
 
     def add_action(
         self,
         times=None,
         steps=None,
+        freq=None,
         variable=None,
         action=None,
         **kwargs
@@ -319,7 +344,12 @@ class MartheTimeSteps:
         times : datetime or pandas.DateTimeIndex or pandas.Series, optional
             times to add actions, by default None.
         steps : int or list, optional
-            timesteps number if no times are provided, by default None
+            timesteps number if no times are provided, by default None.
+        freq : str, optional
+            A frequency string to create a DateTimeIndex if no times are provided.
+            If provided, action will be added to every timestep matching this frequency.
+            By default None (not used). See pandas.DateOffset for more details:
+            https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
         variable : str, optional
             marthe variable for the action, by default None
         action : str, optional
@@ -341,7 +371,7 @@ class MartheTimeSteps:
             - ZONE_GEO  : `zone`, `value`,
             - ZONE_GEO2 : `zone`, `value`,
             - ZONE_GEO3 : `zone`, `value`,
-            - EDITION   : `edit`,
+            - EDITION   : `edit` (optional, if edition asked, edit will be set to 1),
             - TRONCON   : `afluent`, `tronc`, `value`,
             - LAC_GLOB  : `lake`, `value`,
             - LAC_EXUT  : `lake`, `afluent`, `value`,
@@ -356,6 +386,10 @@ class MartheTimeSteps:
             if steps is not None:
                 # times = self.times.loc[self.times['step'].isin(steps), :]
                 times = self.times.iloc[steps,:]['time']
+            elif freq is not None:
+                times = pd.date_range(
+                    self.times['time'].min(), self.times['time'].max(), freq=freq
+                )
             else:
                 raise ValueError('Please provide times or steps')
 
@@ -366,6 +400,8 @@ class MartheTimeSteps:
 
         for time in times:
             key = _convert_date_to_str_iso(time)
+            if action.lower() == 'edition' and kwargs.get('edit') is None:
+                kwargs['edit'] = 1
             new_actions[key] = {
                 # keep previous actions if any, order matters
                 **self.actions.get(key, {}),
@@ -499,7 +535,7 @@ class MartheTimeSteps:
             )
         return
 
-    def set_pumping_data(self, file_tpl, step=1, freq='M', opt=[]):
+    def set_pumping_data(self, file_tpl, step=1, freq='M', opt=None):
         """ Add pumping data to Marthe Timesteps, with XY format,
         based on frequency
 
@@ -525,7 +561,8 @@ class MartheTimeSteps:
                 - xyz (X_Y_Z) : fmt X,Y,Z
         """
         # use default opts ? <X_Y_C> <Somm_Mail> <Keep_9999>
-        # TODO make opt list mail case insensitive
+        if opt is None:
+            opt = []
         times = self.get_times()
         times = _subset_times(times, step, freq, day=1)
         lang = get_lang()
@@ -545,7 +582,8 @@ class MartheTimeSteps:
         filename,
         title='Marthe TimeSteps',
         encoding='ISO-8859-1',
-        lang=None
+        lang=None,
+        **kwargs
     ):
         """ Build a Timestep (`*.pastp`) file
 
@@ -565,7 +603,7 @@ class MartheTimeSteps:
         lang = get_lang() if lang is None else lang
         lines = []
         lines.extend(_build_header(title))
-        lines.extend(_build_pastp(self.times['time'].to_list(), self.actions, lang))
+        lines.extend(_build_pastp(self.times['time'].to_list(), self.actions, lang,**kwargs))
         lines.append(FMT_END_SIM.get(lang))
         with open(filename, 'w', encoding=encoding) as f:
             f.write('\n'.join(lines))
@@ -573,7 +611,7 @@ class MartheTimeSteps:
     @staticmethod
     def from_file(file_pastp, encoding='ISO-8859-1'):
         return read_mart_timesteps(file_pastp, encoding)
-    
+
     @classmethod
     def from_dates(cls, date_min=None, date_max=None, freq='D', dates=None,):
         """ Create a MartheTimeSteps instance based on a list of dates or a frequency
@@ -599,8 +637,8 @@ class MartheTimeSteps:
             a time step instance with the dates provided
         """
         dt = _create_times(dates, date_min, date_max, freq)
-        return MartheTimeSteps(dt)
-    
+        return cls(dt)
+
     def set_hdynam_computation(
         self,
         freq=None,
@@ -727,7 +765,7 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
     return MartheTimeSteps(dtime, actions)
 
 
-def _build_timestep(istep, date, dactions, lang='fr'):
+def _build_timestep(istep, date, dactions, lang='fr', **kwargs):
     """ Build the lines for one time step of MARTHE pastp file.
 
     Parameters
@@ -746,13 +784,10 @@ def _build_timestep(istep, date, dactions, lang='fr'):
     -------
     lines : list of str
     """
-    # from copy import deepcopy  # TODO assert untouched ?
     lang = lang.lower()
 
     date_str = _convert_date_to_str(date)
     date_key_fmt = _convert_date_to_str_iso(date)
-    # _dactions = deepcopy(dactions)  # deep copy to limit side effect and allow rewrite // perf?
-    _dactions = dactions
 
     if istep == 0:
         _start_step_str = FMT_START_SIM.get(lang).format(init_time=date_str)
@@ -760,13 +795,13 @@ def _build_timestep(istep, date, dactions, lang='fr'):
         _start_step_str = FMT_START_TIMESTEP.get(lang).format(istep=istep, time_step=date_str)
 
     lines = [_start_step_str]
-    actions_step = _dactions.get(date_key_fmt, {})
-    lines.extend(_build_parameter_block(actions_step, mode='list'))
+    actions_step = dactions.get(date_key_fmt, {})
+    lines.extend(_build_parameter_block(actions_step, mode='list', **kwargs))
     lines.append(FMT_END_TIMESTEP.get(lang))
     return lines
 
 
-def _build_pastp(dates, dactions, lang='fr'):
+def _build_pastp(dates, dactions, lang='fr', **kwargs):
     """ Build all lines of a pastp file
 
     Parameters
@@ -791,7 +826,7 @@ def _build_pastp(dates, dactions, lang='fr'):
     lines = []
     for i, date in enumerate(dates):
         lines.extend(
-            _build_timestep(i, date, dactions, lang)
+            _build_timestep(i, date, dactions, lang, **kwargs)
         )
     return lines
 
