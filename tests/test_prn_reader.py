@@ -25,11 +25,11 @@ class TestReaderPrn(unittest.TestCase):
     # def tearDown(self):
     #     if os.path.exists(self.example_file):
     #         os.remove(self.example_file)
-    
+
     def test_read_prn_file_missing(self):
         with self.assertRaises(FileNotFoundError):
             reader_prn.read_output_water_balance('./tests/data/mart_outputs/missing.prn')
-    
+
     def test_read_time_serie(self):
         # Assuming reader_prn.read_prn_file returns a list of dicts
         result = reader_prn.read_output_time_series(
@@ -41,7 +41,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('field', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
-    
+
     def test_read_time_serie_affl(self):
         # Assuming reader_prn.read_prn_file returns a list of dicts
         result = reader_prn.read_output_time_series(
@@ -54,7 +54,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
         self.assertIn('riv_afluent', result.columns.names)
-    
+
     def test_read_time_serie_affl_gig(self,):
         result = reader_prn.read_output_time_series(
             f"{self.example_dir_affl}/historiq_with_gig.prn"
@@ -70,17 +70,19 @@ class TestReaderPrn(unittest.TestCase):
 
     def test_read_balance(self):
         res = reader_prn.read_output_water_balance(
-            f"{self.example_dir}/histobil_debit.prn"
+            f"{self.example_dir}/histobil_debit.prn",
+            normalize_headers=False
         )
         self.assertIsInstance(res, pd.DataFrame)
         self.assertIn('date', res.index.names)
         self.assertIn('zone', res.index.names)
         self.assertIn('Entr_Limit', res.columns)
         self.assertIn('Nombre_Suintem', res.columns)
-    
+
     def test_read_balance_zone(self):
         res = reader_prn.read_output_water_balance(
-            f"{self.example_dir_zone}/histobil_debit.prn"
+            f"{self.example_dir_zone}/histobil_debit.prn",
+            normalize_headers=False
         )
         self.assertIsInstance(res, pd.DataFrame)
         self.assertIn('date', res.index.names)
@@ -93,7 +95,8 @@ class TestReaderPrn(unittest.TestCase):
     def test_read_all_kind(self):
         for f in self.all_files:
             res = reader_prn.read_output_water_balance(
-                os.path.join(self.example_dir, f)
+                os.path.join(self.example_dir, f),
+                normalize_headers=False
             )
             self.assertIsInstance(res, pd.DataFrame)
             self.assertIn('date', res.index.names)
@@ -101,19 +104,21 @@ class TestReaderPrn(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    
-    unittest.main()
 
+    # unittest.main()
+
+    # manual test for debug
     # test_file = './tests/data/mart_hallue/histobil_debit.prn'
-    # test_file = '/home/manlaya/mylib/mart_hallue/mart_hallue_zgeom/histobil_debit.prn'
-    # test_file = '/home/manlaya/mylib/mart_hallue/mart_hallue_zgeom/histobil_nap_cumu.prn'
-    # test_file = '/home/manlaya/mylib/mart_hallue/mart_hallue_zgeom/histobil_nap_pastp.prn'
-    # test_file = '/home/manlaya/mylib/mart_hallue/mart_hallue_zgeom/histobil_riv_dra_lac.prn'
-    # test_file = '/home/manlaya/mylib/mart_hallue/mart_hallue_zgeom/histoclim.prn'
+    # test_file = './tests/data/mart_hallue/histobil_debit.prn'
+    # test_file = './tests/data/mart_hallue/histobil_nap_cumu.prn'
+    # test_file = './tests/data/mart_hallue/histobil_nap_pastp.prn'
+    # test_file = './tests/data/mart_hallue/histobil_riv_dra_lac.prn'
+    test_file = './tests/data/mart_hallue/histoclim.prn'
 
     # import time
     # t0 = time.time()
-    # df = read_output_water_balance(test_file)
+    df = reader_prn.read_output_water_balance(test_file)
+    df = reader_prn.read_output_water_balance(test_file, normalize_headers=True)
     # print(time.time() - t0)
 
     # pymarthe version

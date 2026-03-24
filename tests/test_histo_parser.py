@@ -103,6 +103,15 @@ def test_get_xy_from_grid():
     assert not np.any(pd.isna(histo2.col)), 'Error while getting col from grid'
     assert not np.any(pd.isna(histo2.row)), 'Error while getting row from grid'
 
+# def test_read_histo_uk():
+#     histo = read_histo_file('./tests/data/mart_uk/mart_uk_files.histo')
+#     assert len(histo) == 3, 'Error while reading histo file'
+#     assert histo['name'].iloc[0] == 'TOTO', 'Error while reading histo file, wrong name'
+#     assert histo['name'].iloc[0] == 'tata', 'Error while reading histo file, wrong name'
+#     assert histo['mode'].iloc[0] == 'CELL', 'Error while reading histo file, wrong mode'
+#     assert histo['mode'].iloc[1] == 'XCOO', 'Error while reading histo file, wrong mode'
+#     assert histo['mode'].iloc[2] == 'COOR', 'Error while reading histo file, wrong mode'
+
 
 def main():
     print('Testing histo parser')

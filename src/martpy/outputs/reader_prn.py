@@ -7,6 +7,7 @@ from io import StringIO
 import pandas as pd
 
 from martpy.utils.constant import RENAME_HISTOBIL_HEAD_ZONE
+from martpy.utils.misc import remove_accents
 
 
 def read_output_time_series(ts_file):
@@ -57,8 +58,20 @@ def read_output_time_series(ts_file):
     df = df.loc[:,~df.columns.get_level_values(-1).str.match('.*<Date>')]
     return df
 
+def _clean_prn_header(col):
+    cleaned = remove_accents(col.lower())
+    cleaned = re.sub(r'[/|\(|\)|°|²|³|<|>|\.|,]', '', cleaned)
+    cleaned = re.sub(r'[\s|-]', '_', cleaned)
+    cleaned = re.sub(r'%', 'perc', cleaned)
+    return cleaned
 
-def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8859-1'):
+
+def read_output_water_balance(
+    balance_file,
+    add_multiindex=True,
+    normalize_headers=False,
+    encoding='ISO-8859-1'
+):
     """ Read a water balance output file
 
     This function reads histobil_debit.prn/histoclim.prn or any balance *.prn file
@@ -77,6 +90,13 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
     add_multiindex : bool, optional
         if True, add a multiindex to columns (date, zone), by default True
         if False, return a single index with date only (only 'global' zone is kept)
+    
+    normalize_headers : bool, optional
+        if True normalize headers (lowercase, replace spaces/special characters
+        by underscores). By default False.
+    
+    encoding : str, optional
+       encoding of the file, by default 'ISO-8859-1'
 
     Returns
     -------
@@ -124,7 +144,10 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
 
             # clean dataframe
             # drop int date col if present
-            df = df.loc[:, [x for x in df.columns if not re.match('Date.*', x)]]
+            # df = df.loc[:, [x for x in df.columns if not re.match('Date.*', x)]]
+            df = df.drop(list(df.filter(regex='Date.*', axis=1)), axis=1)
+            if normalize_headers:
+                df.columns = [_clean_prn_header(x) for x in df.columns]
             df.index.name = 'date'
             df = df.assign(zone=zone)
             df = df.set_index('zone', append=True)
@@ -137,17 +160,19 @@ def read_output_water_balance(balance_file, add_multiindex=True, encoding='ISO-8
     return df
 
 
-def read_prn(prn_file):
+def read_prn(prn_file, **kwargs):
     """ Generic function to read a marthe output prn file
 
     It dispatches to specialized readers based on filename:
-    - historiq.prn -> read_output_time_series
-    - histobil*.prn -> read_output_water_balance
+    - historiq.prn -> :py:func:`read_output_time_series`
+    - histobil*.prn -> :py:func:`read_output_water_balance`
 
     Parameters
     ----------
     prn_file : str
         Path to the prn file
+    **kwargs
+        Any addition keyword argument for :py:func:`read_output_water_balance`
 
     Returns
     -------
@@ -160,7 +185,7 @@ def read_prn(prn_file):
     if 'historiq' in basename:
         return read_output_time_series(prn_file)
     elif 'histobil' in basename or 'histoclim' in basename:
-        return read_output_water_balance(prn_file)
+        return read_output_water_balance(prn_file, **kwargs)
     else:
         raise ValueError(
             'File is neither a historiq (time series) or histobil/histoclim (water balance)'

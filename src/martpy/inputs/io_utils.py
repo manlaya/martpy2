@@ -402,7 +402,7 @@ def _write_modin(dict_action, fname, lang=None):
     return 0
 
 
-def _fmt_nchar(n, nchar=7):
+def _fmt_nchar(n, nchar=7, adjust='right'):
     """ Force float format to X char
     """
     # s = "{:.7g}".format(n)
@@ -413,4 +413,4 @@ def _fmt_nchar(n, nchar=7):
     # check and cut if necessary
     if len(s) > 7:
         s = "{:.1e}".format(n) if abs(n) >= 1e7 or abs(n) < 1e-4 else s[:7]
-    return s.rjust(7)
+    return s.rjust(7) if adjust.lower() == 'right' else s.ljust(7)

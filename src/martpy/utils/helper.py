@@ -3,7 +3,7 @@
 
 import difflib
 
-from martpy.utils.constant import MART_VARIABLES
+from martpy.utils.constant import _ACTION_PARSER, MART_VARIABLES
 
 
 def _get_closest_suggestion(key, valid_keys, n=3):
@@ -29,18 +29,24 @@ class MartKeyError(KeyError):
     message : str
         explanation of the error
     """
-    def __init__(self, variable, valid_keys):
-        self.message = self._get_message(variable, valid_keys)
+    def __init__(self, variable, valid_keys, mode='variable'):
+        self.message = self._get_message(variable, valid_keys, mode.lower())
         super().__init__(self.message)
         self.variable = variable
         self.valid_keys = valid_keys
+        self.mode = mode
 
-    def _get_message(self, variable, valid_keys):
-        msg = f'Variable `{variable}` is not a Marthe variable. '
+    def _get_message(self, variable, valid_keys, mode):
+        msg = f'{mode.title()} `{variable}` is not a Marthe variable. '
         closest = _get_closest_suggestion(variable.upper(), valid_keys)
         if closest is not None:
             msg += 'Possible closest value: {}. '.format(', '.join(closest))
-        msg += 'Check for all Marthe variables with `get_mart_variables()`'
+        if mode == 'variable':
+            msg += 'Check for all Marthe variables with `get_mart_variables()`'
+        elif mode == 'action':
+            msg += 'Check for all Marthe actions with `get_mart_actions()`'
+        else:
+            raise ValueError(f'Invalid mode: {mode}')
         return msg
 
 
@@ -51,7 +57,13 @@ def _check_mart_key(variable):
         raise MartKeyError(variable, valid_keys)
 
 
-def get_mart_variables_list():
+def _check_valid_action(action):
+    _valid_actions = get_mart_actions()
+    if action not in _valid_actions:
+        raise MartKeyError(action, _valid_actions, mode='action')
+
+
+def get_mart_variables():
     """ Help function to get informations on all Marthe variables
 
     Returns
@@ -89,3 +101,9 @@ def get_variable_help(variable, locale='fr'):
     _check_mart_key(variable)
     subset = MART_VARIABLES.loc[MART_VARIABLES[f'code_var_{locale}'] == variable.upper()]
     return subset.to_dict('records')[0]
+
+
+def get_mart_actions():
+    """ Get all Marthe actions
+    """
+    return list(_ACTION_PARSER.keys())

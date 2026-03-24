@@ -30,7 +30,7 @@ def _get_descr_field(lang='fr'):
 class Configuration:
     _instance = None
 
-    # avoid creating a new object for each call
+    # avoid creating a new object for each call - use skeleton
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(Configuration, cls).__new__(cls)

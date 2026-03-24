@@ -23,11 +23,10 @@
 
 from . import (
     grid,  # gridmarthe accessor
-    utils,
 )
 from .inputs import *
 from .outputs import *
-from .utils.config import get_lang, set_lang
+from .utils import *
 
 
 try:
