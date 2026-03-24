@@ -1,0 +1,6 @@
+Départ de Traject Henry : 40 colonnes
+# maille?    Col/X          Lig/Y       Couc/Z         gig Nb_ray Rayon Group
+M             1             *
+M            40             *
+M             *             *             *             1 N= 5 R= 0.5 G= 5
+ *** Fin du fichier Départ de Trajectoires           ***

@@ -152,7 +152,8 @@ def read_output_water_balance(
             df = df.assign(zone=zone)
             df = df.set_index('zone', append=True)
             df = df.reorder_levels(['zone', 'date'])
-
+            df = df.apply(pd.to_numeric, errors='coerce', axis=1)  # force numeric types
+            df = df.dropna(how='all', axis=0).dropna(how='all', axis=1)  # coerce: non-num --> NaNs, drop here
             df_list.append(df)
     df = pd.concat(df_list, axis=0, ignore_index=False)
     if not add_multiindex:
@@ -165,7 +166,7 @@ def read_prn(prn_file, **kwargs):
 
     It dispatches to specialized readers based on filename:
     - historiq.prn -> :py:func:`read_output_time_series`
-    - histobil*.prn -> :py:func:`read_output_water_balance`
+    - histo(bil|mas|clim)*.prn -> :py:func:`read_output_water_balance`
 
     Parameters
     ----------
@@ -184,9 +185,9 @@ def read_prn(prn_file, **kwargs):
 
     if 'historiq' in basename:
         return read_output_time_series(prn_file)
-    elif 'histobil' in basename or 'histoclim' in basename:
+    elif re.match(r'histo(?:bil|clim|mas)', basename):
         return read_output_water_balance(prn_file, **kwargs)
     else:
         raise ValueError(
-            'File is neither a historiq (time series) or histobil/histoclim (water balance)'
+            'File is neither a historiq (time series) or histo(bil,clim,mas) (water/mass balance)'
         )

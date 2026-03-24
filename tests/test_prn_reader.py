@@ -3,6 +3,7 @@
 
 import os
 import unittest
+import numpy as np
 import pandas as pd
 
 from martpy.outputs import reader_prn
@@ -14,6 +15,7 @@ class TestReaderPrn(unittest.TestCase):
         self.example_dir = './tests/data/mart_outputs/simple_case'
         self.example_dir_zone = './tests/data/mart_outputs/outputs_zone'
         self.example_dir_affl = './tests/data/mart_outputs/outputs_afflu'
+        self.example_dir_mass = './tests/data/mart_outputs/outputs_mass'
         self.all_files = [
             'histobil_debit.prn',
             'histobil_nap_cumu.prn',
@@ -41,6 +43,8 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('field', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
+        self.assertTrue(np.all(result.dtypes == 'float64'))
+        self.assertTrue(result.index.dtype == '<M8[ns]')
 
     def test_read_time_serie_affl(self):
         # Assuming reader_prn.read_prn_file returns a list of dicts
@@ -54,6 +58,8 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
         self.assertIn('riv_afluent', result.columns.names)
+        self.assertTrue(np.all(result.dtypes == 'float64'))
+        self.assertTrue(result.index.dtype == '<M8[ns]')
 
     def test_read_time_serie_affl_gig(self,):
         result = reader_prn.read_output_time_series(
@@ -67,6 +73,8 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('name', result.columns.names)
         self.assertIn('grid', result.columns.names)
         self.assertIn('riv_afluent', result.columns.names)
+        self.assertTrue(np.all(result.dtypes == 'float64'))
+        self.assertTrue(result.index.dtype == '<M8[ns]')
 
     def test_read_balance(self):
         res = reader_prn.read_output_water_balance(
@@ -78,6 +86,20 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('zone', res.index.names)
         self.assertIn('Entr_Limit', res.columns)
         self.assertIn('Nombre_Suintem', res.columns)
+        self.assertTrue(np.all(res.dtypes == 'float64'))
+        self.assertTrue(res.index.get_level_values(1).dtype == '<M8[ns]')
+    
+    def test_read_balance_no_multiindex(self):
+        res = reader_prn.read_output_water_balance(
+            f"{self.example_dir}/histobil_debit.prn",
+            normalize_headers=False,
+            add_multiindex=False
+        )
+        self.assertIsInstance(res, pd.DataFrame)
+        self.assertIn('date', res.index.names)
+        self.assertNotIn('zone', res.index.names)
+        self.assertTrue(np.all(res.dtypes == 'float64'))
+        self.assertTrue(res.index.dtype == '<M8[ns]')
 
     def test_read_balance_zone(self):
         res = reader_prn.read_output_water_balance(
@@ -91,6 +113,8 @@ class TestReaderPrn(unittest.TestCase):
         self.assertNotIn('Glob_Riv-Nappe', res.columns)  # mind the separator, check rename is done
         zone = res.index.get_level_values('zone').unique()
         self.assertIn('2', zone)
+        self.assertTrue(np.all(res.dtypes == 'float64'))
+        self.assertTrue(res.index.get_level_values(1).dtype == '<M8[ns]')
 
     def test_read_all_kind(self):
         for f in self.all_files:
@@ -101,6 +125,16 @@ class TestReaderPrn(unittest.TestCase):
             self.assertIsInstance(res, pd.DataFrame)
             self.assertIn('date', res.index.names)
             self.assertGreater(len(res), 0)
+            self.assertTrue(np.all(res.dtypes == 'float64'))
+
+    def test_read_mass_balance(self):
+        res = reader_prn.read_output_water_balance(
+            f"{self.example_dir_mass}/histomas.prn",
+            normalize_headers=False
+        )
+        self.assertIsInstance(res, pd.DataFrame)
+        self.assertIn('date', res.index.names)
+        self.assertTrue(np.all(res.dtypes == 'float64'))
 
 
 if __name__ == '__main__':
@@ -114,6 +148,7 @@ if __name__ == '__main__':
     # test_file = './tests/data/mart_hallue/histobil_nap_pastp.prn'
     # test_file = './tests/data/mart_hallue/histobil_riv_dra_lac.prn'
     test_file = './tests/data/mart_hallue/histoclim.prn'
+    # test_file = './tests/data/mart_outputs/outputs_mass/histomas.prn'
 
     # import time
     # t0 = time.time()

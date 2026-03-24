@@ -3,7 +3,7 @@
 
 import difflib
 
-from martpy.utils.constant import _ACTION_PARSER, MART_VARIABLES
+from martpy.utils.constant import _ACTION_PARSER, MART_VARIABLES, OPT_LIST_MAIL
 
 
 def _get_closest_suggestion(key, valid_keys, n=3):
@@ -107,3 +107,9 @@ def get_mart_actions():
     """ Get all Marthe actions
     """
     return list(_ACTION_PARSER.keys())
+
+
+def get_opt_list_cells():
+    """ Get all Marthe options for list cells
+    """
+    return list(OPT_LIST_MAIL.keys())

@@ -1,0 +1,50 @@
+<< La légende des termes est placée à la fin du fichier >>
+Kueper & Frind (1991) Test 2D Eau + Huile PRS_W - SAT (Kueper2d_2.rma) [V7.8b]
+Date	Entr_Limit	Sort_Limit	Entr_Inject_fix	Sort_Pompag_fix	Réduct_Pompage	Désaturation	Débordement	Recharge_Maill	Évaporat_Maill	Excès_Irrigat	Stockage_Posit	Stockage_Négat	Rivière->Nappe	Nappe->Rivière	Éch_Phas_Posit	Éch_Phas_Négat	Drains->Nappe	Nappe->Drains	Lacs->Nappe	Nappe->Lacs	Transpir_Racin	Écart_Volume	%_Écart_Volum	Glob_Limites	Glob_Intern_fix	Glob_Stock	Glob_Riv_Nappe	Glob_Drain_Nap	Glob_Lacs_Napp	
+  0.5000000    	   2.065095    	 -6.3891120E-06	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   2.058400    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	      0.0066882	  0.3238681    	   2.065089    	   0.000000    	   2.058400    	   0.000000    	   0.000000    	   0.000000    	
+   2.000000    	   5.579305    	 -1.8131031E-05	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   5.577945    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	      0.0013412	      0.0240396	   5.579287    	   0.000000    	   5.577945    	   0.000000    	   0.000000    	   0.000000    	
+   10.00000    	   25.53350    	 -9.0208868E-05	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   25.51916    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	      0.0142450	      0.0557895	   25.53341    	   0.000000    	   25.51916    	   0.000000    	   0.000000    	   0.000000    	
+   20.00000    	   29.92348    	 -1.0921956E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   29.91206    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	      0.0113117	      0.0378021	   29.92337    	   0.000000    	   29.91206    	   0.000000    	   0.000000    	   0.000000    	
+   30.00000    	   29.56804    	 -1.0861102E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   29.56716    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	  7.6515046E-04	      0.0025878	   29.56793    	   0.000000    	   29.56716    	   0.000000    	   0.000000    	   0.000000    	
+   40.00000    	   29.27718    	 -1.0738650E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   29.28611    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	     -0.0090395	      0.0308661	   29.27707    	   0.000000    	   29.28611    	   0.000000    	   0.000000    	   0.000000    	
+   50.00000    	   28.83251    	 -1.0433379E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   28.82898    	     -0.0011243	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	      0.0045532	      0.0157918	   28.83241    	   0.000000    	   28.82785    	   0.000000    	   0.000000    	   0.000000    	
+   60.00000    	   28.47099    	 -1.0136040E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   28.48412    	     -0.0036853	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	     -0.0095458	      0.0335126	   28.47089    	   0.000000    	   28.48044    	   0.000000    	   0.000000    	   0.000000    	
+   70.00000    	   28.23783    	 -9.9238800E-05	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   28.24971    	     -0.0063554	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	     -0.0056298	      0.0199286	   28.23773    	   0.000000    	   28.24336    	   0.000000    	   0.000000    	   0.000000    	
+   80.00000    	   28.12685    	 -9.8040683E-05	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   28.13309    	     -0.0025396	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	     -0.0038002	      0.0135081	   28.12675    	   0.000000    	   28.13055    	   0.000000    	   0.000000    	   0.000000    	
+   90.00000    	   28.20757    	 -9.8599933E-05	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   28.21065    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	     -0.0031777	      0.0112641	   28.20748    	   0.000000    	   28.21065    	   0.000000    	   0.000000    	   0.000000    	
+   100.0000    	   28.38009    	 -1.0031616E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   28.38314    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	     -0.0031505	      0.0111000	   28.37999    	   0.000000    	   28.38314    	   0.000000    	   0.000000    	   0.000000    	
+   130.0000    	   86.18926    	 -3.1504981E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   86.23159    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	     -0.0426451	      0.0494542	   86.18894    	   0.000000    	   86.23159    	   0.000000    	   0.000000    	   0.000000    	
+   180.0000    	   145.3825    	 -5.6245222E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   145.7843    	 -0.2031909    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	 -0.1991256    	  0.1365893    	   145.3819    	   0.000000    	   145.5811    	   0.000000    	   0.000000    	   0.000000    	
+   220.0000    	   116.2010    	 -4.7720973E-04	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   118.0568    	  -1.576152    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	 -0.2800441    	  0.2372114    	   116.2006    	   0.000000    	   116.4806    	   0.000000    	   0.000000    	   0.000000    	
+
+Légende :
+ Tous les termes sont des volumes (ou masses de gaz) en 'unité utilisateur de volume d'eau', y compris recharge, évaporation, irrigation, transpiration.
+
+ Cependant pour les écoulements de gaz sans phase eau (uniquement gaz) :
+ => Les termes sont en masse de gaz en 'unité utilisateur de masse'.
+
+ Recharge_Maill = Recharge du domaine maillé (toujours > 0) quand la pluie est excédentaire par rapport à l'ETR_Sol.
+                 S'il n'y a pas de réservoir sol, alors : Recharge = Max(Pluie - ETR_Sol , 0.).
+ Évaporat_Maill = Évaporation restante (toujours < 0) appliquée aux mailles du modèle.
+                 (C'est une Évaporation complémentaire en plus de l'ETR_Sol du bilan hydroclimatique).
+               => Quand il n'y a pas de Cultures on a :
+                  soit Recharge_Maill  ;  soit Évaporat_Maill.
+ Transpir_Racin = Transpiration par les racines des cultures. Peut être réduite en cas de 'désaturation'.
+ Désaturation   = Volume de Réduction de l'Évaporation et/ou de la Transpiration si la saturation est trop faible.
+                  (Succion supérieure à la 'Succion Maximale')
+ ETR totale     = Disponible dans le fichier 'histoclim.prn'.
+                = abs(Etr_Sol) + abs(Évaporat_Maill) + abs(Transpiration) - Désaturation.
+                = Pluie - Infiltration + abs(Évaporat_Maill) + abs(Transpiration) - Désaturation.
+ Débord/Suintem = Débordement en surface ou suintement.
+
+    Entr = Entrant (positif).
+    Sort = Sortant (négatif).
+    Glob = Global (positif + négatif).
+
+ Limit   = Par les limites extérieures du domaine modélisé.
+ Intern_fix = Volumes (ou masses de gaz) correspondant aux Débits fixés (injection ou pompage).
+ Réduct_Pompage = Volume (ou masse de gaz) de réduction de pompages dans des mailles ayant :
+                  * Une saturation insuffisante,
+                  * Ou une charge hydraulique proche ou en dessous des crépines
+ Écart_Volume = Bilan global = Somme des termes Entrants + termes Sortants - Stockage.
+          Ce bilan est calculé avec les Volumes (ou masses) internes Fixé(e)s.

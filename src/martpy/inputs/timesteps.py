@@ -360,7 +360,7 @@ class MartheTimeSteps:
             - ACTION : `active` (`0,1,2,-1`),
             - FICHIER: `file`,
             - GRILLE : `grid`,
-            - LIST_MAIL : `file`,
+            - LIST_MAIL : `file`, `opt_list_mail` (see :py:func:`get_opt_list_cells`)
             - COUCHE : `layer`, `value`,
             - MAILLE : `col`, `row`, `layer`, `value`,
             - FICH_METE : `step`,
@@ -851,8 +851,7 @@ def write_evolution_file(df, filename):
     df : pd.DataFrame
         DataFrame with date as index, value in column.
         e.g:
-          - 0, 1, 2, -1 for HDYNAM computation. See Marthe documentation
-          for details.
+          - 0, 1, 2, -1 for HDYNAM computation. See Marthe documentation for details.
           - 0/1 for editions
 
     filename : str
