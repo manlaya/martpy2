@@ -112,7 +112,7 @@ _ACTION_PARSER = {
 # (pour les historiq et nom des champs: modumar_Marlibfi.f90/L3894
 EDITIONS_FMT = {
     'CHARGE'      : 'I={edit:>2};',
-    'VITESSE'     : 'I={edit:>2} [C={C:>7d};L={L:>7d};P={P:>7d};Gig={Gig:>2d}]',
+    'VITESSE'     : 'I={edit:>2} [C={C:>7};L={L:>7};P={P:>7};Gig={Gig:>2}]',
     'FLUX_INFILTR': 'I={edit:>2};Z={Z:>2};C={C:>2};',
     'DEBIT'       : '*={edit:>2};V={V:>2};L={L:2};S={F:>2};Z={Z:>2};',
     'DEBIT_RIVI'  : 'I={edit:>2};L={L:>2};F={F:>2};B={B:>2};',

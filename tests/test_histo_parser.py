@@ -17,6 +17,59 @@ HISTO_FILE = './tests/data/mart_hallue/hallue.histo'
 # histo_file = './tests/data/mart_74/craie_npc_with_obs_messy.histo'
 
 
+def debug_regex():
+    import re
+    
+    xfile = 'tests/data/mart_hallue/hallue.histo'
+    # xfile = 'tests/data/mart_uk/mart_uk_files.histo'
+
+    # copy from src/martpy/inputs/mart_histo.py
+    _HISTO_PARSER = (
+        r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*'
+        r'/(?P<mode>[A-Za-z]+):'
+        r'(?P<coord_x>[A-Za-z]+)=\s*'
+        r'(?P<x>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'  # float,int,pos-neg parsing,e+- allowed
+        # https://stackoverflow.com/questions/2124010/grep-regex-to-match-non-ascii-characters
+        r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'  # Marthe f****** non ASCII char!
+        r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
+        r'(?:[P|L]=\s*(?P<layer>\d+);)?\s*'   # optional if tronc/afl, L in english
+        r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
+        r'(?:Name=(?P<name>[^ ]+))?'
+        r'(?P<name_old>[^\s;]+)?'  # get name, even if "Name=" is not here (marthe<v7.8)
+    )  # one hell of a regex
+    
+    with open(xfile, mode='r', encoding='ISO-8859-1') as f:
+        histo = [line.rstrip() for line in f if '/HISTO/' in line]
+    
+    for line in histo:
+        m = re.search(_HISTO_PARSER, line)
+        if m:
+            res = m.groupdict()
+        else:
+            # for the debugger (go line by line here)
+            reg1 = r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*'
+            reg2 = reg1 + r'/(?P<mode>[A-Za-z]+):'
+            reg3 = reg2 + r'(?P<coord_x>[A-Za-z]+)=\s*'
+            reg4 = reg3 + r'(?P<x>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
+            reg5 = reg4 + r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'
+            reg6 = reg5 + r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
+            reg7 = reg6 + r'(?:[P|L]=\s*(?P<layer>\d+);)?\s*'
+            reg8 = reg7 + r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
+            reg9 = reg8 + r'(?:Name=(?P<name>[^ ]+))?'
+            reg10 = reg9+ r'(?P<name_old>[^\s;]+)?'
+            re.search(reg1, line).groupdict()
+            re.search(reg2, line).groupdict()
+            re.search(reg3, line).groupdict()
+            re.search(reg4, line).groupdict()
+            re.search(reg5, line).groupdict()
+            re.search(reg6, line).groupdict()
+            re.search(reg7, line).groupdict()
+            re.search(reg8, line).groupdict()
+            re.search(reg9, line).groupdict()
+            re.search(reg10, line).groupdict()
+            raise ValueError('No match found in histo file')
+
+
 def test_fmt_xchar():
     number = [
        152.1622,
@@ -103,14 +156,22 @@ def test_get_xy_from_grid():
     assert not np.any(pd.isna(histo2.col)), 'Error while getting col from grid'
     assert not np.any(pd.isna(histo2.row)), 'Error while getting row from grid'
 
-# def test_read_histo_uk():
-#     histo = read_histo_file('./tests/data/mart_uk/mart_uk_files.histo')
-#     assert len(histo) == 3, 'Error while reading histo file'
-#     assert histo['name'].iloc[0] == 'TOTO', 'Error while reading histo file, wrong name'
-#     assert histo['name'].iloc[0] == 'tata', 'Error while reading histo file, wrong name'
-#     assert histo['mode'].iloc[0] == 'CELL', 'Error while reading histo file, wrong mode'
-#     assert histo['mode'].iloc[1] == 'XCOO', 'Error while reading histo file, wrong mode'
-#     assert histo['mode'].iloc[2] == 'COOR', 'Error while reading histo file, wrong mode'
+
+def test_read_histo_uk():
+    histo = read_histo_file('./tests/data/mart_uk/mart_uk_files.histo')
+    assert len(histo) == 3, 'Error while reading histo file'
+    assert histo['name'].iloc[0] == 'TOTO', 'Error while reading histo file, wrong name'
+    assert histo['name'].iloc[1] == 'tata', 'Error while reading histo file, wrong name'
+    assert histo['mode'].iloc[0] == 'CELL', 'Error while reading histo file, wrong mode'
+    assert histo['mode'].iloc[1] == 'XCOO', 'Error while reading histo file, wrong mode'
+    assert histo['mode'].iloc[2] == 'COOR', 'Error while reading histo file, wrong mode'
+    assert 'col' in histo.columns
+    assert 'row' in histo.columns
+    assert 'x' in histo.columns
+    assert 'y' in histo.columns
+    assert 'layer' in histo.columns
+    # TODO: debug english row columns (without breaking french...)
+    # assert 'R' not in histo.columns
 
 
 def main():

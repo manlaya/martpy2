@@ -64,6 +64,44 @@ class MartProject:
             return {k: v for k, v in self.project_files.items() if v}
         else:
             return self.project_files.copy()
+    
+    def set_files(self, dict_files=None, **files):
+        """Set the files in the RMA project.
+
+        Parameters
+        ----------
+        dict_files: `dict`, optional
+            Dictionary containing the files the RMA project points to.
+            The keys are the file extensions and the values are the paths.
+            The keys must be in the list of valid extensions.
+            See :py:func:`martpy.get_mart_variables`.
+        
+        **files: `dict`
+           Dictionary containing the files the RMA project points to, passed
+           as keywords arguments instead of dict.
+        
+        Raises
+        ------
+        ValueError
+           If the keys are not in the list of valid extensions.
+        
+        Example
+        -------
+        >>> project = MartProject.from_template()
+        >>> project.set_files(permh='model.permh', pastp='times.pastp')
+        >>> project.set_files({'permh': 'model.permh', 'pastp': 'times.pastp'})
+        """
+        if dict_files is None:
+            dict_files = {}
+        inputs = {**dict_files, **files}
+        for k, v in inputs.items():
+            if k not in MART_VARIABLES['ext'].values:
+                raise ValueError(
+                    'Invalid file extension {}. '
+                    'Please check with `martpy.get_mart_variables()`.'
+                )
+            self.project_files[k] = v
+        return None
 
     @classmethod
     def from_template(cls, rma_file='new_project.rma', title='Marthe Project'):
@@ -115,6 +153,12 @@ class MartProject:
         if title is None:
             title = self.title
         _write_rma_file(self.project_files, rma_file, title=title)
+    
+    def __repr__(self):
+        msg = f'{self.__class__.__name__}({self.rma_file})\n'
+        msg += f'Title: {self.title}\n'
+        msg += f'Files: {self.project_files}'
+        return msg
 
 
 class MartModel(MartProject):

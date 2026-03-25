@@ -203,15 +203,13 @@ def test_pastp_uk():
 
 def main():
     print('Test MARTHE pastp reader')
-    # test_parse_date_fmt()
-    # test_read_pastp()
-    # print('Pastp read: (head only)')
-    # print('Test Marthe pastp writer')
-    # test_write_pastp()
-    # test_wrapper_method()
-    # test_add_action_with_istep()
+    test_parse_date_fmt()
+    test_read_pastp()
+    test_write_pastp()
+    test_wrapper_method()
+    test_add_action_with_istep()
     test_get_actions()
-    # test_pastp_uk()
+    test_pastp_uk()
     print('============')
     print('Test success')
 

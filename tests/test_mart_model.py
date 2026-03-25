@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+from pathlib import Path
+
 import pytest
 import martpy as mart
 
@@ -10,7 +12,7 @@ import martpy as mart
 # Assuming tests are run from the project root
 MODEL_DIR = os.path.abspath('tests/data/mart_hallue')
 MODEL_FILE = os.path.join(MODEL_DIR, 'hallue.rma')
-MARTBIN = 'marthe'
+MARTBIN = Path.home() / '.local' / 'bin' / 'marthe'
 
 
 def test_instantiate_model():

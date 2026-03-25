@@ -278,6 +278,7 @@ class MartheTimeSteps:
         >>> act = pastp.get_actions(step=[0,-1])  # get actions for specific step
         >>> act = pastp.get_actions(variable='CALCUL_HDYNAM')  # get actions for specific variable
         """
+
         if time is not None or step is not None:
             if time is not None:
                 time_keys = self.times.set_index('time').loc[time, :]
@@ -298,6 +299,7 @@ class MartheTimeSteps:
 
         elif variable is not None:
             variable = variable.upper()
+            _check_mart_key(variable)
             filtered_actions = {}
             for time_key, actions in self.actions.items():
                 if variable in actions:

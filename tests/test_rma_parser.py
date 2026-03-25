@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import re
+import pytest
+
+import martpy as mart
 from martpy.inputs._rma_parser import _parse_marthe_project, _write_rma_file
 
 RMA_FILE = './tests/data/mart_hallue/hallue.rma'
@@ -30,6 +33,24 @@ def test_writer():
     reread = _parse_marthe_project(FOUT)
     _ = reread.pop('title', None)
     assert dict_rma == reread, 'written and read rma do not match'
+
+
+def test_set_new_files():
+    rma = mart.read_rma_file(RMA_FILE)
+    mod_files = rma.get_files(only_active=False)
+    rma.set_files(salext='toto.sal', tempe='tata.temper')
+    rma.set_files({'cext_r': 'blblb.cext_r'})
+    mod_files_new = rma.get_files(only_active=False)
+    assert mod_files_new != mod_files
+    assert mod_files_new.get('salext') == 'toto.sal'
+    assert mod_files_new.get('tempe') == 'tata.temper'
+    assert mod_files_new.get('cext_r') == 'blblb.cext_r'
+
+
+def test_set_new_files_error():
+    rma = mart.read_rma_file(RMA_FILE)
+    with pytest.raises(ValueError):
+        rma.set_files(blabla='toto.sal')
 
 
 def main():

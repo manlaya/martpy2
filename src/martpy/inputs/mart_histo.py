@@ -17,7 +17,7 @@ _HISTO_PARSER = (
     # https://stackoverflow.com/questions/2124010/grep-regex-to-match-non-ascii-characters
     r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'  # Marthe f****** non ASCII char!
     r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
-    r'(?:P=\s*(?P<layer>\d+);)?\s*'   # optional if tronc/afl
+    r'(?:[P|L]=\s*(?P<layer>\d+);)?\s*'   # optional if tronc/afl, L in english
     r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
     r'(?:Name=(?P<name>[^ ]+))?'
     r'(?P<name_old>[^\s;]+)?'  # get name, even if "Name=" is not here (marthe<v7.8)

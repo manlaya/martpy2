@@ -32,7 +32,7 @@ select = [
     "ARG",   # flake8-unused-arguments
     "B",     # flake8-bugbear, B950
     "C4",    # flake8-comprehensions
-    "I",     # isort
+    # "I",     # isort // no multiple import by line...
     "ICN",   # flake8-import-conventions
     "NPY",   # NumPy specific rules
     "PD",    # pandas-vet
