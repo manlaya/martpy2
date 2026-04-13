@@ -18,7 +18,7 @@ MART_VARIABLES = read_csv(
     _get_resource_file('marthe_variables.csv'),
     sep='\t', encoding='ISO-8859-1'
 )
-
+MART_HISTO_VAR = read_csv(_get_resource_file('marthe_histo.csv'))
 COMMENT_BLOCK = '/!!!!!/!!!!!'
 COMMENTS = ['!', '#']
 

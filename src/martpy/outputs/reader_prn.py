@@ -6,24 +6,33 @@ from io import StringIO
 
 import pandas as pd
 
-from martpy.utils.constant import RENAME_HISTOBIL_HEAD_ZONE
+from martpy.utils.constant import (
+    MART_HISTO_VAR,
+    MART_VARIABLES,
+    RENAME_HISTOBIL_HEAD_ZONE
+)
 from martpy.utils.misc import remove_accents
 
 
-def read_output_time_series(ts_file):
+def read_output_time_series(ts_file, normalize_headers=False):
     """ Read a time series output file (historiq.prn)
 
     Parameters
     ----------
     ts_file : str, Path
         path to historiq.prn file
+    
+    normalize_headers : bool, optional
+        strip accents and spaces from headers, by default False.
+        This only affect the variable columns level.
 
     Returns
     -------
     pd.DataFrame
         DataFrame with index=Date and multiheader
         If the marthe model is nested, the header will be 4 levels:
-        (field, grid, coords, name) else 3 levels (field, coords, name)
+        (variable, grid, coords, name) else 3 levels (variable, coords, name)
+        River variable also add a level for the river id (riv_afluent).
     """
     # read first 5 lines to guess nested
     with open(ts_file, encoding='cp1252', mode='r') as f:
@@ -33,7 +42,7 @@ def read_output_time_series(ts_file):
     nested = bool(re.match(r".*(Main_Grid|Gigogne).*", "\n".join(head), re.DOTALL|re.I))
     has_riv_afl = bool(re.match(r".*(AF\d+_TR\d+).*", "\n".join(head), re.DOTALL|re.I))
 
-    levels_name = ['field', 'coords', 'name']
+    levels_name = ['variable', 'coords', 'name']
     if nested:
         levels_name.insert(2, 'grid')
     if has_riv_afl:
@@ -56,7 +65,22 @@ def read_output_time_series(ts_file):
     df = df.rename_axis("date", axis=0)
     # remove int step col if present:
     df = df.loc[:,~df.columns.get_level_values(-1).str.match('.*<Date>')]
+    if normalize_headers:
+        # TODO: remap histo headers to "standard" variable names ?
+        _vars = df.columns.get_level_values(0)
+        # get english labels
+        _vars = [
+            MART_HISTO_VAR.loc[
+                MART_HISTO_VAR['code_histo']==_var, 'code_histo_en'
+            ].values[0].strip() for _var in _vars
+        ]
+        # then clean them and add again the rest of col levels
+        df.columns = pd.MultiIndex.from_tuples([
+            (_clean_prn_header(_vars[i]), *cols[1:]) \
+                for i, cols in enumerate(df.columns)
+        ], names=levels_name)
     return df
+
 
 def _clean_prn_header(col):
     cleaned = remove_accents(col.lower())
@@ -148,6 +172,7 @@ def read_output_water_balance(
             df = df.drop(list(df.filter(regex='Date.*', axis=1)), axis=1)
             if normalize_headers:
                 df.columns = [_clean_prn_header(x) for x in df.columns]
+                # df.columns = df.columns.map(_clean_prn_header)  # avoid loop ?
             df.index.name = 'date'
             df = df.assign(zone=zone)
             df = df.set_index('zone', append=True)

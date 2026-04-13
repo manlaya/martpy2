@@ -33,18 +33,35 @@ class TestReaderPrn(unittest.TestCase):
             reader_prn.read_output_water_balance('./tests/data/mart_outputs/missing.prn')
 
     def test_read_time_serie(self):
-        # Assuming reader_prn.read_prn_file returns a list of dicts
         result = reader_prn.read_output_time_series(
             f"{self.example_dir}/historiq.prn"
         )
         self.assertIsInstance(result, pd.DataFrame)
         self.assertGreater(len(result), 0)
         self.assertIn('date', result.index.names)
-        self.assertIn('field', result.columns.names)
+        self.assertIn('variable', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
         self.assertTrue(np.all(result.dtypes == 'float64'))
         self.assertTrue(result.index.dtype == '<M8[ns]')
+
+    def test_read_ts_norm_headers(self):
+        result = reader_prn.read_output_time_series(
+            f"{self.example_dir}/historiq.prn",
+            normalize_headers=True
+        )
+        self.assertIsInstance(result, pd.DataFrame)
+        self.assertGreater(len(result), 0)
+        self.assertIn('date', result.index.names)
+        self.assertIn('variable', result.columns.names)
+        self.assertIn('coords', result.columns.names)
+        self.assertIn('name', result.columns.names)
+        self.assertTrue(np.all(result.dtypes == 'float64'))
+        self.assertTrue(result.index.dtype == '<M8[ns]')
+        heads = result.columns.get_level_values(0)
+        self.assertTrue('h_head' in heads)
+        self.assertTrue('Charge' not in heads)
+        self.assertTrue('rvier_flow' not in heads)
 
     def test_read_time_serie_affl(self):
         # Assuming reader_prn.read_prn_file returns a list of dicts
@@ -54,7 +71,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIsInstance(result, pd.DataFrame)
         self.assertGreater(len(result), 0)
         self.assertIn('date', result.index.names)
-        self.assertIn('field', result.columns.names)
+        self.assertIn('variable', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
         self.assertIn('riv_afluent', result.columns.names)
@@ -68,7 +85,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIsInstance(result, pd.DataFrame)
         self.assertGreater(len(result), 0)
         self.assertIn('date', result.index.names)
-        self.assertIn('field', result.columns.names)
+        self.assertIn('variable', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
         self.assertIn('grid', result.columns.names)
@@ -155,6 +172,8 @@ if __name__ == '__main__':
     df = reader_prn.read_output_water_balance(test_file)
     df = reader_prn.read_output_water_balance(test_file, normalize_headers=True)
     # print(time.time() - t0)
+    df = reader_prn.read_output_time_series('./tests/data/mart_outputs/simple_case/historiq.prn')
+    df = reader_prn.read_output_time_series('./tests/data/mart_outputs/simple_case/historiq.prn', normalize_headers=True)
 
     # pymarthe version
     # t0 = time.time()
