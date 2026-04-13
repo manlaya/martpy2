@@ -146,6 +146,11 @@ def read_output_water_balance(
             # match Zone X or Zone = X (different version of Marthe)
             zone = re.search(r'zone\s+(?:=\s*)?(\d+)', header, re.IGNORECASE)
             zone = zone.group(1) if zone is not None else 'global'
+            
+            if 'riv_dra_lac' in str(balance_file):
+                vol = re.search(r'Volumes\s+de\s+Rivi.*res\s+cumul.*s', header, re.I)
+                if vol is not None:
+                    zone = 'volume'
 
             if not add_multiindex and zone != 'global':
                 continue  # if not add_multiindex, only read global zone

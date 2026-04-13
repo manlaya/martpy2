@@ -132,6 +132,15 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('2', zone)
         self.assertTrue(np.all(res.dtypes == 'float64'))
         self.assertTrue(res.index.get_level_values(1).dtype == '<M8[ns]')
+    
+    def test_read_bil_dra_lac(self):
+        res = reader_prn.read_output_water_balance(
+            f"{self.example_dir}/histobil_riv_dra_lac.prn",
+            normalize_headers=False
+        )
+        self.assertIsInstance(res, pd.DataFrame)
+        self.assertIn('global', res.index.get_level_values(0).unique())
+        self.assertIn('volume', res.index.get_level_values(0).unique())
 
     def test_read_all_kind(self):
         for f in self.all_files:
@@ -163,8 +172,8 @@ if __name__ == '__main__':
     # test_file = './tests/data/mart_hallue/histobil_debit.prn'
     # test_file = './tests/data/mart_hallue/histobil_nap_cumu.prn'
     # test_file = './tests/data/mart_hallue/histobil_nap_pastp.prn'
-    # test_file = './tests/data/mart_hallue/histobil_riv_dra_lac.prn'
-    test_file = './tests/data/mart_hallue/histoclim.prn'
+    test_file = './tests/data/mart_outputs/simple_case/histobil_riv_dra_lac.prn'
+    # test_file = './tests/data/mart_hallue/histoclim.prn'
     # test_file = './tests/data/mart_outputs/outputs_mass/histomas.prn'
 
     # import time
