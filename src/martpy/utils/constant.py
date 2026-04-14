@@ -15,6 +15,8 @@ def _build_mart_variables():
 
 MART_VARIABLES = _build_mart_variables()
 
+MART_HISTO_VAR = read_csv(_get_resource_file('marthe_histo.csv'))
+
 COMMENT_BLOCK = '/!!!!!/!!!!!'
 
 COMMENTS = ['!', '#']
