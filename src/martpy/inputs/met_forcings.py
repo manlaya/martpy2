@@ -6,7 +6,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from martpy.utils.constant import _get_resource_file
+from ..utils.resources import _get_resource_file
 
 
 # TODO: copy SafranGrid dataclass from aquida here, and add methods to

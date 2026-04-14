@@ -3,7 +3,8 @@
 
 import difflib
 
-from martpy.utils.constant import _ACTION_PARSER, MART_VARIABLES, OPT_LIST_MAIL
+from martpy.utils.constant import _ACTION_PARSER, MART_VARIABLES, OPT_LIST_MAIL   
+from .constant import MART_VARIABLES, VALID_VARIABLE_TYPES
 
 
 def _get_closest_suggestion(key, valid_keys, n=3):
@@ -63,18 +64,26 @@ def _check_valid_action(action):
         raise MartKeyError(action, _valid_actions, mode='action')
 
 
-def get_mart_variables():
-    """ Help function to get informations on all Marthe variables
+def get_mart_variables(variable_type: str | None = None) -> pd.DataFrame:
+    """ Get information on all Marthe variables, or a subset of variables based on variable name
 
     Returns
     -------
     pd.DataFrame
         DataFrame with information on all Marthe variables
-
+    variable_type : str | None, optional
+        specific variable type to filter the DataFrame,
+        if no argument is given, all variables are returned
     See Also
     --------
     get_variable_help : get information on a specific Marthe variable
     """
+    if variable_type is not None:
+
+        # Check for valid variable type
+        _check_available_varname_type(variable_type)
+        return _get_slice_variables(variable_type)
+
     return MART_VARIABLES
 
 
@@ -113,3 +122,27 @@ def get_opt_list_cells():
     """ Get all Marthe options for list cells
     """
     return list(OPT_LIST_MAIL.keys())
+
+
+def _get_slice_variables(varname_type: str):
+    """Get subset of variables based on variable type."""
+ 
+    from . import constant
+    # Dynamically select the appropriate subset of variables
+    subset_variables = getattr(constant, f"{varname_type.upper()}_VARIABLES", None)
+    if subset_variables is None:
+        raise NotImplementedError(f"Variable type not implemented: {varname_type}")
+
+    mask = MART_VARIABLES['code_var_fr'].isin(subset_variables)
+    return MART_VARIABLES.loc[mask]
+
+
+def _check_available_varname_type(varname_type: str):
+    """ Check if the provided variable name is valid"""
+
+    if not isinstance(varname_type, str) or not varname_type.strip():
+        raise ValueError("Variable type must be a non-empty string.")
+
+    if varname_type.lower() not in VALID_VARIABLE_TYPES:
+        raise ValueError(f'Invalid variable type: {varname_type},'
+                         f'valid variable types are:\n{VALID_VARIABLE_TYPES}.')

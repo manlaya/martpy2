@@ -3,23 +3,20 @@
 
 from pandas import read_csv
 
-
-def _get_resource_file(filename):
-    """ Get resource file path from package
-    syntax: python >= 3.7
-    """
-    import importlib.resources as impresources
-    return (impresources.files('martpy.resources') / filename)
-
-
 MART_VERSION = '7.8.4'
+
 NAN_VALUES = [9999., -9999., 8888.]  # Example NaN values, can be modified as needed
-MART_VARIABLES = read_csv(
-    _get_resource_file('marthe_variables.csv'),
-    sep='\t', encoding='ISO-8859-1'
-)
+
+def _build_mart_variables():
+    """ Build the MART_VARIABLES DataFrame from the resource file
+    """
+    from .resources import _get_resource_file
+    return read_csv(_get_resource_file('marthe_variables.csv'),sep='\t', encoding='ISO-8859-1')
+
+MART_VARIABLES = _build_mart_variables()
 
 COMMENT_BLOCK = '/!!!!!/!!!!!'
+
 COMMENTS = ['!', '#']
 
 MART_OUTPUTS = [
@@ -239,3 +236,32 @@ BLOCK_MART_EN = {
     'End of Initialization' : 'dummy',
     'End General Parameters file' : 'dummy',
 }
+
+SOIL_VARIABLES = { 
+                    "CAP_SOL_PROGR",
+                    "RUMAX",
+                    "EQU_RUIS_PERC",
+                    "T_DEMI_PERCOL",
+                    "DEF_SOL_PROGR",
+                    "DEFIC_SOL",
+                    "NIV_RESERV_H",
+                    "CORREC_PLUIE",
+                    "CORR_ETP",
+                    "T_RUISS",
+                    "NIV_RUI",
+                    "TEMPER_AIR",
+                    "CORR_TEMP_AIR",
+                    "RETEN_NEIGE",
+                    "EVAP_NEIGE",
+                    "COEF_FONTE_PLU",
+                    "TEMPER_FONTE",
+                    "DEGR_JOUR_NEI",
+                    "FONT_SOL_NEIG",
+                    "STOCK_NEIGE",
+                 }
+
+# TODO: add more variable types and their corresponding variables in the future
+# TODO: is VALID_VARIABLE_TYPES the right name ? is TYPES may be better ?
+VALID_VARIABLE_TYPES = [
+    'soil',
+]
