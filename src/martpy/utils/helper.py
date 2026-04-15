@@ -3,8 +3,12 @@
 
 import difflib
 
-from martpy.utils.constant import _ACTION_PARSER, MART_VARIABLES, OPT_LIST_MAIL   
-from .constant import MART_VARIABLES, VALID_VARIABLE_TYPES
+from .constant import (
+    _ACTION_PARSER,
+    MART_VARIABLES,
+    OPT_LIST_MAIL,
+    VALID_VARIABLE_TYPES
+)
 
 
 def _get_closest_suggestion(key, valid_keys, n=3):
@@ -64,8 +68,9 @@ def _check_valid_action(action):
         raise MartKeyError(action, _valid_actions, mode='action')
 
 
-def get_mart_variables(variable_type: str | None = None) -> pd.DataFrame:
-    """ Get information on all Marthe variables, or a subset of variables based on variable name
+def get_mart_variables(variable_type: str | None = None):
+    """ Get information on all Marthe variables, or a subset of variables
+    based on variable name
 
     Returns
     -------
