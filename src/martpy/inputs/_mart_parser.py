@@ -18,7 +18,7 @@ from martpy.utils.constant import (
     BLOCK_MART,
     BLOCK_MART_EN,
 )
-from ..utils.resources import _get_resource_file
+from ..utils.config import _get_resource_file
 from martpy.utils.helper import _get_closest_suggestion
 
 

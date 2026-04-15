@@ -10,7 +10,7 @@ NAN_VALUES = [9999., -9999., 8888.]  # Example NaN values, can be modified as ne
 def _build_mart_variables():
     """ Build the MART_VARIABLES DataFrame from the resource file
     """
-    from .resources import _get_resource_file
+    from .config import _get_resource_file
     return read_csv(_get_resource_file('marthe_variables.csv'),sep='\t', encoding='ISO-8859-1')
 
 MART_VARIABLES = _build_mart_variables()
