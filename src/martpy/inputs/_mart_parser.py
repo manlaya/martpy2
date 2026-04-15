@@ -17,8 +17,8 @@ from martpy.utils.constant import (
     _FLOAT_PATTERN,
     BLOCK_MART,
     BLOCK_MART_EN,
-    _get_resource_file,
 )
+from ..utils.config import _get_resource_file
 from martpy.utils.helper import _get_closest_suggestion
 
 
