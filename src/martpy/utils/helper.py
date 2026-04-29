@@ -6,6 +6,7 @@ import difflib
 from .constant import (
     _ACTION_PARSER,
     MART_VARIABLES,
+    MART_HISTO_VAR,
     OPT_LIST_MAIL,
     VALID_VARIABLE_TYPES
 )
@@ -115,6 +116,28 @@ def get_variable_help(variable, locale='fr'):
     _check_mart_key(variable)
     subset = MART_VARIABLES.loc[MART_VARIABLES[f'code_var_{locale}'] == variable.upper()]
     return subset.to_dict('records')[0]
+
+
+def get_mart_histo_variables():
+    """ Get all Marthe histo (time series) variant of variables
+    
+    Notes
+    -----
+
+    TODO: link (join) with get_mart_variable
+    and make all this user transparent (i.e. martpy user
+    should only deal with marthe variable, then the code write histo
+    variant in histo file).
+
+    Returns
+    -------
+    pandas.DataFrame
+        Dataframe of all Marthe histo variables with columns:
+        `ext` (extension of file, link with marthe full name variable, see
+        :py:func:`get_mart_variables`), `code_var` (french histo code),
+        `code_var_en` (english version).
+    """
+    return MART_HISTO_VAR
 
 
 def get_mart_actions():

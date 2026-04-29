@@ -3,6 +3,7 @@
 
 import re
 from io import StringIO
+from itertools import islice
 
 import pandas as pd
 
@@ -36,8 +37,12 @@ def read_output_time_series(ts_file, normalize_headers=False):
     """
     # read first 5 lines to guess nested
     with open(ts_file, encoding='cp1252', mode='r') as f:
-        # max 6 line of headers if nested grids + river_afluent
-        head = [next(f) for x in range(6)]
+        # read max 6 line of headers if nested grids + river_afluent
+        head = list(islice(f, 6))
+
+    if len(head) == 0:
+        # no data to read, return empty df
+        return pd.DataFrame()
 
     nested = bool(re.match(r".*(Main_Grid|Gigogne).*", "\n".join(head), re.DOTALL|re.I))
     has_riv_afl = bool(re.match(r".*(AF\d+_TR\d+).*", "\n".join(head), re.DOTALL|re.I))
@@ -204,6 +209,7 @@ def read_prn(prn_file, **kwargs):
         Path to the prn file
     **kwargs
         Any addition keyword argument for :py:func:`read_output_water_balance`
+        or :py:func:`read_output_time_series`
 
     Returns
     -------
@@ -214,7 +220,7 @@ def read_prn(prn_file, **kwargs):
     basename = os.path.basename(prn_file).lower()
 
     if 'historiq' in basename:
-        return read_output_time_series(prn_file)
+        return read_output_time_series(prn_file, **kwargs)
     elif re.match(r'histo(?:bil|clim|mas)', basename):
         return read_output_water_balance(prn_file, **kwargs)
     else:
