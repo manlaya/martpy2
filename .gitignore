@@ -147,6 +147,10 @@ cython_debug/
 .vscode/
 .lprof/
 
+# Claude Code
+.claude/
+CLAUDE.md
+
 # setuptools-scm
 _version.py
 

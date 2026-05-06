@@ -11,21 +11,21 @@ from martpy.inputs._mart_parser import (
 )
 
 
-class MartheParams:
+class MartParams:
     """ Object to create/edit Marthe general parameters
 
     Examples
     --------
-    >>> mart_params = MartheParams.from_template()
+    >>> mart_params = MartParams.from_template()
     >>> mart_params.write_file('params.mart')
-    >>> params = MartheParams.from_file('params.mart')
+    >>> params = MartParams.from_file('params.mart')
     >>> params['general_params']
     """
 
     def __init__(self,
         **params,
     ):
-        """ Initialize MartheParams object
+        """ Initialize MartParams object
 
         Parameters
         ----------
@@ -137,7 +137,7 @@ class MartheParams:
                     value = row['type'](value)
                 params[g][row['key']] = value
         params['init_parameters'] = {}
-        return MartheParams(**params)
+        return MartParams(**params)
 
     def write_file(self, mart_file, title='marthe parameters'):
         _write_mart_file(self.to_dict(), mart_file, title=title)
@@ -166,7 +166,7 @@ def read_general_parameters(mart_file):
     >>> mpar = read_general_parameters('toto.mart')
     """
     parsed_params = _parse_mart_file(mart_file)
-    return MartheParams(**parsed_params)
+    return MartParams(**parsed_params)
 
 
 def read_relax(file_relax, encoding='ISO-8859-1'):

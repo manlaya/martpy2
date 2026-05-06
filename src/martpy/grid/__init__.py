@@ -13,5 +13,5 @@ from gridmarthe import (
 )
 
 from .gridmarthe_accessor import (
-    MartheGrid,
+    MartGrid,
 )
