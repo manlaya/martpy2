@@ -16,7 +16,7 @@ def test_debug_parsing_empty_value():
 
 def test_debug_mart_write_float_fmt():
     the_usual_suspect = 'tests/debug/MOD82_bug_f_fmt_write.mart'
-    param = mart.MartheParams.from_file(the_usual_suspect)
+    param = mart.MartParams.from_file(the_usual_suspect)
     param.write_file('tests/data/tmp_outputs/debug_mart_write_float_fmt.mart')
 
 

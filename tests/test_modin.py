@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from martpy.inputs.mart_param import MartheParams
+from martpy.inputs.mart_param import MartParams
 from martpy.inputs._mart_parser import (
     _parse_mart_file,
     _write_mart_file,

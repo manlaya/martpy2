@@ -8,7 +8,7 @@ import pandas as pd
 from martpy.inputs.timesteps import (
     _parse_date_pastp,
     read_mart_timesteps,
-    MartheTimeSteps
+    MartTimeSteps
 )
 
 FILE_PASTP = './tests/data/mart_hallue/hallue.pastp'
@@ -28,7 +28,7 @@ def test_parse_date_fmt():
 
 def test_read_pastp():
     res = read_mart_timesteps(FILE_PASTP)
-    assert isinstance(res, MartheTimeSteps), 'Results is not a MartheTimeSteps object'
+    assert isinstance(res, MartTimeSteps), 'Results is not a MartTimeSteps object'
     assert hasattr(res, 'times'), 'Results has no time attributes'
     assert hasattr(res, 'actions'), 'Results has no actions attributes'
     
@@ -46,13 +46,13 @@ def test_create_pastp():
     dt = pd.Series(dt).reset_index()
     dt.columns = ['step', 'time']
     dt = dt.assign(has_action=False)
-    pastp = MartheTimeSteps(dt)
+    pastp = MartTimeSteps(dt)
     assert len(pastp.times) == len(dt), 'Error while creating pastp'
     # pastp.write_file('toto.pastp')
 
     # with class method
-    pastp = MartheTimeSteps.from_dates(dates=dt2)
-    pastp2 = MartheTimeSteps.from_dates(
+    pastp = MartTimeSteps.from_dates(dates=dt2)
+    pastp2 = MartTimeSteps.from_dates(
         date_min='2000-02-01', date_max='2025-07-31', freq='D'
     )
     assert pastp.times.equals(pastp2.times), 'Error while creating pastp'

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from martpy.inputs.mart_param import MartheParams
+from martpy.inputs.mart_param import MartParams
 from martpy.inputs._mart_parser import (
     _parse_mart_file,
     _write_mart_file,
@@ -44,18 +44,18 @@ def test_writer():
 
 
 def test_from_tpl():
-    mart = MartheParams.from_template()
+    mart = MartParams.from_template()
     assert len(mart.get_param_groups()) == 21, 'Wrong block param number from template'
 
 
 def test_mart_class_attrs():
-    mart = MartheParams.from_file(MART_FILE)
+    mart = MartParams.from_file(MART_FILE)
     assert hasattr(mart, 'groups')
     mart.get_param_groups()
     mart.get_param_keys()
     print(mart)
 
-    mart = MartheParams.from_template()
+    mart = MartParams.from_template()
     assert hasattr(mart, 'groups')
     mart.get_param_groups()
     mart.get_param_keys()
@@ -63,15 +63,15 @@ def test_mart_class_attrs():
 
 
 def test_get_parameter_help_method():
-    mart = MartheParams.from_template()
+    mart = MartParams.from_template()
     help = mart.get_param_help(group='outputs', key='gen_list', lang='en')
     assert help['outputs']['gen_list'].keys() == {'default', 'type', 'description'}, \
-        'Error while getting parameter help from MartheParams class'
+        'Error while getting parameter help from MartParams class'
 
 
 # def test_param_uk():
 #     MART_FILE_UK = './tests/data/mart_uk/mart_uk_files.mart'
-#     mart = MartheParams.from_file(MART_FILE_UK)
+#     mart = MartParams.from_file(MART_FILE_UK)
 #     print(mart)
 
 
