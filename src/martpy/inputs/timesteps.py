@@ -285,14 +285,14 @@ class MartheTimeSteps:
                 time_keys = time_keys.name if isinstance(time_keys, pd.Series) else time_keys.index
             elif step is not None:
                 time_keys = self.times.iloc[step, :]['time']
-            
+
             if isinstance(time_keys, (list, tuple, pd.Series, pd.DatetimeIndex)):
                 time_keys = [_convert_date_to_str_iso(t) for t in time_keys]
             elif isinstance(time_keys, (datetime, pd.Timestamp)):
                 time_keys = [_convert_date_to_str_iso(time_keys)]
             else:
                 time_keys = [time_keys]
-            
+
             filtered_actions = {
                 k: v for k, v in self.actions.items() if k in time_keys
             }
@@ -306,15 +306,15 @@ class MartheTimeSteps:
                     filtered_actions[time_key] = {
                         variable: actions[variable]
                     }
-        
+
         else:
             filtered_actions = self.actions
-        
+
         if not as_dataframe:
             return filtered_actions
         else:
             return self._get_actions_as_dataframe(filtered_actions)
-    
+
     def _get_actions_as_dataframe(self, actions):
         # data = pd.DataFrame.from_dict(d, orient='index')
         df = []
@@ -412,6 +412,10 @@ class MartheTimeSteps:
                     {'mode': action.upper(), **kwargs}
                 ],
             }
+            # TODO assert no dups -- /!\ perf!  # + error in test_pastp_parser::test_wrapper_method
+            # for k,v in new_actions[key].items():
+            #     new_actions[key][k] = pd.DataFrame(v).drop_duplicates().to_dict('records')
+
         self.actions = {**self.actions, **new_actions}
         self.times.loc[self.times['time'].isin(times), 'has_action'] = True
 

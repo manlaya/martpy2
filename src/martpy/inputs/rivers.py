@@ -34,12 +34,12 @@ class RiverTree:
 
     def filter_from_grid(self, grid):
         # subset arb_r from actual grid of river afluents
-        pass
+        raise NotImplementedError
 
     def create_from_grid(self, grid):
         # create arb_r from grid
         # by identifying with afluent goes to where...
-        pass
+        raise NotImplementedError
 
     def write_file(self, file_tree):
         _write_river_tree(self.df, file_tree)

@@ -43,7 +43,7 @@ class MartHisto(pd.DataFrame):
         obs=None,
     ):
         # nb check that field is a Marthe field
-        return
+        raise NotImplementedError
 
     def remove_observation(
         self,
@@ -180,7 +180,7 @@ class MartHisto(pd.DataFrame):
             marthe grid dataset, with col/rows variables, by default None.
             Used if `fill_coords=True`
         """
-        import geopandas as gpd
+        import geopandas as gpd  # noqa: ICN002
         df = self.copy()
         if fill_coords:
             assert grid is not None, (
@@ -206,7 +206,7 @@ class MartHisto(pd.DataFrame):
         """ Read a .gpkg file from Marthe model
         to create a MartHisto object
         """
-        import geopandas as gpd
+        import geopandas as gpd  # noqa: ICN002
         gdf = gpd.read_file(filename).set_crs(epsg)
         # TODO: check validity of values in columns ?
         expected_columns = [

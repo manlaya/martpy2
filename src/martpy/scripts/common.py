@@ -11,7 +11,7 @@ _copyleft = """
     {program}  Copyright (C) {year}  {name_of_author_for_copyright}.
     This program comes with ABSOLUTELY NO WARRANTY.
     This is free software, see GNU General Public Lisence v3 for copying.
-""".format(program='martpy', year=2025, name_of_author_for_copyright='BRGM')
+""".format(program='martpy', year='2025-', name_of_author_for_copyright='BRGM')
 
 
 def init_parser(prog_name, descr):

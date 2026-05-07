@@ -152,7 +152,6 @@ _version.py
 
 # ------ others
 *.bak
-cliff.toml
 
 # binary for resources:
 martconf

@@ -59,9 +59,9 @@ class TestReaderPrn(unittest.TestCase):
         self.assertTrue(np.all(result.dtypes == 'float64'))
         self.assertTrue(result.index.dtype == '<M8[ns]')
         heads = result.columns.get_level_values(0)
-        self.assertTrue('h_head' in heads)
+        self.assertTrue('charge' in heads)
         self.assertTrue('Charge' not in heads)
-        self.assertTrue('rvier_flow' not in heads)
+        self.assertTrue('debit_rivi' in heads)
 
     def test_read_time_serie_affl(self):
         # Assuming reader_prn.read_prn_file returns a list of dicts
@@ -105,7 +105,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('Nombre_Suintem', res.columns)
         self.assertTrue(np.all(res.dtypes == 'float64'))
         self.assertTrue(res.index.get_level_values(1).dtype == '<M8[ns]')
-    
+
     def test_read_balance_no_multiindex(self):
         res = reader_prn.read_output_water_balance(
             f"{self.example_dir}/histobil_debit.prn",
@@ -132,7 +132,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('2', zone)
         self.assertTrue(np.all(res.dtypes == 'float64'))
         self.assertTrue(res.index.get_level_values(1).dtype == '<M8[ns]')
-    
+
     def test_read_bil_dra_lac(self):
         res = reader_prn.read_output_water_balance(
             f"{self.example_dir}/histobil_riv_dra_lac.prn",

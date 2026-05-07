@@ -22,7 +22,7 @@ def read_output_time_series(ts_file, normalize_headers=False):
     ----------
     ts_file : str, Path
         path to historiq.prn file
-    
+
     normalize_headers : bool, optional
         strip accents and spaces from headers, by default False.
         This only affect the variable columns level.
@@ -71,14 +71,14 @@ def read_output_time_series(ts_file, normalize_headers=False):
     # remove int step col if present:
     df = df.loc[:,~df.columns.get_level_values(-1).str.match('.*<Date>')]
     if normalize_headers:
-        # TODO: remap histo headers to "standard" variable names ?
         _vars = df.columns.get_level_values(0)
-        # get english labels
-        _vars = [
-            MART_HISTO_VAR.loc[
-                MART_HISTO_VAR['code_histo']==_var, 'code_histo_en'
-            ].values[0].strip() for _var in _vars
-        ]
+        # TODO: remap histo headers to "standard" variable names ?
+        # get english labels -- future
+        # _vars = [
+        #     MART_HISTO_VAR.loc[
+        #         MART_HISTO_VAR['code_histo']==_var, 'code_histo_en'
+        #     ].values[0].strip() for _var in _vars
+        # ]
         # then clean them and add again the rest of col levels
         df.columns = pd.MultiIndex.from_tuples([
             (_clean_prn_header(_vars[i]), *cols[1:]) \
@@ -119,11 +119,11 @@ def read_output_water_balance(
     add_multiindex : bool, optional
         if True, add a multiindex to columns (date, zone), by default True
         if False, return a single index with date only (only 'global' zone is kept)
-    
+
     normalize_headers : bool, optional
         if True normalize headers (lowercase, replace spaces/special characters
         by underscores). By default False.
-    
+
     encoding : str, optional
        encoding of the file, by default 'ISO-8859-1'
 
@@ -151,7 +151,7 @@ def read_output_water_balance(
             # match Zone X or Zone = X (different version of Marthe)
             zone = re.search(r'zone\s+(?:=\s*)?(\d+)', header, re.IGNORECASE)
             zone = zone.group(1) if zone is not None else 'global'
-            
+
             if 'riv_dra_lac' in str(balance_file):
                 vol = re.search(r'Volumes\s+de\s+Rivi.*res\s+cumul.*s', header, re.I)
                 if vol is not None:
@@ -190,9 +190,11 @@ def read_output_water_balance(
             df = df.apply(pd.to_numeric, errors='coerce', axis=1)  # force numeric types
             df = df.dropna(how='all', axis=0).dropna(how='all', axis=1)  # coerce: non-num --> NaNs, drop here
             df_list.append(df)
+
     df = pd.concat(df_list, axis=0, ignore_index=False)
     if not add_multiindex:
         df = df.droplevel(0)  # drop zone level, keep only global zone
+
     return df
 
 
