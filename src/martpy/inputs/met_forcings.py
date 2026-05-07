@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import re
+
 import numpy as np
 import pandas as pd
 
-from martpy.inputs.io_utils import _get_resource_file
+from ..utils.config import _get_resource_file
 
 
 # TODO: copy SafranGrid dataclass from aquida here, and add methods to
@@ -33,7 +35,7 @@ def read_zone_safran():
 
 def write_met_forcings(df, fname):
     """ Write a DataFrame to Marthe sequential forcing file
-    
+
     Parameters
     ----------
     df : pd.DataFrame
@@ -44,7 +46,8 @@ def write_met_forcings(df, fname):
     date_col = df.index.name  # get date name
     cols = df.columns  # save met zone for reorder
     df = df.copy().reset_index()
-    df = df[list(cols) + [date_col]]  # reorder cols to make date the last one, ignored by marthe
+    # reorder cols to make date the last one, ignored by marthe
+    df = df[list(cols) + [date_col]]
     # write with a '#' at the begining of file, for marthe
     with open(fname, mode="w", newline='') as f:
         f.write("# ")
@@ -55,4 +58,31 @@ def write_met_forcings(df, fname):
             float_format='%.2f',
             index=False,
         )
+    return
+
+
+def read_nzcli(file_nzcli, encoding='ISO-8859-1'):
+    with open(file_nzcli, 'r', encoding=encoding) as f:
+        nzcli = f.readlines()
+    nzcli = '\n'.join([x for x  in nzcli if re.match(r'(\d+\s*)+', x)])  # skip header
+    forcing_cells = [int(x) for x in re.split(r'\s+', nzcli.strip())]
+    return forcing_cells
+
+
+def write_nzcli(clim_zone: list, file_nzcli):
+    """ Write a climatic zone file (`*.nzcli`)
+
+    Parameters
+    ----------
+    clim_zone : list if int
+       List of climatic zones to use, it links zone grid to data
+       (ie some kind of header for climatic tabular data),
+       see Marthe general documentation for more informations.
+    file_nzcli : str or Path-like.
+        file to be written
+    """
+    with open(file_nzcli, mode='w', encoding='ISO-8859-1') as f:
+        f.write('Numéro des {} Zones Météo des fichiers\n'.format(len(clim_zone)))
+        f.write('    '.join(clim_zone))
+        f.write('\n')
     return

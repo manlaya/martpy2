@@ -1,0 +1,380 @@
+Nouveau Projet
+ #<V7.8.4># --- End of Header lines --- ; Do not modify/delete this line
+ *** Outputs and controls                            ***
+         0=Detailed listing (1 = Yes  ;  0 = No)
+         0=//////////////////////////////////////////////////////////
+         0=Listing of spatialized data read. [0=No ; 1=Yes ; 2=Also cell grids ; -1=Brief listing file]
+         0=Output of project state at the end of simulation (for restart) [0=No ; 1=Yes ; -1=Binary]
+         0=Control of convergence in a given cell
+         0= Row number of the controlled cell   [when control]
+         0= Column number of the controlled cell    [when control]
+         0= Layer number of the controlled cell [0=Cell with max(resid flow)]
+         0= Nested grid number for the controlled cell [Df=0]  [when control]
+         0= Number of final iterations to control [when control]
+          =Brief 'flowbalance' file [0=Full ; 1, 2=Brief ; 9999=Cancelled]
+         0=Only verification without calculation
+         0=Output Time Series of Mass flux and Heat flux Balance per Zone (2=Zon_Typ2 ; 3=Zon_Typ3)
+         0=Output Time Series of Aquifer Flow Balance (0=Automatic ; 1=Yes ; -1=No)
+         0=Output Time Series of Variation since beginning of simulation
+         0=Cancellation of Fluid Flow balance calculation [Def 0 => Calculation ; 1 or -1 => Cancel]
+         0=Time series, Profiles output (0='Excel' style ; 2='Excel' + 'Successive')
+         0=Save grid files at every model step (0=No ; 1=Yes ; 2=Every sub-step)
+          =Output Time Series of Hydroclimatic Balance (0=No ; 1=Flux ; 2=Flow)
+         0=Output Time Series of Mass flux and Heat flux balance. (0=Automatic ; 1=Yes ; -1=No)
+         0=Output Time Series of fluid Flow Balance in each geometric Zone (1=Yes; 2=Zon_Typ2; 3=Zon_Typ3)
+         0=Output Time Series of Drains fluid Flow Balance (0=Automatic ; 1=Yes ; -1=No)
+         0=//////////////////////////////////////////////////////////
+         0=Output Time Series of geochemistry convergence (-1=No ; 1=Yes ; 0=Auto)
+         0=Format for computed fields (0=Grid ; -1=Binary ; 1=Col, Row, Lay, Value etc. (see Help))
+         0=Output of full calendar dates (0 => dd/mm/yyyy ; -1 => dd/mm/yyyy hh:mm)
+         0=Dilatation factor y/x for the velocity visualisation file [Def=1]
+         0=Periodicity for time series output [Def=0 => Every time step ; -1 => Every 'model time step' ; -2 => Every 'model time step' chosen]
+         0=Output Time Series of Nitrate balance (0=No ; 1=kg/ha ; 2=mass)
+         0=Output a 'grid structure' file : Identif , X , Y , dx , dy (0=No ; 1=Yes)
+         0=Listing of River, Drains, Lakes network data (0=No ; 1=Yes)
+         0=Cancellation of Mass & Heat flux Balance calculation [Def=0 =>Calculation ; 1 or -1=Cancel]
+ *** Time Steps and sub-steps                        ***
+         0=Maximum possible number of 'model time steps' [Def = All]
+         0=//////////////////////////////////////////////////////////
+         0=Number of model time sub-steps                  [Default=1]
+         0=Number of the (actual) time step for a restart [Default=0]
+         0=Evolution files (defined at time step n°0) contain also values at time step n°0 [Def=0 => No ; 1 => Yes]
+ *** Control of Aquifer Hydraulic solving process    ***
+         0=Maximal number of hydraulic iterations for time steps after time step n°0 [Transient]
+         0=Maximal number of hydraulic iterations for time step n°0 (Initial Steady State)
+         0=Average hydraulic head deviation between 2 iterations for convergence [Def=1e-6]
+         0=Relaxation coefficient for resolution [Def=1]
+          =Weighting for neigh. Hydraulic Conductiv. (1=Geometric ; 3=Upstream ; 4=Harmon ; 5=Arith Def=Optimal)
+         0=Ratio = (Minimum wetted thickness) / (Mean layer thickness) [Def=0 => 5e-3]
+          =Solver [0=Conjugate Gradients/Cholesky ; 6=Eisenstat ; 7=GMG etc.]
+         0=Maximal number of internal iterations in the solver [Def=10]
+         0=Periodicity of hydraulic calculation [Def=0 => Every model time step]
+          =Hydraulic flow Regime [0=Transient state ; 1=Steady state]
+         0=Input of: 0=Nothing ; 1=A grid of Exchange Coefficients ; 2=A file of Vertical Fractures
+          =Dewatering scheme [0=Pseudo-USZ ; 2=Automatic_USZ]
+         0=Minimum water saturation (%) when dewatering in Pseudo-USZ scheme [Def=1%]
+         0=Newton-Raphson scheme [UNSAT zone calculation only] [Def=0 => No ; 1 => Yes]
+         0=Type of entered Exchange coefficients [0=Transmissivity  1=Hydraulic conductivity]
+          =Minimum saturation (%) for pumpings limitation [Def=20%]  'N' => 0%
+         0=Compact resolution << Parameter no more used >>
+         0=Full vertical hydraulic conductivity when Pseudo-USZ scheme [0=According to saturation ; 1=Nominal]
+         0=Maximal residual flow for internal convergence of GMG solver [Def=1e-4]
+         0=Grid Coarsening Index of GMG solver [Def=0]
+         0=Index of Preconditioning for GMG solver [Def=0]
+          =Additionnal height above screens for pumpings limitation
+         0=Maximal error in flow balance for convergence of external iterations [Def=0]
+         0=Type of Flow Balance criterion: 0 = Sufficient ; 1 = Must also be satisfied
+         0=Reduce influence of the confined storage coefficient when unconfined or in USZ (Def=0 => No ; 1: => Yes)
+ *** Data units                                      ***
+          =Aquifer Hydraulic conductivity   unit in m/s (or m2)
+          =Flow (Discharge, Yield)        unit in m3/s (in Kg/s for Gas flow)
+          =Hydraulic Head, Elevation, Pressure   unit in meter
+          =Confined Storage Coefficient unit in [-] or [m-1]
+          =Specific yield               unit in [-] ['%' when in %]
+          =Hydroclimatic (Rainfall, PET, Infiltration, Recharge) Height unit in mm
+          =Excess Irrigation Height unit in mm
+          =Duration unit for hydroclimatic data (second, minute, hour, day, week, decade, month, year)
+          =Time unit (for model time steps) (second, minute, hour, day, week, decade, month, year)
+          =Grid horizontal coordinate unit in m
+         0=Uniform Vertical Anisotropy coefficient Kv/Kh for Hydraulic conductivity
+         0=Uniform Horizontal Anisotropy coefficient Kx/Ky for Hydraulic conductivity
+          =Input Confined Storage Coeff. (0=Hydrogeol. ; 1=Specific ; 2=Compressibility)
+          =Salinity unit [Fresh Water = 0] in kg/m3
+          =Concentration unit                  in kg/m3
+          =Porosity and Water content unit [dimensionless] ['%' when in %]
+          =Water volume (or storage) unit in m3
+          =Mass unit in kg
+          =Type of permeab: [0=Def=Hydraulic conductivity  ;  1=Intrinsic Permeability]
+          =Volume unit for 'geochemical concentration' [Def=0 => per Liter = 1e-3]
+          =Type of input Mass and Heat Flow: (Def=per Cell ; 'm2'=per m2 of area)
+          =Input form of mineral concentration [Def=0 => mol/m3 of soil ; 1='%Vol' => % Volume]
+          =River and Lake Flow unit (Def = General 'Flow and Yield' unit)
+          =Gas pressure unit in m of water (Def = hydraulic head and elevation unit)
+          =Saline Mass unit in kg
+ *** Geometric options, Data reference, Processors   ***
+         0=Reference of Hydraulic Head  (Model Hydr_Head = input Hydr_Head + Reference)
+         0=Reference of Substratum elevation (Model Substratum = input Substratum + Reference)
+         0=Vertical slice width (Grid coordinate unit or Degrees) [Def=1]
+          =Input Init. State [0=Hydr_Head ; 1=Press ; 2=Satur ; 3=NAQ ; 4=S_Liq ; 5=S_NAQ] [Def=Head]
+          =Grid orientation: 0=Standard ; 1=Vertical Cross-section: gravity along Oy
+         0=Angle deviation for Gravity direction (Degrees)
+         0=Effect of angle deviation: 0=Orthogonal ; 1=Stair
+         0=Initialization seed for Random Numbers (for particles)  [Def=1789]
+         0=//////////////////////////////////////////////////////////
+          =Calculation in 'pseudo-cylindrical' symmetry (discouraged)  [0=No ; 1=Yes]
+         0=Water Dynamic Viscosity when Intrinsic Permeability is used [Def=1.002e-3]
+          =Initial State 2 [for Multiphase] 1=NAQ ; 2=AQU ; 3=Saturat ; 4=Sat_Liq ; 5=Sat_NAQ ; [Def=0 => NAQ]
+         0=Water Compressibility [m-1]  [Def=5e-6]
+         0=Number of Processors to use [0 = All processors ; -1 = All processors except 1]
+         0=Coupling with OpenPalm (0=No ; 1=Météo coupling)
+ *** Transport/Coupling: Concentration, Heat, Salinity ***
+         0=Maximum number of iterations for Density/Pressure or Viscosity/Temperature *Coupling*
+         0=Relaxation coefficient for Density/Pressure or Viscosity/Temperature coupling [Def=1]
+         0=Maximal number of iterations for Salinity/Heat/Concentration transport [Def=20]
+          =Transport method (0=Finite Diff. ; 1=Random-Walk ; 2=Characteristics=MOC ; 3=TVD)
+          =Coefficient of molecular diffusion in porous medium (m2/s)  ['Spatial' or '*' = Spatialized Field]
+          =Longitudinal Dispersivity (m) ['Spatial' or '*' => Spatialized Field]
+          =Transverse   Dispersivity (m) ['Spatial' or '*' => Spatialized Field]
+         0=Preliminary Steady State transport before transient [Déf=0 => No ; 1=Yes ; -1=Except Conc.]
+         0=Save particles positions at end of calculation (-1=Binary file)
+         0=Reading a file with initial position of particles
+         0=Number of sub-steps for R.W. particles [Def=1]
+         0=Reflexion method for R.W. Particles  (0=Standard scheme ; 1=Ito scheme)
+         0=Save Time Series of cumulated mass and heat balance components (0=Yes ; -1=No)
+          =Matrix solver for Transport: 1=Orthomin ; 2=Other  [Def=1]
+         0=Dropping diagonal terms in Finite_Differenc. (0=Full calculation 1=Dropping)
+         0=Concentrature/Temperature NOT Limited by Mini/Maxi [def=Limited ; 1=Not limited]
+         0=Maximal number of iterations for Langmuir/Freundlich interactions [Def=20]
+         0=Relaxation coefficient for Langmuir/Freundlich Interactions [Def=1]
+         0=Full TVD transport method [0=Reduced (faster) ; 1=Full]
+         0=Ratio : Vertical Transverse Dispersivity / Horizontal Transverse Dispersivity
+         0=Number of components memorized in the Orthomin solver transport. (Def 0 => 2)
+ *** Salinity, Density                               ***
+          =Taking into account Density (0=No ; 1=Hydr_Head ; 2=Pressure ; 3=Fresh Water hydr. Head)
+          =Density(Salinity) relation (0=No ; 1=Linear ; 3=Schlumberger_VDB[Salinity])
+         0=Derivative of Density = F(Salinity) when Linear relationship [Def=0.7]
+         0=Mass of each salinity particle (when particles)
+         0=Average Salinity variation between 2 iterations for convergence [Def=0 => 1e-8]
+          =Salinity transport scheme [0=Transient ; 1=Steady state]
+         0=Maximum possible number of salinity particles (MOC or R.W.) [Def=60000]
+         0=Duration <=> Steady State if MOC or R.W. in steady state [Def=0]
+         0=Retardation coefficient (Unused with an Unsaturated Zone scheme) [Def=0 => No retardation]
+         0=Degradation half-life time (time unit)
+         0=Calculation (Transport) of Salinity
+ *** Temperature , Thermal effects                   ***
+         0=Taking into account Thermal Effects
+          =Water Density law = F(Temperat., Salin) (0=No ; 1=Schoeller ; 3=Linear ; 4=Schlum_VDB ; etc.)
+          =Water Viscosity Law = F(Temperat., Concen.) (0=No ; 1=Exponential ; 2=Square_Root) ; etc.
+         0=Joules carried by each particle (when transport with particles scheme)
+         0=Average Temperature variation between 2 iterations for convergence [Def=0 => 1e-8]
+          =Thermal Transfer scheme [0=Transient ; 1=Steady state ; 2=Only at time step n°0]]
+          =Mineral Thermal Conductivity (W/m/Degree) [Def=1.5] ['Spatial' or '*' => Spatialized field]
+          =Thermal Longitudinal Dispersivity (m) (-1=same as Mass transport) ['Spatial' or '*' => Spatialized field]
+          =Thermal Tranverse Dispersivity (m) (-1=same as Mass transport) ['Spatial' or '*' => Spatialized field]
+         0=Specific Heat Capacity of Water (J/Kg/Degree)   [Def=0 =>4185]
+          =Mineral Volumetric Heat capacity (J/m3/Degree) [Def=2e6] ['Spatial' or '*' => Spatialized field]
+         0=Maximum possible number of temperature particles (MOC or R.W.) [Def=60000]
+         0=Duration <=> Steady State if MOC or R.W. method in steady state [Def=0]
+         0=Retardation coefficient [non standard usage] [Def=1]
+         0=Half-life time [non standard usage] [Def=0]
+         0=Water Thermal Conductivity (W/m/Degree)    [Def=0.6]
+         0=Calculation of the Temperature field (Thermal Transfer)
+         0=Derivative of Density = F(Temperature) when linear relationship [Def=0]
+         0=Water density at temperature = 0° when linear relationship [Def=1000]
+         0=Reference temperature [Viscosity, Gas, Geochemistry, Decay] [Def=20°C]
+         0=Temperature corresponding to 0 particle [when particles] [Def=0]
+          =Caprocks simulated with a closed form solution (Vinsome) [Def=0]
+ *** Concentration and Pathlines                     ***
+         0=Concentration Calculation
+         0=Mass of each particle for Concentration (when particles)
+         0=Average concentration variation between 2 iterations for convergence [Déf=0 => 1e-8]
+          =Transport scheme for Concentration [0=Transient ; 1=Steady state]
+         0=Concentration corresponding to 0 particle [schemes using particles] [Def=0]
+          =Pathlines calculation (1 => Yes  ;  'Invers' = -1 => Inverse Pathlines)
+         0=Maximum possible number of concentration particles (MOC or R.W.) [Def=60000]
+         0=Duration <=> Steady State when using MOC or R.W. method in steady state [Def=0]
+         0=Retardation coefficient (Unused with an Unsaturated Zone scheme) [Def=0 => No retardation]
+         0=Degradation half-life time (in time unit)  [Def=0]
+         0=Number of intermediate points for Pathlines plot [Def=1]
+          =Type of Interaction [0=No =Linear  1=Langmuir  2=Freundlich]
+         0=Interaction Parameter 1 [Refer_Conc_Langmuir ; Kfv_Freundlich]
+         0=Interaction Parameter 2 [Site_Total_Langmuir ; Exponent_Freundlich]
+         0=Decay = F(Temperature) [0=No ; 1=Leachp ; 2=Agriflux ; 3=Macro ; 4=Wave ..]
+         0=Parameter for the Decay = F(Temperature)
+         0=Decay = F(Saturation) [0=No ; 1=Leachp ; 2=Agriflux ; 3=Macro ; 4=Wave ..]
+         0=Parameter 1 for Decay = F(Saturation)
+         0=Parameter 2 for Decay = F(Saturation)
+         0=Parameter 3 for Decay = F(Saturation)
+         0=Number of Chain Filiation elements of degradation [def=0]
+          =Filiation degradation Scheme [0=Serie (Chain) ; 1=Parallel]
+         0=Calculation with exchange kinetic between Mobile_Concentration & Immobile_Concentration. (MIM)
+         0=Number of the (actual) time step for the start of pathlines [Default=0]
+         0=Transport of Gas components in the gaseous phase [0=No ; 1=Yes]
+ *** Unsaturated Zone and Multiphase flow            ***
+         0=Unsaturated Zone calculation [0=No ; 1=Yes]
+         0=Minimum internal time-step
+         0=Maximum internal time-step
+         0=Maximum water content variation during the time step
+         0=Maximum balance error during a time-step [in % or in water Volume unit]
+         0=Type of balance error [0=% Internal_Convergence ; 1=Net Balance in volume ; 2=Net Balance in %]
+         0=Maximum suction <==> Maximal dryness (in hydraulic head unit)
+         0=Minimum hydraulic conductivity or permeability (numerical security)
+          =Retention law [1=Homographic ; 2=Power ; 3=Logarithm ; 4=Van-Genuchten ; 5=Brooks&Corey etc]
+          =Permeability law [1=Homograph(pressure) ; 2=Power(Saturat) ; 4=Exponential(pressure) ; 5=Van-Gen etc.]
+          =[/// Parameter not used in this release ///]
+          =[/// Parameter not used in this release ///]
+         0=Suction at 'half-saturation'
+         0=Exponent of retention law (> 0)
+          =[/// Parameter not used in this release ///]
+         0=Exponent of relative permeability law (except when Van-Genuchten, or exponential, or Brooks-Corey law)
+         0=Suction <==> Ksat/2 [Only when relation K(pressure head)]
+         0=Saturation variation for Convergence when multiphase scheme with water content [def=1e-4%]
+         0=Minimal phases saturation (%) for Unsaturated Flow or Multiphase Flow [Def=0.01%]
+          =Retention law 2              [when Triphasic]
+         0=Suction at half-saturation 2 [when Triphasic]
+         0=Exponent of Retention law  2 [when Triphasic]
+          =Non-Aqueous Permeability law [when Multiphase] [0=idem aqueous phase]
+         0=Non-Aqueous residual content [when Multiphase] [Def=0]
+         0=Extra residual AQU phase saturation for relative permeability law [Def=0]
+         0=Exponent of Non-Aqueous hydraulic conductivity relation [when multiphase] [Def=idem]
+          =Pipe-Drains Retention law [1=Homograph ; 2=Power ; 3=Logarithm ; 4=Van-Genuchten ; 5=Brooks-Corey etc.]
+          =Pipe-Drains Permeability law [2=Power(Saturation) ; 5=Van-Genuchten ; 6=Brooks&Corey Burdine etc.]
+         0=Suction at 'half-saturation' for USZ Pipe-Drains
+         0=Exponent of USZ Pipe-Drains Retention law
+         0=Exponent of USZ Pipe-Drains relative permeability law
+         0=USZ Pipe-Drains Porosity (Def: 0 <=> 100%)
+         0=Time step duration automatically reset to the minimum at each 'modification' [0=No ; 1=Yes]
+ *** Water, Gas, Oil, Salt Water                     ***
+         0=Calculation of Water phase     [0=No ; 1=Yes]
+         0=Calculation of Gas (air) phase [0=No ; 1=Yes ; 2=always Atmospheric]
+         0=Calculation Oil Phase , or Salt Water (NAQ) [0=No ; 1=Yes ; 2=Salt Water]
+         0=Multiphase scheme [1=Press_Aqu,Satur ; 2=Press_Aqu,Press_Naq ; 3=Press_Naq,Satur ; 0=Automatic]
+         0=Resolution mode for Pressure_Saturat scheme [0=Separ_Variables = Def ; 1=Simultaneous_Resolut]
+         0=Mean Sea Level (when Ghyben-Hertzberg) [Def=0]
+         0=Withdrawals distributed on the 2 phases [0=No ; 1=Yes]
+         0=Mode of distribution of withdrawals [0=Screen/Saturation 2=Mobility]
+ *** Oil Flow (Oil, Salt Water, NAQ)                 ***
+         0=Oil (Salt Water, NAQ) Relative density     [Default=1]
+         0=Oil (Salt Water, NAQ) Viscosity  [Default=1.002e-3 Pa.s]
+         0=Oil Dissoluttion <-> Water Phase [0=No ; 1=Yes]
+         0=Maximum Equilibrium concentration (when Dissolution)
+         0=Time Constant of Dissolution [Def=0 => Instantaneous]
+ *** Gas Flow                                        ***
+         0=Gas Molar Mass (grams)  [Def=air=29g]
+          =Gas Pressure definition [Def=0 => Pressure - Atmospheric_pressure ;  1=Absolute pressure]
+         0=/////////////////////////////////////////////////////
+         0=Gas viscosity Law = F(Temperature) [0=Constant Viscosity ; 1=Linear ; 2=Power etc.]
+         0=Constant Viscosity                 [Def=1.82e-5 Pa.s]
+         0=Gradient of Viscosity/Temperature when linear law [Def=4.85e-8]
+         0=Gas Exchange <-> Water Phase [0=No ; 1=Dissolution ; 2=Vaporisation]
+         0=Number of the law of variation of Henry dissolution constant
+         0=Reference Henry Constant (Bar/mass fract)
+         0=Compressibility Correction: Constant Term             [Def=0]
+         0=Compressibility Correction: factor Pressure    [m-1]  [Def=0]
+         0=Compressibility Correction: factor Pressure**2 [m-2] [Def=0]
+ *** Geochemistry                                    ***
+         0=Calculation of Chemical Interactions [0=No ; 1=Yes ; -1=Only initialization]
+         0=ANALY: Number of Primary Chemical Elements (Liquid Phase)
+         0=Chemical element 'H2O' Not transported [Def=0 => Transported]
+         0=ANALY: Number of Minerals (Chemical elements in solid phase)
+         0=ANALY: Number of Chemical Species calculated for output [Infos]
+         0=Initial Speciation [0=No ; -1=first cell ; N=Cell N ;  *=In All cells]
+          =[/// Unused parameter in this release. ///]
+         0=ANALY: Duration for initial speciation when kinetics [Def=0 => 1e-20 s]
+          =Chemical engine [2=PHREEQC ; 3=TREACT ; (1=Analytical)]
+         0=Concentration Variation threshold for triggering chemistry [Def=0 => 1e-10]
+         0=ANALY: Molar Concentration of Water (moles/solution volume) [Def=0 => 55.51]
+         0=Get fluid density from the geochemical engine [0=No ; 1=Yes]
+         0=Get CO2(g) partial pressure the geochemical engine [0=No ; 1=Yes]
+         0=The geochemical engine uses the computed water pressure (Def=0 => No)
+         0=Cell number for centering with respect to the initial_speciation (particles schemes)
+         0=Geochemistry calculation at specified dates [0=No ; -1=At TVD sub-steps ; 1=At given time steps]
+         0=Possibility to output grids of species or infos variations since the beginning of simulation
+         0=Predefined relation for Hydraulic_Conductivity = f(Porosity) [1 = Kozeny-Carman] [Def=0 => No variation]
+         0=ANALY: N° of the species (Chemical Info) yielding the volume variation
+         0=ANALY: Matrix variation of volume /Time unit/Concentration unit [When no chemistry]
+         0=TREACT: Maximum number of iterations for geochemistry [Def=0 => 300]
+         0=TREACT: Chemical Concentration relative variation between 2 iterations for Convergence
+         0=TREACT: Maximum number of iterations for adsorption [def=0 => 30]
+         0=TREACT: Adsorption Concentration variation between 2 iterations for convergence
+         0=TREACT: Maximum dissolution/precipitation rate variation for quasi-Steady State
+         0=TREACT: Maximum total concentration variation for Quasi-Steady State
+         0=Mode [0=Standard  ;  1=Special]
+         0=Influence of porosity (and permeability) variation [1=Yes ...]
+         0=Threshold of temperature variation for triggering chemistry << Unused >> [Def=0]
+         0=External chemical parameter no 1 [Def=0] [Only for an Analytical Geochemical Engine]
+         0=External chemical parameter no 2 [Def=0] [Only for an Analytical Geochemical Engine]
+         0=External chemical parameter no 3 [Def=0] [Only for an Analytical Geochemical Engine]
+         0=External chemical parameter no 4 [Def=0] [Only for an Analytical Geochemical Engine]
+ *** Automatic Calibration / Sensitivity analysis / Optimization ***
+         0=Automatic Calibration / Sensitivity analysis / Optimization [0=No ; 1=Yes]
+         0=Analysis of simulation discrepancies compared to observed time series [0=No ; 1=Yes]
+         0=Number of time steps to ignore for automatic calibration or discrepancies analysis
+ *** River Network, Drains, Lakes                    ***
+         0=Coupling with a River Network           [0=No  ; 1=Yes]
+         0=Maximum number of iterations for River flow calculation
+         0=Average River or Lake Flow variation between 2 iterations for convergence
+         0=Maximum number of River Reaches  [Def=1500]
+         0=Stage-Discharge relation in Rivers [0=No ; 1=Manning_large ; 2=Manning_full]
+         0=Initial state input in Rivers when Stage-Discharge [0=Water levels ; 1=Flow]
+         0=River routing [0=No ; 1=Yes] When Transient state and Stage_Flow relation
+         0=Routing resolution scheme [0=Flow  ;  1 or 2=Water level]
+         0=Exchange scheme: 0='Marthe' scheme with Overflow ; 2=Without overflow ; 8=Linear ; 9=MDFL
+         0=Relaxation coefficient for River flow calculation [Def=1 ; Recommended=1]
+         0=Coupling with a Drain system   [0=No ; 1=Drains ; 2=Pipe-Drains]
+         0=System of Drains organized in a Network [0=No ; 1=Yes]
+         0=Maximum number of Drain Reaches  [Def=1500]
+          =[/// Unused parameter in this release. ///]
+         0=Solver for River Network routing [0=Strahler  ;  1,...]
+         0=Correction Factor for Overland Runoff Velocities % [Def=100%]
+         0=Minimal Overland Runoff Velocity (security) [Def=0.05 m/s]
+         0=Diffusion Coefficient for River Transport (m2/s)  [Def=0]
+         0=Diffusion Coeffic. for Drains / Pipes transport (m2/s) [Def=0]
+         0=River calculation every model time step [0=only when groundwater calculation ; 1=Every time step]
+         0=Cancel Transport in Rivers and classical Drains [0=Transport ; -1 , 1=Cancel]
+         0=Coupling with a set of Lakes [0=No ; 1=Yes]
+         0=Maximum number of total Lake cells [Def=1500]
+         0=Aquifer Overflow discharge or seepage => Pipe-Drain reach located in the cell [0=No ; 1=Yes]
+         0=All Pipe-Drains are Vertical [0=No ; 1=Yes]
+         0=All 'Drain tributaries' are independent [0=No ; 1=Yes]
+         0=Maximal number of iterations for Lakes calculation
+         0=Maximal possible Lakes water depth (numerical security)
+         0=Relaxation coefficient for Lakes calculation [Def=0 => No relaxation]
+         0=Aquifer Overflow discharge => Rivers and Lakes [0=Def=Yes ; -1=No]
+ *** Hydroclimatology                                ***
+         0=Limitation of evaporation from the gridded domain [0=No ; 1=Limitation ; 2=Cancelation]
+         0=Output of Hydroclimatic balances in each soil zone ('flowbalance' file)
+          =Hydroclimatic balance [0=GARDENIA ; 2=Runoff , Infiltrat. ; 4=Runoff+Infiltrat]
+         0=Snow Melt taken into account [0=No ; 1=Yes]
+         0=Type of Zones for Rain, PET, Recharge etc. [0=Soil Zones ; 1=Meteo Zones]
+         0=Number of climatic zones in sequential Meteo-Files [Def=0]
+         0=Type of Meteo-Files (if any) [0=Sequential ; 1=Direct_Access ; Binary]
+         0=Time step # In Meteo_File <=> 'Model_time step' # 0 [Def=0]
+         0=Infiltration of Runoff when no River Network [0=Evacuates ; 1=Infiltrates]
+         0=Cell by cell transfer of Surface Runoff with possible delay
+         0=File 'Downstream Direction' contains river element numbers associated to cells runoff [1=Yes]
+         0=Hydroclimatic inputs restricted to the aquifer domain (0=Unlimited 1=Limited)
+         0=Kind of data in Direct-Access or Binary 'Meteo files' [0=Single Precision ; 1=Double]
+         0=AET decrease in GARDENIA 'Progressive soil capacity' (Def=0 => Always ; 1 => Below 1/2 saturation)
+         0=Snowfall given separately from liquid rain [0=No ; 1=Yes]
+ *** Screen display during the run                   ***
+         0=Displays everything on screen [0=No ; 1=Yes => Displays everything]
+         0=Displays Flow balance [0=No ; 1=Yes]
+         0=Displays Mass and Heat balance (when applicable)
+         0=Displays coupling process      (when applicable)
+         0=Displays river flow    balance (when applicable)
+         0=Displays Hydroclimatic balance
+         0=Displays External resolution iterations
+         0=Displays Internal resolution iterations
+         0=Displays informations when reading data files
+          =Type of Run: Def=' ' => Standard ; I=Interactive ; M=Mute
+         0=Duration (seconds) between screen display of chemical calculation
+ *** Shorter version of the flowbalance file         ***
+         0=Total Cancellation: No output in Balance file [0=Keep ; 1=Cancels the 'bilandeb.txt' file]
+         0=Remove the listing of internal resolution iterations (-1 => Displays)
+         0=Remove the listing of External resolution iterations
+         0=Remove the listing of details during sub time step calculation
+         0=Remove the listing of Flow balance
+         0=Remove the listing of Flow balance per Layer
+         0=Remove the listing of Mass and Heat balance
+         0=Remove the listing of Couplings details
+         0=Remove the listing of Rivers and Drains flow balance
+         0=Remove the listing warnings from the geochemistry engine
+ *** Crops, Nitrate                                  ***
+         0=Use Crops data [0=No ; 1=Crops ; 2 = Nitrate balance ; 3 = Crops + Nitrate balance]
+         0=Type of Zones for Crops and Nitrate balance [0=Soil Zones ; 1=Crop Zones]
+         0=Scheme for Transpir and Crop development [1=Leachp ; 2=Macro ; 3=Agriflux]
+         0=Scheme for Root development and Water Uptake [ 2=Macro ; 3=Agriflux]
+         0=Scheme for Root Stress [0=None ; 2=Macro ; 4=Swap]
+         0=Method for nitrate balance [0=Biche ; 1=Monica]
+         0=Number of layers for nitrate balance [0=In 'Soil capacity' ; N > 0 => Down to layer No N]
+         0=Crop roots do not uptake mass => Mass already taken out (0=Mass uptake ; 1=No mass uptake)
+          =Data unit for nitrate Inputs/Needs: (nil = Auto. ; 'N' = kg-Nitrogen ; 'NO3' = kg-NO3)
+ *** End of paragraphs                               $$$
+ *** Extra options (3) for future use  (not used)    ***
+         0=[Complementary Option  1]
+         0=[Complementary Option  2]
+         0=[Complementary Option  3]
+ *** Initialization before simulation                ***
+  /*****/***** End of Initialization
+ *** End General Parameters file                     ***

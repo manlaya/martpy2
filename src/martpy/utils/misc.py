@@ -80,3 +80,9 @@ def getattr_nested(some_dict, key, key2=None):
 #     if isinstance(key, str):
 #         key = [key]
 #     return {k: {**d1[k], **d2[k]} for k in key}
+
+def remove_accents(input_str):
+    import unicodedata
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    only_ascii = nfkd_form.encode('ASCII', 'ignore')
+    return only_ascii.decode('utf-8')

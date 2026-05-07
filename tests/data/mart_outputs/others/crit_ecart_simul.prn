@@ -1,0 +1,49 @@
+ <crit_simul> - Didacticiel 3 : Hydraulique Permanent + Transport : Calage automatique (newparam.rma) [V7.8.4]
+ #<V7.8># Ne pas modifier/retirer cette ligne
+<Charge> 16 critères ; 4 point(s)
+X_Coord	Y_Coord	Layer	Nbr_Obser	Biais	Abs_Biais	Rmse	Rmse_B_Excl	Rmse_Normé	Biais_Normé	Nash	Erreur_Maxi	Abs_Err_Max	Moy_Obser	Moy_Simul	EcTyp_Obs	EcTyp_Simu	Nash_B_Excl	Corrélat	Col_Row_Lay	Name	Num	
+   130.0000    	   200.0000    	   3.000000    	   4.000000    	      0.0172447	      0.0172447	      0.0172447	   0.000000    	   0.000000    	   0.000000    	   0.000000    	      0.0172447	      0.0172447	   8.849700    	   8.866945    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	X7_Y20_Z3	CH1	1	
+   200.0000    	   400.0000    	   3.000000    	   4.000000    	      0.0219840	      0.0219840	      0.0219840	   0.000000    	   0.000000    	   0.000000    	   0.000000    	      0.0219840	      0.0219840	   8.744300    	   8.766284    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	X10_Y10_Z3	CH2	2	
+   480.0000    	   250.0000    	   3.000000    	   4.000000    	     -0.0023818	      0.0023818	      0.0023818	   0.000000    	   0.000000    	   0.000000    	   0.000000    	     -0.0023818	      0.0023818	   8.180600    	   8.178218    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	X24_Y18_Z3	CH3	3	
+   460.0000    	   450.0000    	   3.000000    	   4.000000    	      0.0114615	      0.0114615	      0.0114615	   0.000000    	   0.000000    	   0.000000    	   0.000000    	      0.0114615	      0.0114615	   8.260400    	   8.271861    	   0.000000    	   0.000000    	   0.000000    	   0.000000    	X23_Y8_Z3	CH4	4	
+
+<Concentr> 16 critères ; 6 point(s)
+X_Coord	Y_Coord	Layer	Nbr_Obser	Biais	Abs_Biais	Rmse	Rmse_B_Excl	Rmse_Normé	Biais_Normé	Nash	Erreur_Maxi	Abs_Err_Max	Moy_Obser	Moy_Simul	EcTyp_Obs	EcTyp_Simu	Nash_B_Excl	Corrélat	Col_Row_Lay	Name	Num	
+   290.0000    	   310.0000    	   1.000000    	   4.000000    	   84.47240    	   84.47240    	   129.2003    	   97.76060    	  0.6048486    	  0.3954558    	  0.6341582    	   178.9837    	   178.9837    	   176.1501    	   260.6225    	   213.6077    	   118.1214    	  0.7905435    	  0.9912907    	X15_Y15_Z1	P1	1	
+   390.0000    	   310.0000    	   1.000000    	   4.000000    	   129.4056    	   129.4056    	   132.1369    	   26.72742    	   4.524994    	   4.431461    	  -19.47557    	   149.4851    	   149.4851    	   18.86515    	   148.2707    	   29.20156    	   3.103346    	  0.1622737    	  0.8166102    	X20_Y15_Z1	P2	2	
+   290.0000    	   310.0000    	   2.000000    	   4.000000    	   79.86268    	   79.86268    	   128.2861    	   100.3956    	  0.4800356    	  0.2988393    	  0.7695658    	   180.1941    	   180.1941    	   233.5321    	   313.3948    	   267.2429    	   170.2143    	  0.8588707    	  0.9926934    	X15_Y15_Z2	P3	3	
+   390.0000    	   310.0000    	   2.000000    	   4.000000    	   129.7644    	   129.7644    	   134.3542    	   34.81748    	   3.333669    	   3.219784    	  -10.11335    	   153.7387    	   153.7387    	   26.67610    	   156.4405    	   40.30221    	   5.697930    	  0.2536595    	  0.9677734    	X20_Y15_Z2	P4	4	
+   290.0000    	   310.0000    	   3.000000    	   4.000000    	   62.21424    	   62.21424    	   133.7289    	   118.3757    	  0.4793439    	  0.2230036    	  0.7702294    	   180.2389    	   180.2389    	   246.0076    	   308.2218    	   278.9832    	   164.5406    	  0.8199600    	  0.9900259    	X15_Y15_Z3	P5	5	
+   390.0000    	   310.0000    	   3.000000    	   4.000000    	   129.0672    	   129.0672    	   134.3494    	   37.30178    	   3.148642    	   3.024847    	  -8.913945    	   155.2508    	   155.2508    	   28.34760    	   157.4148    	   42.66900    	   5.798798    	  0.2357523    	  0.9353129    	X20_Y15_Z3	P6	6	
+
+<End> 0 criter ; 0 points
+
+ Légende des critères :
+ << Toutes les statistiques s'appliquent uniquement aux couples 'observation-simulation'
+ <<  sélectionnés, c'est à dire tous les deux différents de +-9999.
+
+ Nbr_Obser     = Nombre de couples 'observation - simulation' sélectionnés (hors valeurs +-9999).
+ Biais       = Biais = Écart moyen = Moyenne simulée - Moyenne des observations.
+ Abs_Biais   = Valeur absolue du biais.
+ Rmse        = Racine carrée de l'écart quadratique moyen (Root Mean Square Error), donc dans l'unité de la variable concernée.
+                Rmse = Racine carrée[Moyenne(Écarts^2)].
+ Rmse_B_Excl = 'Rmse' Biais Exclu, c'est à dire en corrigeant les écarts de l'écart moyen (biais).
+                Rmse_B_Excl = Racine{Moyenne[(Écarts - Écart_Moy)^2]}.
+ Rmse_Normé  = 'Rmse' Normé, c'est à dire : Rmse divisé par l'écart-type des observations, donc sans-dimension.
+ Biais_Normé = Biais Normé, c'est à dire : Biais divisé par l'écart-type des observations, donc sans-dimension.
+ Nash        = Coefficient de Nash-Sutcliffe (Maximum possible = 1 = Ajustement parfait).
+               Nash = 1 - Rmse^2 / EcTyp_Obs^2
+ Erreur_Maxi = Écart maximal (positif ou négatif), c'est à dire : écart dont la valeur absolue est maximale.
+ Abs_Err_Max = Maximum des valeurs absolues des écarts = Abs(Erreur_Maxi).
+ Moy_Obser   = Moyenne des valeurs observées.
+ Moy_Simul   = Moyenne des valeurs simulées.
+ EcTyp_Obs   = Écart Type des valeurs observées.
+ EcTyp_Simu  = Écart Type des valeurs simulées.
+ Nash_B_Excl = Coefficient de Nash-Sutcliffe Biais exclu. (C'est le coefficient de Nash
+               calculé sans prendre en compte le biais).
+               Nash_B_Excl = 1 - Rmse_B_Excl^2 / EcTyp_Obs^2
+ Corrélat    = Coefficient de corrélation entre les valeurs simulées et les valeurs observées.
+ Nash_Racin  = Coefficient de Nash-Sutcliffe sur la racine carrée des valeurs.
+               (critère calculé uniquement pour les débits de cours d'eau).
+ Biais_%     = Biais exprimé en pourcentage de la moyenne des observations.
+               (critère calculé uniquement pour les débits de cours d'eau).

@@ -28,7 +28,9 @@ def test_xr_accessor():
 
 def test_assign_zone_value():
     par = _parse_mart_file('tests/data/mart_hallue/hallue.mart')
-    ds = grid.load_marthe_grid(FGRID.replace('permh', 'zgeom'), drop_nan=True, nanval=[9999., 0.])
+    ds = grid.load_marthe_grid(
+        FGRID.replace('permh', 'zgeom'), drop_nan=True, nan_value=[9999., 0.]
+    )
     ds2 = ds.gm.assign_zone_values('zgeom', par['init_parameters']['PERMEAB'])
     assert np.isin(np.unique(ds2['zgeom'].values), [0.001, 0.002]).all(), (
         'Error with assign value from zone'

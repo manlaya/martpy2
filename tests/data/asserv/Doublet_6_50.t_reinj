@@ -1,0 +1,5 @@
+Asservissement de Pompage Maille n°26 => maille Réinjection n°51
+     26      1      1      0 = Production : Col, Lign, Couch, Gig
+     51      1      1      0 = Injection  : Col, Lign, Couch, Gig
+    -50 = Diff Température Injection - Production
+ *** Fin du fichier Asservissement Températ. Injection ***

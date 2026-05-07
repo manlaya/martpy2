@@ -4,29 +4,40 @@
 import re
 from pathlib import Path
 
-from ..version import MART_VERSION
-from martpy.utils.config import (
-    ACTIONS_FMT, _ACTION_PARSER, EDITIONS_FMT,
-    LIST_MAIL_OPT, _OPT_MAIL_PARSER,
+from martpy.utils.constant import (
+    _ACTION_PARSER,
+    _OPT_MAIL_PARSER,
+    ACTIONS_FMT,
+    EDITIONS_FMT,
+    MART_VERSION,
+    OPT_LIST_MAIL,
 )
 from martpy.utils.helper import _check_mart_key
+from martpy.utils.config import get_lang
 
 
-# English header (Future implementation)
-#  #<V7.8.4># --- End of Header lines --- ; Do not modify/delete this line
-def _build_header(title):
+
+def _build_header(title, lang=None):
+    if lang is None:
+        lang = get_lang()
     lines = [title]
-    lines.append(
-        f' #<V{MART_VERSION}># --- Fin du texte libre --- ;'
-        ' Ne pas modifier/retirer cette ligne '
-    )
+    if lang.lower() == 'fr':
+        lines.append(
+            f' #<V{MART_VERSION}># --- Fin du texte libre --- ;'
+            ' Ne pas modifier/retirer cette ligne '
+        )
+    else:
+        lines.append(
+            f' #<V{MART_VERSION}># --- End of Header lines --- ;'
+            ' Do not modify/delete this line '
+        )
     return lines
 
 
 def _parse_param_value(val, typ):
     """ Parse value in a parameter line from mart or pastp file
     (fmt /VARIABLE/ACTION ...C=VALUE V=VALUE2)
-    
+
     Value:
     - *   : unchanged
     - 1:2 : range from 1 to 2
@@ -39,7 +50,7 @@ def _parse_param_value(val, typ):
         Value to parse
     typ : type
         Expected type of the value.
-    
+
     Returns
     -------
     list or str
@@ -60,7 +71,7 @@ def _parse_param_value(val, typ):
 def _infer_variable_dtype(var, value):
     """ Try to guess type for a value based on variable in
     an Action Parameter (in .mart or .pastp)
-    
+
     all indices (column, row, grid, zone, etc.) should be integer
     a file should be a string,
     a fixed value is a float
@@ -81,7 +92,9 @@ def _infer_variable_dtype(var, value):
 def _parse_list_mail_opt(line: str):
     """ Parse successive options for a LIST_MAIL action
     """
-    return re.findall(_OPT_MAIL_PARSER, line)
+    _keys = {re.sub(r'[<|>]', '', v): k for k, v in OPT_LIST_MAIL.items()}
+    _opts = re.findall(_OPT_MAIL_PARSER, line)
+    return [_keys.get(x) for x in _opts]
 
 
 def _parse_units_time(unit_line):
@@ -110,6 +123,9 @@ def _parse_param_file_and_col(line):
 def _parse_parameter_line(line, verbose=False):
     """ Parse a parameter line in Marthe files (*.mart or  *.pastp)
 
+    Lines are in the form of '  [GRID_ID]/VARIABLE/ACTION/[FIX=MODE;] ...'
+    and can contain several parameters depending on the action.
+
     Parameters
     ----------
     line : str
@@ -126,24 +142,36 @@ def _parse_parameter_line(line, verbose=False):
 
     if '!' in line or re.match(r'^\s*[#|!]', line):
         return None
-    
-    pattern = r'^\s*(\d?)?/(\w+)/(\w+)\s*.*$'
-    # TODO match for syntax /VAR/MODE/[FIX=NAQ;]   N=...  ; 
-    # here [] design optional pattern
-    # only (re) god knows what it does:
-    # pattern = r'^\s*(\d?)?/(\w+)/(\w+)(?:\s*/FIX=(\w+);)?\s*.*$' 
-    # beside jokes:
-    #   - `(?:...)` should exclude pattern,
-    #   - then nested `(...?)` should return the pattern inside,
-    #   - final `?` should make it optional
+
+    # line in form of '  [GRID_ID]/VARIABLE/ACTION/[FIX=MODE;] ...'
+    # pattern = r'^\s*(\d?)?/(\w+)/(\w+)\s*.*$'
+    # edit: actually, VARIABLE can also contain '/', e.g. '/T_1/2_TARIS_1/ZONE_SOL',
+    # parsing every case in one regex might be possible, but not functional here.
+    # and not so easy to maintain with all cases.
+    # So let's split parsing in two cases: with or without FIX=MODE;
+    # FIX=MODE is only for some multiphase flow parameters,
+    # and T_1/2_something is only for 3 parameters of soil balance in external basins.
+    if '/FIX=' in line:
+        pattern = r'^\s*(\d?)?/(\w+)/(\w+)/FIX=(\w+);.*$'
+    else:
+        # also deal with '/' in variable name, e.g. '/T_1/2_TARIS_1/ZONE_SOL'
+        pattern = r'^\s*(\d?)?/(\w+(?:/\w+)?)/(\w+)\s+.*$'
+
     _match = re.search(pattern, line)
     if _match:
-        grid, variable, mode = _match.groups()
-        # grid, variable, mode, fix = _match.groups()
+        _groups = _match.groups()
+        grid, variable, mode = _groups[0], _groups[1], _groups[2]
+
         parsed_params[variable] = {
             'mode': mode,
             'grid_id': int(grid) if grid != '' else 0
         }
+
+        if len(_groups) == 4:
+            # TODO use fix for something ? currently not used, but it is a
+            # parameter for multiphase flow parameters
+            parsed_params[variable]['fix'] = _groups[3]
+
         _line_parser = _ACTION_PARSER.get(mode)
         if _line_parser is not None:
             pattern = re.compile(_line_parser)
@@ -151,9 +179,9 @@ def _parse_parameter_line(line, verbose=False):
             if _submatch:
                 _param_values = {}
                 for k, v in _submatch.groupdict().items():
-                    _type = _infer_variable_dtype(k, v)
+                    _type = _infer_variable_dtype(k, v) if mode.upper() != 'ACTION' else int
                     _param_values[k] = _parse_param_value(v, _type)
-                if mode == 'LIST_MAIL':
+                if mode.upper() in ['LIST_MAIL', 'LIST_CELL']:
                     _param_values['opt_list_mail'] = _parse_list_mail_opt(line)
                 file_evol_dict = _parse_param_file_and_col(line)
                 parsed_params[variable] = {
@@ -169,28 +197,29 @@ def _parse_parameter_line(line, verbose=False):
 
 def _parse_parameter_block(block_lines, path=None, verbose=False):
     """ Parse a params/actions block for .mart or .pastp
-    
+
     This function loop over lines in block to call :py:func:`_parse_parameter_line`
     and merge results
-    
+
     Parameters
     ----------
     block_lines : list of str
         lines in the block to parse
     path : str, optional
         path to the mart/pastp file, by default None
-        it is useful to store path of file if needed (add it to file referenced in params)
+        it is useful to store path of file if needed (add it to file referenced in
+        params).
         e.g. for MODIFIC key, to be able to read the '*.modin' file
     verbose : bool, optional
         whether to print debug information, by default False
     """
     params = {}
     for line in block_lines:
-        
+
         iparam = _parse_parameter_line(line, verbose=verbose)
         if iparam is None or len(list(iparam.keys())) == 0:
             continue
-        
+
         key = list(iparam.keys())[0]  # one line has always one key here
         iparam[key]['as_external_file'] = False
 
@@ -207,17 +236,17 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
                     {**x, 'as_external_file': True, 'external_file': fmodin} for x in v
                 ]
             iparam = modin_params  # replace parsed params
-        
+
         # here we combine dict for all keys, if MODIFIC several keys, only one otherwise
-        for k, v  in iparam.items():
+        for k, _  in iparam.items():
             list_vals = params.get(k, [])
             if not isinstance(iparam[k], list):
                 # make it a list if several option for same variable
                 # but if modific was there, already a list
-                iparam[k] = [iparam[k]]  
-            iparam[k] = iparam[k] + list_vals  # combine previous lines with current
-            params = {**params, **iparam}  # combine dict results
-    
+                iparam[k] = [iparam[k]]
+            iparam[k] = list_vals + iparam[k]  # combine previous lines with current
+        params = {**params, **iparam}  # combine dict results
+
     return params
 
 
@@ -226,16 +255,35 @@ def _format_params_for_writer(dict_args):
     for k, v in dict_args.items():
         if k in ['as_external_file', 'opt_list_mail']:
             # do not change these parameters
-            continue
-        if isinstance(v, (list, tuple)) and len(v) > 0:
-            # WARNING: not perfect... but if range, take only min/max
-            _val = '{}:{}'.format(min(v), max(v))
-        elif isinstance(v, bool):
-            _val = int(v)
-        else:
             _val = v
+        else:
+            if isinstance(v, (list, tuple)) and len(v) > 0:
+                # WARNING: not perfect... but if range, take only min/max
+                _val = '{}:{}'.format(min(v), max(v))
+            elif isinstance(v, bool):
+                _val = int(v)
+            else:
+                _val = v
         clean_dict[k] = _val
     return clean_dict
+
+
+def _filter_valid_opt_list_mail(opts, errors='ignore'):
+    # errors = ignore (default) or raise
+    available_opts = OPT_LIST_MAIL.keys()
+    _opts = [opt for opt in opts if opt.lower() in available_opts]
+    if errors == 'raise':
+        invalid = [f'<{opt}>' for opt in opts if opt.lower() not in available_opts]
+        if len(invalid) != 0:
+            raise ValueError(
+                'Unknow option for `list_mail` action: {} '.format(', '.join(invalid)) +
+                'Please use: {}'.format(', '.join(list(available_opts)))
+            )
+    return _opts
+
+
+def _format_opt_list_mail(opts):
+    return [OPT_LIST_MAIL.get(opt.lower()) for opt in opts]
 
 
 def _build_parameter_line(variable, action, **kwargs):
@@ -251,7 +299,7 @@ def _build_parameter_line(variable, action, **kwargs):
         Geometry. Possible values are in ACTIONS_FMT dictionnary keys.
     kwargs : dict
         Other options depending on the typ. See ACTIONS_FMT and EDITIONS dictionnaries.
-    
+
     Returns
     -------
     line : str
@@ -267,93 +315,102 @@ def _build_parameter_line(variable, action, **kwargs):
     filename = kwargs.get('file_evol', '')
     if filename and action not in ['FICH_METE', 'GRILLE', 'FICHIER', 'LIST_MAIL']:
         filename =' File= {0}'.format(filename)
-    
+
     # Case we select a specific column in a tabular time serie file
     file_col = kwargs.get('file_column', '')
     if file_col and int(file_col) == 1:
         file_col = ''
     elif file_col and int(file_col) > 1:
         file_col = '; Col={0}'.format(file_col)
-    
+
     if action == 'EDITION':
-        # TODO: complete options for EDITION
-        opts = ['star', 'V', 'L', 'S', 'Z', 'I', 'F', 'B', 'C', 'P', 'Gig']
+        # TODO: complete options for EDITION, edit config._ACTION_PARSER first
+        opts = ['edit', 'V', 'L', 'S', 'Z', 'I', 'F', 'B', 'C', 'P', 'Gig']
         dtemp = {opt: kwargs.get(opt, ' ') for opt in opts}
-        if variable in EDITIONS_FMT.keys():
-            dopt = EDITIONS_FMT[variable]
-        else:
-            dopt =  "I= 1;"  # old: ACTIONS_FMT[action]
+        dopt = EDITIONS_FMT.get(variable, 'I= 1;')
         option_str = dopt.format(**dtemp)
         option_str = '{0}{1}'.format(option_str, filename)
-    
+
     else:
-        if action == 'GRILLE' and isinstance(kwargs.get('grid'), (int, float)):
+        if action in ['GRILLE', 'GRID'] and isinstance(kwargs.get('grid'), (int, float)):
             # special case for grid uniform value
             kwargs['grid'] = '={0}'.format(kwargs['grid'])
-        
+
         option_str = ACTIONS_FMT[action].format(**kwargs)
-        
-        if action == 'LIST_MAIL':
-            opts = kwargs.get('opt_list_mail', [])
-            available_opts = [re.sub('[<|>]', '', x) for x in LIST_MAIL_OPT]
-            opts = [f'<{opt}>' for opt in opts if opt in available_opts]
+
+        if action in ['LIST_MAIL', 'LIST_CELL']:
+            opts = _filter_valid_opt_list_mail(kwargs.get('opt_list_mail', []))
+            opts = _format_opt_list_mail(opts)
             option_str = '{0} {1}'.format(option_str, ' '.join(opts))
-        elif action in ['COUCHE', 'ZONE_GEO', 'ZONEP', 'ZONE_METEO', 'ZONE_SOL', 'MAILLE', 'TRONCON']:
+        elif action in ['COUCHE', 'MAILLE', 'TRONCON', \
+                        'ZONE_GEO', 'ZONE_METEO', 'ZONE_SOL', 'ZONEP']:
             option_str = '{0}{1}{2}'.format(option_str, filename, file_col)
-    
+
     return '  {0:25}{1}'.format(var_type, option_str)
 
 
-def write_nzcli(clim_zone: list, file_nzcli):
-    """ Write a climatic zone file (`*.nzcli`)
+def _build_parameter_block(dict_param, mode='str'):
+    """ Build a block of parameters for MARTHE general parameters, timesteps
+    of initial modifications (modin)
 
     Parameters
     ----------
-    clim_zone : list if int
-       List of climatic zones to use, it links zone grid to data
-       (ie some kind of header for climatic tabular data),
-       see Marthe general documentation for more informations.
-    file_nzcli : str or Path-like.
-        file to be written
+
+    dict_param: dict
+        dictionnary of parameters to write as a block (init param, modin, timestep),
+        as read with :py:func:`_parse_parameter_block`.
+    mode: str, optional
+        `str` (default) or `list` to return parameters as a multiline string
+        or as a list of lines
+
+    Returns
+    -------
+    str or list
+        str or list of str containing the parameter to write in MARTHE fmt
     """
-    with open(file_nzcli, mode='w', encoding='ISO-8859-1') as f:
-        f.write('Numéro des {} Zones Météo des fichiers\n'.format(len(clim_zone)))
-        f.write('    '.join(clim_zone))
-        f.write('\n')
-    return
+
+    if mode == 'str':
+        params = ''
+    elif mode == 'list':
+        params = []
+    else:
+        raise ValueError('Unknown mode. Please use `str` or `list`')
+
+    for variable, actions in dict_param.items():
+        for action in actions:
+            _mode = action.get('mode')
+            line = _build_parameter_line(variable, _mode, **action)
+            if mode == 'str':
+                params += f"{line}\n"
+            elif mode == 'list':
+                params.append(line)
+    return params
 
 
-def _write_river_tree(tree_df, file_tree, title='Branchement affluents'):
-    """ Write a river tree file (`*.arb_r`)
+def _write_modin(dict_action, fname, lang=None):
+    if lang is None:
+        lang = get_lang()
+
+    lines = _build_parameter_block(dict_action)
+    if lang.lower() == 'fr':
+        lines += '  /*****/***** Fin d\'Initialisation\n'
+    else:
+        lines += '  /*****/***** End of Initialization\n'
+
+    with open(fname, encoding='ISO-8859-1', mode='w') as f:
+        f.write(lines)
+    return 0
+
+
+def _fmt_nchar(n, nchar=7, adjust='right'):
+    """ Force float format to X char
     """
-    with open(file_tree, mode='w', encoding='ISO-8859-1') as f:
-        f.write(f"{title}\n")
-        tree_df.to_csv(f, sep='\t', index=False, header=False, float_format='10i')
-        f.write(' *** Fin du fichier Arbre des Affluents de Rivière   ***\n')
-    return
-
-
-def _write_layer(layer_df, dict_geom, file_layer, title='marthe layer file'):
-    """ Write a layer file (`*.layer`)
-    """
-    with open(file_layer, mode='w', encoding='ISO-8859-1') as f:
-        f.write(f'{title}\n')
-        f.write(' *** Description des couches aquifères               ***\n')
-        for row in layer_df.to_dict('records'):
-            f.write(
-                'Cou={0:3d};Épais={1:6.0f};Épon Sup ={2:3d};//////////=     0;'
-                'Uni Ke={3:7.2f};Anisot= {4:7.2f}\n'.format(
-                    int(row['layer']), float(row['thickness']), int(row['epon_sup']),
-                    float(row['ke']), float(row['anisotropy'])
-                )
-            )
-        f.write(' *** Sous-maillages Gigognes, Coupe, Radial          ***\n')
-        f.write('{:>10}=Nombre de sous-maillages Gigognes\n'.format(dict_geom.get('n_subgrid', 0)))
-        f.write('{:>10}=Coupe Verticale à Substratums Irréguliers (0=Non ; 1 => Coupe verticale)\n'.format(
-            dict_geom.get('is_cross_sect', 0))
-        )
-        f.write('{:>10}=Maillage Radial [Rayon , Angle] (0=Non ; 1 => Maillage radial)\n'.format(
-            dict_geom.get('radial_grid', 0))
-        )
-        f.write(' *** Fin du fichier \'Description des couches\'        ***\n')
-    return
+    # s = "{:.7g}".format(n)
+    # edit: compute max dec and use f by default
+    # modified from https://stackoverflow.com/questions/57007807/format-display-of-a-floating-number-to-a-fixed-length
+    mantissa_length = max(nchar - len(str(int(n))) - 1, 0)
+    s = '{:{nchar}.{man}f}'.format(n, nchar=nchar, man=mantissa_length)
+    # check and cut if necessary
+    if len(s) > 7:
+        s = "{:.1e}".format(n) if abs(n) >= 1e7 or abs(n) < 1e-4 else s[:7]
+    return s.rjust(7) if adjust.lower() == 'right' else s.ljust(7)

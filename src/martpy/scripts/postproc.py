@@ -19,4 +19,4 @@ def main():
     )
 
     # config = read_toml()
-    return
+    raise NotImplementedError

@@ -1,0 +1,7 @@
+Description of Layers and Grids
+Lay=  1;Thick=    10;Up Semi-P=0;//////////=     0;Uni Ks=      0;Anisot=      0
+ *** Nested Grids, Cross-section, Radial             ***
+         0=Number of Included Nested Grids
+         0=Vertical Cross-section with Irregular Substratums (0=No ; 1=Yes)
+         0=Radial grid [Radius , Angle] (0=No ; 1=Yes)
+ *** End of the 'Layers description file'            ***

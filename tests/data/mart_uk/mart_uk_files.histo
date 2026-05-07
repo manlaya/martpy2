@@ -1,0 +1,6 @@
+Nouveau Projet
+ #<V7.8.4># --- End of Header lines --- ; Do not modify/delete this line
+  /H_Head       /HISTO/   =   /CELL:C=      1R=      1L=      1; Name=TOTO
+  /H_Head       /HISTO/   =   /XCOO:X=      1Y=      2L=      1; Col_Obs=1; Name=tata
+  /H_Head       /HISTO/   =   /COOR:X=      1Y=      2L=      1; Name=tutu
+ *** End of file: 'Cells with Time Series'           ***

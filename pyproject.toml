@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools", "setuptools-scm", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -20,34 +20,37 @@ dynamic = [
 ]
 
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Hydrology",
+    "Intended Audience :: Science/Research",
 ]
 
 keywords = ["hydrology", "groundwater", "modelling", "marthe"]
 
 requires-python = ">=3.10"
 
+[project.urls]
+Homepage = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy"
+Repository = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy"
+Changelog = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/blob/dev/changelog.md?ref_type=heads"
+# Documentation = ""
+
 [tool.setuptools.dynamic]
-version = {attr = "martpy.__version__"}
 dependencies = {file = ["requirements.txt"]}
 
-[project.optional-dependencies]
-dev = ['ruff', 'pytest']
+[tool.setuptools_scm]
+version_file = "src/martpy/_version.py"
+# version_scheme = "calver-by-date"
+local_scheme = "node-and-date"
 
-#[project.urls]
-#Homepage = 
-#Repository = ""
-#Documentation = 
-#Changelog = 
+[project.optional-dependencies]
+dev = ['ruff', 'pytest', 'pre-commit']
 
 [tool.setuptools]
 include-package-data = true
-
-# [tool.setuptools.packages.find]
-# where = ["src"] # not necessary, with toml, by default, src and flat layout are automatically discovered
 
 [tool.pytest.ini_options]
 addopts = "-s -v"

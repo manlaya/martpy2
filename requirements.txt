@@ -1,5 +1,5 @@
-pandas
 numpy
+pandas < 3.0
 matplotlib
-gridmarthe >= 0.1.4
+gridmarthe >= 0.3.0
 # evalhyd

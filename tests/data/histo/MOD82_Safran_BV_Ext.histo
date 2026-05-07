@@ -1,0 +1,306 @@
+ACTU_MOD82_1
+ #<V7.8.4># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+  /Charge       /HISTO/   =   /XCOO:X= 583070Y=6334054P=      1; Name=BIOULE
+  /Charge       /HISTO/   =   /XCOO:X= 556021Y=6316651P=      1; Name=BOUTOLI
+  /Charge       /HISTO/   =   /XCOO:X= 564133Y=6325655P=      1; Name=CASTEL
+  /Charge       /HISTO/   =   /XCOO:X= 553130Y=6334380P=      1; Name=LES_BARTHES
+  /Charge       /HISTO/   =   /XCOO:X= 559501Y=6305397P=      1; Name=LILOU
+  /Charge       /HISTO/   =   /XCOO:X= 556251Y=6328251P=      1; Name=PEDELOUP
+  /Charge       /HISTO/   =   /XCOO:X= 541549Y=6329014P=      1; Name=POMIES
+  /Charge       /HISTO/   =   /XCOO:X= 575573Y=6330529P=      1; Name=PRADAS
+  /Charge       /HISTO/   =   /XCOO:X= 562326Y=6319825P=      1; Name=SAINT-PIERRE
+  /Charge       /HISTO/   =   /XCOO:X= 553850Y=6323191P=      1; Name=SAINT-PORQUIER
+  /Charge       /HISTO/   =   /XCOO:X= 558169Y=6310450P=      1; Name=1_BESSENS
+  /Charge       /HISTO/   =   /XCOO:X= 554169Y=6320783P=      1; Name=2_ESCATALENS
+  /Charge       /HISTO/   =   /XCOO:X= 546353Y=6329862P=      1; Name=3_CASTELSARRASIN
+  /Charge       /HISTO/   =   /XCOO:X= 533278Y=6334260P=      1; Name=4_POMMEVIC
+  /Charge       /HISTO/   =   /XCOO:X= 526671Y=6339323P=      1; Name=5_LAMAGISTERE
+  /Charge       /HISTO/   =   /XCOO:X= 545920Y=6333199P=      1; Name=6_MOISSAC
+  /Charge       /HISTO/   =   /XCOO:X= 550236Y=6335628P=      1; Name=7_MOISSAC
+  /Charge       /HISTO/   =   /XCOO:X= 558047Y=6335552P=      1; Name=8_MEAUZAC
+  /Charge       /HISTO/   =   /XCOO:X= 566468Y=6332840P=      1; Name=9_MONTAUBAN
+  /Charge       /HISTO/   =   /XCOO:X= 573914Y=6333979P=      1; Name=10_ALBIAS
+  /Charge       /HISTO/   =   /XCOO:X= 580371Y=6339815P=      1; Name=11_CAUSSADE
+  /Charge       /HISTO/   =   /XCOO:X= 560707Y=6332207P=      1; Name=12_BARRY-D'ISLEMADE
+  /Charge       /HISTO/   =   /XCOO:X= 561279Y=6328896P=      1; Name=13_ALBEFEUILLE-LAGARDE
+  /Charge       /HISTO/   =   /XCOO:X= 572383Y=6315087P=      1; Name=14_REYNIES
+  /Charge       /HISTO/   =   /XCOO:X= 563580Y=6302853P=      1; Name=15_POMPIGNAN
+  /Charge       /HISTO/   =   /XCOO:X= 556407Y=6305220P=      1; Name=16_SAVENES
+  /Charge       /HISTO/   =   /XCOO:X= 567051Y=6315441P=      1; Name=17_LABASTIDE-SAINT-PIERRE
+  /Charge       /HISTO/   =   /XCOO:X= 557527Y=6317158P=      1; Name=18_MONTECH
+  /Charge       /HISTO/   =   /XCOO:X= 555979Y=6323033P=      1; Name=19_ESCATALENS
+  /Charge       /HISTO/   =   /XCOO:X= 559555Y=6325141P=      1; Name=20_MONTBETON
+  /Charge       /HISTO/   =   /XCOO:X= 586046Y=6331456P=      1; Name=21_NEGREPELISSE
+  /Charge       /HISTO/   =   /XCOO:X= 580500Y=6330239P=      1; Name=22_NEGREPELISSE
+  /Charge       /HISTO/   =   /XCOO:X= 567851Y=6328671P=      1; Name=23_MONTAUBAN
+  /Charge       /HISTO/   =   /XCOO:X= 558127Y=6331909P=      1; Name=24_BARRY-D'ISLEMADE
+  /Charge       /HISTO/   =   /XCOO:X= 548437Y=6330691P=      1; Name=25_CASTELSARRASIN
+  /Charge       /HISTO/   =   /XCOO:X= 542637Y=6329594P=      1; Name=26_SAINT-NICOLAS-DE-LA-GRAVE
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 558825Y=6307752P=      1; Name=hO2620010_Garonne_Verdun
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 545960Y=6326718P=      1; Name=hO2900010_Garonne_St-Aignan
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 538561Y=6333736P=      1; Name=hO6000010_Garonne_Malause
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 526447Y=6338167P=      1; Name=hO6140010_Garonne_Lamagistère
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 576575Y=6312225P=      1; Name=hO4931015_Tarn_Villemur
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 561521Y=6333274P=      1; Name=hO4991030_Tarn_Villemade
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 588825Y=6331725P=      1; Name=hO5762510_Aveyron_Bruniquel
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567120Y=6333901P=      1; Name=hO5882515_Aveyron_Loubéjac
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 533325Y=6338725P=      1; Name=hO6134010_Barguelonne
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 554575Y=6338975P=      1; Name=hO5964020_Lemboulas
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 578424Y=6337613P=      1; Name=hO5854010_Lère
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 571075Y=6322225P=      1; Name=hO4984320_Tescou
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 528575Y=6331475P=      1; Name=AR01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 528575Y=6331725P=      1; Name=AR02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 529075Y=6332225P=      1; Name=AR03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 529075Y=6332475P=      1; Name=AR04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 529075Y=6333475P=      1; Name=AR05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 528825Y=6334225P=      1; Name=AR06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 528575Y=6334225P=      1; Name=AR07
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 588825Y=6331725P=      1; Name=AV01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 587825Y=6332475P=      1; Name=AV02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 586075Y=6332975P=      1; Name=AV03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 583825Y=6332975P=      1; Name=AV04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 583325Y=6333225P=      1; Name=AV05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 583075Y=6333225P=      1; Name=AV06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 582825Y=6333225P=      1; Name=AV07
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 581825Y=6332225P=      1; Name=AV08
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 581575Y=6332225P=      1; Name=AV09
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 580325Y=6333225P=      1; Name=AV10
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 579325Y=6334725P=      1; Name=AV11
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 578575Y=6335725P=      1; Name=AV12
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 578575Y=6335475P=      1; Name=AV13
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 578325Y=6335475P=      1; Name=AV14
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 577325Y=6334475P=      1; Name=AV15
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 577325Y=6334225P=      1; Name=AV16
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 575825Y=6333725P=      1; Name=AV17
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 575825Y=6333975P=      1; Name=AV18
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 575825Y=6334225P=      1; Name=AV19
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 575325Y=6335475P=      1; Name=AV20
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 575325Y=6335975P=      1; Name=AV21
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 574825Y=6335225P=      1; Name=AV22
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 572825Y=6334475P=      1; Name=AV23
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 572075Y=6333475P=      1; Name=AV24
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 570825Y=6332225P=      1; Name=AV25
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 569825Y=6331975P=      1; Name=AV26
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 569575Y=6331975P=      1; Name=AV27
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 569325Y=6331725P=      1; Name=AV28
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567575Y=6332975P=      1; Name=AV29
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567575Y=6333475P=      1; Name=AV30
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567575Y=6333725P=      1; Name=AV31
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567075Y=6333975P=      1; Name=Loubéjac
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 566325Y=6333725P=      1; Name=AV32
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 565325Y=6334475P=      1; Name=AV33
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 565075Y=6334475P=      1; Name=AV34
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 564575Y=6334975P=      1; Name=AV35
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 563825Y=6334475P=      1; Name=AV36
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 562825Y=6333975P=      1; Name=AV37
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 561575Y=6334725P=      1; Name=AV38
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 561325Y=6333725P=      1; Name=AV39
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 534075Y=6326725P=      1; Name=AY00
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 535075Y=6327475P=      1; Name=AY01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 535575Y=6327725P=      1; Name=AY02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 537325Y=6329475P=      1; Name=AY03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 537325Y=6330975P=      1; Name=AY04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 537075Y=6331475P=      1; Name=AY05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 535575Y=6330975P=      1; Name=AY06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 533825Y=6331225P=      1; Name=AY07
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 533325Y=6338725P=      1; Name=BA01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 532075Y=6338725P=      1; Name=BA02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 532075Y=6338975P=      1; Name=BA03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 530575Y=6338975P=      1; Name=BA04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 529325Y=6338725P=      1; Name=BA05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 527575Y=6338225P=      1; Name=BA06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 526825Y=6337975P=      1; Name=BA07
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 561325Y=6301975P=      1; Name=GA01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 560825Y=6302475P=      1; Name=GA02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 559575Y=6302975P=      1; Name=GA03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 560075Y=6304475P=      1; Name=GA04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 559325Y=6306975P=      1; Name=GA05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 558825Y=6307725P=      1; Name=GA06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 557325Y=6309225P=      1; Name=GA07
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 555575Y=6311475P=      1; Name=GA08
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 556075Y=6313225P=      1; Name=GA09
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 554575Y=6313975P=      1; Name=GA10
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 554575Y=6315475P=      1; Name=GA11
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 554575Y=6316225P=      1; Name=GA12
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 554325Y=6317725P=      1; Name=GA13
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 553325Y=6318725P=      1; Name=GA14
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 552575Y=6320475P=      1; Name=GA15
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 552325Y=6322475P=      1; Name=GA16
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 549575Y=6323725P=      1; Name=GA17
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 547825Y=6326475P=      1; Name=GA18
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 546075Y=6326725P=      1; Name=Tres-Casses
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 545825Y=6326725P=      1; Name=GA19
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 544825Y=6329225P=      1; Name=GA20
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 544075Y=6331475P=      1; Name=GA21
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 543075Y=6332975P=      1; Name=GA22
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 542825Y=6333975P=      1; Name=Confluent
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 542075Y=6334475P=      1; Name=GA23
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 538825Y=6333725P=      1; Name=GA24
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 538325Y=6333475P=      1; Name=GA25
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 538075Y=6333475P=      1; Name=GA26
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 536325Y=6332725P=      1; Name=GA27
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 536075Y=6332725P=      1; Name=GA28
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 534575Y=6332225P=      1; Name=GA29
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 534325Y=6332225P=      1; Name=GA30
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 532325Y=6331975P=      1; Name=GA31
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 531575Y=6332725P=      1; Name=GA32
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 531325Y=6333475P=      1; Name=GA33
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 531075Y=6333475P=      1; Name=GA34
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 529575Y=6334725P=      1; Name=GA35
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 529575Y=6334975P=      1; Name=GA36
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 529325Y=6334975P=      1; Name=GA37
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 527575Y=6335475P=      1; Name=GA38
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 527325Y=6335975P=      1; Name=GA39
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 527075Y=6335975P=      1; Name=GA40
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 526575Y=6337475P=      1; Name=GA41
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 526575Y=6337725P=      1; Name=GA42
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 525575Y=6338475P=      1; Name=GA43
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 523325Y=6339975P=      1; Name=GA44
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 546325Y=6316475P=      1; Name=GI01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 547825Y=6318475P=      1; Name=GI02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 548575Y=6320475P=      1; Name=GI03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 548575Y=6320725P=      1; Name=GI04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 549325Y=6320975P=      1; Name=GI05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 549075Y=6321725P=      1; Name=GI06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 548825Y=6322975P=      1; Name=GI07
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 548825Y=6323225P=      1; Name=GI08
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 548575Y=6323975P=      1; Name=GI09
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 548825Y=6309475P=      1; Name=LA01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 551075Y=6310725P=      1; Name=LA02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 552575Y=6310975P=      1; Name=LA03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 554825Y=6311225P=      1; Name=LA04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 555075Y=6311225P=      1; Name=LA05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 555325Y=6313225P=      1; Name=LA06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 554575Y=6338975P=      1; Name=LM01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 553075Y=6338225P=      1; Name=LM02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 552325Y=6337475P=      1; Name=LM03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 551825Y=6336725P=      1; Name=LM04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 552075Y=6336475P=      1; Name=LM05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 585575Y=6342725P=      1; Name=LE01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 585575Y=6342975P=      1; Name=LE02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 585325Y=6342725P=      1; Name=LE03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 583825Y=6342725P=      1; Name=LE04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 583825Y=6342475P=      1; Name=LE05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 583575Y=6342225P=      1; Name=LE06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 583825Y=6342225P=      1; Name=LE07
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 583075Y=6341475P=      1; Name=LE08
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 582575Y=6341225P=      1; Name=LE09
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 582325Y=6341225P=      1; Name=LE10
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 582075Y=6341225P=      1; Name=LE11
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 582075Y=6340975P=      1; Name=LE12
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 580825Y=6339475P=      1; Name=LE13
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 580575Y=6339475P=      1; Name=LE14
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 579575Y=6338475P=      1; Name=LE15
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 578325Y=6337725P=      1; Name=LE16
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 578325Y=6337475P=      1; Name=LE17
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 577825Y=6336725P=      1; Name=LE18
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 576575Y=6336225P=      1; Name=LE19
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 576575Y=6335975P=      1; Name=LE20
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 576325Y=6335975P=      1; Name=LE21
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 575575Y=6335975P=      1; Name=LE22
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 541075Y=6324475P=      1; Name=SE01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 542825Y=6327725P=      1; Name=SE02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 543575Y=6327975P=      1; Name=SE03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 543825Y=6329225P=      1; Name=SE04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 543825Y=6330225P=      1; Name=SE05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 544325Y=6330975P=      1; Name=SE06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 576575Y=6312225P=      1; Name=TA01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 575825Y=6312975P=      1; Name=TA02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 573825Y=6313475P=      1; Name=TA03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 573825Y=6313725P=      1; Name=TA04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 572075Y=6313975P=      1; Name=TA05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 571325Y=6314225P=      1; Name=TA06
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 569075Y=6314975P=      1; Name=TA07
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 568825Y=6315725P=      1; Name=TA08
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 568825Y=6315975P=      1; Name=TA09
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 568575Y=6316975P=      1; Name=TA10
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567575Y=6318975P=      1; Name=TA11
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 566825Y=6320225P=      1; Name=TA12
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 566825Y=6322725P=      1; Name=TA13
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567325Y=6324475P=      1; Name=TA14
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567325Y=6324725P=      1; Name=TA15
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567575Y=6324975P=      1; Name=TA16
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567575Y=6325225P=      1; Name=TA17
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567575Y=6325475P=      1; Name=TA18
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567575Y=6325725P=      1; Name=TA19
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 566825Y=6325975P=      1; Name=TA20
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 566575Y=6325975P=      1; Name=TA21
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 565825Y=6326475P=      1; Name=TA22
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 563575Y=6327975P=      1; Name=TA23
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 563075Y=6329725P=      1; Name=TA24
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 562075Y=6331475P=      1; Name=TA25
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 562075Y=6331725P=      1; Name=TA26
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 561575Y=6333225P=      1; Name=TA27
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 561325Y=6333225P=      1; Name=TA28
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 561075Y=6333475P=      1; Name=TA29
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 560075Y=6334475P=      1; Name=TA30
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 559575Y=6336475P=      1; Name=TA31
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 558825Y=6336725P=      1; Name=TA32
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 558575Y=6336725P=      1; Name=TA33
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 556325Y=6335975P=      1; Name=TA34
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 554825Y=6334225P=      1; Name=TA35
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 553575Y=6335975P=      1; Name=TA36
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 553075Y=6336975P=      1; Name=TA37
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 552825Y=6336975P=      1; Name=TA38
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 552325Y=6335725P=      1; Name=TA39
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 550825Y=6334725P=      1; Name=TA40
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 550075Y=6334475P=      1; Name=TA41
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 549075Y=6334225P=      1; Name=TA42
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 548075Y=6334225P=      1; Name=TA43
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 547075Y=6335225P=      1; Name=TA44
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 546575Y=6335225P=      1; Name=TA45
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 543575Y=6333975P=      1; Name=TA46
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 571075Y=6322225P=      1; Name=TE01
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 570825Y=6322475P=      1; Name=TE02
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 568575Y=6323975P=      1; Name=TE03
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 568075Y=6324725P=      1; Name=TE04
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567825Y=6325225P=      1; Name=TE05
+  /Hauteu_Rivi  /HISTO/   =   /XCOO:X= 567825Y=6325475P=      1; Name=TE06
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 558825Y=6307752P=      1; Name=O2620010_Garonne_Verdun
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 545960Y=6326718P=      1; Name=O2900010_Garonne_St-Aignan
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 538561Y=6333736P=      1; Name=O6000010_Garonne_Malause
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 526447Y=6338167P=      1; Name=O6140010_Garonne_Lamagistère
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 576575Y=6312225P=      1; Name=O4931015_Tarn_Villemur
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 567645Y=6325569P=      1; Name=O4941010_Tarn_Montauban
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 561521Y=6333274P=      1; Name=O4991030_Tarn_Villemade
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 588825Y=6331725P=      1; Name=O5762510_Aveyron_Bruniquel
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 567120Y=6333901P=      1; Name=O5882515_Aveyron_Loubéjac
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 528575Y=6331475P=      1; Name=O6094010_Arrats
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 548465Y=6323885P=      1; Name=O2883310_Gimone
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 533325Y=6338725P=      1; Name=O6134010_Barguelonne
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 554575Y=6338975P=      1; Name=O5964020_Lemboulas
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 578424Y=6337613P=      1; Name=O5854010_Lère
+  /Débit_Rivi   /HISTO/   =   /XCOO:X= 571075Y=6322225P=      1; Name=O4984320_Tescou
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    297L=     70P=      1; Name=04-Aveyron
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    248L=    148P=      1; Name=20-Tarn
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    187L=    189P=      1; Name=44-Garonne
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    278L=     19P=      1; Name=01-Cande
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    284L=     26P=      1; Name=02-Lere
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    282L=     86P=      1; Name=05-L_Aygue
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    268L=     89P=      1; Name=07-Brive
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    257L=     93P=      1; Name=10-Tauge
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    247L=     95P=      1; Name=11-Tordre
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    240L=     96P=      1; Name=13-Angle
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    232L=     99P=      1; Name=18-Gd_Mort
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    231L=    155P=      1; Name=21-Fronton
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    210L=    167P=      1; Name=23-Fab_Mar
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    196L=    167P=      1; Name=24-R_Tort
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    228L=    110P=      1; Name=29-Tescou
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    160L=     41P=      1; Name=36-Lemboul
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    158L=     39P=      1; Name=37-Lembous
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    136L=     48P=      1; Name=40-Lau_Bar
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    168L=    202P=      1; Name=45-St-Pier
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    165L=    193P=      1; Name=46-Margues
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    150L=    184P=      1; Name=49-Gal_Pon
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    137L=    184P=      1; Name=50-Dere
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    134L=    172P=      1; Name=51-Nadesse
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    135L=    159P=      1; Name=55-Lambon
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    150L=    127P=      1; Name=59-Tessonn
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    126L=    132P=      1; Name=67-Gimone
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    105L=     99P=      1; Name=69-Sere
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=    101L=     92P=      1; Name=70-Rieutor
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     78L=     90P=      1; Name=75-Ayroux
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     75L=     75P=      1; Name=76-Camuson
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     56L=     71P=      1; Name=79-Arrats
+  /Débit_Rivi   /HISTO/   =   /MAIL:C=     75L=     42P=      1; Name=81-Barguel
+ *** Fin du fichier des 'Mailles à Historique'       ***

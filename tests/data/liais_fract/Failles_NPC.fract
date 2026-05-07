@@ -1,0 +1,63 @@
+Failles majeures NPC
+# Les commentaires peuvent être au choix : '#' ou '!' ou '*' ou '<<'
+ #<V7.8># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+# --------------------------------------- #
+# -----   Marqueffles part 1 Bruay  ----- #
+# --------------------------------------- #
+[Fracture Semi-Perméable]
+Transmissivité = 0
+Pourcentage_Contact = 100
+Couche_Haut = 9
+Couche_Bas  = 9
+[Liste coordonnées]
+611156.84 2609658.22
+615439.04 2607226.97
+619860.22 2604898.85
+624388.45 2602850.44
+# ------------------------------------------------ #
+# -----   Marqueffles part2 - Amont Souchez  ----- #
+# ------------------------------------------------ #
+[Fracture Semi-Perméable]
+Transmissivité = 1e-10
+Pourcentage_Contact = 100
+Couche_Haut = 6
+Couche_Bas  = 9
+[Liste coordonnées]
+624388.45 2602850.44
+628890.83 2600689.20
+632688.76 2597454.82
+636263.59 2593977.92
+639857.03 2590492.94
+# -------------------------- #
+# -----     Pernes     ----- #
+# -------------------------- #
+[Fracture Semi-Perméable]
+Transmissivité = 0
+Pourcentage_Contact = 100
+Couche_Haut = 6
+Couche_Bas  = 9
+[Liste coordonnées]
+592844.87 2622453.94
+596465.88 2619036.68
+599908.26 2615496.55
+603888.54 2612524.27
+607067.59 2608744.11
+611125.67 2605911.76
+614205.24 2603687.68
+# -------------------------- #
+# -----      Ruitz     ----- #
+# -------------------------- #
+[Fracture Semi-Perméable]
+Transmissivité = 0
+Pourcentage_Contact = 100
+Couche_Haut = 6
+Couche_Bas  = 9
+[Liste coordonnées]
+598593.99 2625160.11
+602159.66 2621657.26
+605991.65 2618460.29
+609810.27 2615241.61
+613525.70 2611897.63
+617176.88 2608485.94
+# 620931.45 2605202.55
+# 622356.43 2604086.39

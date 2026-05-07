@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
-from martpy.inputs.reader import read_river_tree
+from martpy.inputs.rivers import read_river_tree
 
 
 def test_river_tree_reader():

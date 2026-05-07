@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from martpy.inputs.reader import read_nzcli
+from martpy.inputs.met_forcings import read_nzcli
 
 
 def test_read_nzcli():
