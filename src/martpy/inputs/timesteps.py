@@ -118,7 +118,7 @@ def _subset_times(times, step=1, freq='Y', day=1, month=8):
     return times
 
 
-class MartheTimeSteps:
+class MartTimeSteps:
     """ Object to create/edit Marthe timesteps
 
     Parameters
@@ -234,7 +234,7 @@ class MartheTimeSteps:
 
         Returns
         -------
-        MartheTimeSteps
+        MartTimeSteps
             A new marthe time step instance with the sliced the timestep(s)
         """
         times = self.times.copy()
@@ -247,7 +247,7 @@ class MartheTimeSteps:
         actions = {
             k: v for k, v in self.actions.items() if k in times['time'].dt.strftime('%Y-%m-%d')
         }
-        return MartheTimeSteps(times, actions)
+        return MartTimeSteps(times, actions)
 
     def get_actions(self, *, time=None, step=None, variable=None, as_dataframe=False):
         """ Get actions for all or selected timesteps/variables
@@ -620,7 +620,7 @@ class MartheTimeSteps:
 
     @classmethod
     def from_dates(cls, date_min=None, date_max=None, freq='D', dates=None,):
-        """ Create a MartheTimeSteps instance based on a list of dates or a frequency
+        """ Create a MartTimeSteps instance based on a list of dates or a frequency
 
         Parameters
         ----------
@@ -639,7 +639,7 @@ class MartheTimeSteps:
 
         Returns
         -------
-        MartheTimeSteps
+        MartTimeSteps
             a time step instance with the dates provided
         """
         dt = _create_times(dates, date_min, date_max, freq)
@@ -768,7 +768,7 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
             dtime.append(_pastp_dict)
 
     dtime = pd.DataFrame(dtime)  # more efficient than append a DataFrame then concat...
-    return MartheTimeSteps(dtime, actions)
+    return MartTimeSteps(dtime, actions)
 
 
 def _build_timestep(istep, date, dactions, lang='fr', **kwargs):

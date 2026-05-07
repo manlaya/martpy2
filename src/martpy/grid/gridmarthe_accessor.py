@@ -12,9 +12,9 @@ import gridmarthe as gm
 # 1st version is from gridmarthe sources.
 # this code is now developped here,
 @xr.register_dataset_accessor('gm')
-class MartheGrid(object):
+class MartGrid(object):
     """ A Marthe grid attributes/methods accessor for xarray.Dataset objects
-    
+
     Example
     --------
     >>> ds = gm.load_marthe_grid(**kwargs)
@@ -107,8 +107,8 @@ class MartheGrid(object):
         return zgeom_par
 
     def __repr__(self):
-        return f"MartheGrid accessor for xarray.Dataset with dimensions {self.obj.dims}"
+        return f"MartGrid accessor for xarray.Dataset with dimensions {self.obj.dims}"
 
 # @wraps(gm.load_marthe_grid)
 # def load_marthe_grid(*args, **kwargs):
-#     return MartheGrid(gm.load_marthe_grid(*args, **kwargs))
+#     return MartGrid(gm.load_marthe_grid(*args, **kwargs))

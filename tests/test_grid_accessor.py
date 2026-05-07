@@ -14,7 +14,7 @@ FGRID = './tests/data/mart_hallue/hallue.permh'
 def test_load_marthe_grid():
     ds = grid.load_marthe_grid(FGRID, drop_nan=True)
     assert isinstance(ds, xr.Dataset), 'Error while loading grid file'
-    # assert isinstance(ds, grid.MartheGrid), 'Error while loading grid file'
+    # assert isinstance(ds, grid.MartGrid), 'Error while loading grid file'
     assert 'permeab' in ds.keys(), 'Error while loading grid file variable'
 
 
