@@ -89,6 +89,12 @@ def test_parse_parameter_line():
     assert res['OIL_HYDR_HEAD']['zone'] == [1, 2], 'Error while parsing zone'
     assert res['OIL_HYDR_HEAD']['value'] == 3, 'Error while parsing value'
 
+    line = "/PERMEAB/ZONE_GEO        Z=      102V=     TO_CALIB;"
+    res = _parse_parameter_line(line)
+    assert res['PERMEAB']['mode'] == 'ZONE_GEO', 'Error while parsing mode geo zone'
+    assert res['PERMEAB']['zone'] == 102, 'Error while parsing zone'
+    assert res['PERMEAB']['value'] == 'TO_CALIB', 'Error while parsing value'
+
 
 def test_parse_block_param():
     with open(MART_FILE, mode='r', encoding='ISO-8859-1') as f:

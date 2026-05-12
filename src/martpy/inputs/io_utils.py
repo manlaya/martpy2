@@ -65,7 +65,11 @@ def _parse_param_value(val, typ):
         tmp = val.split('=')[1]
         return typ(tmp)
     else:
-        return typ(val)
+        try:
+            res = typ(val)
+        except ValueError:
+            res = val
+        return res
 
 
 def _infer_variable_dtype(var, value):
