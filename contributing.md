@@ -136,6 +136,21 @@ This will be used to feed the changelog, following [keepachangelog.com](https://
 and possibly (future?) using [git-cliff](https://git-cliff.org).
 
 
+When fixing a bug, or working on a specific issue, the commit message should include the issue number.
+For example:
+`fix: bug #12` (minimal)
+
+or (multiline message)
+```
+fix: parsing value in XXX #12
+
+Message details
+Line 2
+
+Closes #12
+```
+
+
 Branch
 ------
 
