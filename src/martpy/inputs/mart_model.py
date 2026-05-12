@@ -64,7 +64,7 @@ class MartProject:
             return {k: v for k, v in self.project_files.items() if v}
         else:
             return self.project_files.copy()
-    
+
     def set_files(self, dict_files=None, **files):
         """Set the files in the RMA project.
 
@@ -75,16 +75,16 @@ class MartProject:
             The keys are the file extensions and the values are the paths.
             The keys must be in the list of valid extensions.
             See :py:func:`martpy.get_mart_variables`.
-        
+
         **files: `dict`
            Dictionary containing the files the RMA project points to, passed
            as keywords arguments instead of dict.
-        
+
         Raises
         ------
         ValueError
            If the keys are not in the list of valid extensions.
-        
+
         Example
         -------
         >>> project = MartProject.from_template()
@@ -153,7 +153,7 @@ class MartProject:
         if title is None:
             title = self.title
         _write_rma_file(self.project_files, rma_file, title=title)
-    
+
     def __repr__(self):
         msg = f'{self.__class__.__name__}({self.rma_file})\n'
         msg += f'Title: {self.title}\n'
@@ -172,12 +172,12 @@ class MartModel(MartProject):
 
         Parameters
         ----------
-        name : str
-            The name of current model. It should correspond to the `.rma` file,
+        name : str, Path
+            The name/path of current model. It should correspond to the `.rma` file,
             if existing. If the file does not exist, an empty one is created.
             You can later set any variable.
         """
-        _model_name = name.replace('.rma', '')
+        _model_name = str(name).replace('.rma', '')
         _rma_file = f"{_model_name}.rma"
 
         if os.path.exists(_rma_file):

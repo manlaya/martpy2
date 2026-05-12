@@ -22,6 +22,12 @@ def test_instantiate_model():
     print(model)
 
 
+def test_instantiate_model_pathlib():
+    model = mart.MartModel(Path(MODEL_FILE))
+    assert model.model_name == 'hallue'
+    assert model.model_path == MODEL_DIR
+
+
 def test_get_outputs():
     # Only test if output files exist (they should be in test data)
     model = mart.MartModel(MODEL_FILE)
