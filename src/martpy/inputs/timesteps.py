@@ -586,6 +586,7 @@ class MartTimeSteps:
     def write_file(
         self,
         filename,
+        write_ext_files=False,
         title='Marthe TimeSteps',
         encoding='ISO-8859-1',
         lang=None,
@@ -595,8 +596,11 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        filename : str
+        filename : str, Path
             name of the pastp file
+        write_ext_files : bool, optional
+            Write external files (e.g. `.modin` file), by default False
+            If True, external files are written in the .mart file
         title : str, optional.
             First line of file (description, title)
         encoding : str, optional.
@@ -607,9 +611,12 @@ class MartTimeSteps:
             and :py:func:`set_lang`.
         """
         lang = get_lang() if lang is None else lang
+        kwargs['path'] = Path(filename).parent  # used if write_ext_files
         lines = []
         lines.extend(_build_header(title))
-        lines.extend(_build_pastp(self.times['time'].to_list(), self.actions, lang,**kwargs))
+        lines.extend(_build_pastp(
+            self.times['time'].to_list(), self.actions, write_ext_files, lang, **kwargs
+        ))
         lines.append(FMT_END_SIM.get(lang))
         with open(filename, 'w', encoding=encoding) as f:
             f.write('\n'.join(lines))
@@ -771,7 +778,7 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
     return MartTimeSteps(dtime, actions)
 
 
-def _build_timestep(istep, date, dactions, lang='fr', **kwargs):
+def _build_timestep(istep, date, dactions, write_ext_files=False, lang='fr', **kwargs):
     """ Build the lines for one time step of MARTHE pastp file.
 
     Parameters
@@ -783,6 +790,9 @@ def _build_timestep(istep, date, dactions, lang='fr', **kwargs):
     dactions : dict
         dictionnary containing actions for current timestep.
         Keys are string dates in iso format (YYYY-MM-DDTHH:MM:SS)
+    write_ext_files : bool, optional
+        Option to write modin as external files. Default is False: modin instructions
+        are melted in the .mart|.pastp file.
     lang: str, optional
         language to use (fr, en). Default is 'fr'
 
@@ -802,12 +812,14 @@ def _build_timestep(istep, date, dactions, lang='fr', **kwargs):
 
     lines = [_start_step_str]
     actions_step = dactions.get(date_key_fmt, {})
-    lines.extend(_build_parameter_block(actions_step, mode='list', **kwargs))
+    lines.extend(
+        _build_parameter_block(actions_step, write_ext_files, mode='list', **kwargs)
+    )
     lines.append(FMT_END_TIMESTEP.get(lang))
     return lines
 
 
-def _build_pastp(dates, dactions, lang='fr', **kwargs):
+def _build_pastp(dates, dactions, write_ext_files, lang='fr', **kwargs):
     """ Build all lines of a pastp file
 
     Parameters
@@ -817,6 +829,9 @@ def _build_pastp(dates, dactions, lang='fr', **kwargs):
     dactions : dict
         dictionnary containing actions for all timesteps.
         Keys are string dates in iso format (YYYY-MM-DDTHH:MM:SS)
+    write_ext_files : bool, optional
+        Write external files (e.g. `.modin` file), by default False
+        If True, external files are written in the .mart file
     lang : str, optional
         language of pastp file. Default is french ('fr').
         Other option is 'en' for english.
@@ -832,7 +847,7 @@ def _build_pastp(dates, dactions, lang='fr', **kwargs):
     lines = []
     for i, date in enumerate(dates):
         lines.extend(
-            _build_timestep(i, date, dactions, lang, **kwargs)
+            _build_timestep(i, date, dactions, write_ext_files, lang, **kwargs)
         )
     return lines
 

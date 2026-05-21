@@ -31,7 +31,7 @@ Modèle Tarn et Garonne MOD82_Safran transitoire pas journalier
          0=//////////////////////////////////////////////////////////
          0=Sauvegarde de l'Historique de Convergence de Géochimie (-1=Non ; 1=Oui)
          0=Format des champs calculés (0=Grille ; -1=Binaire ; 1=Col., Ligne, Couche, Val. etc. (voir Help)
-         1=Écriture détaillée des dates sous forme calendaire (0=jj/mm/aaaa ; -1=jj/mm/aaaa hh:mm)
+         0=Écriture détaillée des dates sous forme calendaire (0=jj/mm/aaaa ; -1=jj/mm/aaaa hh:mm)
          0=Facteur de dilatation y/x pour le fichier de dessin des vitesses [Déf=0 => Pas de dilatation]
          0=Périodicité de sauvegarde des historiques [Déf=0 => Tous les pas de temps]
          0=Sauvegarde de l'Historique des termes du bilan de nitrate (0=Non ; 1=kg/ha ; 2=masse)

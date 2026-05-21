@@ -35,18 +35,18 @@ class MartParams:
         """
         for k, v in params.items():
             self[k] = v
-        
+
         self.groups = {v: k for k,v in BLOCK_MART.items() if v != 'dummy'}.keys()
-    
+
     def __getitem__(self, key):
         return getattr(self, key)
-   
+
     def __setitem__(self, key, value):
         setattr(self, key, value)
-    
+
     def get_param_groups(self):
         return list(self.groups)
-    
+
     def get_param_keys(self, nested=False):
         """ Get parameters keys
 
@@ -64,7 +64,7 @@ class MartParams:
                 _tmp = f'{g}/{k}' if nested else k
                 all_keys.append(_tmp)
         return all_keys
-    
+
     def get_param_help(self, key=None, group=None, lang='fr'):
         """ Get help informations on marthe parameters
 
@@ -77,7 +77,7 @@ class MartParams:
         lang : str, optional
             language for the parameter description, by default 'fr'
             accepted values are 'fr' and 'en'
-        
+
         Returns
         -------
         dict
@@ -92,15 +92,15 @@ class MartParams:
             df = df.loc[df['group'] == group]
         if key is not None:
             df = df.loc[df['key'] == key]
-        
+
         _descr = 'descr'
         if lang == 'en':
             _descr += '_en'
-        
+
         if df.empty:
             print(f"Warning: parameter key '{key}' not found in template")
             return None
-        
+
         help_dict = {}
         for _, row in df.iterrows():
             g = row['group']
@@ -112,7 +112,7 @@ class MartParams:
                 'description': row[_descr],
             }
         return help_dict
-    
+
     def to_dict(self):
         d = {}
         for k in self.groups:
@@ -122,7 +122,7 @@ class MartParams:
     @classmethod
     def from_file(cls, mart_file):
         return read_general_parameters(mart_file)
-    
+
     @staticmethod
     def from_template():
         tmp = MART_TEMPLATE[['group', 'key', 'default', 'type']]
@@ -139,9 +139,21 @@ class MartParams:
         params['init_parameters'] = {}
         return MartParams(**params)
 
-    def write_file(self, mart_file, title='marthe parameters'):
-        _write_mart_file(self.to_dict(), mart_file, title=title)
-    
+    def write_file(self, mart_file, title='marthe parameters', write_ext_files=False):
+        """ Write Marthe General Parameters to file
+
+        Parameters
+        ----------
+        mart_file : str, Path
+            Path to the marthe general parameter file (`.mart`)
+        title : str, optional
+            A title in parameter file itself, by default 'marthe parameters'
+        write_ext_files : bool, optional
+            Write external files (e.g. `.modin` file), by default False
+            If True, external files are written in the .mart file
+        """
+        _write_mart_file(self.to_dict(), mart_file, write_ext_files, title=title)
+
     def __repr__(self):
         import pprint
         pp = pprint.PrettyPrinter(indent=2, sort_dicts=False)
@@ -155,12 +167,12 @@ def read_general_parameters(mart_file):
     ----------
     mart_file : str, Path.
         path to marthe general parameter file (`.mart`)
-    
+
     Returns
     -------
     dict:
         nested dictionnary with general parameters by block
-    
+
     Example
     -------
     >>> mpar = read_general_parameters('toto.mart')

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import filecmp
+from pathlib import Path
+
 import pandas as pd
 from martpy.inputs.mart_param import MartParams
 from martpy.inputs._mart_parser import (
@@ -14,6 +17,7 @@ from martpy.inputs._mart_parser import (
 
 # MART_FILE = './tests/data/modin/MOD82_Safran_BV_Ext_1958-2021.mart'
 MART_FILE = './tests/data/modin/param_with_modin_and_init.mart'  # lighter version for testing
+TMP_WRITE = './tests/data/tmp_outputs/test_write.modin'
 
 
 def test_parse_modin():
@@ -45,9 +49,30 @@ def test_parse_modin():
 
 
 # future
-# def test_write_modin():
-#     pass
+def test_write_modin():
+    dict_res = _parse_mart_file(MART_FILE)
+    ext_files = ''
+    _write_mart_file(dict_res, TMP_WRITE, write_ext_files=True)
+    # assert filecmp.cmp(MART_FILE, TMP_WRITE)  # headers !=
+    f1 = Path(TMP_WRITE).parent / 'bvext_simple.modin'
+    f2 = Path(TMP_WRITE).parent / 'nzonriv_simple.modin'
+    assert Path(TMP_WRITE).exists()
+    assert f1.exists()
+    assert f2.exists()
+    reread = _parse_mart_file(TMP_WRITE)
+    assert reread.get('init_parameters') == dict_res.get('init_parameters')
+    with open(TMP_WRITE, 'r', encoding='ISO-8859-1') as f:
+        content = f.read()
+        assert 'MODIFIC' in content
+    with open(f1, 'r') as fp:
+        lines = sum(1 for line in fp)
+        assert lines == 19
+    with open(f2, 'r') as fp:
+        lines = sum(1 for line in fp)
+        assert lines == 7
+
 
 
 if __name__ == "__main__":
     test_parse_modin()
+    test_write_modin()

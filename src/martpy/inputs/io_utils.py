@@ -353,7 +353,7 @@ def _build_parameter_line(variable, action, **kwargs):
     return '  {0:25}{1}'.format(var_type, option_str)
 
 
-def _build_parameter_block(dict_param, mode='str'):
+def _build_parameter_block(dict_param, write_ext_files=False, mode='str', **kwargs):
     """ Build a block of parameters for MARTHE general parameters, timesteps
     of initial modifications (modin)
 
@@ -363,6 +363,9 @@ def _build_parameter_block(dict_param, mode='str'):
     dict_param: dict
         dictionnary of parameters to write as a block (init param, modin, timestep),
         as read with :py:func:`_parse_parameter_block`.
+    write_ext_files: bool, optional
+        Option to write modin as external files. Default is False: modin instructions
+        are melted in the .mart|.pastp file.
     mode: str, optional
         `str` (default) or `list` to return parameters as a multiline string
         or as a list of lines
@@ -380,29 +383,45 @@ def _build_parameter_block(dict_param, mode='str'):
     else:
         raise ValueError('Unknown mode. Please use `str` or `list`')
 
+    ext_files = {}
     for variable, actions in dict_param.items():
         for action in actions:
             _mode = action.get('mode')
             line = _build_parameter_line(variable, _mode, **action)
+
+            if action.get('as_external_file', False) and write_ext_files:
+                external_file = action.get('external_file')
+                ext_files[external_file] = ext_files.get(external_file, []) + [line]
+                main_line = '  /MODIFIC/FICHIER         N: {}'.format(external_file)
+                if main_line not in params:
+                    if mode == 'str':
+                        params += f"{main_line}\n"
+                    elif mode == 'list':
+                        params.append(main_line)
+                continue
+
             if mode == 'str':
                 params += f"{line}\n"
             elif mode == 'list':
                 params.append(line)
+    if (len(ext_files.keys()) > 0) and write_ext_files:
+        _write_modin(ext_files, kwargs.get('path', '.'))
     return params
 
 
-def _write_modin(dict_action, fname, lang=None):
+def _write_modin(dict_modin, path='.', lang=None):
+    # write a dict of {file1: [lines]}
     if lang is None:
         lang = get_lang()
 
-    lines = _build_parameter_block(dict_action)
-    if lang.lower() == 'fr':
-        lines += '  /*****/***** Fin d\'Initialisation\n'
-    else:
-        lines += '  /*****/***** End of Initialization\n'
-
-    with open(fname, encoding='ISO-8859-1', mode='w') as f:
-        f.write(lines)
+    for fname, lines in dict_modin.items():
+        str_lines = '\n'.join(lines)
+        if lang.lower() == 'fr':
+            str_lines += '\n  /*****/***** Fin d\'Initialisation\n'
+        else:
+            str_lines += '\n  /*****/***** End of Initialization\n'
+        with open(Path(path) / fname, encoding='ISO-8859-1', mode='w') as f:
+            f.write(str_lines)
     return 0
 
 

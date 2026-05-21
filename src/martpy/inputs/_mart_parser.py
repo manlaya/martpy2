@@ -223,6 +223,7 @@ def _set_valid_value(value, valid_value):
 def _write_mart_file(
     dict_mart,
     mart_file,
+    write_ext_files=False,
     encoding='ISO-8859-1',
     title='mart parameter file',
     lang=None
@@ -241,6 +242,9 @@ def _write_mart_file(
         Dictionnary of parameters
     mart_file : str
         Path to the marthe parameter file
+    write_ext_files : bool, optional
+        Write external files (modin), by default False
+        If True, the modin parameters will be written in the *.mart file
     encoding : str, optional
         Encoding of the file, by default 'ISO-8859-1'
     title : str, optional
@@ -309,7 +313,10 @@ def _write_mart_file(
         mart_str += ' *** Initialization before simulation                ***\n'
 
     # build init parameters block
-    mart_str += _build_parameter_block(dict_mart.get('init_parameters'))
+    mart_str += _build_parameter_block(
+        dict_mart.get('init_parameters'), write_ext_files, mode='str',
+        path=Path(mart_file).parent
+    )
 
     if lang == 'fr':
         mart_str += (
