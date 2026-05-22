@@ -111,6 +111,24 @@ def test_add_action_freq():
     assert np.all(d.index.get_level_values(0).is_month_end), 'frequency not respected in actions'
 
 
+def test_add_action_no_duplicates():
+    # Reproduce issue #17: identical add_action calls must not accumulate duplicates
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(freq='ME', variable='ETAT_HYD_CLIM', action='edition')
+    pastp.add_action(freq='ME', variable='ETAT_HYD_CLIM', action='edition')
+    pastp.add_action(freq='ME', variable='ETAT_HYD_CLIM', action='edition')
+    d = pastp.get_actions(variable='ETAT_HYD_CLIM', as_dataframe=True)
+    assert len(d) == 205, 'duplicate actions must be dropped (keep last), monthly count must remain 205'
+
+    # Also check that distinct actions on the same variable are preserved (use fresh pastp)
+    pastp2 = MartTimeSteps.from_dates(date_min='2000-01-01', date_max='2005-12-31', freq='ME')
+    pastp2.add_action(freq='ME', variable='CALCUL_HDYNAM', action='ACTION', value=1)
+    pastp2.add_action(freq='ME', variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    d2 = pastp2.get_actions(variable='CALCUL_HDYNAM', as_dataframe=True)
+    n_months = len(pd.date_range('2000-01-01', '2005-12-31', freq='ME'))
+    assert len(d2) == n_months * 2, 'distinct actions on same variable must both be kept'
+
+
 def test_get_actions():
     pastp = read_mart_timesteps(FILE_PASTP)
     pastp.add_action(steps=-1, variable='CALCUL_HDYNAM', action='ACTION', value=2)

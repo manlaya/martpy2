@@ -404,17 +404,14 @@ class MartTimeSteps:
             key = _convert_date_to_str_iso(time)
             if action.lower() == 'edition' and kwargs.get('edit') is None:
                 kwargs['edit'] = 1
+            new_action_list = self.actions.get(key, {}).get(variable.upper(), []) + [
+                {'mode': action.upper(), **kwargs}
+            ]
             new_actions[key] = {
                 # keep previous actions if any, order matters
                 **self.actions.get(key, {}),
-                variable.upper(): self.actions.get(key, {}).get(variable.upper(), [])+
-                [
-                    {'mode': action.upper(), **kwargs}
-                ],
+                variable.upper(): _deduplicate_action_list(new_action_list),
             }
-            # TODO assert no dups -- /!\ perf!  # + error in test_pastp_parser::test_wrapper_method
-            # for k,v in new_actions[key].items():
-            #     new_actions[key][k] = pd.DataFrame(v).drop_duplicates().to_dict('records')
 
         self.actions = {**self.actions, **new_actions}
         self.times.loc[self.times['time'].isin(times), 'has_action'] = True
@@ -698,6 +695,21 @@ def _convert_date_to_str(date):
         if date.hour == 0 and date.minute == 0:
             return '{:^12}'.format(date.strftime("%d/%m/%Y"))
         return '{:^18}'.format(date.strftime("%d/%m/%Y %H:%M"))
+
+
+def _deduplicate_action_list(action_list):
+    """Remove duplicate action dicts from a list, keeping the last occurrence.
+
+    Uses repr() for comparison to handle unhashable values (lists, Path objects).
+    """
+    seen_keys = []
+    unique_actions = []
+    for action in reversed(action_list):
+        canonical_key = repr(sorted(action.items(), key=lambda kv: kv[0]))
+        if canonical_key not in seen_keys:
+            seen_keys.append(canonical_key)
+            unique_actions.insert(0, action)
+    return unique_actions
 
 
 def _convert_date_to_str_iso(date):
