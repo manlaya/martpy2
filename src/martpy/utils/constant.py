@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from pandas import read_csv
+from pandas import read_csv, isna
 from .config import _get_resource_file
+from .misc import _canonicalize_name
 
 
 def _build_mart_variables():
@@ -20,6 +21,87 @@ NAN_VALUES = [9999., -9999., 8888.]  # Example NaN values, can be modified as ne
 
 MART_VARIABLES = _build_mart_variables()
 MART_HISTO_VAR = read_csv(_get_resource_file('marthe_histo.csv'))
+
+
+def _build_histo_mappings():
+    """Build bidirectional dicts between histo variable names and generic ones.
+
+    A "histo" name is the one written in .histo files and .prn headers
+    (e.g. ``'Charge'``, ``'Débit_Rivi'``). A "generic" name is the
+    user-facing canonical form, accent-free and lowercase (e.g. ``'charge'``,
+    ``'debit_rivi'``).
+
+    The canonical generic name is derived deterministically from the histo
+    name via :func:`_canonicalize_name`. This gives full coverage of all
+    149 histo variables, independent of whether ``marthe_variables.csv``
+    holds a matching entry.
+
+    On top of that, aliases from ``marthe_variables.csv`` are accepted as
+    input to :func:`~martpy.utils.helper.to_histo_varname` (so a user can
+    write ``DEFIC_SOL`` or ``HYDR_HEAD`` as well as ``deficit_sol`` or
+    ``charge``). Aliases never override the canonical mapping, so reading
+    a histo file always yields the canonical generic name.
+
+    Returns
+    -------
+    tuple of 4 dicts
+        ``HISTO_TO_GENERIC_FR``, ``HISTO_TO_GENERIC_EN``,
+        ``GENERIC_TO_HISTO_FR``, ``GENERIC_TO_HISTO_EN``.
+    """
+    histo_to_generic_fr = {}
+    histo_to_generic_en = {}
+    generic_to_histo_fr = {}
+    generic_to_histo_en = {}
+
+    # 1. Canonical mapping derived from each histo entry
+    for _, row in MART_HISTO_VAR.iterrows():
+        histo_fr = str(row['code_histo']).strip()
+        histo_en = str(row['code_histo_en']).strip()
+        canon_fr = _canonicalize_name(histo_fr)
+        canon_en = _canonicalize_name(histo_en)
+
+        histo_to_generic_fr[histo_fr] = canon_fr
+        histo_to_generic_en[histo_en] = canon_en
+        generic_to_histo_fr[canon_fr] = histo_fr
+        generic_to_histo_en[canon_en] = histo_en
+
+    # 2. Aliases from marthe_variables.csv (do not override canonical mapping)
+    ext_to_histo_fr = {
+        str(row['ext']).strip().upper(): str(row['code_histo']).strip()
+        for _, row in MART_HISTO_VAR.iterrows()
+    }
+    ext_to_histo_en = {
+        str(row['ext']).strip().upper(): str(row['code_histo_en']).strip()
+        for _, row in MART_HISTO_VAR.iterrows()
+    }
+    for _, row in MART_VARIABLES.iterrows():
+        code_abb = row.get('code_abb')
+        if code_abb is None or isna(code_abb):
+            continue
+        key = str(code_abb).strip().upper()
+        if key in ('', 'KKKKK'):
+            continue
+        if key not in ext_to_histo_fr:
+            continue
+        alias_fr = _canonicalize_name(row['code_var_fr'])
+        alias_en = _canonicalize_name(row['code_var_en'])
+        generic_to_histo_fr.setdefault(alias_fr, ext_to_histo_fr[key])
+        generic_to_histo_en.setdefault(alias_en, ext_to_histo_en[key])
+
+    return (
+        histo_to_generic_fr,
+        histo_to_generic_en,
+        generic_to_histo_fr,
+        generic_to_histo_en,
+    )
+
+
+(
+    HISTO_TO_GENERIC_FR,
+    HISTO_TO_GENERIC_EN,
+    GENERIC_TO_HISTO_FR,
+    GENERIC_TO_HISTO_EN,
+) = _build_histo_mappings()
 
 COMMENT_BLOCK = '/!!!!!/!!!!!'
 COMMENTS = ['!', '#']
