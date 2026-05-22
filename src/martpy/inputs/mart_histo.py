@@ -6,7 +6,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from martpy.inputs.io_utils import _build_header, _fmt_nchar
+from martpy.inputs._io_utils import _build_header, _fmt_nchar
 
 
 _HISTO_PARSER = (

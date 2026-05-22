@@ -293,8 +293,6 @@ def _format_opt_list_mail(opts):
 def _build_parameter_line(variable, action, **kwargs):
     """ Edit a line of a Marthe time step file or mart file (general parameters)
 
-    TODO (?) deal with external_file option, 'MODIFIC' key, and '*.modin' file
-
     Parameters
     ----------
     variable : str

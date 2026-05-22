@@ -3,7 +3,7 @@
 
 import re
 
-from martpy.inputs.io_utils import (
+from martpy.inputs._io_utils import (
     _build_parameter_line,
     _parse_parameter_line,
     _parse_parameter_block

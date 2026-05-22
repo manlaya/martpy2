@@ -14,7 +14,7 @@ from pathlib import Path
 
 import martpy
 from martpy.utils.config import Configuration, get_lang, set_lang
-from martpy.inputs.io_utils import _build_header
+from martpy.inputs._io_utils import _build_header
 
 
 class TestConfiguration(unittest.TestCase):

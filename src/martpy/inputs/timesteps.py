@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from martpy.inputs.io_utils import (
+from martpy.inputs._io_utils import (
     _build_header,
     _build_parameter_block,
     _filter_valid_opt_list_mail,

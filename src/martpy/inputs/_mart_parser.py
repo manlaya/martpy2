@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from martpy.inputs.io_utils import (
+from martpy.inputs._io_utils import (
     _build_header,
     _build_parameter_block,
     _parse_parameter_block,
