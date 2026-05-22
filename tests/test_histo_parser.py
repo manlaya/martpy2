@@ -8,7 +8,7 @@ from martpy.inputs.mart_histo import (
     MartHisto,
     read_histo_file
 )
-from martpy.inputs.io_utils import _fmt_nchar
+from martpy.inputs._io_utils import _fmt_nchar
 
 
 HISTO_FILE_READ = './tests/data/mart_hallue/hallue_with_afluent.histo'
@@ -19,7 +19,7 @@ HISTO_FILE = './tests/data/mart_hallue/hallue.histo'
 
 def debug_regex():
     import re
-    
+
     xfile = 'tests/data/mart_hallue/hallue.histo'
     # xfile = 'tests/data/mart_uk/mart_uk_files.histo'
 
@@ -37,10 +37,10 @@ def debug_regex():
         r'(?:Name=(?P<name>[^ ]+))?'
         r'(?P<name_old>[^\s;]+)?'  # get name, even if "Name=" is not here (marthe<v7.8)
     )  # one hell of a regex
-    
+
     with open(xfile, mode='r', encoding='ISO-8859-1') as f:
         histo = [line.rstrip() for line in f if '/HISTO/' in line]
-    
+
     for line in histo:
         m = re.search(_HISTO_PARSER, line)
         if m:
