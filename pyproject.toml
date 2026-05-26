@@ -8,11 +8,13 @@ authors = [
     {name = "Adrien Manlay", email = "a.manlay@brgm.fr"},
     {name = "Jean-Pierre Vergnes", email = "jp.vergnes@brgm.fr"},
     {name = "Thibault Hallouin", email = "t.hallouin@brgm.fr"},
+    {name = "Simon Magne", email = "s.magne@brgm.fr"},
 ]
 
 description = "python package for Marthe Hydrogeological model pre/post processing"
 readme = {file = "README.md", content-type = "text/markdown"}
-license = {file = "COPYING"}
+license = "GPL-3.0-or-later"  # SPDX short identifier
+license-files = ["COPYING"]
 
 dynamic = [
     "version",
@@ -22,7 +24,6 @@ dynamic = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Hydrology",
     "Intended Audience :: Science/Research",
