@@ -39,22 +39,22 @@ Repository = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/mar
 Changelog = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/blob/dev/changelog.md?ref_type=heads"
 # Documentation = ""
 
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
-
 [tool.setuptools_scm]
 version_file = "src/martpy/_version.py"
 # version_scheme = "calver-by-date"
 local_scheme = "node-and-date"
 
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
 [project.optional-dependencies]
-dev = ['ruff', 'pytest', 'pre-commit']
+dev = ['ruff', 'pytest', 'pytest-cov', 'pre-commit']
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.pytest.ini_options]
-addopts = "-s -v"
+addopts = "-v --cov=martpy tests/ "  # -s
 testpaths = [
     "tests",
 ]
