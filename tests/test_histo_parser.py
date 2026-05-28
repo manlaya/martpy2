@@ -157,6 +157,46 @@ def test_get_xy_from_grid():
     assert not np.any(pd.isna(histo2.row)), 'Error while getting row from grid'
 
 
+def test_reader_normalizes_variable_column():
+    """Issue #8: variable column is normalized to lowercase generic names."""
+    histo = read_histo_file(HISTO_FILE)
+    variables = set(histo['variable'].unique())
+    # Histo file holds 'Charge' and 'Débit_Rivi' -> canonical generic forms
+    assert variables == {'charge', 'debit_rivi'}, (
+        f"variable column should be canonical generic names, got {variables}"
+    )
+    # And no raw histo form leaked through
+    assert 'Charge' not in variables
+    assert 'Débit_Rivi' not in variables
+
+
+def test_writer_accepts_generic_varnames():
+    """write_file() must convert generic names (e.g. CHARGE, charge) to histo names."""
+    histo = read_histo_file(HISTO_FILE)
+    # Replace canonical 'charge' with its uppercase alias from marthe_variables.csv
+    histo_alias = histo.copy()
+    histo_alias.loc[histo['variable'] == 'charge', 'variable'] = 'CHARGE'
+
+    histo_file_out = './tests/data/tmp_outputs/histo_generic_varnames.histo'
+    histo_alias.write_file(histo_file_out)
+
+    # The file on disk must hold the native histo name, even when written from CHARGE
+    with open(histo_file_out, encoding='ISO-8859-1') as f:
+        content = f.read()
+    assert '/Charge' in content, 'Histo file must contain native histo name "Charge"'
+    assert '/CHARGE' not in content, 'Generic uppercase CHARGE must not leak into histo file'
+
+
+def test_writer_roundtrip_preserves_variable():
+    """read -> write -> read returns the same canonical variable values."""
+    histo = read_histo_file(HISTO_FILE)
+    out = './tests/data/tmp_outputs/histo_roundtrip.histo'
+    histo.write_file(out)
+    histo2 = read_histo_file(out)
+    assert list(histo2['variable']) == list(histo['variable']), \
+        'variable column must survive read->write->read unchanged'
+
+
 def test_read_histo_uk():
     histo = read_histo_file('./tests/data/mart_uk/mart_uk_files.histo')
     assert len(histo) == 3, 'Error while reading histo file'
