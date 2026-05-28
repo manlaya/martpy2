@@ -1,0 +1,150 @@
+image: python:latest
+
+variables:
+  PIP_ROOT_USER_ACTION: ignore
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+stages:
+  # - lint
+  - build
+  - test
+  - deploy
+
+.version_tag:
+  # see https://peps.python.org/pep-0440/
+  # courtesy of T. Janvier (brgm)
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^(?P<epoch>\D+)?(?P<version>(?P<release>\d+(?:\.\d+)*)(?P<pre>(?:a|b|rc)\d+?)?((?P<post>\.post\d+))?(?P<dev>\.dev\d+)?(?P<build>\+\S+)?)$/
+  except:
+    - branches
+
+
+.install-env: &install-env
+  - cat /etc/os-release
+  - python3 --version
+  - python3 -m venv venv
+  - source venv/bin/activate
+  - pip install --upgrade pip setuptools wheel build
+
+
+before_script:
+  - *install-env
+
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+# future
+# pre-commit:
+#   stage: lint
+#   image: python:3.12
+#   allow_failure: true
+#   interruptible: true
+#   before_script:
+#     - python3 -m pip install pre-commit
+#     - python3 -m pip install ruff
+#   script:
+#   - pre-commit run --all-files
+
+# lint:
+#   stage: lint
+#   only:
+#     - merge_requests
+#     - main
+#     - tags
+#   allow_failure: true
+#   interruptible: true
+#   # rules:
+#     # block only merge requests
+#     # - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_MERGE_REQUEST_ID || $CI_COMMIT_TAG
+#     #   allow_failure: true
+#     # - when: always
+#     #   allow_failure: true
+#   before_script:
+#     - *install-env
+#     - python3 -m pip install ruff
+#   script:
+#     - ruff check --config ruff.toml --output-format=gitlab --output-file=ruff-report.json
+#   artifacts:
+#     reports:
+#       codequality: ruff-report.json
+
+
+build:
+  stage: build
+  only:
+    - main
+    - tags
+  script:
+    - source venv/bin/activate
+    - pip install -r requirements.txt
+    - python3 -m build -s
+    - python3 -m build -w
+    # - python3 -m cibuildwheel --output-dir ./dist
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 24 hours
+
+
+test:
+  stage: test
+  image: python:${PYTHON_VERSION}
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["3.11", "3.12", "3.13", "3.14"]
+  only:
+   - main
+   - tags
+   - merge_requests
+  before_script:
+    - *install-env
+    - pip install .[dev]
+  script:
+    - pytest
+
+
+deploy_test:
+  stage: deploy
+  only:
+    - main
+    - tags
+  environment:
+    name: testpypi
+    url: https://test.pypi.org/p/martpy/
+  id_tokens:
+    TESTPYPI_ID_TOKEN:
+      aud: testpypi
+  before_script:
+   - pip install twine
+  script:
+    - twine upload --repository testpypi --verbose dist/*.{whl,tar.gz}
+  dependencies:
+    - build
+    - test
+  # rules:
+  #   - if: $CI_COMMIT_TAG
+  #     when: never
+  #   - if: $CI_COMMIT_BRANCH
+  #     when: manual
+
+
+deploy_to_pypi:
+  stage: deploy
+  extends: [ .version_tag ]
+  when: manual  # debug
+  environment: pypi
+  id_tokens:
+    PYPI_ID_TOKEN:
+      aud: pypi
+  before_script:
+    - pip install twine
+  script:
+    - twine upload dist/*
+  dependencies:
+    - build
+    - test
+    - deploy_test

@@ -1,0 +1,6 @@
+# add package data
+include */resources/*.csv
+
+# exclude doc and test from sdist
+recursive-exclude docs *
+recursive-exclude tests *
