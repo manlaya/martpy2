@@ -12,7 +12,7 @@ from martpy.utils.helper import from_histo_varname
 from martpy.utils.misc import _canonicalize_name
 
 
-def read_output_time_series(ts_file, normalize_headers=False, lang='fr'):
+def read_output_time_series(ts_file, normalize_headers=True, lang='fr'):
     """ Read a time series output file (historiq.prn)
 
     Parameters
@@ -24,7 +24,7 @@ def read_output_time_series(ts_file, normalize_headers=False, lang='fr'):
         if True, the variable level of the column MultiIndex is converted
         to its canonical generic name (lowercase, no accents,
         e.g. ``'charge'``, ``'debit_rivi'``) using
-        :func:`~martpy.utils.helper.from_histo_varname`. By default False.
+        :func:`~martpy.utils.helper.from_histo_varname`. By default True.
     lang : str, optional
         Language of the .prn file headers (``'fr'`` or ``'en'``). Only used
         when ``normalize_headers=True``. Default ``'fr'``.
@@ -95,7 +95,7 @@ def _clean_prn_header(col):
 def read_output_water_balance(
     balance_file,
     add_multiindex=True,
-    normalize_headers=False,
+    normalize_headers=True,
     encoding='ISO-8859-1'
 ):
     """ Read a water balance output file
@@ -119,7 +119,7 @@ def read_output_water_balance(
 
     normalize_headers : bool, optional
         if True normalize headers (lowercase, replace spaces/special characters
-        by underscores). By default False.
+        by underscores). By default True.
 
     encoding : str, optional
        encoding of the file, by default 'ISO-8859-1'

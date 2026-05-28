@@ -93,18 +93,20 @@ def _canonicalize_name(name):
 
     Used to derive the canonical generic variable name from a histo name
     (e.g. ``'Débit_Rivi'`` -> ``'debit_rivi'``, ``'%Satur_Nappe'`` ->
-    ``'percsatur_nappe'``) and to normalize user input before looking it
+    ``'perc_satur_nappe'``) and to normalize user input before looking it
     up in the histo/generic mapping dicts.
 
     Steps:
         1. strip + lowercase + remove diacritics
         2. drop punctuation noise ``/()|°²³<>.,``
-        3. replace ``%`` with ``perc``
-        4. collapse whitespace and hyphens into single underscores
+        3. replace ``%`` with ``perc_``
+        4. collapse whitespace, hyphens and underscores into single
+           underscores, then strip leading/trailing underscores
     """
     import re
     cleaned = remove_accents(str(name).strip().lower())
     cleaned = re.sub(r'[/()|°²³<>.,]', '', cleaned)
-    cleaned = re.sub(r'%', 'perc', cleaned)
-    cleaned = re.sub(r'[\s\-]+', '_', cleaned)
+    cleaned = re.sub(r'%', 'perc_', cleaned)
+    cleaned = re.sub(r'[\s\-_]+', '_', cleaned)
+    cleaned = cleaned.strip('_')
     return cleaned

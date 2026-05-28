@@ -46,7 +46,7 @@ def test_to_histo_varname_canonical():
     assert to_histo_varname('charge') == 'Charge'
     assert to_histo_varname('debit_rivi') == 'Débit_Rivi'
     assert to_histo_varname('flux_ruiss') == 'Flux_Ruiss'
-    assert to_histo_varname('percsatur_nappe') == '%Satur_Nappe'
+    assert to_histo_varname('perc_satur_nappe') == '%Satur_Nappe'
 
 
 def test_to_histo_varname_accepts_aliases():
@@ -73,7 +73,7 @@ def test_from_histo_varname_canonical():
     assert from_histo_varname('Charge') == 'charge'
     assert from_histo_varname('Débit_Rivi') == 'debit_rivi'
     assert from_histo_varname('Flux_Ruiss') == 'flux_ruiss'
-    assert from_histo_varname('%Satur_Nappe') == 'percsatur_nappe'
+    assert from_histo_varname('%Satur_Nappe') == 'perc_satur_nappe'
 
 
 def test_from_histo_varname_english():

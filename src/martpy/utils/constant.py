@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from pandas import read_csv, isna
+from pandas import read_csv
 from .config import _get_resource_file
 from .misc import _canonicalize_name
 
@@ -48,45 +48,51 @@ def _build_histo_mappings():
         ``HISTO_TO_GENERIC_FR``, ``HISTO_TO_GENERIC_EN``,
         ``GENERIC_TO_HISTO_FR``, ``GENERIC_TO_HISTO_EN``.
     """
-    histo_to_generic_fr = {}
-    histo_to_generic_en = {}
-    generic_to_histo_fr = {}
-    generic_to_histo_en = {}
+    # 1. Canonical mapping derived from each histo entry.
+    # Columns are normalized in a single vectorized pass instead of looping
+    # row by row (dict(zip(...)) keeps the last value on duplicate keys, which
+    # matches the original per-row assignment).
+    histo_fr = MART_HISTO_VAR['code_histo'].astype(str).str.strip()
+    histo_en = MART_HISTO_VAR['code_histo_en'].astype(str).str.strip()
+    canon_fr = histo_fr.map(_canonicalize_name)
+    canon_en = histo_en.map(_canonicalize_name)
 
-    # 1. Canonical mapping derived from each histo entry
-    for _, row in MART_HISTO_VAR.iterrows():
-        histo_fr = str(row['code_histo']).strip()
-        histo_en = str(row['code_histo_en']).strip()
-        canon_fr = _canonicalize_name(histo_fr)
-        canon_en = _canonicalize_name(histo_en)
+    histo_to_generic_fr = dict(zip(histo_fr, canon_fr, strict=True))
+    histo_to_generic_en = dict(zip(histo_en, canon_en, strict=True))
+    generic_to_histo_fr = dict(zip(canon_fr, histo_fr, strict=True))
+    generic_to_histo_en = dict(zip(canon_en, histo_en, strict=True))
 
-        histo_to_generic_fr[histo_fr] = canon_fr
-        histo_to_generic_en[histo_en] = canon_en
-        generic_to_histo_fr[canon_fr] = histo_fr
-        generic_to_histo_en[canon_en] = histo_en
+    # 2. Aliases from marthe_variables.csv (do not override canonical mapping).
+    ext = MART_HISTO_VAR['ext'].astype(str).str.strip().str.upper()
+    ext_to_histo_fr = dict(zip(ext, histo_fr, strict=True))
+    ext_to_histo_en = dict(zip(ext, histo_en, strict=True))
 
-    # 2. Aliases from marthe_variables.csv (do not override canonical mapping)
-    ext_to_histo_fr = {
-        str(row['ext']).strip().upper(): str(row['code_histo']).strip()
-        for _, row in MART_HISTO_VAR.iterrows()
-    }
-    ext_to_histo_en = {
-        str(row['ext']).strip().upper(): str(row['code_histo_en']).strip()
-        for _, row in MART_HISTO_VAR.iterrows()
-    }
-    for _, row in MART_VARIABLES.iterrows():
-        code_abb = row.get('code_abb')
-        if code_abb is None or isna(code_abb):
-            continue
-        key = str(code_abb).strip().upper()
-        if key in ('', 'KKKKK'):
-            continue
-        if key not in ext_to_histo_fr:
-            continue
-        alias_fr = _canonicalize_name(row['code_var_fr'])
-        alias_en = _canonicalize_name(row['code_var_en'])
-        generic_to_histo_fr.setdefault(alias_fr, ext_to_histo_fr[key])
-        generic_to_histo_en.setdefault(alias_en, ext_to_histo_en[key])
+    # Keep only rows whose code_abb points to a known histo extension.
+    code_abb = MART_VARIABLES['code_abb']
+    key = code_abb.astype(str).str.strip().str.upper()
+    valid = (
+        code_abb.notna()
+        & ~key.isin(['', 'KKKKK'])
+        & key.isin(set(ext_to_histo_fr))
+    )
+
+    alias_fr = MART_VARIABLES.loc[valid, 'code_var_fr'].map(_canonicalize_name)
+    alias_en = MART_VARIABLES.loc[valid, 'code_var_en'].map(_canonicalize_name)
+    valid_key = key[valid]
+
+    # The original loop used setdefault (first alias wins on duplicate keys).
+    # Reversing before dict(zip(...)) reproduces that: the last write wins, so
+    # the first row in document order ends up kept.
+    alias_to_histo_fr = dict(zip(
+        alias_fr[::-1], valid_key.map(ext_to_histo_fr)[::-1], strict=True
+    ))
+    alias_to_histo_en = dict(zip(
+        alias_en[::-1], valid_key.map(ext_to_histo_en)[::-1], strict=True
+    ))
+
+    # Canonical mapping always wins over aliases.
+    generic_to_histo_fr = {**alias_to_histo_fr, **generic_to_histo_fr}
+    generic_to_histo_en = {**alias_to_histo_en, **generic_to_histo_en}
 
     return (
         histo_to_generic_fr,

@@ -267,7 +267,8 @@ class MartHisto(pd.DataFrame):
         return MartHisto
 
 
-def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False, lang='fr'):
+def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False,
+                    normalize_headers=True, lang='fr'):
     """ Read a .histo file from Marthe model
 
     .. versionchanged:: next
@@ -276,7 +277,9 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False, lang='fr')
         instead of the raw histo form (``'Charge'``, ``'Débit_Rivi'``).
         This aligns ``read_histo_file`` with
         :func:`martpy.outputs.read_output_time_series` and removes the need
-        for callers to handle both naming schemes. See issue #8.
+        for callers to handle both naming schemes. The normalization is on
+        by default but can be turned off with ``normalize_headers=False`` to
+        keep the raw histo form. See issue #8.
 
     Parameters
     ----------
@@ -286,6 +289,12 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False, lang='fr')
         File encoding, by default 'ISO-8859-1'
     verbose : bool, optional
         Raise on parsing failure if True, by default False
+    normalize_headers : bool, optional
+        If True, the ``variable`` column is converted to its canonical
+        generic name (lowercase, no accents, e.g. ``'charge'``,
+        ``'debit_rivi'``) using
+        :func:`~martpy.utils.helper.from_histo_varname`. If False, the raw
+        histo form is kept (``'Charge'``, ``'Débit_Rivi'``). By default True.
     lang : str, optional
         Language of the input histo file headers (``'fr'`` or ``'en'``),
         used to normalize the ``variable`` column. Default ``'fr'``.
@@ -337,9 +346,10 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False, lang='fr')
 
     data = pd.concat(data, ignore_index=True)
     data = _set_histo_df_dtype(data)
-    data['variable'] = data['variable'].apply(
-        lambda v: from_histo_varname(v, lang=lang)
-    )
+    if normalize_headers:
+        data['variable'] = data['variable'].apply(
+            lambda v: from_histo_varname(v, lang=lang)
+        )
     return MartHisto(data)
 
 
