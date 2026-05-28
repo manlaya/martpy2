@@ -5,7 +5,7 @@ Failles majeures NPC
 # -----   Marqueffles part 1 Bruay  ----- #
 # --------------------------------------- #
 [Fracture Semi-Perméable]
-Transmissivité = 0
+Perméabilité = 0
 Pourcentage_Contact = 100
 Couche_Haut = 9
 Couche_Bas  = 9
@@ -18,7 +18,7 @@ Couche_Bas  = 9
 # -----   Marqueffles part2 - Amont Souchez  ----- #
 # ------------------------------------------------ #
 [Fracture Semi-Perméable]
-Transmissivité = 1e-10
+Perméabilité = 1e-10
 Pourcentage_Contact = 100
 Couche_Haut = 6
 Couche_Bas  = 9
@@ -32,7 +32,7 @@ Couche_Bas  = 9
 # -----     Pernes     ----- #
 # -------------------------- #
 [Fracture Semi-Perméable]
-Transmissivité = 0
+Perméabilité = 0
 Pourcentage_Contact = 100
 Couche_Haut = 6
 Couche_Bas  = 9
@@ -48,7 +48,7 @@ Couche_Bas  = 9
 # -----      Ruitz     ----- #
 # -------------------------- #
 [Fracture Semi-Perméable]
-Transmissivité = 0
+Perméabilité = 0
 Pourcentage_Contact = 100
 Couche_Haut = 6
 Couche_Bas  = 9

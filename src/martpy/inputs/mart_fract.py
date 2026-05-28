@@ -8,51 +8,121 @@ import pandas as pd
 from martpy.inputs._io_utils import _build_header
 
 
-# Section headers recognised inside a fracture block. The reader accepts both
-# the original French keys and an English alias for robustness; the writer
-# always emits the French form to match the MARTHE convention.
-_FRACTURE_BLOCK_HEADERS = {
-    'fr': '[Fracture Semi-Perméable]',
-    'en': '[Semi-Permeable Fracture]',
-}
-_COORDS_BLOCK_HEADERS = {
-    'fr': '[Liste coordonnées]',
-    'en': '[Coordinates list]',
+# ---------------------------------------------------------------------------
+# Types de fractures
+# ---------------------------------------------------------------------------
+# Le format .fract documente trois types de fractures verticales (doc MARTHE
+# v7.8.4, pp. 197-201). Chaque type possède plusieurs mots-clés équivalents
+# (synonymes français + alias anglais). On normalise tout vers un identifiant
+# interne : 'semi_perm', 'imperm' ou 'conduct'.
+#
+# La lecture accepte tous ces mots-clés (insensible à la casse) ; l'écriture
+# émet toujours la forme française canonique, comme le fait WinMarthe.
+_FRACTURE_TYPE_KEYWORDS = {
+    # semi-perméable
+    '[fracture semi-perméable]': 'semi_perm',
+    '[semi-pervious fracture]': 'semi_perm',
+    # imperméable (= étanche = isolante)
+    '[fracture imperméable]': 'imperm',
+    '[fracture étanche]': 'imperm',
+    '[fracture isolante]': 'imperm',
+    '[impervious fracture]': 'imperm',
+    '[insulating fracture]': 'imperm',
+    # conductrice
+    '[fracture conductrice]': 'conduct',
+    '[conductive fracture]': 'conduct',
 }
 
-# End-of-free-text marker (the V7.8 line); we detect it case-insensitively
-# with a simple substring check.
-_END_OF_HEADER_MARKER = '--- Fin du texte libre ---'
+_TYPE_TO_FRACTURE_KEYWORD_FR = {
+    'semi_perm': '[Fracture Semi-Perméable]',
+    'imperm': '[Fracture Imperméable]',
+    'conduct': '[Fracture Conductrice]',
+}
 
-# Mapping from MARTHE key (as appears in file) to attribute name used in the
-# returned dict. The reader accepts both the French and an English alias.
+# ---------------------------------------------------------------------------
+# Modes de coordonnées
+# ---------------------------------------------------------------------------
+# Le tracé d'une fracture est donné soit en clair dans le fichier .fract
+# ([Liste coordonnées]), soit délégué à un fichier .bln externe
+# ([Fichier coordonnées]).
+_COORDS_MODE_KEYWORDS = {
+    '[liste coordonnées]': 'inline',
+    '[list fracture coordinates]': 'inline',
+    '[fichier coordonnées]': 'file',
+    '[file fracture coordinates]': 'file',
+}
+
+_MODE_TO_COORDS_KEYWORD_FR = {
+    'inline': '[Liste coordonnées]',
+    'file': '[Fichier coordonnées]',
+}
+
+# Drapeau (optionnel) qui suit un nom de fichier .bln : il indique de lire
+# *toutes* les fractures du fichier (chacune avec le même type et les mêmes
+# paramètres que le bloc courant).
+_ALL_FRACTURES_FLAGS = {
+    '<toutes les fractures du fichier>',
+    '<all_fractures_from_file>',
+}
+_ALL_FRACTURES_FLAG_FR = '<Toutes les Fractures du Fichier>'
+
+# Noms de fichier spéciaux signifiant « réutiliser le .bln déjà nommé
+# précédemment et passer à la fracture suivante ».
+_CONTINUE_KEYWORDS = {'suite', 'continue'}
+_CONTINUE_KEYWORD_FR = 'Suite'
+
+# ---------------------------------------------------------------------------
+# Paramètres
+# ---------------------------------------------------------------------------
+# Les paramètres possibles dépendent du type de fracture et ne sont pas tous
+# toujours présents (doc MARTHE) :
+#   - semi-perméable : Perméabilité, Pourcentage_Contact
+#   - conductrice    : Transmissivité (ou Conductance)
+#   - imperméable    : aucun paramètre spécifique
+# Les couches (Couche_Haut / Couche_Bas) sont communes aux trois types et
+# elles aussi optionnelles (valeurs par défaut documentées).
+#
+# On stocke les paramètres rencontrés dans un dictionnaire « ouvert » : seules
+# les clés réellement présentes dans le fichier y figurent. Les clés connues
+# sont normalisées ; une clé inconnue est conservée telle quelle pour ne rien
+# perdre au passage lecture -> écriture.
 _PARAM_KEY_TO_ATTR = {
+    'perméabilité': 'permeability',
+    'permeabilite': 'permeability',
+    'permeability': 'permeability',
     'transmissivité': 'transmissivity',
     'transmissivite': 'transmissivity',
     'transmissivity': 'transmissivity',
+    'conductance': 'transmissivity',
     'pourcentage_contact': 'contact_percentage',
     'contact_percentage': 'contact_percentage',
     'couche_haut': 'top_layer',
-    'top_layer': 'top_layer',
+    'higher_layer': 'top_layer',
     'couche_bas': 'bottom_layer',
-    'bottom_layer': 'bottom_layer',
+    'lower_layer': 'bottom_layer',
 }
 
-# Reverse mapping (attribute -> MARTHE key used on write) for the French
-# output convention.
 _ATTR_TO_PARAM_KEY_FR = {
+    'permeability': 'Perméabilité',
     'transmissivity': 'Transmissivité',
     'contact_percentage': 'Pourcentage_Contact',
     'top_layer': 'Couche_Haut',
     'bottom_layer': 'Couche_Bas',
 }
 
+# Paramètres dont la valeur est un numéro de couche (entier).
+_INT_PARAMS = {'top_layer', 'bottom_layer'}
+
+# End-of-free-text marker (the V7.8 line); we detect it case-insensitively
+# with a simple substring check.
+_END_OF_HEADER_MARKER = '--- Fin du texte libre ---'
+
 _PARAM_LINE_RE = re.compile(r'^\s*(\w+)\s*=\s*(\S+)\s*$')
 _COMMENT_PREFIXES = ('#', '!', '*', '<<')
 
 
 class MartFract:
-    """ MARTHE Fractures Semi-Perméables (`.fract` file).
+    """ MARTHE vertical fractures (`.fract` file).
 
     Attributes
     ----------
@@ -61,17 +131,41 @@ class MartFract:
     fractures : list of dict
         each fracture is a dict with the following keys:
 
-        - ``transmissivity`` : float
-        - ``contact_percentage`` : float
-        - ``top_layer`` : int (``Couche_Haut``)
-        - ``bottom_layer`` : int (``Couche_Bas``)
-        - ``coordinates`` : ``pd.DataFrame`` with columns ``x`` and ``y``
+        - ``type`` : str
+            fracture type, one of ``'semi_perm'`` (semi-permeable),
+            ``'imperm'`` (impermeable/sealing) or ``'conduct'`` (conductive).
+        - ``params`` : dict
+            parameters actually present for this fracture, with normalised
+            keys among ``'permeability'``, ``'transmissivity'``,
+            ``'contact_percentage'``, ``'top_layer'`` and ``'bottom_layer'``.
+            Only the keys found in the file are present (they are optional and
+            type-dependent). An unknown key is kept verbatim.
+        - ``coord_mode`` : str
+            ``'inline'`` if coordinates are listed in the file, ``'file'`` if
+            they are delegated to an external `.bln` file.
+        - ``coordinates`` : ``pd.DataFrame``
+            ``x`` / ``y`` points (empty when ``coord_mode == 'file'``).
+        - ``coord_file`` : str or None
+            name of the external `.bln` file (or ``'Suite'`` to reuse the
+            previously named one) when ``coord_mode == 'file'``.
+        - ``all_fractures_from_file`` : bool
+            whether the ``<Toutes les Fractures du Fichier>`` flag was set,
+            i.e. read every fracture of the external `.bln` file.
+
+    Notes
+    -----
+    When coordinates are delegated to a `.bln` file (``coord_mode == 'file'``),
+    martpy only keeps the *reference* to that file: it does not read the
+    `.bln` content, so ``coordinates`` stays empty. The reference is preserved
+    faithfully on write.
 
     Examples
     --------
     >>> mf = MartFract.from_file('model.fract')
-    >>> mf.fractures[0]['transmissivity']
-    0.0
+    >>> mf.fractures[0]['type']
+    'semi_perm'
+    >>> mf.fractures[0]['params']['permeability']
+    0.009278
     >>> mf.write_file('out.fract')
     """
 
@@ -108,6 +202,10 @@ class MartFract:
     def write_file(self, filename, encoding='cp1252', lang='fr'):
         """ Write the fractures to a `.fract` file.
 
+        Section keywords and parameter names are always written in their
+        French canonical form (to match WinMarthe output); ``lang`` only
+        controls the end-of-free-text header marker.
+
         Parameters
         ----------
         filename : str
@@ -115,12 +213,11 @@ class MartFract:
         encoding : str, optional
             file encoding, by default ``'cp1252'``
         lang : str, optional
-            language for section headers and end-of-header marker, by
-            default ``'fr'``.
+            language for the end-of-header marker, by default ``'fr'``.
         """
         lines = _build_header(self.title, lang=lang)
         for fracture in self.fractures:
-            lines.extend(_build_fracture_block(fracture, lang=lang))
+            lines.extend(_build_fracture_block(fracture))
         with open(filename, mode='w', encoding=encoding) as f:
             f.write('\n'.join(lines) + '\n')
 
@@ -152,16 +249,22 @@ def _is_comment(line):
     return stripped == '' or stripped.startswith(_COMMENT_PREFIXES)
 
 
-def _is_fracture_header(line):
-    return line.strip().lower() in (
-        h.lower() for h in _FRACTURE_BLOCK_HEADERS.values()
-    )
+def _match_fracture_type(line):
+    """ Return the normalised fracture type for a header line, or ``None``
+    if the line is not a fracture header.
+    """
+    return _FRACTURE_TYPE_KEYWORDS.get(line.strip().lower())
 
 
-def _is_coords_header(line):
-    return line.strip().lower() in (
-        h.lower() for h in _COORDS_BLOCK_HEADERS.values()
-    )
+def _match_coords_mode(line):
+    """ Return the coordinates mode (``'inline'`` or ``'file'``) for a header
+    line, or ``None`` if the line is not a coordinates header.
+    """
+    return _COORDS_MODE_KEYWORDS.get(line.strip().lower())
+
+
+def _is_all_fractures_flag(line):
+    return line.strip().lower() in _ALL_FRACTURES_FLAGS
 
 
 def _split_title_and_body(lines):
@@ -192,39 +295,49 @@ def _split_title_and_body(lines):
 def _parse_param_line(line):
     """ Parse a ``Key = value`` line. Returns ``(attr_name, value_str)`` or
     ``None`` if the line is not a parameter line.
+
+    Known keys are normalised to their internal attribute name; an unknown
+    key is returned verbatim so that nothing is lost on round-trip.
     """
     match = _PARAM_LINE_RE.match(line)
     if not match:
         return None
     raw_key, raw_value = match.group(1), match.group(2)
-    attr = _PARAM_KEY_TO_ATTR.get(raw_key.lower())
-    if attr is None:
-        return None
+    attr = _PARAM_KEY_TO_ATTR.get(raw_key.lower(), raw_key)
     return attr, raw_value
+
+
+def _new_raw_fracture(fracture_type):
+    """ Build the mutable accumulator used while parsing one fracture block.
+    """
+    return {
+        'type': fracture_type,
+        '_params': {},
+        'coord_mode': 'inline',
+        '_coords': [],
+        'coord_file': None,
+        'all_fractures_from_file': False,
+    }
 
 
 def _parse_fracture_blocks(body_lines):
     """ Parse the body of a .fract file (after the end-of-header marker).
 
-    Walks through the lines collecting one fracture per
-    ``[Fracture Semi-Perméable]`` block. Comments and blank lines outside
-    of a block are skipped.
+    Walks through the lines collecting one fracture per type header
+    (``[Fracture Semi-Perméable]``, ``[Fracture Imperméable]`` or
+    ``[Fracture Conductrice]``, and their synonyms/aliases). Comments and
+    blank lines outside of a coordinates list are skipped.
     """
     fractures = []
     current = None
     in_coords = False
 
     for line in body_lines:
-        if _is_fracture_header(line):
+        fracture_type = _match_fracture_type(line)
+        if fracture_type is not None:
             if current is not None:
                 fractures.append(_finalise_fracture(current))
-            current = {
-                'transmissivity': None,
-                'contact_percentage': None,
-                'top_layer': None,
-                'bottom_layer': None,
-                '_coords': [],
-            }
+            current = _new_raw_fracture(fracture_type)
             in_coords = False
             continue
 
@@ -232,7 +345,9 @@ def _parse_fracture_blocks(body_lines):
             # Skip until we hit the first fracture block
             continue
 
-        if _is_coords_header(line):
+        coords_mode = _match_coords_mode(line)
+        if coords_mode is not None:
+            current['coord_mode'] = coords_mode
             in_coords = True
             continue
 
@@ -240,19 +355,44 @@ def _parse_fracture_blocks(body_lines):
             continue
 
         if in_coords:
-            xy = _parse_coord_line(line)
-            if xy is not None:
-                current['_coords'].append(xy)
+            if current['coord_mode'] == 'file':
+                _consume_file_coords_line(current, line)
+            else:
+                xy = _parse_coord_line(line)
+                if xy is not None:
+                    current['_coords'].append(xy)
         else:
             parsed = _parse_param_line(line)
             if parsed is not None:
                 attr, value = parsed
-                current[attr] = value
+                current['_params'][attr] = value
 
     if current is not None:
         fractures.append(_finalise_fracture(current))
 
     return fractures
+
+
+def _consume_file_coords_line(current, line):
+    """ Handle a line inside a ``[Fichier coordonnées]`` block: either the
+    name of the external `.bln` file (or ``Suite``/``Continue``), or the
+    ``<Toutes les Fractures du Fichier>`` flag.
+    """
+    stripped = line.strip()
+    if _is_all_fractures_flag(stripped):
+        current['all_fractures_from_file'] = True
+    elif current['coord_file'] is None:
+        current['coord_file'] = _normalise_coord_file(stripped)
+    # Any further line is ignored (a single file name is expected).
+
+
+def _normalise_coord_file(name):
+    """ Normalise the external coordinates file name: the ``Suite`` /
+    ``Continue`` keyword is written back in its French form.
+    """
+    if name.lower() in _CONTINUE_KEYWORDS:
+        return _CONTINUE_KEYWORD_FR
+    return name
 
 
 def _parse_coord_line(line):
@@ -269,47 +409,66 @@ def _parse_coord_line(line):
 
 
 def _finalise_fracture(raw):
-    """ Convert raw parsed values into the final fracture dict, with proper
-    Python types and a coordinates ``pd.DataFrame``.
+    """ Convert the raw parsed values into the final fracture dict, with
+    proper Python types and a coordinates ``pd.DataFrame``.
     """
-    coords = pd.DataFrame(raw.pop('_coords'), columns=['x', 'y'])
+    params = {}
+    for key, value in raw['_params'].items():
+        params[key] = _convert_param_value(key, value)
+
     fracture = {
-        'transmissivity': _to_float(raw['transmissivity']),
-        'contact_percentage': _to_float(raw['contact_percentage']),
-        'top_layer': _to_int(raw['top_layer']),
-        'bottom_layer': _to_int(raw['bottom_layer']),
-        'coordinates': coords,
+        'type': raw['type'],
+        'params': params,
+        'coord_mode': raw['coord_mode'],
+        'coordinates': pd.DataFrame(raw['_coords'], columns=['x', 'y']),
+        'coord_file': raw['coord_file'],
+        'all_fractures_from_file': raw['all_fractures_from_file'],
     }
     return fracture
 
 
-def _to_float(value):
-    if value is None:
-        return None
-    return float(value)
-
-
-def _to_int(value):
-    if value is None:
-        return None
-    return int(value)
-
-
-def _build_fracture_block(fracture, lang='fr'):
-    """ Build the list of lines for a single fracture block in MARTHE format.
+def _convert_param_value(key, value):
+    """ Convert a parameter value string to the right Python type: layer
+    numbers are integers, other known parameters are floats. An unknown key
+    falls back to float, then to the raw string.
     """
-    key_lang = lang.lower() if lang.lower() in _FRACTURE_BLOCK_HEADERS else 'fr'
-    lines = [_FRACTURE_BLOCK_HEADERS[key_lang]]
-    for attr in ['transmissivity', 'contact_percentage', 'top_layer', 'bottom_layer']:
-        value = fracture.get(attr)
-        if value is None:
-            continue
-        lines.append(f'{_ATTR_TO_PARAM_KEY_FR[attr]} = {_format_value(value)}')
-    lines.append(_COORDS_BLOCK_HEADERS[key_lang])
-    coords = fracture.get('coordinates')
-    if coords is not None:
-        for _, row in coords.iterrows():
-            lines.append(f'{row["x"]} {row["y"]}')
+    if key in _INT_PARAMS:
+        return int(value)
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return value
+
+
+def _build_fracture_block(fracture):
+    """ Build the list of lines for a single fracture block in MARTHE format
+    (French canonical keywords).
+    """
+    fracture_type = fracture.get('type', 'semi_perm')
+    type_keyword = _TYPE_TO_FRACTURE_KEYWORD_FR.get(
+        fracture_type, _TYPE_TO_FRACTURE_KEYWORD_FR['semi_perm']
+    )
+    lines = [type_keyword]
+
+    for key, value in fracture.get('params', {}).items():
+        param_key = _ATTR_TO_PARAM_KEY_FR.get(key, key)
+        lines.append(f'{param_key} = {_format_value(value)}')
+
+    coord_mode = fracture.get('coord_mode', 'inline')
+    lines.append(_MODE_TO_COORDS_KEYWORD_FR[coord_mode])
+
+    if coord_mode == 'file':
+        coord_file = fracture.get('coord_file')
+        if coord_file:
+            lines.append(coord_file)
+        if fracture.get('all_fractures_from_file'):
+            lines.append(_ALL_FRACTURES_FLAG_FR)
+    else:
+        coords = fracture.get('coordinates')
+        if coords is not None:
+            for _, row in coords.iterrows():
+                lines.append(f'{row["x"]} {row["y"]}')
+
     return lines
 
 
