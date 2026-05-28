@@ -3,6 +3,7 @@
 
 from pandas import read_csv
 from .config import _get_resource_file
+from .misc import _canonicalize_name
 
 
 def _build_mart_variables():
@@ -20,6 +21,93 @@ NAN_VALUES = [9999., -9999., 8888.]  # Example NaN values, can be modified as ne
 
 MART_VARIABLES = _build_mart_variables()
 MART_HISTO_VAR = read_csv(_get_resource_file('marthe_histo.csv'))
+
+
+def _build_histo_mappings():
+    """Build bidirectional dicts between histo variable names and generic ones.
+
+    A "histo" name is the one written in .histo files and .prn headers
+    (e.g. ``'Charge'``, ``'Débit_Rivi'``). A "generic" name is the
+    user-facing canonical form, accent-free and lowercase (e.g. ``'charge'``,
+    ``'debit_rivi'``).
+
+    The canonical generic name is derived deterministically from the histo
+    name via :func:`_canonicalize_name`. This gives full coverage of all
+    149 histo variables, independent of whether ``marthe_variables.csv``
+    holds a matching entry.
+
+    On top of that, aliases from ``marthe_variables.csv`` are accepted as
+    input to :func:`~martpy.utils.helper.to_histo_varname` (so a user can
+    write ``DEFIC_SOL`` or ``HYDR_HEAD`` as well as ``deficit_sol`` or
+    ``charge``). Aliases never override the canonical mapping, so reading
+    a histo file always yields the canonical generic name.
+
+    Returns
+    -------
+    tuple of 4 dicts
+        ``HISTO_TO_GENERIC_FR``, ``HISTO_TO_GENERIC_EN``,
+        ``GENERIC_TO_HISTO_FR``, ``GENERIC_TO_HISTO_EN``.
+    """
+    # 1. Canonical mapping derived from each histo entry.
+    # Columns are normalized in a single vectorized pass instead of looping
+    # row by row (dict(zip(...)) keeps the last value on duplicate keys, which
+    # matches the original per-row assignment).
+    histo_fr = MART_HISTO_VAR['code_histo'].astype(str).str.strip()
+    histo_en = MART_HISTO_VAR['code_histo_en'].astype(str).str.strip()
+    canon_fr = histo_fr.map(_canonicalize_name)
+    canon_en = histo_en.map(_canonicalize_name)
+
+    histo_to_generic_fr = dict(zip(histo_fr, canon_fr, strict=True))
+    histo_to_generic_en = dict(zip(histo_en, canon_en, strict=True))
+    generic_to_histo_fr = dict(zip(canon_fr, histo_fr, strict=True))
+    generic_to_histo_en = dict(zip(canon_en, histo_en, strict=True))
+
+    # 2. Aliases from marthe_variables.csv (do not override canonical mapping).
+    ext = MART_HISTO_VAR['ext'].astype(str).str.strip().str.upper()
+    ext_to_histo_fr = dict(zip(ext, histo_fr, strict=True))
+    ext_to_histo_en = dict(zip(ext, histo_en, strict=True))
+
+    # Keep only rows whose code_abb points to a known histo extension.
+    code_abb = MART_VARIABLES['code_abb']
+    key = code_abb.astype(str).str.strip().str.upper()
+    valid = (
+        code_abb.notna()
+        & ~key.isin(['', 'KKKKK'])
+        & key.isin(set(ext_to_histo_fr))
+    )
+
+    alias_fr = MART_VARIABLES.loc[valid, 'code_var_fr'].map(_canonicalize_name)
+    alias_en = MART_VARIABLES.loc[valid, 'code_var_en'].map(_canonicalize_name)
+    valid_key = key[valid]
+
+    # The original loop used setdefault (first alias wins on duplicate keys).
+    # Reversing before dict(zip(...)) reproduces that: the last write wins, so
+    # the first row in document order ends up kept.
+    alias_to_histo_fr = dict(zip(
+        alias_fr[::-1], valid_key.map(ext_to_histo_fr)[::-1], strict=True
+    ))
+    alias_to_histo_en = dict(zip(
+        alias_en[::-1], valid_key.map(ext_to_histo_en)[::-1], strict=True
+    ))
+
+    # Canonical mapping always wins over aliases.
+    generic_to_histo_fr = {**alias_to_histo_fr, **generic_to_histo_fr}
+    generic_to_histo_en = {**alias_to_histo_en, **generic_to_histo_en}
+
+    return (
+        histo_to_generic_fr,
+        histo_to_generic_en,
+        generic_to_histo_fr,
+        generic_to_histo_en,
+    )
+
+
+(
+    HISTO_TO_GENERIC_FR,
+    HISTO_TO_GENERIC_EN,
+    GENERIC_TO_HISTO_FR,
+    GENERIC_TO_HISTO_EN,
+) = _build_histo_mappings()
 
 COMMENT_BLOCK = '/!!!!!/!!!!!'
 COMMENTS = ['!', '#']

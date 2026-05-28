@@ -86,3 +86,27 @@ def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
     only_ascii = nfkd_form.encode('ASCII', 'ignore')
     return only_ascii.decode('utf-8')
+
+
+def _canonicalize_name(name):
+    """Return a deterministic, accent-free, lowercase form of a Marthe name.
+
+    Used to derive the canonical generic variable name from a histo name
+    (e.g. ``'Débit_Rivi'`` -> ``'debit_rivi'``, ``'%Satur_Nappe'`` ->
+    ``'perc_satur_nappe'``) and to normalize user input before looking it
+    up in the histo/generic mapping dicts.
+
+    Steps:
+        1. strip + lowercase + remove diacritics
+        2. drop punctuation noise ``/()|°²³<>.,``
+        3. replace ``%`` with ``perc_``
+        4. collapse whitespace, hyphens and underscores into single
+           underscores, then strip leading/trailing underscores
+    """
+    import re
+    cleaned = remove_accents(str(name).strip().lower())
+    cleaned = re.sub(r'[/()|°²³<>.,]', '', cleaned)
+    cleaned = re.sub(r'%', 'perc_', cleaned)
+    cleaned = re.sub(r'[\s\-_]+', '_', cleaned)
+    cleaned = cleaned.strip('_')
+    return cleaned

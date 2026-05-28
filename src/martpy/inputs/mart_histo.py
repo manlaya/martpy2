@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 
 from martpy.inputs._io_utils import _build_header, _fmt_nchar
+from martpy.utils.helper import from_histo_varname, to_histo_varname
 
 
 _HISTO_PARSER = (
@@ -266,8 +267,19 @@ class MartHisto(pd.DataFrame):
         return MartHisto
 
 
-def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
+def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False,
+                    normalize_headers=True, lang='fr'):
     """ Read a .histo file from Marthe model
+
+    .. versionchanged:: next
+        The ``variable`` column is now normalized to its canonical generic
+        name (accent-free, lowercase, e.g. ``'charge'``, ``'debit_rivi'``)
+        instead of the raw histo form (``'Charge'``, ``'Débit_Rivi'``).
+        This aligns ``read_histo_file`` with
+        :func:`martpy.outputs.read_output_time_series` and removes the need
+        for callers to handle both naming schemes. The normalization is on
+        by default but can be turned off with ``normalize_headers=False`` to
+        keep the raw histo form. See issue #8.
 
     Parameters
     ----------
@@ -275,13 +287,24 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
         Path to the .histo file
     encoding : str, optional
         File encoding, by default 'ISO-8859-1'
+    verbose : bool, optional
+        Raise on parsing failure if True, by default False
+    normalize_headers : bool, optional
+        If True, the ``variable`` column is converted to its canonical
+        generic name (lowercase, no accents, e.g. ``'charge'``,
+        ``'debit_rivi'``) using
+        :func:`~martpy.utils.helper.from_histo_varname`. If False, the raw
+        histo form is kept (``'Charge'``, ``'Débit_Rivi'``). By default True.
+    lang : str, optional
+        Language of the input histo file headers (``'fr'`` or ``'en'``),
+        used to normalize the ``variable`` column. Default ``'fr'``.
 
     Returns
     -------
     pd.DataFrame
         DataFrame with columns:
         - id_grid: the grid index in which is located the observation in model domain
-        - variable: the variable to extract from simulation
+        - variable: the variable to extract from simulation (canonical generic name)
         - name: name of the observation
         - mode: mode of the observation (XCOO, GRID, etc.)
         - x, y or col, row: coordinates of the observation
@@ -323,6 +346,10 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False):
 
     data = pd.concat(data, ignore_index=True)
     data = _set_histo_df_dtype(data)
+    if normalize_headers:
+        data['variable'] = data['variable'].apply(
+            lambda v: from_histo_varname(v, lang=lang)
+        )
     return MartHisto(data)
 
 
@@ -419,16 +446,29 @@ def _build_histo_line(
 def _build_histo_from_dataframe(df, lang='fr'):
     """ Build histo file string content from martpy dataframe convention
 
+    The ``variable`` column is converted from the canonical generic name
+    (e.g. ``'charge'``, ``'debit_rivi'``) to the histo file form expected
+    by Marthe (``'Charge'``, ``'Débit_Rivi'``) using
+    :func:`~martpy.utils.helper.to_histo_varname`. Names that already match
+    a histo form pass through unchanged.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Histo dataframe.
+    lang : str, optional
+        Target language of the histo file (``'fr'`` or ``'en'``).
+
     Returns
     -------
-    list: list
-        list of strings (lines).
-    lang: str, optional
-        language of the file (fr or en)
+    list of str
+        Histo file lines.
     """
-    lines = []
-    for row in df.to_dict('records'):
-        lines.append(_build_histo_line(**row))
+    df_write = df.copy()
+    df_write['variable'] = df_write['variable'].apply(
+        lambda v: to_histo_varname(v, lang=lang)
+    )
+    lines = [_build_histo_line(**row) for row in df_write.to_dict('records')]
     if lang.lower() == 'fr':
         lines.append(' *** Fin du fichier des \'Mailles à Historique\'       ***')
     else:

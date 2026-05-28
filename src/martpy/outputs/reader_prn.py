@@ -7,15 +7,12 @@ from itertools import islice
 
 import pandas as pd
 
-from martpy.utils.constant import (
-    MART_HISTO_VAR,
-    MART_VARIABLES,
-    RENAME_HISTOBIL_HEAD_ZONE
-)
-from martpy.utils.misc import remove_accents
+from martpy.utils.constant import RENAME_HISTOBIL_HEAD_ZONE
+from martpy.utils.helper import from_histo_varname
+from martpy.utils.misc import _canonicalize_name
 
 
-def read_output_time_series(ts_file, normalize_headers=False):
+def read_output_time_series(ts_file, normalize_headers=True, lang='fr'):
     """ Read a time series output file (historiq.prn)
 
     Parameters
@@ -24,8 +21,13 @@ def read_output_time_series(ts_file, normalize_headers=False):
         path to historiq.prn file
 
     normalize_headers : bool, optional
-        strip accents and spaces from headers, by default False.
-        This only affect the variable columns level.
+        if True, the variable level of the column MultiIndex is converted
+        to its canonical generic name (lowercase, no accents,
+        e.g. ``'charge'``, ``'debit_rivi'``) using
+        :func:`~martpy.utils.helper.from_histo_varname`. By default True.
+    lang : str, optional
+        Language of the .prn file headers (``'fr'`` or ``'en'``). Only used
+        when ``normalize_headers=True``. Default ``'fr'``.
 
     Returns
     -------
@@ -72,33 +74,28 @@ def read_output_time_series(ts_file, normalize_headers=False):
     df = df.loc[:,~df.columns.get_level_values(-1).str.match('.*<Date>')]
     if normalize_headers:
         _vars = df.columns.get_level_values(0)
-        # TODO: remap histo headers to "standard" variable names ?
-        # get english labels -- future
-        # _vars = [
-        #     MART_HISTO_VAR.loc[
-        #         MART_HISTO_VAR['code_histo']==_var, 'code_histo_en'
-        #     ].values[0].strip() for _var in _vars
-        # ]
-        # then clean them and add again the rest of col levels
         df.columns = pd.MultiIndex.from_tuples([
-            (_clean_prn_header(_vars[i]), *cols[1:]) \
-                for i, cols in enumerate(df.columns)
+            (from_histo_varname(_vars[i], lang=lang), *cols[1:])
+            for i, cols in enumerate(df.columns)
         ], names=levels_name)
     return df
 
 
 def _clean_prn_header(col):
-    cleaned = remove_accents(col.lower())
-    cleaned = re.sub(r'[/|\(|\)|°|²|³|<|>|\.|,]', '', cleaned)
-    cleaned = re.sub(r'[\s|-]', '_', cleaned)
-    cleaned = re.sub(r'%', 'perc', cleaned)
-    return cleaned
+    """Normalize a water-balance .prn header (no histo mapping, only cleaning).
+
+    Used for histobil/histoclim/histomas headers (e.g. ``'Pluie moyenne'``,
+    ``'ETP'``), which are free-form labels and not histo variable names.
+    For histo variable normalization, see
+    :func:`~martpy.utils.helper.from_histo_varname`.
+    """
+    return _canonicalize_name(col)
 
 
 def read_output_water_balance(
     balance_file,
     add_multiindex=True,
-    normalize_headers=False,
+    normalize_headers=True,
     encoding='ISO-8859-1'
 ):
     """ Read a water balance output file
@@ -122,7 +119,7 @@ def read_output_water_balance(
 
     normalize_headers : bool, optional
         if True normalize headers (lowercase, replace spaces/special characters
-        by underscores). By default False.
+        by underscores). By default True.
 
     encoding : str, optional
        encoding of the file, by default 'ISO-8859-1'

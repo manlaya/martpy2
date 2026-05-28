@@ -5,11 +5,16 @@ import difflib
 
 from .constant import (
     _ACTION_PARSER,
+    GENERIC_TO_HISTO_EN,
+    GENERIC_TO_HISTO_FR,
+    HISTO_TO_GENERIC_EN,
+    HISTO_TO_GENERIC_FR,
     MART_VARIABLES,
     MART_HISTO_VAR,
     OPT_LIST_MAIL,
     VALID_VARIABLE_TYPES
 )
+from .misc import _canonicalize_name
 
 
 def _get_closest_suggestion(key, valid_keys, n=3):
@@ -174,3 +179,68 @@ def _check_available_varname_type(varname_type: str):
     if varname_type.lower() not in VALID_VARIABLE_TYPES:
         raise ValueError(f'Invalid variable type: {varname_type},'
                          f'valid variable types are:\n{VALID_VARIABLE_TYPES}.')
+
+
+def to_histo_varname(name, lang='fr'):
+    """Convert a generic Marthe variable name to its histo file equivalent.
+
+    Generic names are the user-facing canonical form (accent-free, lowercase,
+    e.g. ``'charge'``, ``'debit_rivi'``). Histo names are written in
+    .histo files and .prn output headers (e.g. ``'Charge'``, ``'Débit_Rivi'``).
+
+    Input is canonicalized before lookup, so French or English generic codes
+    from ``marthe_variables.csv`` (e.g. ``'CHARGE'``, ``'HYDR_HEAD'``) are
+    accepted as aliases. The function is idempotent on histo names already
+    in the target language.
+
+    Parameters
+    ----------
+    name : str
+        Generic variable name (case-insensitive, accents tolerated).
+    lang : str, optional
+        Target language of the histo name: ``'fr'`` (default) or ``'en'``.
+
+    Returns
+    -------
+    str
+        Histo variable name in the target language, or the input unchanged
+        if no match is found.
+
+    See Also
+    --------
+    from_histo_varname : reverse conversion (histo name to generic name).
+    """
+    mapping = GENERIC_TO_HISTO_FR if lang.lower() == 'fr' else GENERIC_TO_HISTO_EN
+    return mapping.get(_canonicalize_name(name), name)
+
+
+def from_histo_varname(name, lang='fr'):
+    """Convert a histo variable name to its canonical generic Marthe name.
+
+    The generic form is accent-free, lowercase, and uses underscores
+    (e.g. ``'Charge'`` -> ``'charge'``, ``'Débit_Rivi'`` -> ``'debit_rivi'``).
+    For names not present in the histo table (e.g. derived headers), the
+    canonicalization is applied as a deterministic fallback. The function
+    is idempotent on generic names.
+
+    Parameters
+    ----------
+    name : str
+        Variable name as found in .histo files or .prn output headers.
+    lang : str, optional
+        Language of the input histo name: ``'fr'`` (default) or ``'en'``.
+
+    Returns
+    -------
+    str
+        Canonical generic variable name (lowercase, no accents).
+
+    See Also
+    --------
+    to_histo_varname : reverse conversion (generic name to histo name).
+    """
+    mapping = HISTO_TO_GENERIC_FR if lang.lower() == 'fr' else HISTO_TO_GENERIC_EN
+    key = str(name).strip()
+    if key in mapping:
+        return mapping[key]
+    return _canonicalize_name(name)
