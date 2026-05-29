@@ -1,0 +1,46 @@
+Cinq fractures de tous types
+  N°1 = Fracture semi-perméable
+  N°2 = Fracture imperméable
+  N°3 = Fracture conductrice
+  N°4 & N°5 = Fractures semi-perméables
+ #<V7.8># --- Fin du texte libre --- ; Ne pas modifier cette ligne
+# Les commentaires peuvent être au choix : '#' ou '*'
+[Fracture Semi-Perméable]
+# 1ère fracture : définie par 6 points
+  Perméabilité= 9.278e-3
+  Pourcentage_Contact= 50
+  Couche_Haut = 2
+  Couche_Bas  = 7
+[Liste coordonnées]
+   111.92   511.24
+   292.07   478.63
+   421.17   370.61
+   594.08   412.43
+   674.44   558.99
+   775.55   607.73
+[Fracture Imperméable]
+# 2ème fracture
+  Couche_Haut = 1
+  Couche_Bas  = 1
+[Liste coordonnées]
+   370.61   421.17
+   412.43   594.08
+   607.73   775.55
+[Fracture Conductrice]
+# 3ème fracture
+  Transmissivity = 1e5
+  Couche_Haut = 0
+  Couche_Bas  = 0
+[Fichier coordonnées]
+  Monofrac_5_Coord_Fract.bln
+[Fracture Semi-Perméable]
+# 4ème fracture
+  Perméabilité= 6e-3
+[Fichier coordonnées]
+  Suite
+[Fracture Semi-Perméable]
+# 5ème fracture
+  Pourcentage_Contact= 5
+[Liste coordonnées]
+    278.24     493.78
+    571.02     721.69

@@ -1,0 +1,18 @@
+10 fractures semi-perméables, puis 15 failles étanches (imperméables)
+ #<V7.8># --- Fin du texte libre --- ; Ne pas modifier cette ligne
+# Les commentaires peuvent être au choix : '#' ou '*'
+[Fracture Semi-Perméable]
+# 10 fracture semi-perméables dont les coordonnées sont données
+# successivement par 10 ensembles de points dans le fichier
+# de nom : Monofrac_10_Fract_Semi_Perm.bln
+  Perméabilité= 6e-3
+[Fichier coordonnées]
+  Monofrac_10_Fract_Semi_Perm.bln
+  <Toutes les Fractures du Fichier>
+[Fracture Imperméable]
+# 15 failles étanches dont les coordonnées sont données
+# successivement par 15 ensembles de points dans le fichier
+# de nom : Monofrac_15_Failles_Etanches.bln
+[Fichier coordonnées]
+  Monofrac_15_Failles_Etanches.bln
+  <Toutes les Fractures du Fichier>
