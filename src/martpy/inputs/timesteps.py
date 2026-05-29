@@ -425,10 +425,87 @@ class MartTimeSteps:
         action=None,
         **kwargs
     ):
-        raise NotImplementedError(
-            'Method is not yet implemented. '
-            'You can remove actions in self.actions dictionnary'
-        )
+        """ Remove actions from any timesteps
+
+        Parameters
+        ----------
+        times : datetime or pandas.DateTimeIndex or pandas.Series, optional
+            times to remove actions from, by default None.
+        steps : int or list, optional
+            timesteps number if no times are provided, by default None.
+        freq : str, optional
+            A frequency string to match timesteps if no times are provided.
+            If provided, actions will be removed from every timestep matching this frequency.
+            By default None (not used). See pandas.DateOffset for more details:
+            https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
+        variable : str, optional
+            marthe variable to filter removal, by default None.
+            If None, actions for all variables are removed.
+        action : str, optional
+            action mode to filter removal, by default None.
+            If None, actions for all modes are removed (unless variable is specified).
+        **kwargs
+            Additional parameters to match specific action configurations.
+            If provided, only actions matching ALL parameters are removed.
+        """
+        if times is None:
+            if steps is not None:
+                times = self.times.iloc[steps,:]['time']
+            elif freq is not None:
+                times = pd.date_range(
+                    self.times['time'].min(), self.times['time'].max(), freq=freq
+                )
+            else:
+                raise ValueError('Please provide times or steps')
+
+        if isinstance(times, (str, datetime)):
+            if type(times) is str:
+                times = datetime.strptime(times, '%Y-%m-%d')
+            times = [times]
+
+        for time in times:
+            key = _convert_date_to_str_iso(time)
+            if key not in self.actions:
+                continue
+
+            if variable is not None:
+                variable_upper = variable.upper()
+                _check_mart_key(variable_upper)
+
+                if variable_upper in self.actions[key]:
+                    action_list = self.actions[key][variable_upper]
+
+                    if action is not None:
+                        action_upper = action.upper()
+                        if kwargs:
+                            action_list = [
+                                a for a in action_list
+                                if not (
+                                    a.get('mode') == action_upper and
+                                    all(a.get(k) == v for k, v in kwargs.items())
+                                )
+                            ]
+                        else:
+                            action_list = [
+                                a for a in action_list
+                                if a.get('mode') != action_upper
+                            ]
+                    else:
+                        action_list = []
+
+                    if action_list:
+                        self.actions[key][variable_upper] = action_list
+                    else:
+                        del self.actions[key][variable_upper]
+
+                    if not self.actions[key]:
+                        del self.actions[key]
+            else:
+                del self.actions[key]
+
+        self.times.loc[self.times['time'].isin(times), 'has_action'] = self.times.loc[
+            self.times['time'].isin(times), 'time'
+        ].apply(lambda t: _convert_date_to_str_iso(t) in self.actions)
 
     def set_met_forcings(
         self,
