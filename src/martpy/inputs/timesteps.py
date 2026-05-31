@@ -443,14 +443,29 @@ class MartTimeSteps:
             If None, actions for all variables are removed.
         action : str, optional
             action mode to filter removal, by default None.
-            If None, actions for all modes are removed (unless variable is specified).
+            If None, all action modes are removed.
         **kwargs
             Additional parameters to match specific action configurations.
             If provided, only actions matching ALL parameters are removed.
+
+        Notes
+        -----
+        The `variable`, `action` and `kwargs` filters are combined: an action
+        is removed only if it matches every filter that was provided. A filter
+        left to None (or empty kwargs) matches everything. With no filter at
+        all, every action of the selected timesteps is removed.
         """
+        # Normalise the filters once, before iterating over timesteps.
+        if variable is not None:
+            variable = variable.upper()
+            _check_mart_key(variable)
+        if action is not None:
+            action = action.upper()
+
+        # Resolve the list of times to process (same logic as add_action).
         if times is None:
             if steps is not None:
-                times = self.times.iloc[steps,:]['time']
+                times = self.times.iloc[steps, :]['time']
             elif freq is not None:
                 times = pd.date_range(
                     self.times['time'].min(), self.times['time'].max(), freq=freq
@@ -468,44 +483,34 @@ class MartTimeSteps:
             if key not in self.actions:
                 continue
 
+            variables_at_time = self.actions[key]
+
+            # Restrict to the requested variable, or scan them all.
             if variable is not None:
-                variable_upper = variable.upper()
-                _check_mart_key(variable_upper)
-
-                if variable_upper in self.actions[key]:
-                    action_list = self.actions[key][variable_upper]
-
-                    if action is not None:
-                        action_upper = action.upper()
-                        if kwargs:
-                            action_list = [
-                                a for a in action_list
-                                if not (
-                                    a.get('mode') == action_upper and
-                                    all(a.get(k) == v for k, v in kwargs.items())
-                                )
-                            ]
-                        else:
-                            action_list = [
-                                a for a in action_list
-                                if a.get('mode') != action_upper
-                            ]
-                    else:
-                        action_list = []
-
-                    if action_list:
-                        self.actions[key][variable_upper] = action_list
-                    else:
-                        del self.actions[key][variable_upper]
-
-                    if not self.actions[key]:
-                        del self.actions[key]
+                target_variables = [variable] if variable in variables_at_time else []
             else:
+                target_variables = list(variables_at_time.keys())
+
+            for var in target_variables:
+                kept_actions = [
+                    one_action
+                    for one_action in variables_at_time[var]
+                    if not _action_matches_filters(one_action, action, kwargs)
+                ]
+                if kept_actions:
+                    variables_at_time[var] = kept_actions
+                else:
+                    del variables_at_time[var]
+
+            # Drop the timestep entry entirely if no action is left.
+            if not variables_at_time:
                 del self.actions[key]
 
-        self.times.loc[self.times['time'].isin(times), 'has_action'] = self.times.loc[
-            self.times['time'].isin(times), 'time'
-        ].apply(lambda t: _convert_date_to_str_iso(t) in self.actions)
+        # Recompute has_action: a timestep keeps it only if actions remain.
+        removed = self.times['time'].isin(times)
+        self.times.loc[removed, 'has_action'] = self.times.loc[removed, 'time'].apply(
+            lambda t: _convert_date_to_str_iso(t) in self.actions
+        )
 
     def set_met_forcings(
         self,
@@ -809,6 +814,23 @@ def _to_datetime(dates):
     if isinstance(dates, (str, datetime, pd.Timestamp)):
         dates = [dates]
     return pd.to_datetime(list(dates))
+
+
+def _action_matches_filters(action_dict, action, kwargs):
+    """Tell whether a single action dict matches the removal filters.
+
+    An action matches when it satisfies every provided filter:
+    - its `mode` equals `action` (skipped if `action` is None),
+    - it holds each `key: value` pair given in `kwargs`.
+
+    A None `action` and empty `kwargs` match every action.
+    """
+    if action is not None and action_dict.get('mode') != action:
+        return False
+    for key, value in kwargs.items():
+        if action_dict.get(key) != value:
+            return False
+    return True
 
 
 def _convert_date_to_str_iso(date):

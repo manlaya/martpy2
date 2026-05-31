@@ -371,6 +371,33 @@ def test_remove_action_with_freq():
     assert len(d) == 0, 'Error: actions were not removed by frequency'
 
 
+def test_remove_action_filter_without_variable():
+    # Removing by action mode without naming a variable must only drop the
+    # matching actions, not the whole timestep.
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_times(dates=pd.date_range('2012-08-01', '2013-07-31', freq='D'))
+    pastp.add_action(times='2012-08-01', variable='METEO_PLUIE', action='FICHIER', file='rain.txt')
+    pastp.add_action(times='2012-08-01', variable='FLUX_PLUV', action='FICH_METE', step='*')
+
+    pastp.remove_action(times='2012-08-01', action='FICHIER')
+    d = pastp.get_actions(time='2012-08-01')
+    assert 'METEO_PLUIE' not in d['2012-08-01'], 'Error: FICHIER action not removed'
+    assert 'FLUX_PLUV' in d['2012-08-01'], 'Error: non-matching action incorrectly removed'
+
+
+def test_remove_action_filter_by_kwargs():
+    # kwargs narrow the removal to a specific action configuration.
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(steps=[0], variable='CALCUL_HDYNAM', action='ACTION', value=1)
+    pastp.add_action(steps=[0], variable='CALCUL_HDYNAM', action='ACTION', value=2)
+
+    pastp.remove_action(steps=[0], variable='CALCUL_HDYNAM', action='ACTION', value=1)
+    d = pastp.get_actions(variable='CALCUL_HDYNAM')
+    remaining = [a for actions in d.values() for a in actions['CALCUL_HDYNAM']]
+    assert len(remaining) == 1, 'Error: expected a single action left'
+    assert remaining[0].get('value') == 2, 'Error: wrong action was removed'
+
+
 def main():
     print('Test MARTHE pastp reader')
     test_parse_date_fmt()
