@@ -48,6 +48,7 @@ local_scheme = "node-and-date"
 dependencies = {file = ["requirements.txt"]}
 
 [project.optional-dependencies]
+opt = ['matplotlib', 'geopandas', 'shapely', 'pyproj']
 dev = ['ruff', 'pytest', 'pytest-cov', 'pre-commit']
 
 [tool.setuptools]
