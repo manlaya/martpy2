@@ -31,7 +31,7 @@ def test_read_pastp():
     assert isinstance(res, MartTimeSteps), 'Results is not a MartTimeSteps object'
     assert hasattr(res, 'times'), 'Results has no time attributes'
     assert hasattr(res, 'actions'), 'Results has no actions attributes'
-    
+
     min_date = res.times['time'].min().strftime('%Y-%m-%d')
     max_date = res.times['time'].max().strftime('%Y-%m-%d')
     assert min_date == '1995-07-31', "Wrong start date read"
@@ -74,13 +74,13 @@ def test_add_action():
     pastp.add_times(dates=dt)
     new_dt = pastp.get_times()
     actions_dates = (new_dt.dt.year>=2012) & (new_dt.dt.month==8) & (new_dt.dt.day == 1)
-    
+
     for dt in new_dt[actions_dates]:
         pastp.add_action(
             times=dt,
             variable='METEO_PLUIE',
             action='FICHIER',
-            file='TOTO_{}_{}'.format(dt.year, dt.year+1)
+            file_path='TOTO_{}_{}'.format(dt.year, dt.year+1)
         )
         pastp.add_action(
             times=dt,
@@ -90,11 +90,11 @@ def test_add_action():
         )
     pastp.add_action(new_dt.iloc[0], variable='CALCUL_HDYNAM', action='ACTION', value=2)
     d = pastp.get_actions()
-    
+
     assert '2012-08-01' in d, 'Error while adding actions'
     assert 'METEO_PLUIE' in d['2012-08-01'], 'Error while adding actions'
     assert len(d['2012-08-01']['METEO_PLUIE']) == 1, 'Error while adding actions'
-    assert d['2012-08-01']['METEO_PLUIE'][0]['file'] == 'TOTO_2012_2013', 'Error while adding actions'
+    assert d['2012-08-01']['METEO_PLUIE'][0]['file_path'] == 'TOTO_2012_2013', 'Error while adding actions'
     assert 'FLUX_PLUV' in d['2012-08-01'], 'Error while adding actions'
     assert len(d['2012-08-01']['FLUX_PLUV']) == 1, 'Error while adding actions'
     assert d['2012-08-01']['FLUX_PLUV'][0]['step'] == '*', 'Error while adding actions'
@@ -132,15 +132,15 @@ def test_add_action_no_duplicates():
 def test_get_actions():
     pastp = read_mart_timesteps(FILE_PASTP)
     pastp.add_action(steps=-1, variable='CALCUL_HDYNAM', action='ACTION', value=2)
-    
+
     act = pastp.get_actions()
     assert 'CALCUL_HDYNAM' in act['1995-07-31'], 'Error while getting actions'
     assert 'CALCUL_HDYNAM' in act['2012-07-31'], 'Error while getting actions'
-    
+
     act = pastp.get_actions(time='2012-07-31')
     assert len(act) == 1, 'Error while getting actions for specific time'
     assert 'CALCUL_HDYNAM' in act['2012-07-31'], 'Error while getting actions for specific time'
-    
+
     act = pastp.get_actions(step=[0,-1])
     assert len(act) == 2, 'Error while getting actions for specific step'
     assert list(act.keys()) == ['1995-07-31', '2012-07-31'], 'Error while getting actions for specific step'
@@ -212,7 +212,7 @@ def test_write_pastp():
 
 def test_pastp_uk():
     pastp = read_mart_timesteps(FILE_PASTP_UK)
-    
+
     min_date = pastp.times['time'].min().strftime('%Y-%m-%d')
     max_date = pastp.times['time'].max().strftime('%Y-%m-%d')
     assert min_date == '2025-11-25', "Wrong start date read"

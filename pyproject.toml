@@ -55,7 +55,7 @@ dev = ['ruff', 'pytest', 'pytest-cov', 'pre-commit']
 include-package-data = true
 
 [tool.pytest.ini_options]
-addopts = "-v --cov=martpy tests/ "  # -s
+addopts = "-v --cov=martpy"  # -s
 testpaths = [
     "tests",
 ]

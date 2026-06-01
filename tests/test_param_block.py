@@ -29,7 +29,7 @@ def test_parse_parameter_line():
 
     line = '  /EMMAG_LIBR/LIST_MAIL    N: tata.emmli <Init_a_Zero> <X_Y_C> <Moyenne> <Keep_9999>'
     res = _parse_parameter_line(line)['EMMAG_LIBR']
-    assert res['file'] == 'tata.emmli', 'Error while parsing list mail file'
+    assert res['file_path'] == 'tata.emmli', 'Error while parsing list mail file'
     # assert res['opt_list_mail'] == ['Init_a_Zero', 'X_Y_C', 'Moyenne', 'Keep_9999'], \
     assert res['opt_list_mail'] == ['init_zero', 'xyc', 'mean', 'keep_9999'], \
         'Error while parsing list mail options'
@@ -95,6 +95,16 @@ def test_parse_parameter_line():
     assert res['PERMEAB']['zone'] == 102, 'Error while parsing zone'
     assert res['PERMEAB']['value'] == 'TO_CALIB', 'Error while parsing value'
 
+    line = "  /CALCUL_HDYNAM/ACTION    I= 2; File= ./_calcul_hdynam_mensuel_1982"
+    res = _parse_parameter_line(line)
+    assert res['CALCUL_HDYNAM']['mode'] == 'ACTION', 'Error while parsing mode'
+    assert res['CALCUL_HDYNAM']['value'] == 2, 'Error while parsing value'
+    assert res['CALCUL_HDYNAM']['transient_file_path'] == './_calcul_hdynam_mensuel_1982', 'Error while parsing file'
+
+    line = '  /DEBIT/MAILLE            C=     37L=     15P=      1V=         0; File= prelevements_souterrains.txt; Col=4'
+    res = _parse_parameter_line(line)
+    assert res['DEBIT']['data_column_index'] == 4, 'error while parsing external file column'
+
 
 def test_parse_block_param():
     with open(MART_FILE, mode='r', encoding='ISO-8859-1') as f:
@@ -114,7 +124,7 @@ def test_build_line():
     expected = '  /DEBIT/COUCHE            C=      1V=         *;'
     assert test_str == expected, 'Error while building parameter line'
 
-    test = {'grid_id': 0, 'file': 'toto.txt', 'opt_list_mail': ['init_zero', 'keep_9999', 'xyc', 'mean']}
+    test = {'grid_id': 0, 'file_path': 'toto.txt', 'opt_list_mail': ['init_zero', 'keep_9999', 'xyc', 'mean']}
     test_str = _build_parameter_line('DEBIT', 'LIST_MAIL', **test)
     expected = '  /DEBIT/LIST_MAIL         N: toto.txt <Init_a_Zero> <Keep_9999> <X_Y_C> <Moyenne>'
     assert test_str == expected, 'Error while building parameter line'
@@ -131,3 +141,7 @@ def test_edition_fmt():
     assert test_str == '  /DEBIT/EDITION           *= 1;V=  ;L=  ;S=  ;Z=  ;'
     test_str = _build_parameter_line('CHARGE', 'EDITION', **test)
     assert test_str == '  /CHARGE/EDITION          I= 1;'
+
+
+if __name__ == '__main__':
+    test_parse_parameter_line()

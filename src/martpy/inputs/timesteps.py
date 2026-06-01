@@ -516,13 +516,13 @@ class MartTimeSteps:
                 times=t,
                 variable=var1,
                 action='FICHIER' if lang == 'fr' else 'FILE',
-                file=Path(path_data, tpl_name[0].format(t.year, t.year+1))
+                file_path=Path(path_data, tpl_name[0].format(t.year, t.year+1))
             )
             self.add_action(
                 times=t,
                 variable=var2,
                 action='FICHIER' if lang == 'fr' else 'FILE',
-                file=Path(path_data, tpl_name[1].format(t.year, t.year+1))
+                file_path=Path(path_data, tpl_name[1].format(t.year, t.year+1))
             )
             self.add_action(
                 times=t,
@@ -575,7 +575,7 @@ class MartTimeSteps:
                 times=t,
                 variable='DEBIT' if lang == 'fr' else 'DISCHARGE',
                 action='LIST_MAIL' if lang == 'fr' else 'LIST_CELL',
-                file=file_tpl.format(t.year, t.month, t.day),
+                file_path=file_tpl.format(t.year, t.month, t.day),
                 opt_list_mail=opt
             )
         return

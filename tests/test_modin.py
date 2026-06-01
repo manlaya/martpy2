@@ -29,8 +29,8 @@ def test_parse_modin():
         "MODIFIC not merged with init parameters"
 
     # verif que external_file est bien stocké
-    test2 = init_par.get('NZON_RIV_EXT')[0].get('external_file') is not None
-    assert test2, 'Error while parsing external file'
+    test2 = init_par.get('NZON_RIV_EXT')[0].get('modin_file') is not None
+    assert test2, 'Error while parsing modin external file'
 
     assert 'PERMEAB' in init_par.keys(), "PERMEAB not in init parameters"
     # check for dups

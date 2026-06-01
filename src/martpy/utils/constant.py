@@ -147,9 +147,9 @@ MART_OUTPUTS = [
 # is still ok (parsed by marthe)
 ACTIONS_FMT = {
     'ACTION'    : 'I={value:>2};',
-    'FICHIER'   : 'N: {file}',
+    'FICHIER'   : 'N: {file_path}',
     'GRILLE'    : 'N: {grid}',
-    'LIST_MAIL' : 'N: {file}',
+    'LIST_MAIL' : 'N: {file_path}',
     'COUCHE'    : 'C={layer:>7}V={value:>10};',
     'MAILLE'    : 'C={col:>7}L={row:>7}P={layer:>7}V={value:>10};',
     'MAILL'     : 'C={col:>7}L={row:>7}P={layer:>7}V={value:>10};',  # old version
@@ -169,10 +169,15 @@ ACTIONS_FMT = {
 
 _FLOAT_PATTERN = r'[+-]?\d+(?:\.\d+)?(?:e[+-]?\d+)?'
 
+# MEMO: regexp for parsing
+# - '*' or ':' in value, \S then if in parsing func, '?' for optional group
+# - transient/evolution file are not parsed in every parser string as it may
+#   be common to different actions. A dedicated func is in _io_utils.py
+#   (_parse_param_file_and_col) and called after main parser in _parse_parameter_line
 _ACTION_PARSER = {
     'ACTION'    : r'I=\s*(?P<value>(-)?\d+);',
     'GRILLE'    : r'N:\s*(?P<grid>\S+?)\s*$',
-    'LIST_MAIL' : r'N:\s+(?P<file>.*?)(?:\s+<[^>]+>|$)',   # file - opt
+    'LIST_MAIL' : r'N:\s+(?P<file_path>.*?)(?:\s+<[^>]+>|$)',   # file - opt
     'COUCHE'    : r'C=\s*(?P<layer>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',  # possible '*' or ':' in value, \S then if in parsing func
     'MAILLE'    : r'C=\s*(?P<col>\S+)\s*L=\s*(?P<row>\S+)\s*P=\s*(?P<layer>\S+)\s*V=\s*(?P<value>\S+)\s*;',  # \d+\.*\d ?
     'FICH_METE' : r'N=\s*(?P<step>\S*)',
@@ -184,7 +189,7 @@ _ACTION_PARSER = {
     'ZONE_GEO2' : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'ZONE_GEO3' : r'Z=\s*(?P<zone>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'EDITION'   : r'[I|\*]=\s*(?P<edit>\d+)\s*;',  # TODO complete edition parsing dict
-    'FICHIER'   : r'N:\s*(?P<file>\S+)',
+    'FICHIER'   : r'N:\s*(?P<file_path>\S+)',
     'TRONCON'   : r'A=\s*(?P<afluent>\S+)\s*T=\s*(?P<tronc>\S+)\s*V=\s*(?P<value>\S+)\s*;',
     'LAC_GLOB'  : r'L=\s*(?P<lake>\S+)\s*V=\s*(?P<value>\S+)\s*;\s*$',
     'LAC_EXUT'  : r'L=\s*(?P<lake>\S+)\s*A=\s*(?P<afluent>\S+)\s*V=\s*(?P<value>\S+)\s*;',

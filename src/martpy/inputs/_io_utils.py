@@ -16,7 +16,6 @@ from martpy.utils.helper import _check_mart_key
 from martpy.utils.config import get_lang
 
 
-
 def _build_header(title, lang=None):
     if lang is None:
         lang = get_lang()
@@ -87,7 +86,7 @@ def _infer_variable_dtype(var, value):
             return float
         else:
             return str
-    elif var == 'file':
+    elif var in ['file', 'file_path']:
         return str
     else:
         return int
@@ -116,10 +115,13 @@ def _parse_units_si(unit_line):
 def _parse_param_file_and_col(line):
     """ parse File= VALUE[; Col=INT] format
     """
-    pattern = r'File=\s*(?P<file_evol>\S+);+\s*(?:Col=\s*(?P<file_column>\d+))?'
+    pattern = r'File=\s*(?P<transient_file_path>\S+);?\s*(?:Col=\s*(?P<data_column_index>\d+))?'
     match = re.search(pattern, line)
     if match:
-        return match.groupdict()
+        res = match.groupdict()
+        if res['data_column_index'] is not None:
+            res['data_column_index'] = int(res['data_column_index'])  # convert to 0-based?
+        return {k: v for k, v in res.items() if v is not None}
     else:
         return {}
 
@@ -187,11 +189,11 @@ def _parse_parameter_line(line, verbose=False):
                     _param_values[k] = _parse_param_value(v, _type)
                 if mode.upper() in ['LIST_MAIL', 'LIST_CELL']:
                     _param_values['opt_list_mail'] = _parse_list_mail_opt(line)
-                file_evol_dict = _parse_param_file_and_col(line)
+                transient_file_dict = _parse_param_file_and_col(line)
                 parsed_params[variable] = {
                     **parsed_params[variable],
                     **_param_values,
-                    **file_evol_dict
+                    **transient_file_dict
                 }
         else:
             if verbose:
@@ -225,11 +227,11 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
             continue
 
         key = list(iparam.keys())[0]  # one line has always one key here
-        iparam[key]['as_external_file'] = False
+        iparam[key]['as_modin_file'] = False
 
         if key == 'MODIFIC':
             # MODIFIC allow user to set more parameter in external file '*.modin'
-            fmodin = iparam[key].get('file')
+            fmodin = iparam[key].get('file_path')
             with open(Path(path, fmodin), mode='r', encoding='ISO-8859-1') as f:
                 fmodin_lines = f.readlines()
             # => recursive call to parse this file
@@ -237,7 +239,7 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
             # add external file flag for all values, for writers
             for k, v in modin_params.items():
                 modin_params[k] = [
-                    {**x, 'as_external_file': True, 'external_file': fmodin} for x in v
+                    {**x, 'as_modin_file': True, 'modin_file': fmodin} for x in v
                 ]
             iparam = modin_params  # replace parsed params
 
@@ -257,7 +259,7 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
 def _format_params_for_writer(dict_args):
     clean_dict = {}
     for k, v in dict_args.items():
-        if k in ['as_external_file', 'opt_list_mail']:
+        if k in ['as_modin_file', 'opt_list_mail']:
             # do not change these parameters
             _val = v
         else:
@@ -314,12 +316,12 @@ def _build_parameter_line(variable, action, **kwargs):
 
     # Case we have a time serie file after a modification
     # this does not concern actions with file required
-    filename = kwargs.get('file_evol', '')
+    filename = kwargs.get('transient_file_path', '')
     if filename and action not in ['FICH_METE', 'GRILLE', 'FICHIER', 'LIST_MAIL']:
         filename =' File= {0}'.format(filename)
 
     # Case we select a specific column in a tabular time serie file
-    file_col = kwargs.get('file_column', '')
+    file_col = kwargs.get('data_column_index', '')
     if file_col and int(file_col) == 1:
         file_col = ''
     elif file_col and int(file_col) > 1:
@@ -387,8 +389,8 @@ def _build_parameter_block(dict_param, write_ext_files=False, mode='str', **kwar
             _mode = action.get('mode')
             line = _build_parameter_line(variable, _mode, **action)
 
-            if action.get('as_external_file', False) and write_ext_files:
-                external_file = action.get('external_file')
+            if action.get('as_modin_file', False) and write_ext_files:
+                external_file = action.get('modin_file')
                 ext_files[external_file] = ext_files.get(external_file, []) + [line]
                 main_line = '  /MODIFIC/FICHIER         N: {}'.format(external_file)
                 if main_line not in params:
