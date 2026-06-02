@@ -184,7 +184,6 @@ def test_slice_times():
     actions_slice = pastp_slice.get_actions()
     assert len(actions) == 2
     assert len(actions_slice) == 1, 'Error while slicing actions'
-<<<<<<< HEAD
 
 
 def test_remove_times():
@@ -228,8 +227,6 @@ def test_string_date_arguments():
     sliced = pastp.slice_times('2000-01-01', '2010-12-31')
     assert sliced.get_times().iloc[0] == pd.Timestamp('2000-01-01'), \
         'slice_times with str bounds failed'
-=======
->>>>>>> 4b407d5 (fix(#28): remove_times/slice_times no longer drop all actions)
 
 
 def test_add_action_with_istep():
