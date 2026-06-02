@@ -178,30 +178,34 @@ class MartTimeSteps:
         self.times = times
         self.time_window = (self.times['time'].min(), self.times['time'].max())
 
-    def remove_times(self, time=None, step=None, min_date=None, max_date=None):
-        """ Remove times from the timesteps
+    def remove_times(self, time=None, step=None):
+        """ Remove specific timesteps from the timesteps
 
         Parameters
         ----------
-        time : datetime, optional
-            time to remove, by default None
-        step : int, optional
-            timestep number to remove, by default None
-        min_date : datetime, optional
-            min date for slice
-        max_date : datetime, optional
-            max date for slice
+        time : datetime or sequence of datetime, optional
+            timestep date(s) to remove. Accepts a single date (scalar) or a
+            vector (list, pandas.DatetimeIndex, ...). To remove a date range,
+            pass for instance `time=pd.date_range(start, end)`.
+        step : int or list of int, optional
+            timestep number(s) to remove.
 
         Returns
         -------
-        None
-            Remove the timestep(s) from the timestep instance
+        MartTimeSteps
+            A new instance without the removed timestep(s).
+
+        Notes
+        -----
+        Use :py:meth:`slice_times` to keep a `[min_date, max_date]` range.
         """
+        times = self.times.copy()
         if time is not None:
-            time_key = _convert_date_to_str_iso(time)
-            self.times = self.times.loc[self.times['time'] != time_key]
-            self.actions.pop(time_key, None)
+            if isinstance(time, (str, datetime, pd.Timestamp)):
+                time = [time]
+            times = times.loc[~times['time'].isin(time)]
         elif step is not None:
+<<<<<<< HEAD
             self.times = self.times.loc[~self.times['step'].isin(step)]
             self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
             self.times = self.times.sort_values(by='step')
@@ -218,8 +222,22 @@ class MartTimeSteps:
             self.actions = {
                 k: v for k, v in self.actions.items() if k in self.times['time'].dt.strftime('%Y-%m-%d')
             }
+=======
+            if isinstance(step, int):
+                step = [step]
+            times = times.loc[~times['step'].isin(step)]
+>>>>>>> 4247548 (refactor(#30)!: unify remove_times with slice_times semantics)
         else:
-            pass
+            # nothing to remove, return a copy
+            return MartTimeSteps(times, dict(self.actions))
+
+        times['step'] = times['step'].rank(method='first').astype(int) - 1
+        times = times.sort_values(by='step')
+        valid_keys = {_convert_date_to_str_iso(t) for t in times['time']}
+        actions = {
+            k: v for k, v in self.actions.items() if k in valid_keys
+        }
+        return MartTimeSteps(times, actions)
 
     def slice_times(self, min_date=None, max_date=None):
         # TODO for slice: add keep_init bool (keep file read at timestep 0 for ex)
