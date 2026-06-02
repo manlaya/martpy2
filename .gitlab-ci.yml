@@ -98,6 +98,7 @@ test:
    - tags
    - merge_requests
   before_script:
+    - *install-env
     - source $VENV_PATH/bin/activate
     - pip install .[dev]
   script:
