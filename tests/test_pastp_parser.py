@@ -171,11 +171,18 @@ def test_get_actions_with_variable():
 
 
 def test_slice_times():
+    # issue #28: slice must keep actions of the remaining timesteps
     pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(times='2000-01-01', variable='CALCUL_HDYNAM', action='ACTION', value=2)
     pastp_slice = pastp.slice_times('2000-01-01', '2010-12-31')
     times = pastp_slice.get_times()
     assert times.iloc[0] == pd.Timestamp('2000-01-01'), 'Error while slicing times'
     assert times.iloc[-1] == pd.Timestamp('2010-12-31'), 'Error while slicing times'
+    actions = pastp.get_actions()
+    actions_slice = pastp_slice.get_actions()
+    assert len(actions) == 2
+    assert len(actions_slice) == 1, 'Error while slicing actions'
+<<<<<<< HEAD
 
 
 def test_remove_times():
@@ -219,6 +226,8 @@ def test_string_date_arguments():
     sliced = pastp.slice_times('2000-01-01', '2010-12-31')
     assert sliced.get_times().iloc[0] == pd.Timestamp('2000-01-01'), \
         'slice_times with str bounds failed'
+=======
+>>>>>>> 4b407d5 (fix(#28): remove_times/slice_times no longer drop all actions)
 
 
 def test_add_action_with_istep():

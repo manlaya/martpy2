@@ -208,8 +208,9 @@ class MartTimeSteps:
             self.times = self.times.loc[~self.times['step'].isin(step)]
             self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
             self.times = self.times.sort_values(by='step')
+            valid_keys = {_convert_date_to_str_iso(t) for t in self.times['time']}
             self.actions = {
-                k: v for k, v in self.actions.items() if k in self.times['time'].dt.strftime('%Y-%m-%d')
+                k: v for k, v in self.actions.items() if k in valid_keys
             }
         elif min_date is not None or max_date is not None:
             if min_date is not None:
@@ -218,8 +219,9 @@ class MartTimeSteps:
                 self.times = self.times.loc[self.times['time'] <= max_date]
             self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
             self.times = self.times.sort_values(by='step')
+            valid_keys = {_convert_date_to_str_iso(t) for t in self.times['time']}
             self.actions = {
-                k: v for k, v in self.actions.items() if k in self.times['time'].dt.strftime('%Y-%m-%d')
+                k: v for k, v in self.actions.items() if k in valid_keys
             }
 =======
             if isinstance(step, int):
@@ -263,8 +265,9 @@ class MartTimeSteps:
             times = times.loc[times['time'] <= max_date]
         times['step'] = times['step'].rank(method='first').astype(int) - 1
         times = times.sort_values(by='step')
+        valid_keys = {_convert_date_to_str_iso(t) for t in times['time']}
         actions = {
-            k: v for k, v in self.actions.items() if k in times['time'].dt.strftime('%Y-%m-%d')
+            k: v for k, v in self.actions.items() if k in valid_keys
         }
         return MartTimeSteps(times, actions)
 
