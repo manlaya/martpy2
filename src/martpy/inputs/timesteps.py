@@ -206,30 +206,9 @@ class MartTimeSteps:
             time = _to_datetime(time)
             times = times.loc[~times['time'].isin(time)]
         elif step is not None:
-<<<<<<< HEAD
-            self.times = self.times.loc[~self.times['step'].isin(step)]
-            self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
-            self.times = self.times.sort_values(by='step')
-            valid_keys = {_convert_date_to_str_iso(t) for t in self.times['time']}
-            self.actions = {
-                k: v for k, v in self.actions.items() if k in valid_keys
-            }
-        elif min_date is not None or max_date is not None:
-            if min_date is not None:
-                self.times = self.times.loc[self.times['time'] >= min_date]
-            if max_date is not None:
-                self.times = self.times.loc[self.times['time'] <= max_date]
-            self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
-            self.times = self.times.sort_values(by='step')
-            valid_keys = {_convert_date_to_str_iso(t) for t in self.times['time']}
-            self.actions = {
-                k: v for k, v in self.actions.items() if k in valid_keys
-            }
-=======
             if isinstance(step, int):
                 step = [step]
             times = times.loc[~times['step'].isin(step)]
->>>>>>> 4247548 (refactor(#30)!: unify remove_times with slice_times semantics)
         else:
             # nothing to remove, return a copy
             return MartTimeSteps(times, dict(self.actions))
