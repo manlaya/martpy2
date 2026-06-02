@@ -150,7 +150,7 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        dates : pandas.DateTimeIndex or pandas.Series, optional
+        dates : pandas.DateTimeIndex, pandas.Series or list of str/datetime, optional
             a times/dates sequence to use, by default None. If None, use date_min and date_max
             to create a sequence of times with the frequency provided in parameter
             `freq`.
@@ -183,10 +183,10 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        time : datetime or sequence of datetime, optional
+        time : str, datetime or sequence of these, optional
             timestep date(s) to remove. Accepts a single date (scalar) or a
-            vector (list, pandas.DatetimeIndex, ...). To remove a date range,
-            pass for instance `time=pd.date_range(start, end)`.
+            vector (list, pandas.DatetimeIndex, ...). To remove a date range, pass for instance
+            `time=pd.date_range(start, end)`.
         step : int or list of int, optional
             timestep number(s) to remove.
 
@@ -201,8 +201,7 @@ class MartTimeSteps:
         """
         times = self.times.copy()
         if time is not None:
-            if isinstance(time, (str, datetime, pd.Timestamp)):
-                time = [time]
+            time = _to_datetime(time)
             times = times.loc[~times['time'].isin(time)]
         elif step is not None:
 <<<<<<< HEAD
@@ -245,10 +244,10 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        min_date : datetime, optional
-            min date for slice
-        max_date : datetime, optional
-            max date for slice
+        min_date : str or datetime, optional
+            min date for slice. Strings are accepted and parsed by pandas.
+        max_date : str or datetime, optional
+            max date for slice. Strings are accepted and parsed by pandas.
 
         Returns
         -------
@@ -257,8 +256,10 @@ class MartTimeSteps:
         """
         times = self.times.copy()
         if min_date is not None:
+            min_date = pd.to_datetime(min_date)
             times = times.loc[times['time'] >= min_date]
         if max_date is not None:
+            max_date = pd.to_datetime(max_date)
             times = times.loc[times['time'] <= max_date]
         times['step'] = times['step'].rank(method='first').astype(int) - 1
         times = times.sort_values(by='step')
@@ -274,10 +275,10 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        time : datetime, optional
-            time to get actions for, by default None
-        step : int, optional
-            timestep number to get actions for, by default None
+        time : str, datetime or sequence of these, optional
+            timestep date(s) to get actions for, by default None.
+        step : int or list of int, optional
+            timestep number(s) to get actions for, by default None
         variable : str, optional
             marthe variable to get actions for, by default None
         as_dataframe : bool, optional
@@ -361,8 +362,9 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        times : datetime or pandas.DateTimeIndex or pandas.Series, optional
-            times to add actions, by default None.
+        times : str, datetime, pandas.DateTimeIndex or pandas.Series, optional
+            times to add actions, by default None. Strings are accepted and
+            parsed by pandas (scalar or vector).
         steps : int or list, optional
             timesteps number if no times are provided, by default None.
         freq : str, optional
@@ -413,10 +415,8 @@ class MartTimeSteps:
             else:
                 raise ValueError('Please provide times or steps')
 
-        if isinstance(times, (str, datetime)):
-            if type(times) is str:
-                times = datetime.strptime(times, '%Y-%m-%d')
-            times = [times]
+        # accept scalar or vector, str or datetime (normalized via pandas)
+        times = _to_datetime(times)
 
         for time in times:
             key = _convert_date_to_str_iso(time)
@@ -728,6 +728,19 @@ def _deduplicate_action_list(action_list):
             seen_keys.append(canonical_key)
             unique_actions.insert(0, action)
     return unique_actions
+
+
+def _to_datetime(dates):
+    """ Normalize a date-like argument to pandas datetime.
+
+    Accepts a scalar (str, datetime, pd.Timestamp) or a vector (list, tuple,
+    pandas.Series, pandas.DatetimeIndex). Strings are parsed by pandas.
+    Always returns a pandas.DatetimeIndex so callers can use it uniformly
+    (iteration, `.isin`, ...).
+    """
+    if isinstance(dates, (str, datetime, pd.Timestamp)):
+        dates = [dates]
+    return pd.to_datetime(list(dates))
 
 
 def _convert_date_to_str_iso(date):

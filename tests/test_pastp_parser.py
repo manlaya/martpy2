@@ -202,6 +202,25 @@ def test_remove_times():
     assert len(removed_step.get_times()) == n_times - 1, 'step not removed'
 
 
+def test_string_date_arguments():
+    # issue #29: str date arguments are accepted consistently
+    pastp = read_mart_timesteps(FILE_PASTP)
+
+    # add_action with a string time
+    pastp.add_action(times='2000-01-01', variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    assert '2000-01-01' in pastp.get_actions(), 'add_action with str time failed'
+
+    # remove_times with a string time (previously silently removed nothing)
+    removed = pastp.remove_times(time='2000-01-01')
+    assert pd.Timestamp('2000-01-01') not in removed.get_times().values, \
+        'remove_times with str time failed'
+
+    # slice_times with string bounds
+    sliced = pastp.slice_times('2000-01-01', '2010-12-31')
+    assert sliced.get_times().iloc[0] == pd.Timestamp('2000-01-01'), \
+        'slice_times with str bounds failed'
+
+
 def test_add_action_with_istep():
     pastp = read_mart_timesteps(FILE_PASTP)
     pastp.add_action(steps=-1, variable='CALCUL_HDYNAM', action='ACTION', value=2)
