@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+from pathlib import Path
 import numpy as np
 import pandas as pd
+import pytest
 
 from martpy.inputs.timesteps import (
     _parse_date_pastp,
@@ -260,6 +262,24 @@ def test_write_pastp():
     msg_error = 'Error with write/reread test for pastp'
     assert pastp.times['time'].to_list() == verif.times['time'].to_list(), "{} - times do not match".format(msg_error)
     assert pastp.times['has_action'].to_list() == verif.times['has_action'].to_list(), "{} - actions do not match".format(msg_error)
+
+
+def test_pastp_file_property():
+    # issue #27: source file path is stored and reused by write_file()
+    pastp = read_mart_timesteps(FILE_PASTP)
+    assert pastp.pastp_file == Path(FILE_PASTP), 'source file path not stored'
+
+    # write_file() with no filename falls back to self.pastp_file
+    file_pastp_out = './tests/data/tmp_outputs/test_pastp_file.pastp'
+    pastp.pastp_file = Path(file_pastp_out)
+    pastp.write_file()
+    assert Path(file_pastp_out).exists(), 'write_file() fallback on pastp_file failed'
+
+    # a freshly created instance has no source file -> explicit error
+    fresh = MartTimeSteps.from_dates(date_min='2000-01-01', date_max='2000-12-31', freq='D')
+    assert fresh.pastp_file is None, 'pastp_file should default to None'
+    with pytest.raises(ValueError):
+        fresh.write_file()
 
 
 def test_pastp_uk():

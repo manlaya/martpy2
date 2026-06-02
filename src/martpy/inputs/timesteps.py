@@ -132,6 +132,8 @@ class MartTimeSteps:
     def __init__(self, times, actions={}):
         self.times = times
         self.actions = actions
+        # source file path, set by from_file()/read_mart_timesteps() after parsing
+        self.pastp_file = None
 
         min_date = self.times['time'].min()
         max_date = self.times['time'].max()
@@ -603,7 +605,7 @@ class MartTimeSteps:
 
     def write_file(
         self,
-        filename,
+        filename=None,
         write_ext_files=False,
         title='Marthe TimeSteps',
         encoding='ISO-8859-1',
@@ -614,8 +616,10 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        filename : str, Path
-            name of the pastp file
+        filename : str, Path, optional
+            name of the pastp file. If None (default), fall back to the source
+            file path stored in `self.pastp_file` (set when the instance was
+            loaded via `from_file`). Raises a ValueError if both are None.
         write_ext_files : bool, optional
             Write external files (e.g. `.modin` file), by default False
             If True, external files are written in the .mart file
@@ -628,6 +632,13 @@ class MartTimeSteps:
             the current language of the configuration. See :py:func:`get_lang`.
             and :py:func:`set_lang`.
         """
+        if filename is None:
+            filename = self.pastp_file
+        if filename is None:
+            raise ValueError(
+                'No filename provided and no source file path available '
+                '(self.pastp_file is None). Please provide a filename.'
+            )
         lang = get_lang() if lang is None else lang
         kwargs['path'] = Path(filename).parent  # used if write_ext_files
         lines = []
@@ -821,7 +832,9 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
             dtime.append(_pastp_dict)
 
     dtime = pd.DataFrame(dtime)  # more efficient than append a DataFrame then concat...
-    return MartTimeSteps(dtime, actions)
+    timesteps = MartTimeSteps(dtime, actions)
+    timesteps.pastp_file = Path(file_pastp)
+    return timesteps
 
 
 def _build_timestep(istep, date, dactions, write_ext_files=False, lang='fr', **kwargs):
