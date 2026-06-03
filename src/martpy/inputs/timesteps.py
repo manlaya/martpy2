@@ -118,6 +118,16 @@ def _subset_times(times, step=1, freq='Y', day=1, month=8):
     return times
 
 
+def _clean_steps_and_actions(times, actions):
+    times['step'] = times['step'].rank(method='first').astype(int) - 1
+    times = times.sort_values(by='step')
+    valid_keys = {_convert_date_to_str_iso(t) for t in times['time']}
+    actions = {
+        k: v for k, v in actions.items() if k in valid_keys
+    }
+    return MartTimeSteps(times, actions)
+
+
 class MartTimeSteps:
     """ Object to create/edit Marthe timesteps
 
@@ -213,13 +223,7 @@ class MartTimeSteps:
             # nothing to remove, return a copy
             return MartTimeSteps(times, dict(self.actions))
 
-        times['step'] = times['step'].rank(method='first').astype(int) - 1
-        times = times.sort_values(by='step')
-        valid_keys = {_convert_date_to_str_iso(t) for t in times['time']}
-        actions = {
-            k: v for k, v in self.actions.items() if k in valid_keys
-        }
-        return MartTimeSteps(times, actions)
+        return _clean_steps_and_actions(times, self.actions)
 
     def slice_times(self, min_date=None, max_date=None):
         # TODO for slice: add keep_init bool (keep file read at timestep 0 for ex)
@@ -244,13 +248,7 @@ class MartTimeSteps:
         if max_date is not None:
             max_date = pd.to_datetime(max_date)
             times = times.loc[times['time'] <= max_date]
-        times['step'] = times['step'].rank(method='first').astype(int) - 1
-        times = times.sort_values(by='step')
-        valid_keys = {_convert_date_to_str_iso(t) for t in times['time']}
-        actions = {
-            k: v for k, v in self.actions.items() if k in valid_keys
-        }
-        return MartTimeSteps(times, actions)
+        return _clean_steps_and_actions(times, self.actions)
 
     def get_actions(self, *, time=None, step=None, variable=None, as_dataframe=False):
         """ Get actions for all or selected timesteps/variables
