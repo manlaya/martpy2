@@ -331,6 +331,18 @@ class MartTimeSteps:
         df = pd.concat(df)
         return df
 
+    def _parse_times_from_input(self, times, steps, freq):
+        if times is None:
+            if steps is not None:
+                times = self.times.iloc[steps, :]['time']
+            elif freq is not None:
+                times = pd.date_range(
+                    self.times['time'].min(), self.times['time'].max(), freq=freq
+                )
+            else:
+                raise ValueError('Please provide times or steps')
+        return times
+
     def add_action(
         self,
         times=None,
@@ -386,19 +398,8 @@ class MartTimeSteps:
         new_actions = {}
         _check_mart_key(variable)
         # TODO _check_mart_action(variable, action)
-        if times is None:
-            if steps is not None:
-                # times = self.times.loc[self.times['step'].isin(steps), :]
-                times = self.times.iloc[steps,:]['time']
-            elif freq is not None:
-                times = pd.date_range(
-                    self.times['time'].min(), self.times['time'].max(), freq=freq
-                )
-            else:
-                raise ValueError('Please provide times or steps')
-
         # accept scalar or vector, str or datetime (normalized via pandas)
-        times = _to_datetime(times)
+        times = _to_datetime(self._parse_times_from_input(times, steps, freq))
 
         for time in times:
             key = _convert_date_to_str_iso(time)
@@ -425,9 +426,77 @@ class MartTimeSteps:
         action=None,
         **kwargs
     ):
-        raise NotImplementedError(
-            'Method is not yet implemented. '
-            'You can remove actions in self.actions dictionnary'
+        """ Remove actions from any timesteps
+
+        Parameters
+        ----------
+        times : datetime or pandas.DateTimeIndex or pandas.Series, optional
+            times to remove actions from, by default None.
+        steps : int or list, optional
+            timesteps number if no times are provided, by default None.
+        freq : str, optional
+            A frequency string to match timesteps if no times are provided.
+            If provided, actions will be removed from every timestep matching this frequency.
+            By default None (not used). See pandas.DateOffset for more details:
+            https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
+        variable : str, optional
+            marthe variable to filter removal, by default None.
+            If None, actions for all variables are removed.
+        action : str, optional
+            action mode to filter removal, by default None.
+            If None, all action modes are removed.
+        **kwargs
+            Additional parameters to match specific action configurations.
+            If provided, only actions matching ALL parameters are removed.
+
+        Notes
+        -----
+        The `variable`, `action` and `kwargs` filters are combined: an action
+        is removed only if it matches every filter that was provided. A filter
+        left to None (or empty kwargs) matches everything. With no filter at
+        all, every action of the selected timesteps is removed.
+        """
+        # Normalise the filters once, before iterating over timesteps.
+        if variable is not None:
+            variable = variable.upper()
+            _check_mart_key(variable)
+        if action is not None:
+            action = action.upper()
+
+        times = _to_datetime(self._parse_times_from_input(times, steps, freq))
+
+        for time in times:
+            key = _convert_date_to_str_iso(time)
+            if key not in self.actions:
+                continue
+
+            variables_at_time = self.actions[key]
+
+            # Restrict to the requested variable, or scan them all.
+            if variable is not None:
+                target_variables = [variable] if variable in variables_at_time else []
+            else:
+                target_variables = list(variables_at_time.keys())
+
+            for var in target_variables:
+                kept_actions = [
+                    one_action
+                    for one_action in variables_at_time[var]
+                    if not _action_matches_filters(one_action, action, kwargs)
+                ]
+                if kept_actions:
+                    variables_at_time[var] = kept_actions
+                else:
+                    del variables_at_time[var]
+
+            # Drop the timestep entry entirely if no action is left.
+            if not variables_at_time:
+                del self.actions[key]
+
+        # Recompute has_action: a timestep keeps it only if actions remain.
+        removed = self.times['time'].isin(times)
+        self.times.loc[removed, 'has_action'] = self.times.loc[removed, 'time'].apply(
+            lambda t: _convert_date_to_str_iso(t) in self.actions
         )
 
     def set_met_forcings(
@@ -732,6 +801,23 @@ def _to_datetime(dates):
     if isinstance(dates, (str, datetime, pd.Timestamp)):
         dates = [dates]
     return pd.to_datetime(list(dates))
+
+
+def _action_matches_filters(action_dict, action, kwargs):
+    """Tell whether a single action dict matches the removal filters.
+
+    An action matches when it satisfies every provided filter:
+    - its `mode` equals `action` (skipped if `action` is None),
+    - it holds each `key: value` pair given in `kwargs`.
+
+    A None `action` and empty `kwargs` match every action.
+    """
+    if action is not None and action_dict.get('mode') != action:
+        return False
+    for key, value in kwargs.items():
+        if action_dict.get(key) != value:
+            return False
+    return True
 
 
 def _convert_date_to_str_iso(date):

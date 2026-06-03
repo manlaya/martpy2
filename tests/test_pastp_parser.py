@@ -288,6 +288,116 @@ def test_pastp_uk():
     assert max_date == '2026-03-05', "Wrong end date read"
 
 
+def test_remove_action():
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_times(dates=pd.date_range('2012-08-01', '2020-07-31', freq='D'))
+    new_dt = pastp.get_times()
+    actions_dates = (new_dt.dt.year>=2012) & (new_dt.dt.month==8) & (new_dt.dt.day == 1)
+
+    # Add multiple actions to various timesteps
+    for dt in new_dt[actions_dates]:
+        pastp.add_action(
+            times=dt,
+            variable='METEO_PLUIE',
+            action='FICHIER',
+            file='TOTO_{}_{}'.format(dt.year, dt.year+1)
+        )
+        pastp.add_action(
+            times=dt,
+            variable='FLUX_PLUV',
+            action='FICH_METE',
+            step='*'
+        )
+    pastp.add_action(new_dt.iloc[0], variable='CALCUL_HDYNAM', action='ACTION', value=2)
+
+    # Test: remove all actions for a specific time
+    pastp.remove_action(times='2012-08-01')
+    d = pastp.get_actions()
+    assert '2012-08-01' not in d, 'Error: action was not removed for time'
+    assert '2013-08-01' in d, 'Error: action was incorrectly removed for other times'
+
+    # Test: remove actions for a specific variable only
+    pastp2 = read_mart_timesteps(FILE_PASTP)
+    pastp2.add_times(dates=pd.date_range('2012-08-01', '2020-07-31', freq='D'))
+    new_dt2 = pastp2.get_times()
+    actions_dates2 = (new_dt2.dt.year>=2012) & (new_dt2.dt.month==8) & (new_dt2.dt.day == 1)
+    for dt in new_dt2[actions_dates2]:
+        pastp2.add_action(times=dt, variable='METEO_PLUIE', action='FICHIER', file='file_{}'.format(dt.year))
+        pastp2.add_action(times=dt, variable='FLUX_PLUV', action='FICH_METE', step='*')
+
+    pastp2.remove_action(times='2012-08-01', variable='METEO_PLUIE')
+    d2 = pastp2.get_actions(time='2012-08-01')
+    assert 'METEO_PLUIE' not in d2['2012-08-01'], 'Error: METEO_PLUIE not removed'
+    assert 'FLUX_PLUV' in d2['2012-08-01'], 'Error: FLUX_PLUV was incorrectly removed'
+
+    # Test: remove actions for specific variable and action mode
+    pastp3 = read_mart_timesteps(FILE_PASTP)
+    pastp3.add_times(dates=pd.date_range('2012-08-01', '2020-07-31', freq='D'))
+    new_dt3 = pastp3.get_times()
+    actions_dates3 = (new_dt3.dt.year==2012) & (new_dt3.dt.month==8) & (new_dt3.dt.day == 1)
+    for dt in new_dt3[actions_dates3]:
+        pastp3.add_action(times=dt, variable='CALCUL_HDYNAM', action='ACTION', value=1)
+        pastp3.add_action(times=dt, variable='CALCUL_HDYNAM', action='ACTION', value=2)
+
+    pastp3.remove_action(times='2012-08-01', variable='CALCUL_HDYNAM', action='ACTION')
+    d3 = pastp3.get_actions(time='2012-08-01')
+    assert 'CALCUL_HDYNAM' not in d3.get('2012-08-01', {}), 'Error: ACTION mode not removed'
+
+
+def test_remove_action_with_steps():
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(steps=[0, 1, 2], variable='CALCUL_HDYNAM', action='ACTION', value=2)
+
+    # Remove action by step numbers
+    pastp.remove_action(steps=[0, 1])
+    d = pastp.get_actions()
+
+    time_step_0 = pastp.times.iloc[0]['time'].strftime('%Y-%m-%d')
+    time_step_1 = pastp.times.iloc[1]['time'].strftime('%Y-%m-%d')
+    time_step_2 = pastp.times.iloc[2]['time'].strftime('%Y-%m-%d')
+
+    assert time_step_0 not in d, 'Error: action not removed for step 0'
+    assert time_step_1 not in d, 'Error: action not removed for step 1'
+    assert time_step_2 in d, 'Error: action was incorrectly removed for step 2'
+
+
+def test_remove_action_with_freq():
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(freq='ME', variable='ETAT_HYD_CLIM', action='edition')
+
+    # Remove all monthly actions
+    pastp.remove_action(freq='ME', variable='ETAT_HYD_CLIM')
+    d = pastp.get_actions(variable='ETAT_HYD_CLIM')
+    assert len(d) == 0, 'Error: actions were not removed by frequency'
+
+
+def test_remove_action_filter_without_variable():
+    # Removing by action mode without naming a variable must only drop the
+    # matching actions, not the whole timestep.
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_times(dates=pd.date_range('2012-08-01', '2013-07-31', freq='D'))
+    pastp.add_action(times='2012-08-01', variable='METEO_PLUIE', action='FICHIER', file='rain.txt')
+    pastp.add_action(times='2012-08-01', variable='FLUX_PLUV', action='FICH_METE', step='*')
+
+    pastp.remove_action(times='2012-08-01', action='FICHIER')
+    d = pastp.get_actions(time='2012-08-01')
+    assert 'METEO_PLUIE' not in d['2012-08-01'], 'Error: FICHIER action not removed'
+    assert 'FLUX_PLUV' in d['2012-08-01'], 'Error: non-matching action incorrectly removed'
+
+
+def test_remove_action_filter_by_kwargs():
+    # kwargs narrow the removal to a specific action configuration.
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(steps=[0], variable='CALCUL_HDYNAM', action='ACTION', value=1)
+    pastp.add_action(steps=[0], variable='CALCUL_HDYNAM', action='ACTION', value=2)
+
+    pastp.remove_action(steps=[0], variable='CALCUL_HDYNAM', action='ACTION', value=1)
+    d = pastp.get_actions(variable='CALCUL_HDYNAM')
+    remaining = [a for actions in d.values() for a in actions['CALCUL_HDYNAM']]
+    assert len(remaining) == 1, 'Error: expected a single action left'
+    assert remaining[0].get('value') == 2, 'Error: wrong action was removed'
+
+
 def main():
     print('Test MARTHE pastp reader')
     test_parse_date_fmt()
