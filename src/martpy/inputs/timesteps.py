@@ -331,6 +331,18 @@ class MartTimeSteps:
         df = pd.concat(df)
         return df
 
+    def _parse_times_from_input(self, times, steps, freq):
+        if times is None:
+            if steps is not None:
+                times = self.times.iloc[steps, :]['time']
+            elif freq is not None:
+                times = pd.date_range(
+                    self.times['time'].min(), self.times['time'].max(), freq=freq
+                )
+            else:
+                raise ValueError('Please provide times or steps')
+        return times
+
     def add_action(
         self,
         times=None,
@@ -386,19 +398,8 @@ class MartTimeSteps:
         new_actions = {}
         _check_mart_key(variable)
         # TODO _check_mart_action(variable, action)
-        if times is None:
-            if steps is not None:
-                # times = self.times.loc[self.times['step'].isin(steps), :]
-                times = self.times.iloc[steps,:]['time']
-            elif freq is not None:
-                times = pd.date_range(
-                    self.times['time'].min(), self.times['time'].max(), freq=freq
-                )
-            else:
-                raise ValueError('Please provide times or steps')
-
         # accept scalar or vector, str or datetime (normalized via pandas)
-        times = _to_datetime(times)
+        times = _to_datetime(self._parse_times_from_input(times, steps, freq))
 
         for time in times:
             key = _convert_date_to_str_iso(time)
@@ -462,21 +463,7 @@ class MartTimeSteps:
         if action is not None:
             action = action.upper()
 
-        # Resolve the list of times to process (same logic as add_action).
-        if times is None:
-            if steps is not None:
-                times = self.times.iloc[steps, :]['time']
-            elif freq is not None:
-                times = pd.date_range(
-                    self.times['time'].min(), self.times['time'].max(), freq=freq
-                )
-            else:
-                raise ValueError('Please provide times or steps')
-
-        if isinstance(times, (str, datetime)):
-            if type(times) is str:
-                times = datetime.strptime(times, '%Y-%m-%d')
-            times = [times]
+        times = _to_datetime(self._parse_times_from_input(times, steps, freq))
 
         for time in times:
             key = _convert_date_to_str_iso(time)
