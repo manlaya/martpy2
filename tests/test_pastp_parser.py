@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+from pathlib import Path
 import numpy as np
 import pandas as pd
+import pytest
 
 from martpy.inputs.timesteps import (
     _parse_date_pastp,
@@ -171,11 +173,60 @@ def test_get_actions_with_variable():
 
 
 def test_slice_times():
+    # issue #28: slice must keep actions of the remaining timesteps
     pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(times='2000-01-01', variable='CALCUL_HDYNAM', action='ACTION', value=2)
     pastp_slice = pastp.slice_times('2000-01-01', '2010-12-31')
     times = pastp_slice.get_times()
     assert times.iloc[0] == pd.Timestamp('2000-01-01'), 'Error while slicing times'
     assert times.iloc[-1] == pd.Timestamp('2010-12-31'), 'Error while slicing times'
+    actions = pastp.get_actions()
+    actions_slice = pastp_slice.get_actions()
+    assert len(actions) == 2
+    assert len(actions_slice) == 1, 'Error while slicing actions'
+
+
+def test_remove_times():
+    # issue #30: remove_times returns a new instance and removes specific steps
+    pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action(times='2000-01-01', variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    n_times = len(pastp.get_times())
+
+    # scalar time: a new instance is returned, the original is left untouched
+    removed = pastp.remove_times(time=pd.Timestamp('2000-01-01'))
+    assert isinstance(removed, MartTimeSteps), 'remove_times must return a new instance'
+    assert len(pastp.get_times()) == n_times, 'original instance must not be mutated'
+    assert pd.Timestamp('2000-01-01') not in removed.get_times().values, 'time not removed'
+    assert len(removed.get_actions()) == 1, 'action of removed step must be dropped'
+
+    # vector of times (range)
+    to_remove = pd.date_range('2000-01-01', '2010-12-31')
+    removed_range = pastp.remove_times(time=to_remove)
+    kept = removed_range.get_times()
+    assert kept[(kept >= '2000-01-01') & (kept <= '2010-12-31')].empty, 'range not removed'
+
+    # by step number
+    removed_step = pastp.remove_times(step=0)
+    assert len(removed_step.get_times()) == n_times - 1, 'step not removed'
+
+
+def test_string_date_arguments():
+    # issue #29: str date arguments are accepted consistently
+    pastp = read_mart_timesteps(FILE_PASTP)
+
+    # add_action with a string time
+    pastp.add_action(times='2000-01-01', variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    assert '2000-01-01' in pastp.get_actions(), 'add_action with str time failed'
+
+    # remove_times with a string time (previously silently removed nothing)
+    removed = pastp.remove_times(time='2000-01-01')
+    assert pd.Timestamp('2000-01-01') not in removed.get_times().values, \
+        'remove_times with str time failed'
+
+    # slice_times with string bounds
+    sliced = pastp.slice_times('2000-01-01', '2010-12-31')
+    assert sliced.get_times().iloc[0] == pd.Timestamp('2000-01-01'), \
+        'slice_times with str bounds failed'
 
 
 def test_add_action_with_istep():
@@ -208,6 +259,24 @@ def test_write_pastp():
     msg_error = 'Error with write/reread test for pastp'
     assert pastp.times['time'].to_list() == verif.times['time'].to_list(), "{} - times do not match".format(msg_error)
     assert pastp.times['has_action'].to_list() == verif.times['has_action'].to_list(), "{} - actions do not match".format(msg_error)
+
+
+def test_pastp_file_property():
+    # issue #27: source file path is stored and reused by write_file()
+    pastp = read_mart_timesteps(FILE_PASTP)
+    assert pastp.pastp_file == Path(FILE_PASTP), 'source file path not stored'
+
+    # write_file() with no filename falls back to self.pastp_file
+    file_pastp_out = './tests/data/tmp_outputs/test_pastp_file.pastp'
+    pastp.pastp_file = Path(file_pastp_out)
+    pastp.write_file()
+    assert Path(file_pastp_out).exists(), 'write_file() fallback on pastp_file failed'
+
+    # a freshly created instance has no source file -> explicit error
+    fresh = MartTimeSteps.from_dates(date_min='2000-01-01', date_max='2000-12-31', freq='D')
+    assert fresh.pastp_file is None, 'pastp_file should default to None'
+    with pytest.raises(ValueError):
+        fresh.write_file()
 
 
 def test_pastp_uk():

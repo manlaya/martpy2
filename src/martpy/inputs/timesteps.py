@@ -118,6 +118,16 @@ def _subset_times(times, step=1, freq='Y', day=1, month=8):
     return times
 
 
+def _clean_steps_and_actions(times, actions):
+    times['step'] = times['step'].rank(method='first').astype(int) - 1
+    times = times.sort_values(by='step')
+    valid_keys = {_convert_date_to_str_iso(t) for t in times['time']}
+    actions = {
+        k: v for k, v in actions.items() if k in valid_keys
+    }
+    return MartTimeSteps(times, actions)
+
+
 class MartTimeSteps:
     """ Object to create/edit Marthe timesteps
 
@@ -132,6 +142,8 @@ class MartTimeSteps:
     def __init__(self, times, actions={}):
         self.times = times
         self.actions = actions
+        # source file path, set by from_file()/read_mart_timesteps() after parsing
+        self.pastp_file = None
 
         min_date = self.times['time'].min()
         max_date = self.times['time'].max()
@@ -150,7 +162,7 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        dates : pandas.DateTimeIndex or pandas.Series, optional
+        dates : pandas.DateTimeIndex, pandas.Series or list of str/datetime, optional
             a times/dates sequence to use, by default None. If None, use date_min and date_max
             to create a sequence of times with the frequency provided in parameter
             `freq`.
@@ -178,48 +190,40 @@ class MartTimeSteps:
         self.times = times
         self.time_window = (self.times['time'].min(), self.times['time'].max())
 
-    def remove_times(self, time=None, step=None, min_date=None, max_date=None):
-        """ Remove times from the timesteps
+    def remove_times(self, time=None, step=None):
+        """ Remove specific timesteps from the timesteps
 
         Parameters
         ----------
-        time : datetime, optional
-            time to remove, by default None
-        step : int, optional
-            timestep number to remove, by default None
-        min_date : datetime, optional
-            min date for slice
-        max_date : datetime, optional
-            max date for slice
+        time : str, datetime or sequence of these, optional
+            timestep date(s) to remove. Accepts a single date (scalar) or a
+            vector (list, pandas.DatetimeIndex, ...). To remove a date range, pass for instance
+            `time=pd.date_range(start, end)`.
+        step : int or list of int, optional
+            timestep number(s) to remove.
 
         Returns
         -------
-        None
-            Remove the timestep(s) from the timestep instance
+        MartTimeSteps
+            A new instance without the removed timestep(s).
+
+        Notes
+        -----
+        Use :py:meth:`slice_times` to keep a `[min_date, max_date]` range.
         """
+        times = self.times.copy()
         if time is not None:
-            time_key = _convert_date_to_str_iso(time)
-            self.times = self.times.loc[self.times['time'] != time_key]
-            self.actions.pop(time_key, None)
+            time = _to_datetime(time)
+            times = times.loc[~times['time'].isin(time)]
         elif step is not None:
-            self.times = self.times.loc[~self.times['step'].isin(step)]
-            self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
-            self.times = self.times.sort_values(by='step')
-            self.actions = {
-                k: v for k, v in self.actions.items() if k in self.times['time'].dt.strftime('%Y-%m-%d')
-            }
-        elif min_date is not None or max_date is not None:
-            if min_date is not None:
-                self.times = self.times.loc[self.times['time'] >= min_date]
-            if max_date is not None:
-                self.times = self.times.loc[self.times['time'] <= max_date]
-            self.times['step'] = self.times['step'].rank(method='first').astype(int) - 1
-            self.times = self.times.sort_values(by='step')
-            self.actions = {
-                k: v for k, v in self.actions.items() if k in self.times['time'].dt.strftime('%Y-%m-%d')
-            }
+            if isinstance(step, int):
+                step = [step]
+            times = times.loc[~times['step'].isin(step)]
         else:
-            pass
+            # nothing to remove, return a copy
+            return MartTimeSteps(times, dict(self.actions))
+
+        return _clean_steps_and_actions(times, self.actions)
 
     def slice_times(self, min_date=None, max_date=None):
         # TODO for slice: add keep_init bool (keep file read at timestep 0 for ex)
@@ -227,10 +231,10 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        min_date : datetime, optional
-            min date for slice
-        max_date : datetime, optional
-            max date for slice
+        min_date : str or datetime, optional
+            min date for slice. Strings are accepted and parsed by pandas.
+        max_date : str or datetime, optional
+            max date for slice. Strings are accepted and parsed by pandas.
 
         Returns
         -------
@@ -239,15 +243,12 @@ class MartTimeSteps:
         """
         times = self.times.copy()
         if min_date is not None:
+            min_date = pd.to_datetime(min_date)
             times = times.loc[times['time'] >= min_date]
         if max_date is not None:
+            max_date = pd.to_datetime(max_date)
             times = times.loc[times['time'] <= max_date]
-        times['step'] = times['step'].rank(method='first').astype(int) - 1
-        times = times.sort_values(by='step')
-        actions = {
-            k: v for k, v in self.actions.items() if k in times['time'].dt.strftime('%Y-%m-%d')
-        }
-        return MartTimeSteps(times, actions)
+        return _clean_steps_and_actions(times, self.actions)
 
     def get_actions(self, *, time=None, step=None, variable=None, as_dataframe=False):
         """ Get actions for all or selected timesteps/variables
@@ -256,10 +257,10 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        time : datetime, optional
-            time to get actions for, by default None
-        step : int, optional
-            timestep number to get actions for, by default None
+        time : str, datetime or sequence of these, optional
+            timestep date(s) to get actions for, by default None.
+        step : int or list of int, optional
+            timestep number(s) to get actions for, by default None
         variable : str, optional
             marthe variable to get actions for, by default None
         as_dataframe : bool, optional
@@ -343,8 +344,9 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        times : datetime or pandas.DateTimeIndex or pandas.Series, optional
-            times to add actions, by default None.
+        times : str, datetime, pandas.DateTimeIndex or pandas.Series, optional
+            times to add actions, by default None. Strings are accepted and
+            parsed by pandas (scalar or vector).
         steps : int or list, optional
             timesteps number if no times are provided, by default None.
         freq : str, optional
@@ -395,10 +397,8 @@ class MartTimeSteps:
             else:
                 raise ValueError('Please provide times or steps')
 
-        if isinstance(times, (str, datetime)):
-            if type(times) is str:
-                times = datetime.strptime(times, '%Y-%m-%d')
-            times = [times]
+        # accept scalar or vector, str or datetime (normalized via pandas)
+        times = _to_datetime(times)
 
         for time in times:
             key = _convert_date_to_str_iso(time)
@@ -582,7 +582,7 @@ class MartTimeSteps:
 
     def write_file(
         self,
-        filename,
+        filename=None,
         write_ext_files=False,
         title='Marthe TimeSteps',
         encoding='ISO-8859-1',
@@ -593,8 +593,10 @@ class MartTimeSteps:
 
         Parameters
         ----------
-        filename : str, Path
-            name of the pastp file
+        filename : str, Path, optional
+            name of the pastp file. If None (default), fall back to the source
+            file path stored in `self.pastp_file` (set when the instance was
+            loaded via `from_file`). Raises a ValueError if both are None.
         write_ext_files : bool, optional
             Write external files (e.g. `.modin` file), by default False
             If True, external files are written in the .mart file
@@ -607,6 +609,13 @@ class MartTimeSteps:
             the current language of the configuration. See :py:func:`get_lang`.
             and :py:func:`set_lang`.
         """
+        if filename is None:
+            filename = self.pastp_file
+        if filename is None:
+            raise ValueError(
+                'No filename provided and no source file path available '
+                '(self.pastp_file is None). Please provide a filename.'
+            )
         lang = get_lang() if lang is None else lang
         kwargs['path'] = Path(filename).parent  # used if write_ext_files
         lines = []
@@ -712,6 +721,19 @@ def _deduplicate_action_list(action_list):
     return unique_actions
 
 
+def _to_datetime(dates):
+    """ Normalize a date-like argument to pandas datetime.
+
+    Accepts a scalar (str, datetime, pd.Timestamp) or a vector (list, tuple,
+    pandas.Series, pandas.DatetimeIndex). Strings are parsed by pandas.
+    Always returns a pandas.DatetimeIndex so callers can use it uniformly
+    (iteration, `.isin`, ...).
+    """
+    if isinstance(dates, (str, datetime, pd.Timestamp)):
+        dates = [dates]
+    return pd.to_datetime(list(dates))
+
+
 def _convert_date_to_str_iso(date):
     """ Convert datetime to str, leave int/float unchanged.
     used for to create/match key in actions dictionnary
@@ -787,7 +809,9 @@ def read_mart_timesteps(file_pastp, encoding='ISO-8859-1'):
             dtime.append(_pastp_dict)
 
     dtime = pd.DataFrame(dtime)  # more efficient than append a DataFrame then concat...
-    return MartTimeSteps(dtime, actions)
+    timesteps = MartTimeSteps(dtime, actions)
+    timesteps.pastp_file = Path(file_pastp)
+    return timesteps
 
 
 def _build_timestep(istep, date, dactions, write_ext_files=False, lang='fr', **kwargs):
