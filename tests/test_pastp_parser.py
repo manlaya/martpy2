@@ -68,6 +68,36 @@ def test_add_steps():
     # pastp.write_file('toto.pastp')
 
 
+def test_add_times_inserts_chronologically():
+    # Anterior times must be inserted before existing ones, not appended.
+    pastp = read_mart_timesteps(FILE_PASTP)  # spans 1995-07-31 .. 2012-07-31
+    pastp.add_times('1990-01-01', '1990-12-31', freq='MS')
+
+    times = pastp.times
+    # times must be sorted chronologically
+    assert times['time'].is_monotonic_increasing, 'Times are not sorted by date'
+    # the oldest added date now starts the simulation (step 0)
+    assert times['time'].iloc[0] == pd.Timestamp('1990-01-01'), 'Anterior time not inserted first'
+    # steps must be renumbered from 0 without gaps
+    assert list(times['step']) == list(range(len(times))), 'Steps not renumbered from 0'
+    # the time window must reflect the new minimum
+    assert pastp.time_window[0] == pd.Timestamp('1990-01-01'), 'Time window min not updated'
+
+
+def test_add_times_warns_on_existing():
+    # Adding times that already exist must warn and keep the existing timesteps.
+    pastp = read_mart_timesteps(FILE_PASTP)
+    n_before = len(pastp.times)
+
+    with pytest.warns(UserWarning, match='already exist'):
+        # 2012-07-31 already exists in the file
+        pastp.add_times(dates=['2012-07-31', '2012-08-01'])
+
+    # only the new date is added, the duplicate is ignored
+    assert len(pastp.times) == n_before + 1, 'Existing time should not be duplicated'
+    assert not pastp.times['time'].duplicated().any(), 'Duplicate time was kept'
+
+
 def test_add_action():
     # pastp2 = read_mart_timesteps('tests/data/pastp/long_timesteps.pastp')
     # pastp2.get_actions().get('1982-08-01')

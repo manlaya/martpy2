@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+import warnings
 from datetime import datetime
 from pathlib import Path
 
@@ -160,6 +161,12 @@ class MartTimeSteps:
     def add_times(self, date_min=None, date_max=None, freq='D', dates=None):
         """ Add times to the timesteps
 
+        The new times are merged with the existing ones, sorted chronologically
+        and the step numbers are recomputed from 0 (the oldest timestep is step
+        0, i.e. the steady state / start of simulation). Adding times that are
+        anterior to the current simulation therefore inserts them at the right
+        place instead of at the end.
+
         Parameters
         ----------
         dates : pandas.DateTimeIndex, pandas.Series or list of str/datetime, optional
@@ -179,14 +186,28 @@ class MartTimeSteps:
         -------
         None
             Add dates to the timestep instance, in 'times' attribute
+
+        Notes
+        -----
+        Times that already exist in the timesteps are ignored (the existing
+        timestep and its actions are kept) and a warning is emitted.
         """
-        istep = self.times['step'].max() + 1
-        dt = _create_times(dates, date_min, date_max, freq, step=istep)
-        times = pd.concat([self.times, dt], ignore_index=True)
-        if not times[times.duplicated(subset='time')].empty:
-            # security if user add existing times
-            times = times.drop_duplicates(subset='time', keep='first')  # keep previous
-            times['step'] = np.arange(1, len(times)+1)
+        # build the sequence of times to add (step numbers are recomputed below)
+        new_times = _create_times(dates, date_min, date_max, freq)
+
+        # times that already exist are ignored: keep the existing timestep (and
+        # its actions) untouched, but warn the user about the ignored dates.
+        already_exists = new_times['time'].isin(self.times['time'])
+        if already_exists.any():
+            _warn_existing_times(new_times.loc[already_exists, 'time'])
+            new_times = new_times.loc[~already_exists]
+
+        # merge, sort chronologically and renumber the steps from 0 so that an
+        # anterior time is inserted at the right position, not appended at the end.
+        times = pd.concat([self.times, new_times], ignore_index=True)
+        times = times.sort_values(by='time').reset_index(drop=True)
+        times['step'] = np.arange(len(times))
+
         self.times = times
         self.time_window = (self.times['time'].min(), self.times['time'].max())
 
@@ -801,6 +822,23 @@ def _to_datetime(dates):
     if isinstance(dates, (str, datetime, pd.Timestamp)):
         dates = [dates]
     return pd.to_datetime(list(dates))
+
+
+def _warn_existing_times(duplicated_dates, max_shown=10):
+    """ Emit a warning listing the times that already exist and are ignored.
+
+    Only the first `max_shown` dates are listed to keep the message readable
+    when many duplicates are added at once.
+    """
+    shown = [_convert_date_to_str_iso(d) for d in duplicated_dates.iloc[:max_shown]]
+    listed = ', '.join(str(date_str) for date_str in shown)
+    if len(duplicated_dates) > max_shown:
+        listed += ', ... (+{} more)'.format(len(duplicated_dates) - max_shown)
+    warnings.warn(
+        '{} time(s) already exist in the timesteps and were ignored '
+        '(existing timesteps kept): {}'.format(len(duplicated_dates), listed),
+        stacklevel=3,
+    )
 
 
 def _action_matches_filters(action_dict, action, kwargs):
