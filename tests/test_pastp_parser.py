@@ -40,6 +40,26 @@ def test_read_pastp():
     assert max_date == '2012-07-31', "Wrong end date read"
 
 
+def test_read_pastp_int_float_fmt():
+    res = read_mart_timesteps('tests/data/pastp/times_int.pastp')
+    assert isinstance(res, MartTimeSteps), 'Results is not a MartTimeSteps object'
+    assert hasattr(res, 'times'), 'Results has no time attributes'
+    assert hasattr(res, 'actions'), 'Results has no actions attributes'
+    assert res.times['time'].dtype == 'float64'
+
+    res = read_mart_timesteps('tests/data/pastp/times_float.pastp')
+    assert isinstance(res, MartTimeSteps), 'Results is not a MartTimeSteps object'
+    assert hasattr(res, 'times'), 'Results has no time attributes'
+    assert hasattr(res, 'actions'), 'Results has no actions attributes'
+    assert res.times['time'].dtype == 'float64'
+
+    res = read_mart_timesteps('tests/data/pastp/times_hybride.pastp')
+    assert isinstance(res, MartTimeSteps), 'Results is not a MartTimeSteps object'
+    assert hasattr(res, 'times'), 'Results has no time attributes'
+    assert hasattr(res, 'actions'), 'Results has no actions attributes'
+    # assert res.times['time'].dtype == 'float64'  # TODO: parse date then float?
+
+
 def test_create_pastp():
     dt1 = pd.date_range('1990-01-01', '2000-01-01', freq='YS')
     dt2 = pd.date_range('2000-02-01', '2025-07-31', freq='D')
@@ -87,6 +107,9 @@ def test_add_times_inserts_chronologically():
 def test_add_times_warns_on_existing():
     # Adding times that already exist must warn and keep the existing timesteps.
     pastp = read_mart_timesteps(FILE_PASTP)
+    pastp.add_action('2012-07-31', variable='CALCUL_HDYNAM', action='ACTION', value=2)
+    pastp.get_actions(time='2012-07-31')  # make sure the action is in the dat
+    old_times = pastp.times
     n_before = len(pastp.times)
 
     with pytest.warns(UserWarning, match='already exist'):
@@ -96,6 +119,8 @@ def test_add_times_warns_on_existing():
     # only the new date is added, the duplicate is ignored
     assert len(pastp.times) == n_before + 1, 'Existing time should not be duplicated'
     assert not pastp.times['time'].duplicated().any(), 'Duplicate time was kept'
+    # assert action on potentially duplicates time is untouched
+    assert pastp.times['has_action'].iloc[-2] == old_times['has_action'].iloc[-1]
 
 
 def test_add_action():
@@ -435,6 +460,8 @@ def main():
     test_write_pastp()
     test_wrapper_method()
     test_add_action_with_istep()
+    test_add_times_inserts_chronologically()
+    test_add_times_warns_on_existing()
     test_get_actions()
     test_pastp_uk()
     print('============')

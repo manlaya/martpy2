@@ -23,16 +23,16 @@ from martpy.utils.config import get_lang
 # TODO add parsing for timestep (optional) names? useful? eg: *** thename // or ***; Nom=thename
 # --- Parser pattern --- #
 # more regex hell
-_FLOAT_FMT = r'\d+\.\d+'
+_FLOAT_FMT = r'^(?!\d{2}\/\d{2}\/\d{4})\d+(?:\.\d+)?$'  # exclude date, allow int or float
 _DATE_FMT = r'(\d{2}/\d{2}/\d{4})( \d{2}:\d{2})?'
 
 PATTERN_STEADY_STEP = (
     r' \*\*\* (?:D.*but de la simulation|Beginning of simulation).*:\s*'
-    r'(?P<time>\d+\.\d+|\d{2}/\d{2}/\d{4}( \d{2}:\d{2})?)\s*;'
+    r'(?P<time>\d+\.?\d+|\d{2}/\d{2}/\d{4}( \d{2}:\d{2})?)\s*;'
 )
 PATTERN_TRANSIENT_STEP = (
     r"(?:Le pas|Step)\s*:\s*(?P<step>\d+):\s*(?:se termine.*la date|Ends at date)\s*:\s*"
-    r"(?P<time>\d+\.\d+|\d{2}/\d{2}/\d{4}(\s\d{2}:\d{2})?)\s*;"
+    r"(?P<time>\d+\.?\d+|\d{2}/\d{2}/\d{4}(\s\d{2}:\d{2})?)\s*;"
 )
 PATTERN_END_STEP = r'\s{2}/\*{5}/\*{5} (?:Fin de ce pas|End of this Time Step)'
 PATTERN_END_SIM = r'.*(?:Fin de la simulation|End of simulation).*'
