@@ -113,6 +113,18 @@ def test_writer():
     assert histo2.equals(histo), 'Error reread histo does not match'
 
 
+def test_convert_geodataframe():
+    from martpy import grid as mgrid
+    from geopandas import GeoDataFrame
+    histo = read_histo_file(HISTO_FILE)
+    grid = mgrid.load_marthe_grid('./tests/data/mart_hallue/hallue.permh', add_col_row=True)
+
+    gdf = histo.to_geodataframe(epsg=27572, fill_coords=True, grid=grid)
+    assert isinstance(gdf, GeoDataFrame)
+    assert hasattr(gdf, 'geometry')
+    assert not np.any(gdf['geometry'].isna())
+
+
 def test_write_longer_coords():
     FACTOR = 1000
     histo = read_histo_file(HISTO_FILE)

@@ -160,19 +160,17 @@ class MartHisto(pd.DataFrame):
             df_histo = self._search_col_row_from_xy(df_histo, grid)
         return df_histo
 
-    def to_shapefile(
+    def to_geodataframe(
         self,
-        filename='histo.gpkg',
         epsg=27572,
         fill_coords=False,
-        grid=None
+        grid=None,
+        export_file=None
     ):
         """ Export a MartHisto object to shapefile/geopackage
 
         Parameters
         ----------
-        filename : str, optional
-            the name of the file to be written, by default 'histo.gpkg'
         epsg : int, optional
             EPSG code to set CRS, by default 27572
         fill_coords : bool, optional
@@ -180,21 +178,32 @@ class MartHisto(pd.DataFrame):
         grid : xarray.Dataset, optional
             marthe grid dataset, with col/rows variables, by default None.
             Used if `fill_coords=True`
+        export_file : str, optional
+            If set, the function will directly write GeoDataFrame to disk.
+            This is the name of the file to be written, by default None (no
+            file written). The extension determine the type of file to be
+            written (e.g. 'histo.shp' will write a shapefile, whereas 'histo.gpkg'
+            will write a geopackage).
         """
         import geopandas as gpd  # noqa: ICN002
         df = self.copy()
+
         if fill_coords:
             assert grid is not None, (
                 'Please provide a permh grid file, with columns and rows, '
                 'grid to fill coordinates.'
             )
             df = self.fill_coordinates_from_grid(grid)
+
         gdf = gpd.GeoDataFrame(
             df,
             geometry=gpd.points_from_xy(df['x'].values, df['y'].values, crs=epsg)
         )
-        gdf.to_file(filename, driver='GPKG')
-        return
+
+        if export_file is not None:
+            gdf.to_file(export_file, driver='GPKG')
+
+        return gdf
 
     @classmethod
     def from_histo_file(self, filename, encoding='ISO-8859-1', verbose=False):
