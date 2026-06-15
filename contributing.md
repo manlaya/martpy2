@@ -111,42 +111,58 @@ using [Conventional Commits specifications](https://www.conventionalcommits.org/
 
 | Commit prefix | Description |
 | --------------|------------ |
-|   **fix:**    |   fix for runtime crash or incorrect result *(correlated with patch in semver)*  |
-|   **add:** or **feat:** | new functionality, correlated with *(correlated with minor in semver)* |
-|   **doc:**    | documentation change |
-|   **change:** | code change (e.g. change of default value, change of algorithm, etc.) |
+|  **fix:**     |   fix for runtime crash or incorrect result *(correlated with patch in semver)*  |
+|  **feat:** or **add:** | new functionality, correlated with *(correlated with minor in semver)* |
+|  **change:**  | code change (e.g. change of default value, change of algorithm, etc.) |
 | **refactor:** | code refactoring |
-|   **style:**  | coding style / Non-functional format/style changes only |
-|   **test:**   | New tests, corrections to existing tests, test refactors |
-|   **perf:**   | Performance improvements |
-|   **build:**  | build system change |
-|   **ci:**     | continuous integration pipelines / GitlabCI related changes |
-|   **dev:** or **WIP:** |  work in progress (not ready for merge) |
-|   **revert:** | Revert a previous commit — the commit message should identify the hash of the commit being reverted |
-
-Additional information can be added after the prefix, separated by a parenthesis and a space.
-For example:
-`feat(cli): new cli entry point for XXXXX`.
-
-Breaking changes can use an exclamation mark:
-`change!: optim values are now stored in XXXX`.
-This also should lead to major semver change.
-
-This will be used to feed the changelog, following [keepachangelog.com](https://keepachangelog.com/en/1.1.0/)
-and possibly (future?) using [git-cliff](https://git-cliff.org).
+|  **style:**   | coding style / Non-functional format/style changes only |
+|  **test:**    | New tests, corrections to existing tests, test refactors |
+|  **doc:**     | documentation change |
+|  **perf:**    | Performance improvements |
+|  **build:**   | build system change |
+|  **ci:**      | continuous integration pipelines / GitlabCI related changes |
+|  **dev:** or **wip:** |  work in progress (not ready for merge) |
+|  **revert:**  | Revert a previous commit — the commit message should identify the hash of the commit being reverted |
+|  **chore:**   | miscellaneous changes that don't fit into the other categories (e.g. bump version) |
 
 
-When fixing a bug, or working on a specific issue, the commit message should include the issue number.
-For example:
-`fix: bug #12` (minimal)
+Commit message template:
+```
+<type>(optional scope)[!]: <subject>
 
-or (multiline message)
+[Optional body]
+
+[Optional footer(s)]
+```
+
+Additional guidelines:
+- **Breaking** changes can use an exclamation mark:
+  `change!: optim values are now stored in XXXX`.
+  This also should lead to major semver change.
+- Use the imperative mood in the subject line ("fix", not "fixed" or "fixes").
+- optional scope can be added after the prefix, separated by a parenthesis.
+  For example: `feat(cli): new cli entry point for XXXXX`.
+- When fixing a bug, or working on a specific issue, the commit message should
+  include the issue number. For example: subject line: `fix: bug #12` ; and/or end in
+  the optional footer with `Closes #12` or `Fixes #12`.
+  This will allow to automatically close the issue when merging the commit.
+  See [closing issues via commit messages](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
+  for more details.
+- Include co-authors in the footer if needed, using the `Co-authored-by: name <email>` syntax.
+
+All these rules will be used to feed the changelog, following
+[keepachangelog.com](https://keepachangelog.com/en/1.1.0/)
+and possibly using [git-cliff](https://git-cliff.org).
+
+
+Example of full commit message:
 ```
 fix: parsing value in XXX #12
 
 Message details
 Line 2
 
+Co-authored-by: Toto <toto@toto.com>
 Closes #12
 ```
 

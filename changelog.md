@@ -6,7 +6,44 @@ Use : https://keepachangelog.com/en/1.0.0/ for syntax
 Use : https://semver.org/ for versioning strategy
 -->
 
-<!-- ## [unreleased] -->
+## [unreleased]
+
+### Changed
+
+- Change: harmonize MARTHE variable names across histo and parameter files ([#8](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/8))
+- Change: harmonize class names (Marthe --> Mart)  ([#22](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/22))
+- Change: `MartTimeSteps` methods `remove_times` and `slice_times` now return a
+  copy instead of inplace modifications
+- Change: drop support for python 3.10. New minimal requirement is python 3.11,
+  following `gridmarthe` library requirements (v0.4.0)
+- Change: `MartHisto.to_shapefile` is renamed to `MartHisto.to_geodataframe` ; the method
+  now returns a GeoDataFrame object, and only write to disk if asked for.
+
+### Added
+
+- Add: parser/writer for fracture files (fract/liais files)  ([#14](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/14))
+- Add: support for writing parameters as external files (modin) ([#16](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/16))
+- Add: helper functions for legacy bln files
+- Add: remove_action function in `MartTimeSteps`  ([!7](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/merge_requests/7))
+- Add: better support for datetime and str query over times in `MartTimeSteps` `methods  ([#29](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/29))
+- Add: attribute `MartTimeSteps` to store the file path, and automatic use when writing file ([#27](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/27))
+- Add: check/remove duplicate actions in `MartTimeSteps` ([#17](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/17))
+
+### Fixed
+
+- Fix: bug in remove_times, slice_times which removed all actions [#28](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/issues/28)
+- Fix: external transient file not parsed in pastp, mart, modin ([#31](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/31))
+- Fix: bug when reading parameter file with FLAGS  ([#25](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/25))
+- Fix: creating a `MartModel` with a `Path` object  ([#24](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/24))
+- Fix: `MartTimeSteps.add_times()` now accepted inserting times before original
+  steps, and sort them. See [!9](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/merge_requests/9)
+- Fix: Timestep parsing if time is int
+
+### Tests
+
+- Test: add coverage options
+
+
 
 ## [0.1.0] - 2026-05-06
 
