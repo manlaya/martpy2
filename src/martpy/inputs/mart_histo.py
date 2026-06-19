@@ -364,10 +364,15 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False,
 
 def _set_histo_df_dtype(data):
     data = data.copy()
-    # assert cols are present, then set dtype
+    # assert cols are present, then set dtype.
+    # Fill absent columns with np.nan (not pd.NA): np.nan casts both to numpy
+    # float (x/y -> NaN) and to Int64 (col/row -> <NA>), whereas pd.NA cannot be
+    # cast to a numpy float -> TypeError when the .histo is grid-only (no X/Y).
+    # x/y must stay numpy float64 because np.isnan / fill_coordinates_from_grid
+    # rely on it (issue #32).
     for x in ['X', 'Y', 'C', 'L']:
         if x not in data.columns:
-            data[x] = pd.NA
+            data[x] = np.nan
     # data = data.fillna(np.nan)  # assert no 'None'
     data = data.rename({
         'X': 'x',
