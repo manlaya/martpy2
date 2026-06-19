@@ -209,6 +209,32 @@ def test_writer_roundtrip_preserves_variable():
         'variable column must survive read->write->read unchanged'
 
 
+def test_read_grid_only_histo():
+    """Issue #32: a .histo with only grid-mode observations (col/row, no X/Y)
+    must read without raising.
+
+    The absent x/y columns must stay numpy float64 with NaN (not pd.NA / Float64),
+    because np.isnan and fill_coordinates_from_grid rely on numpy floats.
+    """
+    histo = read_histo_file('./tests/data/histo/grid_only.histo')
+
+    assert len(histo) == 2, 'Error while reading grid-only histo file'
+    # grid coordinates are parsed correctly
+    assert histo['col'].tolist() == [12, 5], 'wrong col in grid-only histo'
+    assert histo['row'].tolist() == [34, 6], 'wrong row in grid-only histo'
+    assert histo['layer'].tolist() == [1, 2], 'wrong layer in grid-only histo'
+
+    # x/y are absent -> NaN, and must stay numpy float64 (Option A)
+    assert histo['x'].dtype == np.float64, 'x must be numpy float64'
+    assert histo['y'].dtype == np.float64, 'y must be numpy float64'
+    assert np.all(np.isnan(histo['x'])), 'x must be NaN for grid-only histo'
+    assert np.all(np.isnan(histo['y'])), 'y must be NaN for grid-only histo'
+
+    # col/row stay nullable Int64
+    assert isinstance(histo['col'].dtype, pd.Int64Dtype), 'col must be Int64'
+    assert isinstance(histo['row'].dtype, pd.Int64Dtype), 'row must be Int64'
+
+
 def test_read_histo_uk():
     histo = read_histo_file('./tests/data/mart_uk/mart_uk_files.histo')
     assert len(histo) == 3, 'Error while reading histo file'
