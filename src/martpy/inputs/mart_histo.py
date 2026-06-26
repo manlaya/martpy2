@@ -9,20 +9,23 @@ import pandas as pd
 from martpy.inputs._io_utils import _build_header, _fmt_nchar
 from martpy.utils.helper import from_histo_varname, to_histo_varname
 
+# TODO: use mart.utils.constant._FLOAT_PATTERN instead ?
+#       could also add entropy to this hell
 
-_HISTO_PARSER = (
-    r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*'
-    r'/(?P<mode>[A-Za-z]+):'
-    r'(?P<coord_x>[A-Za-z]+)=\s*'
-    r'(?P<x>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'  # float,int,pos-neg parsing,e+- allowed
+_HISTO_PATTERNS = (
+    r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*',
+    r'/(?P<mode>[A-Za-z]+):',
+    r'(?P<coord_x>[A-Za-z]+)=\s*',
+    r'(?P<x>[+-]?\d+(?:\.\d+)?(?:e[+-]?\d+)?),*',  # float,int,pos-neg parsing,e+- allowed
     # https://stackoverflow.com/questions/2124010/grep-regex-to-match-non-ascii-characters
-    r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'  # Marthe f****** non ASCII char!
-    r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
-    r'(?:[P|L]=\s*(?P<layer>\d+);)?\s*'   # optional if tronc/afl, L in english
-    r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
-    r'(?:Name=(?P<name>[^ ]+))?'
-    r'(?P<name_old>[^\s;]+)?'  # get name, even if "Name=" is not here (marthe<v7.8)
+    r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*',   # Marthe f****** non ASCII char!
+    r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]?\d+)?),*',
+    r'(?:[P|L]=\s*(?P<layer>\d+);)?\s*',          # optional if tronc/afl, L in english
+    r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*',
+    r'(?:Name=(?P<name>[^;\n]+))?',
+    r'(?P<name_old>[^;\n]+)?',  # get name, even if "Name=" is not here (marthe<v7.8)
 )  # one hell of a regex
+_HISTO_PARSER = ''.join(_HISTO_PATTERNS)
 
 
 class MartHisto(pd.DataFrame):
@@ -57,7 +60,7 @@ class MartHisto(pd.DataFrame):
         row=None,
         layer=None
     ):
-        pass
+        raise NotImplementedError
 
     def write_file(
         self,

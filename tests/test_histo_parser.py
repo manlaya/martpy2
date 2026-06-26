@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import io
+from unittest.mock import patch
+
 import numpy as np
 import pandas as pd
 
 from martpy.inputs.mart_histo import (
+    _HISTO_PATTERNS,
+    _HISTO_PARSER,
     MartHisto,
     read_histo_file
 )
 from martpy.inputs._io_utils import _fmt_nchar
 
 
-HISTO_FILE_READ = './tests/data/mart_hallue/hallue_with_afluent.histo'
+HISTO_FILE_READ = './tests/data/histo/hallue_with_afluent.histo'
 HISTO_FILE = './tests/data/mart_hallue/hallue.histo'
 # histo_file = './tests/data/mart_72/Craie_NPC.histo'
 # histo_file = './tests/data/mart_74/craie_npc_with_obs_messy.histo'
@@ -24,19 +29,24 @@ def debug_regex():
     # xfile = 'tests/data/mart_uk/mart_uk_files.histo'
 
     # copy from src/martpy/inputs/mart_histo.py
-    _HISTO_PARSER = (
-        r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*'
-        r'/(?P<mode>[A-Za-z]+):'
-        r'(?P<coord_x>[A-Za-z]+)=\s*'
-        r'(?P<x>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'  # float,int,pos-neg parsing,e+- allowed
+    # keep it here for dev purpose
+    _HISTO_PATTERNS = (
+        r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*',
+        r'/(?P<mode>[A-Za-z]+):',
+        r'(?P<coord_x>[A-Za-z]+)=\s*',
+        r'(?P<x>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*',  # float,int,pos-neg parsing,e+- allowed
         # https://stackoverflow.com/questions/2124010/grep-regex-to-match-non-ascii-characters
-        r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'  # Marthe f****** non ASCII char!
-        r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
-        r'(?:[P|L]=\s*(?P<layer>\d+);)?\s*'   # optional if tronc/afl, L in english
-        r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
-        r'(?:Name=(?P<name>[^ ]+))?'
-        r'(?P<name_old>[^\s;]+)?'  # get name, even if "Name=" is not here (marthe<v7.8)
+        r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*',   # Marthe f****** non ASCII char!
+        r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*',
+        r'(?:[P|L]=\s*(?P<layer>\d+);)?\s*',          # optional if tronc/afl, L in english
+        r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*',
+        r'(?:Name=(?P<name>[^;\n]+))?',
+        r'(?P<name_old>[^;\n]+)?',                    # get name, even if "Name=" is not here (marthe<v7.8)
     )  # one hell of a regex
+    _HISTO_PARSER = ''.join(_HISTO_PATTERNS)  # re.compile?
+    regx = []
+    for i, r in enumerate(_HISTO_PATTERNS):
+        regx.append(''.join(_HISTO_PATTERNS[0:i+1]))
 
     with open(xfile, mode='r', encoding='ISO-8859-1') as f:
         histo = [line.rstrip() for line in f if '/HISTO/' in line]
@@ -46,28 +56,11 @@ def debug_regex():
         if m:
             res = m.groupdict()
         else:
-            # for the debugger (go line by line here)
-            reg1 = r'^\s*(?P<id_grid>\d*)/(?P<variable>\w+)\s*/HISTO/\s*=\s*'
-            reg2 = reg1 + r'/(?P<mode>[A-Za-z]+):'
-            reg3 = reg2 + r'(?P<coord_x>[A-Za-z]+)=\s*'
-            reg4 = reg3 + r'(?P<x>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
-            reg5 = reg4 + r'(?P<coord_y>[A-Za-z]+[^\x00-\x7F]?)=\s*'
-            reg6 = reg5 + r'(?P<y>[+-]?\d+(?:\.\d+)?(?:e[+-]\d+)?),*'
-            reg7 = reg6 + r'(?:[P|L]=\s*(?P<layer>\d+);)?\s*'
-            reg8 = reg7 + r'(?:Col_Obs=(?P<obs>[^ ]+)\s*;)?\s*'
-            reg9 = reg8 + r'(?:Name=(?P<name>[^ ]+))?'
-            reg10 = reg9+ r'(?P<name_old>[^\s;]+)?'
-            re.search(reg1, line).groupdict()
-            re.search(reg2, line).groupdict()
-            re.search(reg3, line).groupdict()
-            re.search(reg4, line).groupdict()
-            re.search(reg5, line).groupdict()
-            re.search(reg6, line).groupdict()
-            re.search(reg7, line).groupdict()
-            re.search(reg8, line).groupdict()
-            re.search(reg9, line).groupdict()
-            re.search(reg10, line).groupdict()
             raise ValueError('No match found in histo file')
+
+        # for the debugger (go line by line here)
+        for reg in regx:
+            print(re.search(reg, line).groupdict())
 
 
 def test_fmt_xchar():
@@ -97,10 +90,35 @@ def test_reader():
     assert histo['name'].iloc[0] == '00464X0013/H1', 'Error while reading histo file, wrong name'
     assert histo['x'].iloc[0] == 611.62, 'Error while reading histo file, wrong x'
     assert histo['y'].iloc[0] == 2560.0, 'Error while reading histo file, wrong y'
+
     assert histo['col'].iloc[-2] == 22, 'Error while reading histo file, wrong col'
     assert histo['row'].iloc[-2] == 40, 'Error while reading histo file, wrong row'
+    assert histo['name'].iloc[-3] == 'E6397010', 'Error while reading histo file, wrong name'
+
     assert histo['mode'].iloc[-1] == 'AFFL', 'Error while reading histo file, wrong mode'
     assert histo['river_cell'].iloc[-1] == 1, 'Error while reading histo file, wrong mode'
+
+    assert histo['obs'][0] == 1
+    assert pd.isna(histo['obs'][1])
+
+    assert np.all(np.isin(['charge', 'debit_rivi'] , np.unique(histo['variable'])))
+    assert np.all(np.isin(['XCOO', 'COOR', 'MAIL', 'AFFL'] , np.unique(histo['mode'])))
+
+
+def test_name_fmt():
+    test_str_histo = """Modélisation du bassin de la Somme en régime transitoire
+    #<V7.8.4># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+    /Charge       /HISTO/   =   /XCOO:X= 617.43Y= 2558.7P=      1; Name=00471X0010/H1
+    /Charge       /HISTO/   =   /XCOO:X= 617.43Y= 2558.7P=      1; 00471X0010/H1
+    /Charge       /HISTO/   =   /XCOO:X= 617.43Y= 2558.7P=      1; Name=00471X0010 H1
+    *** Fin du fichier des 'Mailles à Historique'       ***
+    """
+    expected_name = '00471X0010/H1'
+    with patch('builtins.open', return_value=io.StringIO(test_str_histo)):
+        result = read_histo_file('dummy.histo')  # fake path with mock.patch
+        assert result['name'][0] == expected_name
+        assert result['name'][1] == expected_name
+        assert result['name'][2] == expected_name.replace('/', ' ')
 
 
 def test_writer():
