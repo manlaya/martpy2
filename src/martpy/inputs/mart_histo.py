@@ -100,16 +100,32 @@ class MartHisto(pd.DataFrame):
 
         df_histo = df.copy()
 
-        # treat only rows with missing coords - use pd.isna (not np.isnanà for Int64 NaN
+        # treat only rows with missing coords - use pd.isna (not np.isnan) for Int64 NaN
         df_histo_cells = df_histo.loc[pd.isna(df_histo[XCOL]) | pd.isna(df_histo[YCOL]), :]
-        # Get grid coords dataframe
-        _grid_loc = grid.to_dataframe()[['col', 'row', 'x', 'y']]
+        # Get grid coords dataframe. col/row are only present when the grid was
+        # read with add_col_row=True (see load_marthe_grid), so check explicitly
+        # to raise a clear error instead of a cryptic pandas KeyError.
+        grid_df = grid.to_dataframe()
+        missing_grid_cols = [c for c in ['col', 'row'] if c not in grid_df.columns]
+        if missing_grid_cols:
+            raise KeyError(
+                f"The grid is missing the column(s) {missing_grid_cols}. "
+                "Reload it with load_marthe_grid(..., add_col_row=True) so that "
+                "fill_coordinates_from_grid can map cells to coordinates."
+            )
+        # One row per cell: a multilayer grid repeats each (col, row, x, y) once
+        # per layer, which would otherwise duplicate the merged histo rows and
+        # break df.update (duplicate index labels).
+        _grid_loc = grid_df[['col', 'row', 'x', 'y']].drop_duplicates()
         # Merge to get coords
         df_histo_cells = df_histo_cells.reset_index().merge(
             _grid_loc, how='left', on=[JCOL1, JCOL2], suffixes=('', '_grid')
         ).set_index('index')
-        # replace columns
-        df_histo_cells = df_histo_cells.drop(columns=['x', 'y']).rename(
+        # Replace the stale XCOL/YCOL columns with the ones fetched from the grid.
+        # Drop XCOL/YCOL (not a hardcoded 'x','y'): in mode='cell' the columns to
+        # refresh are 'col'/'row', and dropping 'x','y' would leave duplicate
+        # 'col'/'row' labels that break df.update.
+        df_histo_cells = df_histo_cells.drop(columns=[XCOL, YCOL]).rename(
             {f'{XCOL}_grid': XCOL, f'{YCOL}_grid': YCOL}, axis=1
         )
         # return updated dataframe
