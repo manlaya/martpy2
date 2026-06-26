@@ -170,13 +170,7 @@ def test_get_xy_from_grid():
 
 
 def test_get_col_row_from_multilayer_grid():
-    """Regression: fill_coordinates_from_grid on a multilayer grid.
-
-    A multilayer grid repeats each (col, row, x, y) once per layer. The merge
-    used to duplicate the histo rows (duplicate index labels -> df.update
-    crash), and the mode='cell' branch dropped 'x','y' instead of 'col','row',
-    which left duplicate 'col'/'row' column labels. Both are fixed here.
-    """
+    """Regression: fill_coordinates_from_grid on a multilayer grid."""
     import xarray as xr
 
     # synthetic 2-cell, 2-layer grid: each (col, row, x, y) appears twice (z=1,2)
