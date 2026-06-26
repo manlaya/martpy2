@@ -67,8 +67,8 @@ def _parse_mart_file(mart_file, encoding='ISO-8859-1', verbose=False, lang=None)
         ...
         'initial_parameters': {
             'VARIABLE1': [
-                {'mode': 'ZONE', 'grid_id': 0, 'value': 1e2, 'zone': 2},
-                {'mode': 'ZONE', 'grid_id': 0, 'value': 1e2, 'zone': 3},
+                {'mode': 'ZONE', 'id_grid': 0, 'value': 1e2, 'zone': 2},
+                {'mode': 'ZONE', 'id_grid': 0, 'value': 1e2, 'zone': 3},
             ],
             ...
         }

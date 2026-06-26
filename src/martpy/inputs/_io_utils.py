@@ -115,7 +115,7 @@ def _parse_units_si(unit_line):
 def _parse_param_file_and_col(line):
     """ parse File= VALUE[; Col=INT] format
     """
-    pattern = r'File=\s*(?P<transient_file_path>\S+);?\s*(?:Col=\s*(?P<data_column_index>\d+))?'
+    pattern = r'File=\s*(?P<transient_file_path>[^;\s]+);?\s*(?:Col=\s*(?P<data_column_index>\d+))?'
     match = re.search(pattern, line)
     if match:
         res = match.groupdict()
@@ -170,7 +170,7 @@ def _parse_parameter_line(line, verbose=False):
 
         parsed_params[variable] = {
             'mode': mode,
-            'grid_id': int(grid) if grid != '' else 0
+            'id_grid': int(grid) if grid != '' else 0
         }
 
         if len(_groups) == 4:
@@ -311,20 +311,28 @@ def _build_parameter_line(variable, action, **kwargs):
     """
     action, variable = action.upper(), variable.upper()  # force uppercase
     _check_mart_key(variable)  # assert is a valid marthe variable
-    var_type = '/{0}/{1}'.format(variable, action)
+
+    # memo: in most case, line start with two space; but in case of nested
+    # grids, it starts with space and id_grid. Deal with first space as
+    # and id grid for general case
+    id_grid = kwargs.get('id_grid', 0)
+    if id_grid == 0:
+        id_grid = ' '
+
+    var_type = '{0}/{1}/{2}'.format(id_grid, variable, action)
     kwargs = _format_params_for_writer(kwargs)
 
     # Case we have a time serie file after a modification
     # this does not concern actions with file required
     filename = kwargs.get('transient_file_path', '')
-    if filename and action not in ['FICH_METE', 'GRILLE', 'FICHIER', 'LIST_MAIL']:
+    if filename != '' and action not in ['FICH_METE', 'GRILLE', 'FICHIER', 'LIST_MAIL']:
         filename =' File= {0}'.format(filename)
 
     # Case we select a specific column in a tabular time serie file
     file_col = kwargs.get('data_column_index', '')
-    if file_col and int(file_col) == 1:
-        file_col = ''
-    elif file_col and int(file_col) > 1:
+    if file_col != '' and int(file_col) == 1:
+        file_col = ''  # force to remove file_col, useless with (default) = 1
+    elif file_col != '' and int(file_col) > 1:
         file_col = '; Col={0}'.format(file_col)
 
     if action == 'EDITION':
@@ -346,11 +354,11 @@ def _build_parameter_line(variable, action, **kwargs):
             opts = _filter_valid_opt_list_mail(kwargs.get('opt_list_mail', []))
             opts = _format_opt_list_mail(opts)
             option_str = '{0} {1}'.format(option_str, ' '.join(opts))
-        elif action in ['COUCHE', 'MAILLE', 'TRONCON', \
+        elif action in ['ACTION', 'COUCHE', 'MAILLE', 'TRONCON', \
                         'ZONE_GEO', 'ZONE_METEO', 'ZONE_SOL', 'ZONEP']:
             option_str = '{0}{1}{2}'.format(option_str, filename, file_col)
 
-    return '  {0:25}{1}'.format(var_type, option_str)
+    return ' {0:26}{1}'.format(var_type, option_str)
 
 
 def _build_parameter_block(dict_param, write_ext_files=False, mode='str', **kwargs):

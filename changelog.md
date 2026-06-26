@@ -21,6 +21,8 @@ Use : https://semver.org/ for versioning strategy
 - Time dimension is harmonized across objects: 'time' keyword is used in gridmarthe
   as in netcdf standard, and timesteps; 'date' is renamed 'time' in outputs reader.
   See ([#34](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/34))
+- keyword 'grid_id' in marthe parameters (.mart,.pastp,.modin) is rename to 'id_grid'
+  for consistency with MartHisto (.histo)
 
 ### Added
 
@@ -41,6 +43,8 @@ Use : https://semver.org/ for versioning strategy
 - Fix: `MartTimeSteps.add_times()` now accepted inserting times before original
   steps, and sort them. See [!9](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/merge_requests/9)
 - Fix: Timestep parsing if time is int
+- Fix: different bugs when writing Marthe parameters (.mart, .pastp, .modin) ([#35](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/issues/35))
+
 
 ### Tests
 
