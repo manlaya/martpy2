@@ -187,6 +187,53 @@ def test_get_xy_from_grid():
     assert not np.any(pd.isna(histo2.row)), 'Error while getting row from grid'
 
 
+def test_get_col_row_from_multilayer_grid():
+    """Regression: fill_coordinates_from_grid on a multilayer grid."""
+    import xarray as xr
+
+    # synthetic 2-cell, 2-layer grid: each (col, row, x, y) appears twice (z=1,2)
+    grid = xr.Dataset({
+        'col': ('zone', [1, 2, 1, 2]),
+        'row': ('zone', [1, 1, 1, 1]),
+        'x': ('zone', [10.0, 20.0, 10.0, 20.0]),
+        'y': ('zone', [5.0, 5.0, 5.0, 5.0]),
+        'z': ('zone', [1, 1, 2, 2]),
+    })
+
+    # XCOO points on the two cell centres, with col/row missing (to be filled)
+    df = pd.DataFrame({
+        'id_grid': [0, 0],
+        'variable': ['charge', 'charge'],
+        'mode': ['XCOO', 'XCOO'],
+        'x': [10.0, 20.0],
+        'y': [5.0, 5.0],
+        'col': pd.array([pd.NA, pd.NA], dtype='Int64'),
+        'row': pd.array([pd.NA, pd.NA], dtype='Int64'),
+        'layer': [1, 1],
+        'name': ['p1', 'p2'],
+    })
+    histo = MartHisto(df)
+
+    filled = histo.fill_coordinates_from_grid(grid)
+
+    assert len(filled) == len(histo), 'multilayer grid duplicated histo rows'
+    assert filled['col'].tolist() == [1, 2], 'col not filled from multilayer grid'
+    assert filled['row'].tolist() == [1, 1], 'row not filled from multilayer grid'
+
+
+def test_fill_coordinates_grid_without_col_row_raises():
+    """A grid read without add_col_row=True must raise a clear error."""
+    import pytest
+
+    from martpy import grid as mgrid
+
+    histo = read_histo_file(HISTO_FILE)
+    # add_col_row defaults to False -> grid has no col/row columns
+    grid = mgrid.load_marthe_grid('./tests/data/mart_hallue/hallue.permh')
+    with pytest.raises(KeyError, match='add_col_row=True'):
+        histo.fill_coordinates_from_grid(grid)
+
+
 def test_reader_normalizes_variable_column():
     """Issue #8: variable column is normalized to lowercase generic names."""
     histo = read_histo_file(HISTO_FILE)
