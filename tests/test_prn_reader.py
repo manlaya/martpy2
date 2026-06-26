@@ -38,7 +38,7 @@ class TestReaderPrn(unittest.TestCase):
         )
         self.assertIsInstance(result, pd.DataFrame)
         self.assertGreater(len(result), 0)
-        self.assertIn('date', result.index.names)
+        self.assertIn('time', result.index.names)
         self.assertIn('variable', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
@@ -52,7 +52,7 @@ class TestReaderPrn(unittest.TestCase):
         )
         self.assertIsInstance(result, pd.DataFrame)
         self.assertGreater(len(result), 0)
-        self.assertIn('date', result.index.names)
+        self.assertIn('time', result.index.names)
         self.assertIn('variable', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
@@ -70,7 +70,7 @@ class TestReaderPrn(unittest.TestCase):
         )
         self.assertIsInstance(result, pd.DataFrame)
         self.assertGreater(len(result), 0)
-        self.assertIn('date', result.index.names)
+        self.assertIn('time', result.index.names)
         self.assertIn('variable', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
@@ -84,7 +84,7 @@ class TestReaderPrn(unittest.TestCase):
         )
         self.assertIsInstance(result, pd.DataFrame)
         self.assertGreater(len(result), 0)
-        self.assertIn('date', result.index.names)
+        self.assertIn('time', result.index.names)
         self.assertIn('variable', result.columns.names)
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
@@ -99,7 +99,7 @@ class TestReaderPrn(unittest.TestCase):
             normalize_headers=False
         )
         self.assertIsInstance(res, pd.DataFrame)
-        self.assertIn('date', res.index.names)
+        self.assertIn('time', res.index.names)
         self.assertIn('zone', res.index.names)
         self.assertIn('Entr_Limit', res.columns)
         self.assertIn('Nombre_Suintem', res.columns)
@@ -113,7 +113,7 @@ class TestReaderPrn(unittest.TestCase):
             add_multiindex=False
         )
         self.assertIsInstance(res, pd.DataFrame)
-        self.assertIn('date', res.index.names)
+        self.assertIn('time', res.index.names)
         self.assertNotIn('zone', res.index.names)
         self.assertTrue(np.all(res.dtypes == 'float64'))
         self.assertTrue(res.index.dtype == '<M8[ns]')
@@ -124,7 +124,7 @@ class TestReaderPrn(unittest.TestCase):
             normalize_headers=False
         )
         self.assertIsInstance(res, pd.DataFrame)
-        self.assertIn('date', res.index.names)
+        self.assertIn('time', res.index.names)
         self.assertIn('zone', res.index.names)
         self.assertIn('Glob_Riv_Nappe', res.columns)
         self.assertNotIn('Glob_Riv-Nappe', res.columns)  # mind the separator, check rename is done
@@ -149,7 +149,7 @@ class TestReaderPrn(unittest.TestCase):
                 normalize_headers=False
             )
             self.assertIsInstance(res, pd.DataFrame)
-            self.assertIn('date', res.index.names)
+            self.assertIn('time', res.index.names)
             self.assertGreater(len(res), 0)
             self.assertTrue(np.all(res.dtypes == 'float64'))
 
@@ -159,7 +159,7 @@ class TestReaderPrn(unittest.TestCase):
             normalize_headers=False
         )
         self.assertIsInstance(res, pd.DataFrame)
-        self.assertIn('date', res.index.names)
+        self.assertIn('time', res.index.names)
         self.assertTrue(np.all(res.dtypes == 'float64'))
 
 

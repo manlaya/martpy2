@@ -69,7 +69,7 @@ def read_output_time_series(ts_file, normalize_headers=True, lang='fr'):
     df = df.dropna(how='all', axis=1)  # drop empty col at the end
     #rename columns levels and index
     df.columns = df.columns.rename(levels_name, level=[i-1 for i in headers])
-    df = df.rename_axis("date", axis=0)
+    df = df.rename_axis('time', axis=0)
     # remove int step col if present:
     df = df.loc[:,~df.columns.get_level_values(-1).str.match('.*<Date>')]
     if normalize_headers:
@@ -180,10 +180,10 @@ def read_output_water_balance(
             if normalize_headers:
                 df.columns = [_clean_prn_header(x) for x in df.columns]
                 # df.columns = df.columns.map(_clean_prn_header)  # avoid loop ?
-            df.index.name = 'date'
+            df.index.name = 'time'
             df = df.assign(zone=zone)
             df = df.set_index('zone', append=True)
-            df = df.reorder_levels(['zone', 'date'])
+            df = df.reorder_levels(['zone', 'time'])
             df = df.apply(pd.to_numeric, errors='coerce', axis=1)  # force numeric types
             df = df.dropna(how='all', axis=0).dropna(how='all', axis=1)  # coerce: non-num --> NaNs, drop here
             df_list.append(df)

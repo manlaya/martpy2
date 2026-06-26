@@ -18,6 +18,9 @@ Use : https://semver.org/ for versioning strategy
   following `gridmarthe` library requirements (v0.4.0)
 - Change: `MartHisto.to_shapefile` is renamed to `MartHisto.to_geodataframe` ; the method
   now returns a GeoDataFrame object, and only write to disk if asked for.
+- Time dimension is harmonized across objects: 'time' keyword is used in gridmarthe
+  as in netcdf standard, and timesteps; 'date' is renamed 'time' in outputs reader.
+  See ([#34](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/34))
 
 ### Added
 
