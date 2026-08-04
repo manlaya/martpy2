@@ -3,7 +3,9 @@
 
 import os, subprocess
 from glob import glob
+import xarray as xr
 from pathlib import Path
+import shutil
 
 from martpy.inputs._rma_parser import (
     MART_VARIABLES,
@@ -11,8 +13,15 @@ from martpy.inputs._rma_parser import (
     _write_rma_file,
 )
 from martpy.utils.os_utils import mv_res
+from martpy.utils.helper import get_mart_variables
 from martpy.outputs import read_prn
 
+from martpy.inputs import (
+    mart_histo,
+    mart_param,
+    mart_layer
+)
+from martpy.inputs.mart_histo import read_histo_file
 
 def read_rma_file(rma_file):
     """Shortcut function to create a MARTHE project.
@@ -194,9 +203,242 @@ class MartModel(MartProject):
         self.model_name = os.path.basename(_model_name)
         os.makedirs(self.model_path, exist_ok=True)
 
+        self._mart_histo = None
+        self._mart_layer = (None, None)
+        self._mart_params = None
+        self.outputs = {}
+        self.grid = None
+
+    def _load_var(self, varname, file):
+        """Loads a variable
+                
+        Parameters
+        ----------
+        varname : str
+            Variable name
+        file : str | Path
+            variable file
+        
+        """
+        # TODO : add other variable
+        absolute_path = Path(self.model_path) / file
+        if varname == 'HISTORIQ':
+            self._mart_histo = mart_histo.MartHisto.from_histo_file(
+                filename=str(absolute_path))
+        elif varname == 'PARAM':
+            self._mart_params = mart_param.MartParams.from_file(
+                mart_file=str(absolute_path))
+        elif varname == 'COUCHE':
+            self._mart_layer = mart_layer.read_layer(
+                file_layer=str(absolute_path))
+
+    def _load_grid(self, varname, file):
+        """Loads a single grid
+        
+        Parameters
+        ----------
+        varname : str
+            Variable name
+        file : str | Path
+            grid file
+
+        """
+        if isinstance(file, float):
+            zone_coord = self.grid['zone']
+            # create a new dataset where all values are the given value
+            ds = xr.Dataset.gm.from_float(zone_coord, file, varname)
+            
+        elif self.grid is None or varname not in self.grid.data_vars:
+            absolute_path = Path(self.model_path) / file
+            ds = xr.Dataset.gm.load_marthe_grid(filename=str(absolute_path))
+            if varname == 'PERMEAB':
+                ds = ds.gm.get_active_mask(
+                    varname.lower(),
+                    as_array=True,)
+        else:
+            return
+
+        self.grid = ds.gm.merge(self.grid, varname.lower())
+
     def load_model(self,):
-        # load .mart, .pastp, .layer, .permh
-        raise NotImplementedError
+        """Load .mart, .pastp, .layer files
+                
+        Returns
+        -------
+        None
+            Set internal properties (_mart_histo, _mart_layer etc.)
+        
+        """
+        # load .mart (mart_param from file), .pastp, .layer, .permh
+        mart_variables = get_mart_variables()
+        files = self.get_files()
+        for var, file in files.items():
+            serie = mart_variables.loc[mart_variables['ext'] == var, :]
+            if isinstance(file, str):
+                if serie['is_grid'].item():
+                    continue
+                self._load_var(serie['code_var_fr'].item(), file)
+            elif isinstance(file, float):
+                continue
+
+    def load_all_grid(self,):
+        """Load grid files from gridmarthe and set their dataset into grid
+
+        Returns
+        -------
+        None
+            Set internal property (grid)
+                
+        """
+        mart_variables = get_mart_variables()
+        files = self.get_files()
+        for varname, file in files.items():
+            serie = mart_variables.loc[mart_variables['ext'] == varname, :]
+            code_var = serie['code_var_fr'].item()
+            if not serie['is_grid'].item() :
+                continue
+            self._load_grid(code_var, file)
+
+    def load_outputs(self, path=None):
+        if path is None:
+            self.outputs = self.get_outputs()
+        else:
+            dir_path = Path(path)
+            self.outputs = self.get_outputs(str(dir_path.parent))
+
+    def get_da(self, varname):
+        """Get DataArray from var
+
+        Parameters
+        ----------
+        varname : str
+            Variable name to get from grid
+
+        Returns
+        -------
+        xr.DataArray
+            Returns a xarray Dataarray from var
+                
+        """
+        if self.grid is None:
+            return
+        elif varname.lower() in self.grid.data_vars:
+            return self.grid[varname.lower()]
+        return
+        
+    def set_value(self, zone, value, varname):
+        """Set a value in the dataset
+                        
+        Parameters
+        ----------
+        zone : int
+            zone number
+        value : float
+            value to be set in the zone
+        varname : str
+            variable name
+                
+        Returns
+        -------
+        bool
+            True if modified, otherwise False
+        """
+        if self.grid is None:
+            return False
+        elif varname.lower() in self.grid.data_vars:
+            result = self.grid.gm.set_value(zone, value, varname.lower())
+            if varname == 'permeab':
+                # case when permeab is modified, set ibound
+                self.grid = self.grid.gm.get_active_mask(
+                                    varname.lower(),
+                                    as_array=True,)
+            return result
+        return False
+
+    def to_marthe_grid(self, fileout, varname, from_z=0.0):
+        """Save the MartModel object to a marthe grid
+                        
+        Parameters
+        ----------
+        fileout : str
+            absolute path to save the file
+        varname : str
+            variable name
+        from_z : float
+            z dim
+                
+        Returns
+        -------
+        int
+            status
+        """
+        file_permh = self.model_path + "/" + self.get_files()['permh']
+        if not os.path.exists(file_permh):
+            raise FileNotFoundError(f"{file_permh} does not exists")
+        ds = self.grid
+        if 'z' in ds.data_vars and from_z in ds['z']:
+            ds.where(ds['z'] == from_z, drop=True)
+        # avoid errors from key
+        if varname.lower() not in ds.data_vars:
+            if varname.upper() not in ds.data_vars:
+                # raise Exception(f"{varname} not in Dataset")
+                print(f"{varname} not found")
+                return
+            else:
+                varname = varname.upper()
+        else:
+            varname = varname.lower()
+        return ds.gm.write_marthe_grid(fileout=fileout,
+                                       varname=varname,
+                                       file_permh=file_permh)
+
+    def to_config(self, fileout, varname):
+        if varname == 'HISTORIQ':
+            return self._mart_histo.write_file(fileout)
+        if varname == "PARAM":
+            return self._mart_params.write_file(fileout)
+        if varname == "COUCHE":
+            return # not implemented
+
+    def to_rma(self, fileout, from_z=0.0):
+        """Save the MartModel object to a .rma
+                        
+        Parameters
+        ----------
+        fileout : str
+            absolute path to save the file
+        from_z : float
+            z dim, if 0.0 no z dim selected
+                
+        Returns
+        -------
+        bool
+            True if saved otherwise False
+        """
+        mart_variables = get_mart_variables()
+        self.write_rma_file(fileout=fileout)
+        path = Path(fileout).parent
+
+        for ext, file in self.get_files().items():
+            serie = mart_variables.loc[mart_variables['ext'] == ext, :]
+            varname = serie['code_var_fr'].item()
+
+            if serie['is_grid'].item() and isinstance(file, str):
+                current_file = str(path / file)
+                if self.to_marthe_grid(fileout=current_file,
+                                    varname=varname,
+                                    from_z=from_z):
+                    raise Exception("Exception has occurred")
+
+            else:
+                current_file = str(path / file) if isinstance(file, str) else file
+                self.to_config(fileout=current_file,
+                               varname=varname,)
+        return True
+
+    def write_rma_file(self, fileout):
+        path = Path(fileout).with_suffix('.rma')
+        shutil.copy(self.rma_file, str(path))
 
     def get_outputs(self, output_dir=None):
         """ Load standard outputs from the model run
@@ -224,6 +466,12 @@ class MartModel(MartProject):
         for f in histobils:
             key = os.path.basename(f).replace('.prn', '')
             outputs[key] = read_prn(f)
+
+        out_files = glob(os.path.join(out_dir, '*.out'))
+        for f in out_files:
+            ds = xr.Dataset.gm.load_marthe_grid(filename=f)
+            key = list(ds.data_vars.keys())[0]
+            outputs[key] = ds
 
         return outputs
 
