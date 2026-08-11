@@ -232,7 +232,7 @@ class MartModel(MartProject):
             self._mart_layer = mart_layer.read_layer(
                 file_layer=str(absolute_path))
 
-    def _load_grid(self, varname, file):
+    def _load_grid(self, varname, file, **kwargs):
         """Loads a single grid
         
         Parameters
@@ -250,7 +250,7 @@ class MartModel(MartProject):
             
         elif self.grid is None or varname not in self.grid.data_vars:
             absolute_path = Path(self.model_path) / file
-            ds = xr.Dataset.gm.load_marthe_grid(filename=str(absolute_path))
+            ds = xr.Dataset.gm.load_marthe_grid(filename=str(absolute_path), **kwargs)
             if varname == 'PERMEAB':
                 ds = ds.gm.get_active_mask(
                     varname.lower(),
@@ -281,7 +281,7 @@ class MartModel(MartProject):
             elif isinstance(file, float):
                 continue
 
-    def load_all_grid(self,):
+    def load_all_grid(self, **kwargs):
         """Load grid files from gridmarthe and set their dataset into grid
 
         Returns
@@ -297,7 +297,7 @@ class MartModel(MartProject):
             code_var = serie['code_var_fr'].item()
             if not serie['is_grid'].item() :
                 continue
-            self._load_grid(code_var, file)
+            self._load_grid(code_var, file, **kwargs)
 
     def load_outputs(self, path=None):
         if path is None:
@@ -331,9 +331,9 @@ class MartModel(MartProject):
                         
         Parameters
         ----------
-        zone : int
+        zone : int | None
             zone number
-        value : float
+        value : float | np.ndarray
             value to be set in the zone
         varname : str
             variable name
@@ -345,6 +345,7 @@ class MartModel(MartProject):
         """
         if self.grid is None:
             return False
+        
         elif varname.lower() in self.grid.data_vars:
             result = self.grid.gm.set_value(zone, value, varname.lower())
             if varname == 'permeab':
@@ -469,7 +470,9 @@ class MartModel(MartProject):
 
         out_files = glob(os.path.join(out_dir, '*.out'))
         for f in out_files:
-            ds = xr.Dataset.gm.load_marthe_grid(filename=f)
+            fpastp = self.model_path+"/"+self.get_files()['pastp']
+            ds = xr.Dataset.gm.load_marthe_grid(filename=f, fpastp=fpastp,
+                                                add_id_grid=True)
             key = list(ds.data_vars.keys())[0]
             outputs[key] = ds
 

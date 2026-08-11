@@ -76,10 +76,7 @@ class MartGrid(object):
                 self.obj = self.obj.rename({varname_to_replace : varname})
 
             ds = xr.merge([self.obj, other_ds], join='outer', compat='no_conflicts')
-
-            if 'time' in ds.coords:
-                ds = ds.squeeze('time', drop=True) if ds.time.size == 1 else ds
-                # drop 'time' coord if 1-d
+        
             return ds
         except Exception as e:
             print(f"{e}")
@@ -90,9 +87,9 @@ class MartGrid(object):
                         
         Parameters
         ----------
-        zone : int
+        zone : int | None
             zone number
-        value : float
+        value : float | numpy.ndarray
             value to be set in the zone
         varname : str
             variable name
@@ -103,7 +100,12 @@ class MartGrid(object):
             True if modified, otherwise False
         """
         try:
-            self.obj[varname].loc[{'zone': zone}] = value
+            if isinstance(value, float) and zone is not None:
+                self.obj[varname].loc[{'zone': zone}] = value
+            elif isinstance(value, np.ndarray):
+                self.obj[varname].values = value
+            else:
+                return False
             return True
         except Exception as e:
             print(f"{e}")
@@ -154,7 +156,7 @@ class MartGrid(object):
     
     @wraps(gm.dropna)
     def dropna(self, varname='charge', nan_value=9999.):
-        return gm.dropna(self.obj, varname, nan_value)
+        return gm.dropna(ds=self.obj, nanval=nan_value, varname=varname)
     
     @wraps(gm.search_zone)
     def search_zone(self, i=None, j=None, x=None, y=None, z=None):
@@ -232,3 +234,7 @@ class MartGrid(object):
     @wraps(gm.load_marthe_grid)
     def load_marthe_grid(*args, **kwargs):
         return gm.load_marthe_grid(*args, **kwargs)
+
+    @wraps(gm.create_ugrid)
+    def create_ugrid(self, varname=None):
+        return gm.create_ugrid(self.obj, varname)

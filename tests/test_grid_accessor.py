@@ -54,11 +54,11 @@ def test_set_value():
     assert result
 
 def test_merge():
-    ds = grid.load_marthe_grid(FGRID, drop_nan=True)
+    ds = grid.load_marthe_grid(FGRID, drop_time=True)
 
     result = ds.gm.merge(ds, varname='permh')
 
-    assert 'permeab' in result.data_vars
+    assert 'permh' in result.data_vars
     assert 'time' not in result.coords
 
 def main():
