@@ -203,9 +203,9 @@ class MartModel(MartProject):
         self.model_name = os.path.basename(_model_name)
         os.makedirs(self.model_path, exist_ok=True)
 
-        self._mart_histo = None
-        self._mart_layer = (None, None)
-        self._mart_params = None
+        self.mart_histo = None
+        self.mart_layer = (None, None)
+        self.mart_params = None
         self.outputs = {}
         self.grid = None
 
@@ -218,18 +218,17 @@ class MartModel(MartProject):
             Variable name
         file : str | Path
             variable file
-        
         """
         # TODO : add other variable
         absolute_path = Path(self.model_path) / file
         if varname == 'HISTORIQ':
-            self._mart_histo = mart_histo.MartHisto.from_histo_file(
+            self.mart_histo = mart_histo.MartHisto.from_histo_file(
                 filename=str(absolute_path))
         elif varname == 'PARAM':
-            self._mart_params = mart_param.MartParams.from_file(
+            self.mart_params = mart_param.MartParams.from_file(
                 mart_file=str(absolute_path))
         elif varname == 'COUCHE':
-            self._mart_layer = mart_layer.read_layer(
+            self.mart_layer = mart_layer.read_layer(
                 file_layer=str(absolute_path))
 
     def _load_grid(self, varname, file, **kwargs):
@@ -299,12 +298,12 @@ class MartModel(MartProject):
                 continue
             self._load_grid(code_var, file, **kwargs)
 
-    def load_outputs(self, path=None):
+    def load_outputs(self, path=None, loading='all'):
         if path is None:
-            self.outputs = self.get_outputs()
+            self.outputs = self.get_outputs(loading=loading)
         else:
             dir_path = Path(path)
-            self.outputs = self.get_outputs(str(dir_path.parent))
+            self.outputs = self.get_outputs(str(dir_path.parent), loading)
 
     def get_da(self, varname):
         """Get DataArray from var
@@ -348,7 +347,7 @@ class MartModel(MartProject):
         
         elif varname.lower() in self.grid.data_vars:
             result = self.grid.gm.set_value(zone, value, varname.lower())
-            if varname == 'permeab':
+            if result and varname == 'permeab':
                 # case when permeab is modified, set ibound
                 self.grid = self.grid.gm.get_active_mask(
                                     varname.lower(),
@@ -395,11 +394,12 @@ class MartModel(MartProject):
 
     def to_config(self, fileout, varname):
         if varname == 'HISTORIQ':
-            return self._mart_histo.write_file(fileout)
+            return self.mart_histo.write_file(fileout)
         if varname == "PARAM":
-            return self._mart_params.write_file(fileout)
+            return self.mart_params.write_file(fileout)
         if varname == "COUCHE":
-            return # not implemented
+            return shutil.copy(self.model_path+"/"+self.get_files()['layer'],
+                               str(fileout))
 
     def to_rma(self, fileout, from_z=0.0):
         """Save the MartModel object to a .rma
@@ -435,46 +435,51 @@ class MartModel(MartProject):
                 current_file = str(path / file) if isinstance(file, str) else file
                 self.to_config(fileout=current_file,
                                varname=varname,)
+
         return True
 
     def write_rma_file(self, fileout):
         path = Path(fileout).with_suffix('.rma')
         shutil.copy(self.rma_file, str(path))
 
-    def get_outputs(self, output_dir=None):
+    def get_outputs(self, output_dir=None, loading='all'):
         """ Load standard outputs from the model run
 
         Parameters
         ----------
         output_dir : str, optional
             Directory where outputs are stored. If None, use model directory.
+        loading : str
+            Method should load 'all' outputs or only 'histo', 'out'
 
         Returns
         -------
         dict
             Dictionary containing loaded outputs (historiq, etc.)
-        """
+        """ # TODO : check loading value
         out_dir = output_dir if output_dir else self.model_path
         outputs = {}
 
-        # get time series
-        f_hist = os.path.join(out_dir, 'historiq.prn')
-        if os.path.exists(f_hist):
-            outputs['historiq'] = read_prn(f_hist)
+        if loading == 'all' or loading == 'histo':
+            # get time series
+            f_hist = os.path.join(out_dir, 'historiq.prn')
+            if os.path.exists(f_hist):
+                outputs['historiq'] = read_prn(f_hist)
 
-        # get balance files
-        histobils = glob(os.path.join(out_dir, 'histo[bil|clim]*.prn'))
-        for f in histobils:
-            key = os.path.basename(f).replace('.prn', '')
-            outputs[key] = read_prn(f)
+            # get balance files
+            histobils = glob(os.path.join(out_dir, 'histo[bil|clim]*.prn'))
+            for f in histobils:
+                key = os.path.basename(f).replace('.prn', '')
+                outputs[key] = read_prn(f)
 
-        out_files = glob(os.path.join(out_dir, '*.out'))
-        for f in out_files:
-            fpastp = self.model_path+"/"+self.get_files()['pastp']
-            ds = xr.Dataset.gm.load_marthe_grid(filename=f, fpastp=fpastp,
-                                                add_id_grid=True)
-            key = list(ds.data_vars.keys())[0]
-            outputs[key] = ds
+        if loading == 'all' or loading == 'out':
+            out_files = glob(os.path.join(out_dir, '*.out'))
+            for f in out_files:
+                fpastp = self.model_path+"/"+self.get_files()['pastp']
+                ds = xr.Dataset.gm.load_marthe_grid(filename=f, fpastp=fpastp,
+                                                    add_id_grid=True)
+                key = list(ds.data_vars.keys())[0]
+                outputs[key] = ds
 
         return outputs
 

@@ -55,10 +55,10 @@ def test_load_model():
 
     model.load_model()
 
-    assert model._mart_histo is not None # should have MartHisto object
-    assert model._mart_layer[0] is not None
-    assert model._mart_layer[1] is not None
-    assert model._mart_params is not None
+    assert model.mart_histo is not None # should have MartHisto object
+    assert model.mart_layer[0] is not None
+    assert model.mart_layer[1] is not None
+    assert model.mart_params is not None
 
 def test_load_all_grid():
     model = mart.MartModel(MODEL_FILE)
