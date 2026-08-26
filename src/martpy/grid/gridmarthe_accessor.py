@@ -44,10 +44,12 @@ class MartGrid(object):
         """
         ds = xr.Dataset(
         {
-            varname.lower(): (("zone"), np.full((len(zone)), value))
+            varname.lower(): (("time", "zone"), np.full((1, len(zone)), value))
             },
             coords={
+            "time": [0],
             "zone": zone
+
         })
         return ds
 

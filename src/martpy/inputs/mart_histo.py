@@ -114,7 +114,7 @@ class MartHisto(pd.DataFrame):
                 "Reload it with load_marthe_grid(..., add_col_row=True)."
             )
         # one row per cell (a multilayer grid repeats each cell per layer)
-        _grid_loc = grid_df[['col', 'row', 'x', 'y']].drop_duplicates()
+        _grid_loc = grid_df[['col', 'row', 'x', 'y']].drop_duplicates(subset=['col', 'row'])
         # Merge to get coords
         df_histo_cells = df_histo_cells.reset_index().merge(
             _grid_loc, how='left', on=[JCOL1, JCOL2], suffixes=('', '_grid')
@@ -137,8 +137,9 @@ class MartHisto(pd.DataFrame):
         for idx, row in df_histo_cells.to_dict('index').items():
             _grid_loc = grid.gm.search_zone(x=row['x'], y=row['y'])
             # get only first x,y; even if multilayer, it's the same coordinates
-            df_histo.loc[idx, 'col'] = _grid_loc['col'].data[0]
-            df_histo.loc[idx, 'row'] = _grid_loc['row'].data[0]
+            if _grid_loc['zone'].data is not None:
+                df_histo.loc[idx, 'col'] = _grid_loc['col'].data[0]
+                df_histo.loc[idx, 'row'] = _grid_loc['row'].data[0]
         return df_histo
 
     @staticmethod
