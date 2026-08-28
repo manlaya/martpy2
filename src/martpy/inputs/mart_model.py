@@ -439,8 +439,13 @@ class MartModel(MartProject):
         return True
 
     def write_rma_file(self, fileout):
-        path = Path(fileout).with_suffix('.rma')
-        shutil.copy(self.rma_file, str(path))
+        try:
+            path = Path(fileout).with_suffix('.rma')
+            shutil.copy(self.rma_file, str(path))
+        except shutil.SameFileError:
+            raise Exception(f"{fileout} and {self.rma_file} are the same, can not override current used file")
+        except:
+            raise Exception
 
     def get_outputs(self, output_dir=None, loading='all'):
         """ Load standard outputs from the model run
