@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import io
+from unittest.mock import patch
+
 from datetime import datetime
 from pathlib import Path
 import numpy as np
@@ -453,20 +456,30 @@ def test_remove_action_filter_by_kwargs():
     assert remaining[0].get('value') == 2, 'Error: wrong action was removed'
 
 
-def main():
-    print('Test MARTHE pastp reader')
-    test_parse_date_fmt()
-    test_read_pastp()
-    test_write_pastp()
-    test_wrapper_method()
-    test_add_action_with_istep()
-    test_add_times_inserts_chronologically()
-    test_add_times_warns_on_existing()
-    test_get_actions()
-    test_pastp_uk()
-    print('============')
-    print('Test success')
+def test_read_write_satur():
+    """ test_debug_satur_not_kept_at_write #37 """
+
+    pastp = """Fake pastp file
+ #<V7.8a># --- Fin du texte libre --- ; Ne pas modifier/retirer cette ligne
+ *** Début de la simulation    à la date : 31/12/1979 ; ***
+  /CHARGE/EDITION          I= 1;
+  /%SATURAT/EDITION        I= 1;
+ *** Le pas :    1: se termine à la date : 01/01/1980 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :    2: se termine à la date : 02/01/1980 ; ***
+  /*****/***** Fin de ce pas
+ *** Le pas :    3: se termine à la date : 03/01/1980 ; ***
+  /*****/***** Fin de ce pas
+"""
+    with patch('builtins.open', return_value=io.StringIO(pastp)):
+        times = MartTimeSteps.from_file(pastp)
+    actions = times.get_actions()['1979-12-31']
+    assert '%SATURAT' in actions
+    times.write_file('tests/data/tmp_outputs/satur_test.pastp')
+    times_rewrite = MartTimeSteps.from_file('tests/data/tmp_outputs/satur_test.pastp')
+    actions = times_rewrite.get_actions()['1979-12-31']
+    assert '%SATURAT' in actions
 
 
 if __name__ == "__main__":
-    main()
+    pytest.main([__file__, '-v', '--no-cov'])

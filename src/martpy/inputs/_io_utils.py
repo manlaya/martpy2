@@ -161,7 +161,8 @@ def _parse_parameter_line(line, verbose=False):
         pattern = r'^\s*(\d?)?/(\w+)/(\w+)/FIX=(\w+);.*$'
     else:
         # also deal with '/' in variable name, e.g. '/T_1/2_TARIS_1/ZONE_SOL'
-        pattern = r'^\s*(\d?)?/(\w+(?:/\w+)?)/(\w+)\s+.*$'
+        # and '%' or '-' in variable name, e.g. '%SATURAT' or 'TEMPER_RE-INJ'
+        pattern = r'^\s*(\d?)?/(%?\w+(?:[/-]\w+)?)/(\w+)\s+.*$'
 
     _match = re.search(pattern, line)
     if _match:
