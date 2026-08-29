@@ -1,32 +1,32 @@
+# -*- coding: utf-8 -*-
+
 import re
 import io
-import argparse
 import pandas as pd
 import xarray as xr
 
 
 def extract_layer_transfers(
-        marthe_file: str, netcdf_file: str = None
-) -> xr.Dataset or None:
+    marthe_file: str, netcdf_file: str = None
+) -> xr.Dataset | None:
     """Extract layer transfers from MARTHE "bilandeb.txt" file.
 
-    :Parameters:
+    Parameters
+    ----------
+    marthe_file : str
+        Path (including file name) to the MARTHE file containing the
+        layer transfers (typically named "bilandeb.txt").
+    netcdf_file : str, optional
+        Path (including file name with extension *.nc) to the netCDF
+        file in which to store the layer transfers. If not provided,
+        the layer transfers are returned as a `xarray.Dataset`.
 
-        marthe_file: `str`
-            Path (including file name) to the MARTHE file containing the
-            layer transfers (typically named "bilandeb.txt").
-
-        netcdf_file: `str`
-            Path (including file name with extension *.nc) to the netCDF
-            file in which to store the layer transfers. If not provided,
-            the layer transfers are returned as a `xarray.Dataset`.
-
-    :Returns:
-
-        `xarray.Dataset` or `None`
-            The dataset containing the layer transfers. If ``netcdf_file``
-            parameter is provided, `None` is returned and a netCDF file
-            containing the layer transfers is written instead.
+    Returns
+    -------
+    xarray.Dataset or None
+        The dataset containing the layer transfers. If ``netcdf_file``
+        parameter is provided, `None` is returned and a netCDF file
+        containing the layer transfers is written instead.
 
     """
     with open(marthe_file, 'r', encoding='cp1252') as f:
@@ -151,24 +151,3 @@ def extract_layer_transfers(
         ds.to_netcdf(netcdf_file)
     else:
         return ds
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='Extract layer transfers from MARTHE "bilandeb.txt" file'
-                    'to a netCDF file'
-    )
-
-    parser.add_argument(
-        'marthe_file', type=str,
-        help='MARTHE "bilandeb.txt" file to parse'
-    )
-
-    parser.add_argument(
-        'netcdf_file', type=str,
-        help='netCDF file to generate'
-    )
-
-    args = parser.parse_args()
-
-    extract_layer_transfers(args.marthe_file, args.netcdf_file)
