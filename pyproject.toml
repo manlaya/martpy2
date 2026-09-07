@@ -39,6 +39,9 @@ Repository = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/mar
 Changelog = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/blob/dev/changelog.md?ref_type=heads"
 # Documentation = ""
 
+[project.scripts]
+parsedeb = "martpy.scripts.parsedeb:main"
+
 [tool.setuptools_scm]
 version_file = "src/martpy/_version.py"
 # version_scheme = "calver-by-date"
