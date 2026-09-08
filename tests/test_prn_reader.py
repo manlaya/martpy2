@@ -43,7 +43,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
         self.assertTrue(np.all(result.dtypes == 'float64'))
-        self.assertTrue(result.index.dtype == '<M8[ns]')
+        self.assertTrue(np.issubdtype(result.index.dtype, np.datetime64))
 
     def test_read_ts_norm_headers(self):
         result = reader_prn.read_output_time_series(
@@ -57,7 +57,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('coords', result.columns.names)
         self.assertIn('name', result.columns.names)
         self.assertTrue(np.all(result.dtypes == 'float64'))
-        self.assertTrue(result.index.dtype == '<M8[ns]')
+        self.assertTrue(np.issubdtype(result.index.dtype, np.datetime64))
         heads = result.columns.get_level_values(0)
         self.assertTrue('charge' in heads)
         self.assertTrue('Charge' not in heads)
@@ -76,7 +76,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('name', result.columns.names)
         self.assertIn('riv_afluent', result.columns.names)
         self.assertTrue(np.all(result.dtypes == 'float64'))
-        self.assertTrue(result.index.dtype == '<M8[ns]')
+        self.assertTrue(np.issubdtype(result.index.dtype, np.datetime64))
 
     def test_read_time_serie_affl_gig(self,):
         result = reader_prn.read_output_time_series(
@@ -91,7 +91,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('grid', result.columns.names)
         self.assertIn('riv_afluent', result.columns.names)
         self.assertTrue(np.all(result.dtypes == 'float64'))
-        self.assertTrue(result.index.dtype == '<M8[ns]')
+        self.assertTrue(np.issubdtype(result.index.dtype, np.datetime64))
 
     def test_read_balance(self):
         res = reader_prn.read_output_water_balance(
@@ -104,7 +104,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('Entr_Limit', res.columns)
         self.assertIn('Nombre_Suintem', res.columns)
         self.assertTrue(np.all(res.dtypes == 'float64'))
-        self.assertTrue(res.index.get_level_values(1).dtype == '<M8[ns]')
+        self.assertTrue(np.issubdtype(res.index.get_level_values(1).dtype, np.datetime64))
 
     def test_read_balance_no_multiindex(self):
         res = reader_prn.read_output_water_balance(
@@ -116,7 +116,7 @@ class TestReaderPrn(unittest.TestCase):
         self.assertIn('time', res.index.names)
         self.assertNotIn('zone', res.index.names)
         self.assertTrue(np.all(res.dtypes == 'float64'))
-        self.assertTrue(res.index.dtype == '<M8[ns]')
+        self.assertTrue(np.issubdtype(res.index.dtype, np.datetime64))
 
     def test_read_balance_zone(self):
         res = reader_prn.read_output_water_balance(
@@ -131,7 +131,7 @@ class TestReaderPrn(unittest.TestCase):
         zone = res.index.get_level_values('zone').unique()
         self.assertIn('2', zone)
         self.assertTrue(np.all(res.dtypes == 'float64'))
-        self.assertTrue(res.index.get_level_values(1).dtype == '<M8[ns]')
+        self.assertTrue(np.issubdtype(res.index.get_level_values(1).dtype, np.datetime64))
 
     def test_read_bil_dra_lac(self):
         res = reader_prn.read_output_water_balance(
@@ -165,7 +165,7 @@ class TestReaderPrn(unittest.TestCase):
 
 if __name__ == '__main__':
 
-    # unittest.main()
+    unittest.main()
 
     # manual test for debug
     # test_file = './tests/data/mart_hallue/histobil_debit.prn'
