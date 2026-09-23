@@ -2,20 +2,19 @@
 # -*- coding: utf-8 -*-
 """
 Modules for Particle trajectories of a MARTHE run, and the capture zones.
-Author: Ranveer Kumar - BRGM-76130 MSA
 
 Reads the seeding file (.deptr) the marthe project points at and the trajmar.out,
-attributes every trajectory to its seeding point, and turns each
+attributes every trajectory to its seeding point (source/sinks), and turns each
 bundle of pathlines into a capture-zone polygon and a boolean mask.
 
     >>> import martpy as mart
     >>> prj = mart.read_rma_file('model.rma')
     >>> tr = mart.Trajectory.from_project(prj)     # trajmar.out next to the rma
     >>> tr.to_shape('paths.shp', kind='line')
-    >>> cz = tr.build_capture(method='envelope', offset_m=20.)
-    >>> cm = tr.build_mask()                        # native smallest gigogne) cell size
+    >>> cz = tr.build_capture(offset_m=20.)
+    >>> cm = tr.build_mask()                        # on the MARTHE cells themselves
     >>> cz.to_shape('capture.shp')
-    >>> cm.save_mask('capture_mask.npz')
+    >>> cm.save_mask('capture_mask.tmask')          # a MARTHE grid file
     >>> tr.plot(capture=True, cz_mask=True, color_by='z')
 
 The model is handled through martpy: the project gives the file paths,
@@ -26,23 +25,32 @@ martpy.outputs once they are wanted elsewhere:
     read_deptr    the .deptr seeding file (cell and X, Y, Z forms)
     read_trajmar  trajmar.out -- vertices, elevation, travel time, layer
 
+A note on the mask
+------------------
+The mask is built on the model's own cells rather than on a raster of the
+user's choosing: one boolean per cell of the main grid and of every gigogne,
+in every layer, marking the cells a particle path runs through.  It is
+written back as a MARTHE grid file (``.tmask``), so it reopens with
+:func:`martpy.grid.load_marthe_grid` like any other field of the model.
+
+
 A note on the group tag
 -----------------------
-MARTHE writes the `Group =` tag of a trajectory with a single digit if built through winmarthe,
-so with more than nine seeding points the tags wrap (1, 10, 11 ... all read 1).
-Trajectories are therefore attributed geometrically by default: MARTHE releases the N particles
-of a seeding point on the *circle* of radius R about it, so |d - R| ~ 0 is an
-unambiguous test.  `method='group'` trusts the tag, `method='auto'` trusts it
-only when it survives a consistency check.
+MARTHE writes the `Group =` tag of a trajectory with a single digit if built
+through WinMARTHE, so with more than nine seeding points the tags wrap (1, 10,
+11 ... all read 1).  Trajectories are therefore attributed geometrically by
+default: MARTHE releases the N particles of a seeding point on the *circle* of
+radius R about it, so |d - R| ~ 0 is an unambiguous test.  `method='group'`
+trusts the tag, `method='auto'` trusts it only when it survives a consistency
+check.
 
 Dependencies
 ---------------
 numpy
 pandas
-scipy
 shapely
 matplotlib
-contextily
+contextily -- handles the basemap during plotting
 geopandas
 """
 
@@ -172,7 +180,7 @@ def _seed_xy(seeds, grid):
 
 
 # --------------------------------------------------------------------------
-# trajmar.out -- the trajectories
+# trajmar.out -- handelling the trajectories dataset
 # --------------------------------------------------------------------------
 _GROUP = re.compile(r"Group\s*=\s*(\d+)", re.I)
 
@@ -195,7 +203,7 @@ def read_trajmar(path):
     n, cur, pending = 0, -1, False
     opener = gzip.open if str(path).endswith('.gz') else open
     with opener(path, 'rt', encoding='ISO-8859-1', errors='replace') as f:
-        f.readline()                                     
+        f.readline()                                     # file header
         for line in f:
             if line[:1] == '#':
                 if 'Group' in line:
@@ -271,133 +279,7 @@ def _assign(xy, start, seeds, method='auto', tol=1.0, groups=None):
 
 
 # --------------------------------------------------------------------------
-# a regular raster to delineate on
-# --------------------------------------------------------------------------
-class RasterGrid:
-    """North-up regular raster: row 0 is the northernmost row."""
-
-    def __init__(self, xmin, ymin, xmax, ymax, cellsize):
-        self.cellsize = float(cellsize)
-        self.ncol = int(np.ceil((xmax - xmin) / self.cellsize))
-        self.nrow = int(np.ceil((ymax - ymin) / self.cellsize))
-        self.xmin = float(xmin)
-        self.ymax = float(ymin + self.nrow * self.cellsize)
-
-    @property
-    def shape(self):
-        return (self.nrow, self.ncol)
-
-    def extent(self):
-        """(xmin, xmax, ymin, ymax) -- matplotlib imshow order."""
-        return (self.xmin, self.xmin + self.ncol * self.cellsize,
-                self.ymax - self.nrow * self.cellsize, self.ymax)
-
-    def to_rc(self, x, y):
-        col = np.floor((np.asarray(x) - self.xmin) / self.cellsize).astype(np.int64)
-        row = np.floor((self.ymax - np.asarray(y)) / self.cellsize).astype(np.int64)
-        return row, col
-
-    @property
-    def transform(self):
-        from rasterio.transform import from_origin
-        return from_origin(self.xmin, self.ymax, self.cellsize, self.cellsize)
-
-
-def _densify(xy, start, sel, step):
-    """Concatenated vertices of the selected paths, resampled every `step`."""
-    xs, ys = [], []
-    for k in sel:
-        p = xy[start[k]:start[k + 1]]
-        if len(p) < 2:
-            xs.append(p[:, 0])
-            ys.append(p[:, 1])
-            continue
-        seg = np.linalg.norm(np.diff(p, axis=0), axis=1)
-        nsub = np.maximum(1, np.ceil(seg / step).astype(np.int64))
-        for (x0, y0), (x1, y1), n in zip(p[:-1], p[1:], nsub, strict=True):
-            t = np.linspace(0.0, 1.0, n + 1)
-            xs.append(x0 + (x1 - x0) * t)
-            ys.append(y0 + (y1 - y0) * t)
-    if not xs:
-        return np.empty(0), np.empty(0)
-    return np.concatenate(xs), np.concatenate(ys)
-
-
-def _rasterize(grid, xy, start, sel):
-    """Raster cells the selected paths pass through."""
-    mask = np.zeros(grid.shape, dtype=bool)
-    x, y = _densify(xy, start, sel, grid.cellsize / 3.0)
-    if len(x) == 0:
-        return mask
-    r, c = grid.to_rc(x, y)
-    keep = (r >= 0) & (r < grid.nrow) & (c >= 0) & (c < grid.ncol)
-    mask[r[keep], c[keep]] = True
-    return mask
-
-
-def _disk(radius):
-    k = np.arange(-radius, radius + 1)
-    return (k[:, None] ** 2 + k[None, :] ** 2) <= radius ** 2
-
-
-def _close_zone(mask, close_cells=3, offset_cells=0):
-    """Traversed cells -> a solid envelope.
-
-    The closing bridges the gaps between neighbouring pathlines without
-    moving the outer boundary; the dilation is the only step that grows it.
-    """
-    from scipy import ndimage
-    out = mask
-    if close_cells:
-        out = ndimage.binary_closing(out, structure=_disk(close_cells))
-    out = ndimage.binary_fill_holes(out)
-    if offset_cells:
-        out = ndimage.binary_dilation(out, structure=_disk(offset_cells))
-        out = ndimage.binary_fill_holes(out)
-    return out
-
-
-def _mask_polygons(mask, grid, sigma=1.0, simplify=0.0, buffer=0.0):
-    """Smooth boundary of a binary zone: blur, then the 0.5 contour."""
-    from scipy import ndimage
-    from shapely.geometry import Polygon
-    from shapely.ops import unary_union
-    import matplotlib.pyplot as plt
-
-    if not np.any(mask):
-        return None
-    pad = int(np.ceil(3 * max(sigma, 1.0))) + 2
-    m = np.pad(np.asarray(mask, dtype=float), pad)
-    if sigma > 0:
-        m = ndimage.gaussian_filter(m, sigma)
-    nrow, ncol = m.shape
-    x = grid.xmin + (np.arange(ncol) - pad + 0.5) * grid.cellsize
-    y = grid.ymax - (np.arange(nrow) - pad + 0.5) * grid.cellsize
-    fig = plt.figure()
-    cs = plt.contour(x, y, m, levels=[0.5])
-    polys = [Polygon(poly) for path in cs.get_paths()
-             for poly in path.to_polygons() if len(poly) >= 4]
-    plt.close(fig)
-    polys = [p for p in polys if p.is_valid and p.area > 0]
-    if not polys:
-        # a zone of a few cells never reaches 0.5 once blurred: take the
-        # cells themselves rather than lose it
-        from shapely.geometry import box
-        rr, cc = np.nonzero(mask)
-        cs = grid.cellsize
-        polys = [box(grid.xmin + c * cs, grid.ymax - (r + 1) * cs,
-                     grid.xmin + (c + 1) * cs, grid.ymax - r * cs)
-                 for r, c in zip(rr, cc, strict=True)]
-    g = unary_union(polys)
-    if buffer:
-        g = g.buffer(float(buffer), join_style=1)
-    if simplify:
-        g = g.simplify(float(simplify))
-    return None if g.is_empty else g
-
-
-# --------------------------------------------------------------------------
-# polygons straight from the pathlines
+# polygons from the particle pathlines
 # --------------------------------------------------------------------------
 def _valid(g):
     """A valid version of `g`, or None if nothing usable survives."""
@@ -451,6 +333,8 @@ def _envelope(xy, start, sel, centre, offset_m=0.0, min_width=5.0,
     the other -- so no pathline can fall outside it.  A line whose two paths
     finish more than `gap_factor` times the median gap apart (or `max_gap`
     metres) has split around a stagnation point and is not filled.
+    
+    
     """
     from shapely.geometry import LineString, Polygon
 
@@ -511,42 +395,15 @@ def _envelope(xy, start, sel, centre, offset_m=0.0, min_width=5.0,
     return g
 
 
-def _hull(xy, start, sel, offset_m=0.0, ratio=0.10, holes=False, smooth=0.0,
-          simplify=0.0):
-    """A concave hull of the pathline vertices.
-
-    Cheaper than the envelope, but fitted to a cloud of points it cannot tell
-    apart, so it can cut across a pathline.  `ratio` 0 clings to every
-    indentation, 1 is the convex hull.
-    """
-    from shapely import MultiPoint, concave_hull
-
-    pts = [xy[start[k]:start[k + 1]] for k in np.asarray(sel, dtype=int)]
-    pts = [p for p in pts if len(p)]
-    if not pts:
-        return None
-    pts = np.concatenate(pts, axis=0)
-    if len(pts) < 3:
-        return None
-    g = concave_hull(MultiPoint(pts), ratio=float(ratio), allow_holes=bool(holes))
-    if g is None or g.is_empty:
-        return None
-    if g.geom_type not in ('Polygon', 'MultiPolygon'):
-        g = g.buffer(max(float(offset_m or 0.0), 1.0))
-    if offset_m:
-        g = g.buffer(float(offset_m), join_style=1)
-    if simplify:
-        g = g.simplify(float(simplify))
-    if smooth:
-        g = g.buffer(smooth, join_style=1).buffer(-smooth, join_style=1)
-    return _valid(g)
-
-
 # --------------------------------------------------------------------------
-# the products we are looking for ('_')
+# time to harvest fruits :)
 # --------------------------------------------------------------------------
 class CaptureZone:
-    """Capture-zone polygons, one per seeding point, as a GeoDataFrame."""
+    """Capture-zone polygons, one per seeding point, as a GeoDataFrame.
+
+    Drawn as the envelope of the pathlines -- see
+    :meth:`Trajectory.build_capture`.
+    """
 
     def __init__(self, gdf, method):
         self.gdf = gdf
@@ -563,61 +420,258 @@ class CaptureZone:
                 f"{self.gdf.area.sum() / 1e6:.3f} km2")
 
 
-class CaptureMask:
-    """Boolean capture masks on a regular raster: (nzone, nrow, ncol)."""
+class GridIndex:
+    """An index onto a MARTHE grid: which cell holds a point.
 
-    def __init__(self, array, grid, keys, crs=DEFAULT_CRS):
-        self.array = np.asarray(array, dtype=bool)
+    Not a grid of its own -- the grid is read, written and held by
+    gridmarthe, through :func:`martpy.grid.load_marthe_grid`, which stores
+    every cell of every layer of every grid in one ``zone`` vector.  This
+    class only indexes that vector, to answer for many points at once the
+    question :func:`gridmarthe.search_zone` answers for one: which cell of
+    which grid, in a given layer, a point falls in.
+
+    A gigogne is declared with a border ring of parent-sized cells, and a
+    MARTHE grid may in any case have columns of unequal width, so a point is
+    located against the actual cell *edges* rather than by dividing by a cell
+    size.  The finest grid with an active cell at the point wins, which is how
+    MARTHE occults the main-grid cells underneath a gigogne.
+
+    Activity is read layer by layer, not over the model as a whole: most
+    cells of a MARTHE model exist in some layers and not in others, so a
+    gigogne that covers the ground in layer 1 need not cover it in layer 3,
+    and the layer asked for is the one that decides which grid holds the
+    point.
+    """
+
+    # a MARTHE field marks an absent cell with one of these
+    NAN_VALUES = (0., -9999., 9999., 8888.)
+
+    def __init__(self, ds, field=None, nan_values=NAN_VALUES):
+        self.ds = ds
+        self.nzone = int(ds.sizes['zone'])
+        d = {k: np.asarray(ds[k].values).ravel()
+             for k in ('x', 'y', 'dx', 'dy', 'col', 'row')}
+        lay = (np.asarray(ds['z'].values).ravel() if 'z' in ds.variables
+               else np.ones(self.nzone, dtype=int))
+        nest = (np.asarray(ds['id_grid'].values).ravel() if 'id_grid' in ds.variables
+                else np.zeros(self.nzone, dtype=int))
+        if field is None:
+            field = next((v for v in ds.data_vars
+                          if v not in ('x', 'y', 'dx', 'dy', 'col', 'row',
+                                       'id_grid', 'z', 'izone')), None)
+        values = (np.asarray(ds[field].values).ravel()
+                  if field is not None else None)
+
+        zone = np.arange(self.nzone)
+        self.zone_grid, self.zone_layer = nest.astype(int), lay.astype(int)
+        self.cell_area = d['dx'] * d['dy']
+        self.grids = {}
+        for g in np.unique(nest):
+            s_ = nest == g
+            nlay = int(lay[s_].max())
+            nrow, ncol = int(d['row'][s_].max()), int(d['col'][s_].max())
+            i, j = d['row'][s_].astype(int) - 1, d['col'][s_].astype(int) - 1
+            # (layer, row, col) -> position in the zone vector, taken from the
+            # data rather than assumed, so any file ordering is followed
+            index = np.full((nlay, nrow, ncol), -1, dtype=np.int64)
+            index[lay[s_].astype(int) - 1, i, j] = zone[s_]
+
+            top = s_ & (lay == lay[s_].min())
+            order = np.lexsort((d['col'][top], d['row'][top]))
+            x = d['x'][top][order].reshape(nrow, ncol)
+            y = d['y'][top][order].reshape(nrow, ncol)
+            dx = d['dx'][top][order].reshape(nrow, ncol)
+            dy = d['dy'][top][order].reshape(nrow, ncol)
+            ex = np.concatenate([[x[0, 0] - dx[0, 0] / 2], x[0] + dx[0] / 2])
+            ey = np.concatenate([[y[0, 0] + dy[0, 0] / 2], y[:, 0] - dy[:, 0] / 2])
+
+            if values is None:
+                active = np.ones((nlay, nrow, ncol), dtype=bool)
+            else:
+                # per layer: a cell present in one layer is often absent in
+                # another, so the layer asked for is the one that decides
+                v = values[s_]
+                active = np.zeros((nlay, nrow, ncol), dtype=bool)
+                active[lay[s_].astype(int) - 1, i, j] = (
+                    np.isfinite(v) & ~np.isin(v, list(nan_values)))
+            self.grids[int(g)] = {'index': index, 'ex': ex, 'ey': ey,
+                                  'nrow': nrow, 'ncol': ncol, 'nlay': nlay,
+                                  'active': active, 'dx': dx, 'dy': dy}
+
+    @property
+    def nlay(self):
+        return max(g['nlay'] for g in self.grids.values())
+
+    @property
+    def min_cell(self):
+        """The smallest cell of the model -- the finest gigogne mesh."""
+        return float(min(min(g['dx'].min(), g['dy'].min())
+                         for g in self.grids.values()))
+
+    def locate(self, x, y, layer):
+        """Zone index of the cell holding each (x, y, layer), -1 if none."""
+        x = np.asarray(x, dtype=float)
+        y = np.asarray(y, dtype=float)
+        layer = np.asarray(layer, dtype=int)
+        out = np.full(len(x), -1, dtype=np.int64)
+        todo = np.ones(len(x), dtype=bool)
+        for g in sorted(self.grids, reverse=True):       # finest grid first
+            G = self.grids[g]
+            j = np.searchsorted(G['ex'], x, 'right') - 1
+            i = np.searchsorted(-G['ey'], -y, 'right') - 1
+            ok = (todo & (j >= 0) & (j < G['ncol'])
+                  & (i >= 0) & (i < G['nrow'])
+                  & (layer >= 1) & (layer <= G['nlay']))
+            hit = np.flatnonzero(ok)
+            if not len(hit):
+                continue
+            ok[hit[~G['active'][layer[hit] - 1, i[hit], j[hit]]]] = False
+            hit = np.flatnonzero(ok)
+            z = G['index'][layer[hit] - 1, i[hit], j[hit]]
+            out[hit] = z
+            todo[hit[z >= 0]] = False
+        return out
+
+    def plane(self, values, grid, layer=None):
+        """One grid's cells as a 2-D array, for a layer or over all of them."""
+        G = self.grids[grid]
+        idx = G['index'] if layer is None else G['index'][layer - 1][None]
+        out = np.zeros(idx.shape, dtype=bool)
+        here = idx >= 0
+        out[here] = np.asarray(values, dtype=bool)[idx[here]]
+        return out.any(axis=0)
+
+    def edges(self, grid):
+        """The cell edges of one grid: (x edges, y edges), for pcolormesh."""
+        return self.grids[grid]['ex'], self.grids[grid]['ey']
+
+    def __repr__(self):
+        g = ', '.join(f"{k}: {v['ncol']}x{v['nrow']}x{v['nlay']}"
+                      for k, v in sorted(self.grids.items()))
+        return f"GridIndex({self.nzone} cells; grid {g})"
+
+
+class CaptureMask:
+    """Cells of the MARTHE grid a particle path runs through.
+
+    One boolean per model cell, so the mask is three-dimensional in the way
+    the model is: every layer of the main grid and of every gigogne, at the
+    model's own resolution.  Stored as ``(nseed, nzone)`` over the grid's zone
+    vector, which is the order a MARTHE grid file is written in.
+
+    :meth:`save_mask` writes it back as a MARTHE grid (``.tmask``), so it
+    reopens with :func:`martpy.grid.load_marthe_grid` like any other field.
+    """
+
+    def __init__(self, array, grid, keys, crs=DEFAULT_CRS, source=None):
+        self.array = np.atleast_2d(np.asarray(array, dtype=bool))
         self.grid = grid
         self.keys = list(keys)
         self.crs = crs
+        self.source = source              # the model the grid was read from
 
     @property
     def any(self):
-        """One plane: a cell captured by at least one seeding point."""
+        """One plane: a cell on the path of at least one seeding point."""
         return self.array.any(axis=0)
 
-    def save_mask(self, path):
-        """Store the masks for later use.
+    def _plane(self, id=-1):
+        if id is None or (np.isscalar(id) and not isinstance(id, str) and id == -1):
+            return self.any
+        wanted = [id] if np.isscalar(id) or isinstance(id, str) else id
+        out = np.zeros(self.grid.nzone, dtype=bool)
+        for key in wanted:
+            if key not in self.keys:
+                raise KeyError(f"{key!r} is not in this mask; keys: {self.keys}")
+            out |= self.array[self.keys.index(key)]
+        return out
 
-        ``.npz`` (default) is bit-packed with the raster geometry and keys, so
-        :meth:`load_mask` restores it exactly.  ``.tif`` writes one band per
-        zone, georeferenced, for a GIS (needs rasterio).
+    def area_km2(self, id=-1):
+        """Ground covered, counting each cell at its own size."""
+        return float(self.grid.cell_area[self._plane(id)].sum() / 1e6)
+
+    def cells_by_layer(self, id=-1):
+        """Cells marked per grid and layer -- the mask read layer by layer."""
+        plane = self._plane(id)
+        area = self.grid.cell_area
+        recs = []
+        for g in sorted(self.grid.grids):
+            for lay in range(1, self.grid.grids[g]['nlay'] + 1):
+                sel = plane & (self.grid.zone_grid == g) & (self.grid.zone_layer == lay)
+                recs.append({'grid': g, 'layer': lay, 'cells': int(sel.sum()),
+                             'area_km2': round(float(area[sel].sum() / 1e6), 4)})
+        return pd.DataFrame(recs)
+
+    def to_dataset(self, id=-1, name='tmask'):
+        """The mask as a MARTHE grid Dataset, ready to write or to plot."""
+        keep = ('x', 'y', 'dx', 'dy')
+        ds = self.grid.ds
+        out = ds.drop_vars([v for v in ds.data_vars if v not in keep])
+        out[name] = (('time', 'zone'),
+                     self._plane(id).astype(float)[None, :])
+        out.attrs = dict(ds.attrs)
+        return out
+
+    def save_mask(self, path, id=-1, by_id=False, name='tmask', title=None):
+        """Write the mask as a MARTHE grid file.
+
+        The file is a grid like any other model field -- one block per layer
+        and per gigogne, 1 where a path runs through the cell and 0 elsewhere
+        -- so it reopens with :func:`martpy.grid.load_marthe_grid` and can be
+        handed to MARTHE.  ``.tmask`` is the extension used for it, and is
+        added when `path` carries none.
+
+        Parameters
+        ----------
+        path : str
+            File to write.  With `by_id`, the seeding point's key is inserted
+            before the extension.
+        id : -1, key or list
+            Which seeding points go into the mask; -1 (default) is all of
+            them, as one field.
+        by_id : bool
+            Write one file per seeding point instead of one field for all.
+        name : str
+            Field name written in the file (``Field=`` line).
+        title : str, optional
+            Title line of the file.
         """
-        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
-        if str(path).lower().endswith(('.tif', '.tiff')):
-            import rasterio
-            with rasterio.open(path, 'w', driver='GTiff', height=self.grid.nrow,
-                               width=self.grid.ncol, count=len(self.keys),
-                               dtype='uint8', crs=self.crs,
-                               transform=self.grid.transform,
-                               compress='deflate') as ds:
-                for b, key in enumerate(self.keys, 1):
-                    ds.write(self.array[b - 1].astype('uint8'), b)
-                    ds.set_band_description(b, str(key))
-            return path
-        np.savez_compressed(
-            path, packed=np.packbits(self.array, axis=None),
-            shape=np.array(self.array.shape), keys=np.array(self.keys, dtype=str),
-            geom=np.array([self.grid.xmin, self.grid.ymax, self.grid.cellsize]),
-            crs=np.array(str(self.crs)))
-        return path
+        from martpy.grid import write_marthe_grid
+
+        base, ext = os.path.splitext(str(path))
+        ext = ext or '.tmask'
+        os.makedirs(os.path.dirname(os.path.abspath(path)) or '.', exist_ok=True)
+
+        targets = ([(key, f"{base}_{key}{ext}") for key in self.keys] if by_id
+                   else [(id, base + ext)])
+        written = []
+        for which, fpath in targets:
+            ds = self.to_dataset(which, name=name)
+            label = which if by_id else 'all seeding points'
+            write_marthe_grid(ds, fpath, varname=name, nan_value=0.,
+                              title=title or f"Particle path mask ({label})")
+            written.append(fpath)
+        return written if by_id else written[0]
 
     @classmethod
-    def load_mask(cls, path):
-        z = np.load(path)
-        shape = tuple(int(v) for v in z['shape'])
-        arr = np.unpackbits(z['packed'])[:int(np.prod(shape))].reshape(shape)
-        xmin, ymax, cs = (float(v) for v in z['geom'])
-        grid = RasterGrid(xmin, ymax - shape[1] * cs, xmin + shape[2] * cs,
-                          ymax, cs)
-        return cls(arr.astype(bool), grid, z['keys'].tolist(), str(z['crs']))
+    def load_mask(cls, path, name=None, crs=DEFAULT_CRS):
+        """Read back a mask written by :meth:`save_mask`."""
+        from martpy.grid import load_marthe_grid
+
+        ds = load_marthe_grid(path, varname=name, add_col_row=True,
+                              add_id_grid=True)
+        var = name or next(v for v in ds.data_vars
+                           if v not in ('x', 'y', 'dx', 'dy', 'col', 'row',
+                                        'id_grid', 'z', 'izone'))
+        grid = GridIndex(ds, field=None)
+        values = np.asarray(ds[var].values).ravel().astype(bool)
+        return cls(values[None, :], grid, ['ALL'], crs, source=str(path))
 
     def __repr__(self):
-        cs = self.grid.cellsize
-        return (f"CaptureMask: {len(self.keys)} zones on {self.grid.nrow} x "
-                f"{self.grid.ncol} cells of {cs:g} m, "
-                f"{self.any.sum() * cs * cs / 1e6:.3f} km2 captured")
+        n = int(self.any.sum())
+        lays = sorted(set(self.grid.zone_layer[self.any].tolist()))
+        return (f"CaptureMask: {len(self.keys)} seeding point(s), {n} cells of "
+                f"the MARTHE grid in layer(s) {lays}, {self.area_km2():.3f} km2")
 
 
 # --------------------------------------------------------------------------
@@ -648,6 +702,8 @@ class Trajectory:
         self.layer, self.group = traj['layer'], traj['group']
         self.grid = grid
         self.crs = crs
+        self.rma_file = None
+        self._grid_index = None
         self.capture = None
         self.cz_mask = None
         if len(self.seeds):
@@ -664,6 +720,10 @@ class Trajectory:
             self.keys = ['ALL']
             self.owner = np.zeros(self.ntraj, dtype=int)
             self.method = 'none'
+        lost = int((self.owner < 0).sum())
+        if lost:
+            print(f"    [{lost} of {self.ntraj} trajectories match no seeding point "
+                  f"({self.method}) -- is trajmar.out the run made from this .deptr?]")
 
     @classmethod
     def from_project(cls, project, trajmar=None, grid=None, crs=DEFAULT_CRS,
@@ -715,7 +775,9 @@ class Trajectory:
             seeds = _seed_xy(seeds, grid)
         if trajmar is None:
             trajmar = os.path.join(mdir, 'trajmar.out')
-        return cls(seeds, read_trajmar(trajmar), grid, crs, method, ring_tol)
+        out = cls(seeds, read_trajmar(trajmar), grid, crs, method, ring_tol)
+        out.rma_file = project.rma_file
+        return out
 
     # -- selection -----------------------------------------------------------
     @property
@@ -779,22 +841,6 @@ class Trajectory:
         dx = np.asarray(self.grid['dx']).ravel()
         return float(np.nanmin(dx[dx > 0]))
 
-    def _raster(self, cellsize=None, extent=None, pad=None):
-        cs = float(cellsize) if cellsize else self._native_cellsize()
-        if cs <= 0:
-            raise ValueError(f"cellsize must be positive, got {cellsize}")
-        if extent is None:
-            if self.grid is not None:
-                x, y, dx, dy = (np.asarray(self.grid[v]).ravel()
-                                for v in ('x', 'y', 'dx', 'dy'))
-                extent = [np.nanmin(x - dx / 2), np.nanmin(y - dy / 2),
-                          np.nanmax(x + dx / 2), np.nanmax(y + dy / 2)]
-            else:
-                extent = [*self.xy.min(axis=0), *self.xy.max(axis=0)]
-            p = 2 * cs if pad is None else float(pad)
-            extent = [extent[0] - p, extent[1] - p, extent[2] + p, extent[3] + p]
-        return RasterGrid(*extent, cs)
-
     # -- export --------------------------------------------------------------
     def to_shape(self, path, kind='point', id=-1, crs=None):
         """Write the trajectories as a shapefile / geopackage.
@@ -849,101 +895,134 @@ class Trajectory:
         return gdf
 
     # -- delineation ---------------------------------------------------------
-    def build_capture(self, method='envelope', id=-1, min_paths=2,
-                      offset_m=20.0, cellsize=None, **params):
+    def build_capture(self, id=-1, min_paths=2, offset_m=20.0, **params):
         """Delineate the capture zone of each seeding point.
+
+        The zone is the envelope of the pathlines (Tosco et al. 2008): the
+        union of the stream tubes between angularly adjacent trajectories.
+        MARTHE releases the particles at equal angles on a ring about the
+        seeding point, so sorting them by seeding angle gives the true
+        neighbour relation, and every pathline is then an edge of two tubes --
+        none can be left outside the zone it was built from.
 
         Parameters
         ----------
-        method : {'envelope', 'hull', 'track'}
-            'envelope'  union of the stream tubes between angularly adjacent
-                        pathlines (Tosco et al. 2008) -- no path can be left
-                        outside.  Extra params: min_width (5), gap_factor (6),
-                        max_gap (None), smooth (0), simplify (0).
-            'hull'      concave hull of the vertices.  Extra params: ratio
-                        (0.10), holes (False), smooth (0), simplify (0).
-            'track'     cells the paths pass through on a raster of
-                        `cellsize` (default the native gigogne cell), closed
-                        and contoured.  Extra params: close_cells (3),
-                        sigma (1.0), simplify (0).
         id : -1, key, G= group, number or list
             Which seeding points; -1 (default) for all.
         min_paths : int
-            A zone needs at least this many paths -- one has no second
-            streamline to bound it.
+            A zone needs at least this many paths -- one pathline has no
+            second streamline to bound it.  The path is still plotted.
         offset_m : float
-            Standoff between the outermost path and the boundary, metres.
+            Standoff between the outermost path and the boundary, in metres.
+            The only argument that expands a zone.
+        **params
+            Passed to the envelope: `min_width` (5 m, the width given to a
+            lone pathline), `gap_factor` (6) and `max_gap` (None) -- how far
+            two adjacent pathlines may end apart before the tube between them
+            is taken to have split around a stagnation point and is left
+            unfilled -- `smooth` (0) and `simplify` (0).
 
         Returns the :class:`CaptureZone`, also kept as ``self.capture``.
         """
-        import geopandas as gpd  # noqa: ICN002
+        import geopandas as gpd 
 
-        method = str(method).lower()
-        raster = self._raster(cellsize) if method == 'track' else None
         recs, geoms = [], []
         for k, key in self._select(id):
             sel = self.paths_of(k)
             if len(sel) < int(min_paths):
                 continue
-            if method == 'envelope':
-                g = _envelope(self.xy, self.start, sel, self._centre(k),
-                              offset_m=offset_m, **params)
-            elif method == 'hull':
-                g = _hull(self.xy, self.start, sel, offset_m=offset_m, **params)
-            elif method == 'track':
-                m = _close_zone(_rasterize(raster, self.xy, self.start, sel),
-                                close_cells=params.get('close_cells', 3))
-                g = _mask_polygons(m, raster, sigma=params.get('sigma', 1.0),
-                                   simplify=params.get('simplify', 0.0),
-                                   buffer=offset_m)
-            else:
-                raise ValueError("method must be 'envelope', 'hull' or 'track'")
+            g = _envelope(self.xy, self.start, sel, self._centre(k),
+                          offset_m=offset_m, **params)
             if g is None or g.is_empty:
                 continue
             x, y = self._centre(k)
             recs.append({'key': key, 'group': self._group_of(k), 'x': x, 'y': y,
                          'ntraj': int(len(sel)), 'area_km2': round(g.area / 1e6, 4),
-                         'method': method})
+                         'method': 'envelope'})
             geoms.append(g)
         cols = ['key', 'group', 'x', 'y', 'ntraj', 'area_km2', 'method']
         self.capture = CaptureZone(
             gpd.GeoDataFrame(recs, columns=cols, geometry=geoms, crs=self.crs),
-            method)
+            'envelope')
         return self.capture
 
-    def build_mask(self, cellsize=None, id=-1, close_cells=3, offset_cells=0,
-                   extent=None, pad=None):
-        """Boolean capture mask of each seeding point on a regular raster.
+    def _model_grid(self):
+        """The cell structure of the model, read once."""
+        if getattr(self, '_grid_index', None) is None:
+            if self.grid is None:
+                raise ValueError(
+                    "no model grid: the mask is built on the MARTHE cells, so "
+                    "the project needs a permh grid (or pass grid= when "
+                    "reading the trajectories)")
+            self._grid_index = GridIndex(self.grid)
+        return self._grid_index
+
+    def _path_points(self, sel, step=None):
+        """Every vertex of the selected paths, with the segments filled in.
+
+        MARTHE writes a vertex per time step, so two of them can be a cell or
+        more apart; without resampling, the cells a path crosses in between
+        would be missed.  A resampled point takes the layer of the vertex it
+        is nearer to.
+        """
+        xs, ys, ls = [], [], []
+        for j in sel:
+            a, b = self.start[j], self.start[j + 1]
+            p, lay = self.xy[a:b], self.layer[a:b]
+            if step is None or len(p) < 2:
+                xs.append(p[:, 0])
+                ys.append(p[:, 1])
+                ls.append(lay)
+                continue
+            seg = np.linalg.norm(np.diff(p, axis=0), axis=1)
+            nsub = np.maximum(1, np.ceil(seg / step).astype(np.int64))
+            for (x0, y0), (x1, y1), n, l0, l1 in zip(p[:-1], p[1:], nsub,
+                                                     lay[:-1], lay[1:],
+                                                     strict=True):
+                t = np.linspace(0.0, 1.0, n + 1)
+                xs.append(x0 + (x1 - x0) * t)
+                ys.append(y0 + (y1 - y0) * t)
+                ls.append(np.where(t < 0.5, l0, l1))
+        if not xs:
+            return np.empty(0), np.empty(0), np.empty(0, dtype=int)
+        return (np.concatenate(xs), np.concatenate(ys),
+                np.concatenate(ls).astype(int))
+
+    def build_mask(self, id=-1, densify=True, step=None):
+        """Mark the MARTHE cells a particle path runs through.
+
+        The mask is built on the model's own cells -- the main grid and every
+        gigogne, at their own sizes -- and layer by layer, taking the layer
+        MARTHE writes with each vertex.  There is no cell size to choose: it
+        is the model's.
 
         Parameters
         ----------
-        cellsize : float, optional
-            Raster resolution.  Default: the smallest cell of the model grid
-            (the gigogne mesh).
         id : -1, key, G= group, number or list
-            Which seeding points; -1 (default) for all.
-        close_cells : int
-            Morphological closing radius, in cells: bridges the gaps between
-            neighbouring paths without moving the outer boundary.
-        offset_cells : int
-            Dilation of the closed zone, in cells -- the only step that
-            enlarges it.
-        extent : [xmin, ymin, xmax, ymax], optional
-            Raster extent.  Default: the model grid (or the paths), padded.
-        pad : float, optional
-            Padding around the default extent; default two cells.
+            Which seeding points; -1 (default) for all.  Each gets its own
+            plane of the mask.
+        densify : bool
+            Fill in the segments between vertices, so a path marks every cell
+            it crosses and not only those holding a vertex.
+        step : float, optional
+            Resampling step, in model length units.  Default: a third of the
+            smallest cell of the model.
 
         Returns the :class:`CaptureMask`, also kept as ``self.cz_mask``.
         """
-        raster = self._raster(cellsize, extent, pad)
+        grid = self._model_grid()
         chosen = self._select(id)
-        out = np.zeros((len(chosen), raster.nrow, raster.ncol), dtype=bool)
+        out = np.zeros((len(chosen), grid.nzone), dtype=bool)
+        step = float(step) if step else grid.min_cell / 3.0
         for i, (k, _) in enumerate(chosen):
             sel = self.paths_of(k)
-            if len(sel):
-                out[i] = _close_zone(_rasterize(raster, self.xy, self.start, sel),
-                                     close_cells, offset_cells)
-        self.cz_mask = CaptureMask(out, raster, [key for _, key in chosen], self.crs)
+            if not len(sel):
+                continue
+            x, y, lay = self._path_points(sel, step if densify else None)
+            zone = grid.locate(x, y, lay)
+            out[i, zone[zone >= 0]] = True
+        self.cz_mask = CaptureMask(out, grid, [key for _, key in chosen],
+                                   self.crs, source=self.rma_file)
         return self.cz_mask
 
     # -- summary -------------------------------------------------------------
@@ -954,7 +1033,7 @@ class Trajectory:
         else the layer the paths start in), radius, npart (asked for), ntraj
         (attributed, by `method`), path_m (mean path length), t_max (longest
         finite travel time, model unit), then capture_method / capture_km2 when
-        :meth:`build_capture` has run and mask_cell_m / mask_km2 when
+        :meth:`build_capture` has run and mask_cells / mask_km2 when
         :meth:`build_mask` has -- NaN for a seed the product does not cover.
         """
         recs = []
@@ -986,10 +1065,10 @@ class Trajectory:
                 rec['capture_km2'] = float(g.area_km2.get(key, np.nan))
             if self.cz_mask is not None:
                 cm = self.cz_mask
-                cs = cm.grid.cellsize
-                rec['mask_cell_m'] = cs
-                rec['mask_km2'] = (float(cm.array[cm.keys.index(key)].sum() * cs * cs
-                                         / 1e6) if key in cm.keys else np.nan)
+                inside = key in cm.keys
+                rec['mask_cells'] = (int(cm.array[cm.keys.index(key)].sum())
+                                     if inside else np.nan)
+                rec['mask_km2'] = cm.area_km2(key) if inside else np.nan
             recs.append(rec)
         return pd.DataFrame(recs).set_index('key')
 
@@ -999,6 +1078,7 @@ class Trajectory:
              path_alpha=0.7, path_color='#1f6fb4',
              zone_color='#0b3d91', zone_fill='#1f6fb4', zone_alpha=0.18,
              zone_width=1.2, mask_color='#d95f02', mask_alpha=0.35,
+             mask_layer=None,
              seed_color='#b3122b', seed_size=6,
              basemap=True, basemap_source='esri', tile='auto', tile_cache=None,
              basemap_alpha=1.0,
@@ -1034,6 +1114,9 @@ class Trajectory:
             width.
         mask_color, mask_alpha
             Colour and transparency of the mask cells.
+        mask_layer : int, optional
+            Draw the mask of this model layer only; by default the cells of
+            every layer are drawn together.
         seed_color, seed_size
             Marker of the seeding points.
         basemap : bool
@@ -1074,7 +1157,7 @@ class Trajectory:
         """
         import matplotlib.pyplot as plt
         from matplotlib.collections import LineCollection
-        from matplotlib.colors import BoundaryNorm, ListedColormap, Normalize, to_rgb
+        from matplotlib.colors import BoundaryNorm, ListedColormap, Normalize
         from matplotlib.lines import Line2D
         from matplotlib.patches import Patch
 
@@ -1086,7 +1169,7 @@ class Trajectory:
         if cz_mask and self.cz_mask is None:
             raise ValueError("call build_mask() before plot(cz_mask=True)")
 
-        fs = lambda m: base_fontsize * m                     
+        fs = lambda m: base_fontsize * m                      # noqa: E731
         fig, ax = (ax.figure, ax) if ax is not None else plt.subplots(
             figsize=figsize, dpi=dpi)
         chosen = self._select(id)
@@ -1096,22 +1179,25 @@ class Trajectory:
         if cz_mask:
             cm = self.cz_mask
             keys = [key for _, key in chosen if key in cm.keys]
-            plane = np.zeros(cm.grid.shape, dtype=bool)
-            for key in keys:
-                plane |= cm.array[cm.keys.index(key)]
-            if plane.any():
-                rgba = np.zeros((*plane.shape, 4))
-                rgba[plane] = (*to_rgb(mask_color), mask_alpha)
-                ax.imshow(rgba, extent=cm.grid.extent(), origin='upper',
-                          interpolation='nearest', zorder=2)
-                rr, cc = np.nonzero(plane)
-                cs = cm.grid.cellsize
-                bounds.append((cm.grid.xmin + cc.min() * cs,
-                               cm.grid.ymax - (rr.max() + 1) * cs,
-                               cm.grid.xmin + (cc.max() + 1) * cs,
-                               cm.grid.ymax - rr.min() * cs))
+            plane = cm._plane(keys if keys else -1)
+            drawn = False
+            for g in sorted(cm.grid.grids):          # coarse first, nested over it
+                block = cm.grid.plane(plane, g, mask_layer)
+                if not block.any():
+                    continue
+                ex, ey = cm.grid.edges(g)
+                ax.pcolormesh(ex, ey, np.ma.masked_where(~block, block),
+                              cmap=ListedColormap([mask_color]),
+                              alpha=mask_alpha, shading='flat', zorder=2)
+                rr, cc = np.nonzero(block)
+                bounds.append((ex[cc.min()], ey[rr.max() + 1],
+                               ex[cc.max() + 1], ey[rr.min()]))
+                drawn = True
+            if drawn:
+                label = ('Cells with a path' if mask_layer is None
+                         else f'Cells with a path (layer {mask_layer})')
                 handles.append(Patch(facecolor=mask_color, alpha=mask_alpha,
-                                     label='Capture mask'))
+                                     label=label))
 
         # -- the paths -------------------------------------------------------
         if path:
@@ -1247,10 +1333,9 @@ class Trajectory:
 
 
 # --------------------------------------------------------------------------
-# map furniture
+# map artifacts
 # --------------------------------------------------------------------------
-# tile sources that need no key; CARTO watermarks unkeyed tiles and OSM's own
-# servers refuse bulk use, so neither is the default
+
 _PROVIDERS = {
     'esri': ('Esri', 'WorldTopoMap'),
     'esri_gray': ('Esri', 'WorldGrayCanvas'),

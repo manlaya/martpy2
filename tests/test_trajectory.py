@@ -33,7 +33,7 @@ from martpy.utils.trajectory import (
 )
 
 
-DATA = os.path.join('tests', 'data', 'mrn_traj')
+DATA = os.path.join('tests/data', 'mrn_traj')
 RMA = os.path.join(DATA, 'mrn_v11.rma')
 DEPTR = os.path.join(DATA, 'mrn_v11_test.deptr')
 TRAJMAR = os.path.join(DATA, 'trajmar.out')
