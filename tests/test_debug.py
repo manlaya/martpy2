@@ -4,6 +4,7 @@
 import re
 import pandas as pd
 import martpy as mart
+from conftest import TMP_OUTPUTS_DIR
 
 
 def test_debug_parsing_empty_value():
@@ -17,7 +18,7 @@ def test_debug_parsing_empty_value():
 def test_debug_mart_write_float_fmt():
     the_usual_suspect = 'tests/debug/MOD82_bug_f_fmt_write.mart'
     param = mart.MartParams.from_file(the_usual_suspect)
-    param.write_file('tests/data/tmp_outputs/debug_mart_write_float_fmt.mart')
+    param.write_file(str(TMP_OUTPUTS_DIR / 'debug_mart_write_float_fmt.mart'))
 
 
 def test_concat_histo():
@@ -27,7 +28,7 @@ def test_concat_histo():
     df = pd.concat([histo.iloc[:-2], histo2], ignore_index=True)
     assert isinstance(df, pd.DataFrame), 'Error while concatenating histo dataframes'
     assert isinstance(df, mart.MartHisto), 'Error while concatenating histo dataframes'
-    df.write_file('./tests/data/tmp_outputs/debug_concat_histo.histo')
+    df.write_file(str(TMP_OUTPUTS_DIR / 'debug_concat_histo.histo'))
 
 
 if __name__ == '__main__':

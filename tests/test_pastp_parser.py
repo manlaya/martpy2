@@ -15,6 +15,7 @@ from martpy.inputs.timesteps import (
     read_mart_timesteps,
     MartTimeSteps
 )
+from conftest import TMP_OUTPUTS_DIR
 
 FILE_PASTP = './tests/data/mart_hallue/hallue.pastp'
 FILE_PASTP_UK = './tests/data/mart_uk/mart_uk_files.pastp'
@@ -159,7 +160,7 @@ def test_add_action():
     assert len(d['2012-08-01']['FLUX_PLUV']) == 1, 'Error while adding actions'
     assert d['2012-08-01']['FLUX_PLUV'][0]['step'] == '*', 'Error while adding actions'
     #
-    pastp.write_file('tests/data/tmp_outputs/test_add_actions.pastp')
+    pastp.write_file(str(TMP_OUTPUTS_DIR / 'test_add_actions.pastp'))
 
 
 def test_add_action_freq():
@@ -302,16 +303,16 @@ def test_wrapper_method():
     import pytest
     pastp = read_mart_timesteps(FILE_PASTP)
     pastp.set_met_forcings(['TOTO_{}_{}', 'TOTO2_{}_{}'])
-    # pastp.write_file('tests/data/tmp_outputs/test_add_actions2.pastp')
+    # pastp.write_file(str(TMP_OUTPUTS_DIR / 'test_add_actions2.pastp'))
     pastp.set_pumping_data('fake_pumping_{}_{:02d}.txt', opt=['xyv', 'init_zero'])
-    pastp.write_file('tests/data/tmp_outputs/test_add_actions3.pastp')
+    pastp.write_file(str(TMP_OUTPUTS_DIR / 'test_add_actions3.pastp'))
     with pytest.raises(ValueError):
         pastp.set_pumping_data('fake_pumping_{}_{:02d}.txt', opt=['tata'])
 
 
 def test_write_pastp():
     pastp = read_mart_timesteps(FILE_PASTP)
-    file_pastp_out = './tests/data/tmp_outputs/test.pastp'
+    file_pastp_out = str(TMP_OUTPUTS_DIR / 'test.pastp')
     pastp.write_file(file_pastp_out)
     verif = read_mart_timesteps(file_pastp_out)
     msg_error = 'Error with write/reread test for pastp'
@@ -325,7 +326,7 @@ def test_pastp_file_property():
     assert pastp.pastp_file == Path(FILE_PASTP), 'source file path not stored'
 
     # write_file() with no filename falls back to self.pastp_file
-    file_pastp_out = './tests/data/tmp_outputs/test_pastp_file.pastp'
+    file_pastp_out = str(TMP_OUTPUTS_DIR / 'test_pastp_file.pastp')
     pastp.pastp_file = Path(file_pastp_out)
     pastp.write_file()
     assert Path(file_pastp_out).exists(), 'write_file() fallback on pastp_file failed'
@@ -475,8 +476,9 @@ def test_read_write_satur():
         times = MartTimeSteps.from_file(pastp)
     actions = times.get_actions()['1979-12-31']
     assert '%SATURAT' in actions
-    times.write_file('tests/data/tmp_outputs/satur_test.pastp')
-    times_rewrite = MartTimeSteps.from_file('tests/data/tmp_outputs/satur_test.pastp')
+    pastp_path = str(TMP_OUTPUTS_DIR / 'satur_test.pastp')
+    times.write_file(pastp_path)
+    times_rewrite = MartTimeSteps.from_file(pastp_path)
     actions = times_rewrite.get_actions()['1979-12-31']
     assert '%SATURAT' in actions
 

@@ -11,13 +11,14 @@ from martpy.inputs._mart_parser import (
     _write_mart_file,
     BLOCK_MART
 )
+from conftest import TMP_OUTPUTS_DIR
 
 # import pprint
 
 
 # MART_FILE = './tests/data/modin/MOD82_Safran_BV_Ext_1958-2021.mart'
 MART_FILE = './tests/data/modin/param_with_modin_and_init.mart'  # lighter version for testing
-TMP_WRITE = './tests/data/tmp_outputs/test_write.modin'
+TMP_WRITE = str(TMP_OUTPUTS_DIR / 'test_write.modin')
 
 
 def test_parse_modin():

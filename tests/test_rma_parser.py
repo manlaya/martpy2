@@ -6,9 +6,10 @@ import pytest
 
 import martpy as mart
 from martpy.inputs._rma_parser import _parse_marthe_project, _write_rma_file
+from conftest import TMP_OUTPUTS_DIR
 
 RMA_FILE = './tests/data/mart_hallue/hallue.rma'
-FOUT = './tests/data/tmp_outputs/hallue_write.rma'
+FOUT = str(TMP_OUTPUTS_DIR / 'hallue_write.rma')
 
 
 def test_reader():

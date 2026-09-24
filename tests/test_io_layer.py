@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from martpy.inputs.mart_layer import read_layer, _write_layer
+from conftest import TMP_OUTPUTS_DIR
 
 
 def test_single_layer():
@@ -19,8 +20,8 @@ def test_multi_layer():
 def test_writer_layer():
     file_layer = 'tests/data/mart_72/Craie_NPC.layer'
     df, dict_geom = read_layer(file_layer)
-    _write_layer(df, dict_geom, 'tests/data/tmp_outputs/toto.layer')
-    _write_layer(df, dict_geom, 'tests/data/tmp_outputs/toto_uk.layer', lang='en')
+    _write_layer(df, dict_geom, str(TMP_OUTPUTS_DIR / 'toto.layer'))
+    _write_layer(df, dict_geom, str(TMP_OUTPUTS_DIR / 'toto_uk.layer'), lang='en')
 
 def test_uk_reader():
     file_layer = 'tests/data/mart_uk/mart_uk_files.layer'

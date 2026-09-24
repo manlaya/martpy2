@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 from martpy.inputs.timesteps import MartTimeSteps
 from martpy.utils.helper import get_mart_variables
+from conftest import TMP_OUTPUTS_DIR
 
 NOT_ACTIONABLE = {
     '!!!!!',    # comment variable: lines with '!' are skipped by the parser
@@ -47,10 +48,9 @@ def test_read_write_all_variables():
     assert 'T_1/2_TARIS_1' in actions, 'variable with \'/\' in name not read'
     assert 'TEMPER_RE-INJ' in actions, 'variable with \'-\' in name not read'
 
-    times.write_file('tests/data/tmp_outputs/all_variables_roundtrip.pastp')
-    times_rewrite = MartTimeSteps.from_file(
-        'tests/data/tmp_outputs/all_variables_roundtrip.pastp'
-    )
+    pastp_path = str(TMP_OUTPUTS_DIR / 'all_variables_roundtrip.pastp')
+    times.write_file(pastp_path)
+    times_rewrite = MartTimeSteps.from_file(pastp_path)
     actions_rewrite = times_rewrite.get_actions()['1979-12-31']
     msg = 'not all variables were kept after write/re-read'
     assert set(actions_rewrite) == variables, msg

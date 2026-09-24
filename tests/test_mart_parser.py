@@ -7,6 +7,7 @@ from martpy.inputs._mart_parser import (
     _write_mart_file,
     BLOCK_MART
 )
+from conftest import TMP_OUTPUTS_DIR
 
 
 MART_FILE = './tests/data/mart_hallue/hallue_for_test.mart'
@@ -34,7 +35,7 @@ def test_reader():
 # when 'X:Y' format is used, marthe does not align right but center. Does not seems critical though
 # (test with winmarthe of reading right align  1:2 or center  1:2 gives same result)
 def test_writer():
-    fout = './tests/data/tmp_outputs/test_writer.mart'
+    fout = str(TMP_OUTPUTS_DIR / 'test_writer.mart')
     dict_value = _parse_mart_file(MART_FILE)
     dict_value['outputs']['gen_list'] = 1
     # dict_value['toto'] = 1

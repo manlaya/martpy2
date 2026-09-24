@@ -3,32 +3,31 @@
 
 import time
 import martpy as mart
+from conftest import TMP_OUTPUTS_DIR
 
 
 def test_pastp_write_it_twice():
     # load timesteps
     path_data = './tests/data/mart_hallue'
-    tmp = './tests/data/tmp_outputs'
     pastp = mart.read_mart_timesteps(f'{path_data}/hallue.pastp')
     print(pastp)
     pastp.add_times('2012-08-01', '2020-07-31')
-    pastp.write_file(f'{tmp}/pastp_write_once.pastp')
+    pastp.write_file(str(TMP_OUTPUTS_DIR / 'pastp_write_once.pastp'))
     pastp.add_times('2020-08-01', '2025-07-31')
-    pastp.write_file(f'{tmp}/pastp_write_twice.pastp')
+    pastp.write_file(str(TMP_OUTPUTS_DIR / 'pastp_write_twice.pastp'))
 
 
 def get_times():
     # load timesteps
     path_data = './tests/data/mart_hallue'
-    tmp = './tests/data/tmp_outputs'
     pastp = mart.read_mart_timesteps(f'{path_data}/hallue.pastp')
     print(pastp)
     pastp.add_times('2012-08-01', '2020-07-31')
     t0 = time.time()
-    pastp.write_file(f'{tmp}/pastp_write_once.pastp')
+    pastp.write_file(str(TMP_OUTPUTS_DIR / 'pastp_write_once.pastp'))
     t1 = time.time()
     # NOT committed version using deepcopy
-    pastp.write_file(f'{tmp}/pastp_write_twice.pastp', deep=True)
+    pastp.write_file(str(TMP_OUTPUTS_DIR / 'pastp_write_twice.pastp'), deep=True)
     t2 = time.time()
     pastp.get_actions()
 

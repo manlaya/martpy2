@@ -14,6 +14,7 @@ from martpy.inputs.mart_histo import (
     read_histo_file
 )
 from martpy.inputs._io_utils import _fmt_nchar
+from conftest import TMP_OUTPUTS_DIR
 
 
 HISTO_FILE_READ = './tests/data/histo/hallue_with_afluent.histo'
@@ -123,7 +124,7 @@ def test_name_fmt():
 
 def test_writer():
     histo = read_histo_file(HISTO_FILE)
-    histo_file_out = './tests/data/tmp_outputs/histo_written.histo'
+    histo_file_out = str(TMP_OUTPUTS_DIR / 'histo_written.histo')
     histo.write_file(histo_file_out)
     # re read and compare file
     histo2 = read_histo_file(histo_file_out)
@@ -148,7 +149,7 @@ def test_write_longer_coords():
     histo = read_histo_file(HISTO_FILE)
     histo.x = histo.x * FACTOR
     histo.y = histo.y * FACTOR
-    histo_file_out = './tests/data/tmp_outputs/histo_written_longer_coords.histo'
+    histo_file_out = str(TMP_OUTPUTS_DIR / 'histo_written_longer_coords.histo')
     histo.write_file(histo_file_out)
 
     # re read and compare file
@@ -164,7 +165,7 @@ def test_write_longer_coords():
 
 def test_precision_lost():
     histo = read_histo_file('./tests/data/histo/MOD82_Safran_BV_Ext.histo')
-    histo_file_out = './tests/data/tmp_outputs/histo_written_precision.histo'
+    histo_file_out = str(TMP_OUTPUTS_DIR / 'histo_written_precision.histo')
     histo.write_file(histo_file_out)
 
     # re read and compare file
@@ -254,7 +255,7 @@ def test_writer_accepts_generic_varnames():
     histo_alias = histo.copy()
     histo_alias.loc[histo['variable'] == 'charge', 'variable'] = 'CHARGE'
 
-    histo_file_out = './tests/data/tmp_outputs/histo_generic_varnames.histo'
+    histo_file_out = str(TMP_OUTPUTS_DIR / 'histo_generic_varnames.histo')
     histo_alias.write_file(histo_file_out)
 
     # The file on disk must hold the native histo name, even when written from CHARGE
@@ -267,7 +268,7 @@ def test_writer_accepts_generic_varnames():
 def test_writer_roundtrip_preserves_variable():
     """read -> write -> read returns the same canonical variable values."""
     histo = read_histo_file(HISTO_FILE)
-    out = './tests/data/tmp_outputs/histo_roundtrip.histo'
+    out = str(TMP_OUTPUTS_DIR / 'histo_roundtrip.histo')
     histo.write_file(out)
     histo2 = read_histo_file(out)
     assert list(histo2['variable']) == list(histo['variable']), \
