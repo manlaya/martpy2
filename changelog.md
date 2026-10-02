@@ -6,7 +6,9 @@ Use : https://keepachangelog.com/en/1.0.0/ for syntax
 Use : https://semver.org/ for versioning strategy
 -->
 
-## [unreleased]
+<!-- ## [unreleased] -->
+
+## [0.2.0] - 2026-10-03
 
 ### Changed
 
@@ -33,6 +35,11 @@ Use : https://semver.org/ for versioning strategy
 - Add: better support for datetime and str query over times in `MartTimeSteps` `methods  ([#29](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/29))
 - Add: attribute `MartTimeSteps` to store the file path, and automatic use when writing file ([#27](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/27))
 - Add: check/remove duplicate actions in `MartTimeSteps` ([#17](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/17))
+- Add: merge the `parsemarthe` utility into martpy ([!12](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/merge_requests/12))
+- Add `MartModel.load_model` method to load model files (.mart, .histo, .layer),
+outputs (.out) and grid files (.permh, .charg, etc.)
+See merge request [!15](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/merge_requests/15)
+
 
 ### Fixed
 
@@ -44,6 +51,7 @@ Use : https://semver.org/ for versioning strategy
   steps, and sort them. See [!9](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/merge_requests/9)
 - Fix: Timestep parsing if time is int
 - Fix: different bugs when writing Marthe parameters (.mart, .pastp, .modin) ([#35](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/issues/35))
+- Fix: %SATURAT was not parsed correctly ([#37](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/issues/37))
 
 
 ### Tests
