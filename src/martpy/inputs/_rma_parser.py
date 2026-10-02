@@ -4,7 +4,7 @@
 import re
 
 from martpy.utils import MART_VARIABLES
-from martpy.utils.config import get_lang, _get_descr_field
+from martpy.utils.config import _get_descr_field, get_lang
 from martpy.utils.constant import _FLOAT_PATTERN
 
 

@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import re
+
 import pandas as pd
 
 from martpy.utils.config import get_lang
+
 
 LAYER_HEADER = {
     'fr': {
@@ -35,12 +37,12 @@ LAYER_HEADER = {
     }
 }
 
+
 # from pymarthe "marthe_utils.py:L140" / slightly modified
-#def get_layers_infos(layfile, base = 1):
 def read_layer(file_layer, encoding='ISO-8859-1', base=1):
     """ Read a `.layer` marthe file
-    
-    Extract layer informations from Marthe .layer file 
+
+    Extract layer informations from Marthe .layer file
 
     Parameters
     ----------
@@ -59,7 +61,7 @@ def read_layer(file_layer, encoding='ISO-8859-1', base=1):
     geom_infos: dict
         dictionnary containing number of nested grids,
         radial grid boolean, cross section grid boolean.
-    
+
     Notes
     -----
 
@@ -77,7 +79,7 @@ def read_layer(file_layer, encoding='ISO-8859-1', base=1):
     # ---- Get .layer content as text
     with open(file_layer, 'r', encoding=encoding) as f:
         content = f.read()
-    
+
     # ---- set regular expressions
     regex = [
         r"(?:Cou|Lay)=\s*(\d+)",
@@ -86,18 +88,18 @@ def read_layer(file_layer, encoding='ISO-8859-1', base=1):
         r"(?:Ke|Uni Ks)=\s*(\d+)",
         r"(?:Anisot|Anisotropy)=\s*(\d+)"
     ]
-    
+
     # ---- Build Dataframe of all layer informations
     df = pd.DataFrame(
         [re.findall(r, content) for r in regex],
-        index =['layer', 'thickness', 'epon_sup', 'ke', 'anisotropy'],
+        index=['layer', 'thickness', 'epon_sup', 'ke', 'anisotropy'],
         dtype=float
     ).T
-    
+
     # ---- Manage dtypes of informations
     dtypes = [int, float, int, float, float]
-    layers_infos = df.astype({col:dt for col, dt in zip(df.columns, dtypes)})
-    
+    layers_infos = df.astype(dict(zip(df.columns, dtypes, strict=True)))
+
     # ---- Manage layer counting from base
     layers_infos['layer'] = layers_infos['layer'].add(base-1)
 
@@ -130,7 +132,7 @@ def _write_layer(layer_df, dict_geom, file_layer, title='marthe layer file', lan
     """
     if lang is None:
         lang = get_lang()
-    
+
     _headers = LAYER_HEADER.get(lang, LAYER_HEADER['fr'])
 
     with open(file_layer, mode='w', encoding='ISO-8859-1') as f:

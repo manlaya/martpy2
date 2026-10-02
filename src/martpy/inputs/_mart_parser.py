@@ -18,8 +18,9 @@ from martpy.utils.constant import (
     BLOCK_MART,
     BLOCK_MART_EN,
 )
-from ..utils.config import _get_resource_file
 from martpy.utils.helper import _get_closest_suggestion
+
+from ..utils.config import _get_resource_file
 
 
 WRITE_FMT_MART = '{0:>10}={1}\n'

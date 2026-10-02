@@ -15,8 +15,8 @@ from martpy.inputs._io_utils import (
     _filter_valid_opt_list_mail,
     _parse_parameter_block,
 )
-from martpy.utils.helper import _check_mart_key
 from martpy.utils.config import get_lang
+from martpy.utils.helper import _check_mart_key
 
 
 # Memo: check fmt here in MARTHE src/edi_pastp_prepro.f90:L752
@@ -852,10 +852,7 @@ def _action_matches_filters(action_dict, action, kwargs):
     """
     if action is not None and action_dict.get('mode') != action:
         return False
-    for key, value in kwargs.items():
-        if action_dict.get(key) != value:
-            return False
-    return True
+    return all(action_dict.get(key) == value for key, value in kwargs.items())
 
 
 def _convert_date_to_str_iso(date):

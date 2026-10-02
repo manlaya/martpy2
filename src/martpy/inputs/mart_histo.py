@@ -9,6 +9,7 @@ import pandas as pd
 from martpy.inputs._io_utils import _build_header, _fmt_nchar
 from martpy.utils.helper import from_histo_varname, to_histo_varname
 
+
 # TODO: use mart.utils.constant._FLOAT_PATTERN instead ?
 #       could also add entropy to this hell
 
@@ -43,7 +44,7 @@ class MartHisto(pd.DataFrame):
         col=None,
         row=None,
         layer=1,
-        Name=None,
+        name=None,
         obs=None,
     ):
         # nb check that field is a Marthe field
@@ -104,10 +105,13 @@ class MartHisto(pd.DataFrame):
         df_histo = df.copy()
 
         # treat only rows with missing coords - use pd.isna (not np.isnan) for Int64 NaN
-        df_histo_cells = df_histo.loc[pd.isna(df_histo[XCOL]) | pd.isna(df_histo[YCOL]), :]
+        df_histo_cells = df_histo.loc[pd.isna(df_histo[XCOL])
+                                      | pd.isna(df_histo[YCOL]), :]
         # col/row need add_col_row=True at grid load
         grid_df = grid.to_dataframe()
-        missing_grid_cols = [c for c in ['col', 'row'] if c not in grid_df.columns]
+        missing_grid_cols = [
+            c for c in ['col', 'row'] if c not in grid_df.columns
+        ]
         if missing_grid_cols:
             raise KeyError(
                 f"The grid is missing the column(s) {missing_grid_cols}. "
@@ -194,8 +198,8 @@ class MartHisto(pd.DataFrame):
             If set, the function will directly write GeoDataFrame to disk.
             This is the name of the file to be written, by default None (no
             file written). The extension determine the type of file to be
-            written (e.g. 'histo.shp' will write a shapefile, whereas 'histo.gpkg'
-            will write a geopackage).
+            written (e.g. 'histo.shp' will write a shapefile, whereas
+            'histo.gpkg' will write a geopackage).
         """
         import geopandas as gpd  # noqa: ICN002
         df = self.copy()
@@ -218,13 +222,13 @@ class MartHisto(pd.DataFrame):
         return gdf
 
     @classmethod
-    def from_histo_file(self, filename, encoding='ISO-8859-1', verbose=False):
+    def from_histo_file(cls, filename, encoding='ISO-8859-1', verbose=False):
         """ Read a .histo file from Marthe model
         """
         return read_histo_file(filename, encoding=encoding, verbose=verbose)
 
     @classmethod
-    def from_shapefile(self, filename, epsg=27572):
+    def from_shapefile(cls, filename, epsg=27572):
         """ Read a .gpkg file from Marthe model
         to create a MartHisto object
         """
@@ -241,27 +245,29 @@ class MartHisto(pd.DataFrame):
             'to build a MartHisto object.'
             ' Expected columns are: {}'.format(expected_columns)
         )
-        return gdf
+        return cls(gdf)
 
     @classmethod
     def from_pd(cls, df=None):
         """ Create a MartHisto object from a pandas DataFrame
 
-        Useful if you already have a DataFrame with the expected columns and dtypes,
-        or want to convert after a manipulation of the DataFrame (e.g. pd.concat
-        of several histo files and/or dataframes).
+        Useful if you already have a DataFrame with the expected columns and
+        dtypes, or want to convert after a manipulation of the DataFrame (e.g.
+        pd.concat of several histo files and/or dataframes).
 
         Parameters
         ----------
         df : pd.DataFrame
             DataFrame with columns:
-            - id_grid: the grid index in which is located the observation in model domain
+            - id_grid: the grid index in which is located the observation in
+              model domain
             - variable: the variable to extract from simulation
             - name: name of the observation
             - mode: mode of the observation (XCOO, GRID, etc.)
             - x, y or col, row: coordinates of the observation
             - layer: layer of the observation
-            - interp: wether the simulation extracted at obs location is interpolated or not
+            - interp: wether the simulation extracted at obs location is
+              interpolated or not
 
         Returns
         -------
@@ -324,13 +330,16 @@ def read_histo_file(histo_file, encoding='ISO-8859-1', verbose=False,
     -------
     pd.DataFrame
         DataFrame with columns:
-        - id_grid: the grid index in which is located the observation in model domain
-        - variable: the variable to extract from simulation (canonical generic name)
+        - id_grid: the grid index in which is located the observation in model
+          domain
+        - variable: the variable to extract from simulation (canonical generic
+          name)
         - name: name of the observation
         - mode: mode of the observation (XCOO, GRID, etc.)
         - x, y or col, row: coordinates of the observation
         - layer: layer of the observation
-        - interp: wether the simulation extracted at obs location is interpolated or not
+        - interp: wether the simulation extracted at obs location is
+        interpolated or not
     """
     with open(histo_file, encoding=encoding) as f:
         lines = [line.rstrip() for line in f if '/HISTO/' in line]
@@ -435,18 +444,13 @@ def _build_histo_line(
     if gig == '0':
         gig = ''
 
-    line = "{0:>2s}/{1:<13s}/HISTO/   =   /{2:>4s}:".format(
-        gig, variable, mode
-    )
+    line = "{:>2s}/{:<13s}/HISTO/   =   /{:>4s}:".format(gig, variable, mode)
+
     if mode.upper() in ['MAIL', 'CELL']:
-        line += "C={:7d}L={:7d}P={:7d};".format(
-            col, row, layer
-        )
+        line += "C={:7d}L={:7d}P={:7d};".format(col, row, layer)
     elif mode.upper() in ['XCOO', 'COOR']:
         _x, _y = _fmt_nchar(x, nchar=7), _fmt_nchar(y, nchar=7)
-        line += "X={}Y={}P={:7d};".format(
-            _x, _y, layer
-        )
+        line += "X={}Y={}P={:7d};".format(_x, _y, layer)
     elif mode.upper() in ['AFFL', 'TRONC']:
         line += "Afflu={:7d},Tronç={:7d}".format(river_afluent, river_cell)
     elif mode.upper() in ['LAKE', 'LAC']:
@@ -496,7 +500,11 @@ def _build_histo_from_dataframe(df, lang='fr'):
     )
     lines = [_build_histo_line(**row) for row in df_write.to_dict('records')]
     if lang.lower() == 'fr':
-        lines.append(' *** Fin du fichier des \'Mailles à Historique\'       ***')
+        lines.append(
+            ' *** Fin du fichier des \'Mailles à Historique\'       ***'
+        )
     else:
-        lines.append(' *** End of file: \'Cells with Time Series\'           ***')
+        lines.append(
+            ' *** End of file: \'Cells with Time Series\'           ***'
+        )
     return lines

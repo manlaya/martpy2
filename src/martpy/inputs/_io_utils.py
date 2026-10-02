@@ -4,6 +4,7 @@
 import re
 from pathlib import Path
 
+from martpy.utils.config import get_lang
 from martpy.utils.constant import (
     _ACTION_PARSER,
     _OPT_MAIL_PARSER,
@@ -13,7 +14,6 @@ from martpy.utils.constant import (
     OPT_LIST_MAIL,
 )
 from martpy.utils.helper import _check_mart_key
-from martpy.utils.config import get_lang
 
 
 def _build_header(title, lang=None):
@@ -245,7 +245,7 @@ def _parse_parameter_block(block_lines, path=None, verbose=False):
             iparam = modin_params  # replace parsed params
 
         # here we combine dict for all keys, if MODIFIC several keys, only one otherwise
-        for k, _  in iparam.items():
+        for k, _ in iparam.items():
             list_vals = params.get(k, [])
             if not isinstance(iparam[k], list):
                 # make it a list if several option for same variable
@@ -327,7 +327,7 @@ def _build_parameter_line(variable, action, **kwargs):
     # this does not concern actions with file required
     filename = kwargs.get('transient_file_path', '')
     if filename != '' and action not in ['FICH_METE', 'GRILLE', 'FICHIER', 'LIST_MAIL']:
-        filename =' File= {0}'.format(filename)
+        filename = ' File= {0}'.format(filename)
 
     # Case we select a specific column in a tabular time serie file
     file_col = kwargs.get('data_column_index', '')
@@ -355,8 +355,8 @@ def _build_parameter_line(variable, action, **kwargs):
             opts = _filter_valid_opt_list_mail(kwargs.get('opt_list_mail', []))
             opts = _format_opt_list_mail(opts)
             option_str = '{0} {1}'.format(option_str, ' '.join(opts))
-        elif action in ['ACTION', 'COUCHE', 'MAILLE', 'TRONCON', \
-                        'ZONE_GEO', 'ZONE_METEO', 'ZONE_SOL', 'ZONEP']:
+        elif action in ['ACTION', 'COUCHE', 'MAILLE', 'TRONCON', 'ZONE_GEO',
+                        'ZONE_METEO', 'ZONE_SOL', 'ZONEP']:
             option_str = '{0}{1}{2}'.format(option_str, filename, file_col)
 
     return ' {0:26}{1}'.format(var_type, option_str)
