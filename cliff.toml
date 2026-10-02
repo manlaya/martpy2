@@ -84,6 +84,7 @@ fail_on_unmatched_commit = false
 link_parsers = [
     # replace issue with link for Sphinx documentation
     { pattern = "#(\\d+)", href = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/$1"},
+    { pattern = "!(\\d+)", href = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/merge_requests/$1"},
 ]
 # Include only the tags that belong to the current branch.
 use_branch_tags = false

@@ -31,6 +31,7 @@ from .ts_utils import build_df_obs_sim
 
 __all__ = [
     "MART_OUTPUTS",
+    "NAN_VALUES",
     "from_histo_varname",
     "get_lang",
     "set_lang",

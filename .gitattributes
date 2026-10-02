@@ -1,1 +1,21 @@
+# Normalize all text files to LF in the repository and on checkout, so
+# committed line endings are always Unix-style (linux/mac) regardless of the
+# platform or git settings of whoever commits.
 * text=auto eol=lf
+# binary must never be treated as text. The `text=auto` rule above can misdetect
+# a binary file as text and normalize its bytes on # checkout/commit, corrupting
+# it. Mark the binary file types explicitly so git stores/checks them out
+# verbatim.
+*.nc binary
+# LFS generated, modified
+*.nc filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text
+# Shapefiles/GIS
+*.shp filter=lfs diff=lfs merge=lfs -text
+*.shx filter=lfs diff=lfs merge=lfs -text
+*.dbf filter=lfs diff=lfs merge=lfs -text
+*.prj filter=lfs diff=lfs merge=lfs -text
+*.qix filter=lfs diff=lfs merge=lfs -text
+*.cpg filter=lfs diff=lfs merge=lfs -text
+*.qmd filter=lfs diff=lfs merge=lfs -text
+*.gpkg filter=lfs diff=lfs merge=lfs -text

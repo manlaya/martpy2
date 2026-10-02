@@ -1,0 +1,50 @@
+# pip install pre-commit
+# pre-commit install [--install-hooks] # install git hooks
+# pre-commit run [--all-files]  # apply hooks
+# files: \.(py|sh|rst|md|toml)$
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        files: ^src/.*\.py$
+      - id: end-of-file-fixer
+        files: ^src/.*\.py$
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+        files: ^src/.*\.py$
+        exclude: '.*\.bat'   # future, if applied to other files than *.py
+        description: Forces to replace line ending by the UNIX 'lf' character.
+      - id: check-added-large-files
+        args: ['--maxkb=10000']  # Sets the limit to 10MB
+      - id: check-yaml
+      - id: check-toml
+      # - id: check-case-conflict
+  # future:
+  # - repo: https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/gridmarthe
+  #   rev: v1.0.0
+  #   hooks:
+  #     - id: check-uncommitted-test-data
+  # - repo: https://github.com/numpy/numpydoc
+  #   rev: v1.11.0
+  #   hooks:
+  #     - id: numpydoc-validation
+  #       log_file: numpydoc-lint.log
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   # Ruff version.
+  #   rev: v0.15.20
+  #   hooks:
+  #     # Run the linter.
+  #     - id: ruff-check
+  #       log_file: ruff-check.log
+  #     # Run the formatter // edit, no, use yapf for a softer formatter
+  #     # - id: ruff-format
+  # - repo: https://github.com/google/yapf
+  #   rev: v0.43.0
+  #   hooks:
+  #     - id: yapf-diff
+  #       log_file: yapf-diff.patch
+  # - repo: https://github.com/codespell-project/codespell
+  #   rev: v2.3.0
+  #   hooks:
+  #     - id: codespell

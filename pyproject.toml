@@ -31,7 +31,7 @@ classifiers = [
 
 keywords = ["hydrology", "groundwater", "modelling", "marthe"]
 
-requires-python = ">=3.11"
+requires-python = ">=3.11 , < 3.15"
 
 [project.urls]
 Homepage = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy"
@@ -52,7 +52,16 @@ dependencies = {file = ["requirements.txt"]}
 
 [project.optional-dependencies]
 opt = ['matplotlib', 'geopandas', 'shapely', 'pyproj']
-dev = ['ruff', 'pytest', 'pytest-cov', 'pre-commit']
+
+[dependency-groups]
+doc  = ['sphinx', 'pydata-sphinx-theme']
+lint = ['ruff', 'pre-commit', 'yapf']
+test = ['pytest', 'pytest-cov', 'tox']
+dev = [
+    {include-group = "doc"},
+    {include-group = "lint"},
+    {include-group = "test"}
+]
 
 [tool.setuptools]
 include-package-data = true
@@ -61,4 +70,26 @@ include-package-data = true
 addopts = "-v --cov=martpy"  # -s
 testpaths = [
     "tests",
+]
+
+# [tool.tox]
+# TODO: convert toc.ini here
+
+
+[tool.numpydoc_validation]
+checks = [
+    "all",   # report on all checks, except the below
+    "EX01",
+    "SA01",
+    "ES01",
+]
+# remember to use single quotes for regex in TOML
+exclude = [  # don't report on objects that match any of these regex
+    '\.undocumented_method$',
+    '\.__repr__$',
+    '^_.*',  # private members
+]
+exclude_files = [ # don't process filepaths that match these regex
+    '^tests/.*',
+    '^module/gui.*',
 ]

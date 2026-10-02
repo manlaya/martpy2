@@ -155,6 +155,10 @@ CLAUDE.md
 _version.py
 
 # ------ others
+# git patches:
+*.patch
+
+# bakup files
 *.bak
 
 # binary for resources:
