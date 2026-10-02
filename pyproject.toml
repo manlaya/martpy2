@@ -60,7 +60,8 @@ test = ['pytest', 'pytest-cov', 'tox']
 dev = [
     {include-group = "doc"},
     {include-group = "lint"},
-    {include-group = "test"}
+    {include-group = "test"},
+    "martpy[opt]"
 ]
 
 [tool.setuptools]

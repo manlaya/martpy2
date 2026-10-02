@@ -8,7 +8,7 @@ variables:
   VENV_PATH: "$CI_PROJECT_DIR/venv"
 
 stages:
-  # - lint
+  - lint
   - build
   - test
   - deploy
@@ -34,23 +34,27 @@ before_script:
   - source $VENV_PATH/bin/activate
 
 
-# share bewteen jobs
-cache:
-  paths:
-    - .cache/pip
-    - venv/
+# share bewteen jobs - edit: do NOT share (faster but unsafe)
+# cache:
+#   paths:
+#     - .cache/pip
+#     - venv/
+
+
+pre-commit:
+  stage: lint
+  allow_failure: true
+  interruptible: true
+  before_script:
+    - python3 -m pip install pre-commit
+  script:
+    - git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - pre-commit run --origin HEAD --source origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME --color always
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
 
 # future
-# pre-commit:
-#   stage: lint
-#   allow_failure: true
-#   interruptible: true
-#   before_script:
-#     - python3 -m pip install pre-commit
-#     - python3 -m pip install ruff
-#   script:
-#   - pre-commit run --all-files
-
 # lint:
 #   stage: lint
 #   only:
@@ -76,15 +80,14 @@ build:
     - tags
   before_script:
     - source $VENV_PATH/bin/activate
-    - pip install build  # cibuildwheel
+    - pip install build
   script:
     - python3 -m build -s
     - python3 -m build -w
-    # - python3 -m cibuildwheel --output-dir ./dist
   artifacts:
     paths:
       - dist/
-    expire_in: 24 hours
+    expire_in: 2 hours
 
 
 test:
@@ -100,9 +103,9 @@ test:
   before_script:
     - *install-env
     - source $VENV_PATH/bin/activate
-    - pip install .[dev]
+    - pip install --group=dev .
   script:
-    - pytest
+    - tox
 
 
 deploy_test:
