@@ -36,6 +36,30 @@ def test_assign_zone_value():
         'Error with assign value from zone'
     )
 
+def test_from_float():
+    ds = grid.load_marthe_grid(FGRID, drop_nan=True)
+    time_coords = ds['time']
+    zone_coords= ds['zone']
+
+    result = ds.gm.from_float(zone_coords, 1.0, 'CHARGE')
+
+    assert np.max(result['charge'].values) == 1.0
+    assert np.min(result['charge'].values) == 1.0
+
+def test_set_value():
+    ds = grid.load_marthe_grid(FGRID, drop_nan=True)
+
+    result = ds.gm.set_value(zone=255, value= 10000.0, varname='permeab')
+
+    assert result
+
+def test_merge():
+    ds = grid.load_marthe_grid(FGRID, drop_time=True)
+
+    result = ds.gm.merge(ds, varname='permh')
+
+    assert 'permh' in result.data_vars
+    assert 'time' not in result.coords
 
 def main():
     test_load_marthe_grid()
