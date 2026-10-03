@@ -1,6 +1,0 @@
-# Track changes in the authorship of the code (mails/names of authors)
-# harmonize in git log. See https://git-scm.com/docs/gitmailmap
-Adrien Manlay <manlaya@proton.me> <a.manlay@brgm.fr>
-Adrien Manlay <manlaya@proton.me> manlaya <a.manlay@brgm.fr>
-Simon Magne <s.magne@brgm.fr> s.magne <s.magne@brgm.fr>
-Simon Magne <s.magne@brgm.fr> simon-brgm <s.magne@brgm.fr>

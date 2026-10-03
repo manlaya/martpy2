@@ -31,7 +31,7 @@ classifiers = [
 
 keywords = ["hydrology", "groundwater", "modelling", "marthe"]
 
-requires-python = ">=3.11 , < 3.15"
+requires-python = ">=3.11, < 3.15"
 
 [project.urls]
 Homepage = "https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy"
@@ -72,9 +72,37 @@ addopts = "-v --cov=martpy"  # -s
 testpaths = [
     "tests",
 ]
+filterwarnings = [
+    # normal gridmarthe warning here:
+    'ignore:No variable name found',
+]
 
-# [tool.tox]
-# TODO: convert toc.ini here
+# Use tox (https://tox.readthedocs.io/) for running tests in different environments
+# To run tests in all environments: `tox`
+# To run tests in a specific environment: `tox -e pandas2`
+# To run tests in a specific environment with pytest arguments (e.g. -v for
+# verbose): `tox -e pandas2 -- -v`
+[tool.tox]
+requires = ["tox>=4"]
+env_list = ["pandas2", "pandas3"]
+
+[tool.tox.env_run_base]
+description = "run unit tests"
+deps = [
+    "pytest",
+    "pytest-cov",
+]
+# change of security with tox >= 4: explicitely allow external commands
+allowlist_externals = ["python", "pytest"]
+commands = [
+    ["python3", "-c", "import pandas; print(pandas.__version__)"],
+    ["pytest", "tests"],
+]
+
+[tool.tox.env.pandas2]
+deps = ["pandas>=2.0,<3.0"]
+[tool.tox.env.pandas3]
+deps = ["pandas>=3.0,<4.0"]
 
 
 [tool.numpydoc_validation]
