@@ -22,12 +22,12 @@ stages:
   - pip install --upgrade pip setuptools wheel
 
 
-setup:
-  stage: .pre
-  before_script:
-    - echo 'setup env'
-  script:
-   - *install-env
+# setup:
+#   stage: .pre
+#   before_script:
+#     - echo 'setup env'
+#   script:
+#    - *install-env
 
 
 before_script:
@@ -79,6 +79,7 @@ build:
     - main
     - tags
   before_script:
+    - *install-env
     - source $VENV_PATH/bin/activate
     - pip install build
   script:
