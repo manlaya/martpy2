@@ -26,6 +26,7 @@ from .helper import (
 )
 from .misc import getattr_nested
 from .os_utils import mk_run_dir, mv_res
+from .trajectory import Trajectory, read_trajectory
 from .ts_utils import build_df_obs_sim
 
 
@@ -43,4 +44,6 @@ __all__ = [
     "build_df_obs_sim",
     "mk_run_dir",
     "mv_res",
+    "Trajectory",
+    "read_trajectory"
 ]
