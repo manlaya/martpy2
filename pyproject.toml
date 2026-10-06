@@ -91,18 +91,22 @@ description = "run unit tests"
 deps = [
     "pytest",
     "pytest-cov",
+    { replace = "if", condition = "factor.pandas2", then = ["pandas>=2.0,<3"], extend = true },
+    { replace = "if", condition = "factor.pandas3", then = ["pandas>=3.0,<4"], extend = true },
 ]
 # change of security with tox >= 4: explicitely allow external commands
-allowlist_externals = ["python", "pytest"]
+allowlist_externals = ["python3", "pytest"]
 commands = [
     ["python3", "-c", "import pandas; print(pandas.__version__)"],
     ["pytest", "tests"],
 ]
 
-[tool.tox.env.pandas2]
-deps = ["pandas>=2.0,<3.0"]
 [tool.tox.env.pandas3]
-deps = ["pandas>=3.0,<4.0"]
+# hack: force pandas 3 even if a dep installed pandas 2
+# this is needed as long as gridmarthe force pandas < 3.0
+# as tox order is: deps (pandas3), package_deps (gm, so pandas2), package --no-deps
+# this allow to add pandas 3 install before running pytest but after all prev steps
+commands_pre = [["python3", "-m", "pip", "install" , "pandas>=3"]]
 
 
 [tool.numpydoc_validation]
