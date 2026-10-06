@@ -51,6 +51,8 @@ pre-commit:
     - git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
     - pre-commit run --origin HEAD --source origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME --color always
   rules:
+    - if: '$CI_MERGE_REQUEST_ID && $CI_MERGE_REQUEST_TITLE =~ /^\[Draft\]|^Draft:|^(Draft)/'
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 
@@ -97,10 +99,16 @@ test:
   parallel:
     matrix:
       - PYTHON_VERSION: ["3.11", "3.12", "3.13", "3.14"]
-  only:
-   - main
-   - tags
-   - merge_requests
+  # only:
+  #  - main
+  #  - tags
+  #  - merge_requests
+  rules:
+    - if: '$CI_MERGE_REQUEST_ID && $CI_MERGE_REQUEST_TITLE =~ /^\[Draft\]|^Draft:|^(Draft)/'
+      when: never
+    - if: "$CI_PIPELINE_SOURCE == 'merge_request_event'"
+    - if: "$CI_COMMIT_BRANCH == 'main'"
+    - if: "$CI_COMMIT_TAG"
   before_script:
     - *install-env
     - source $VENV_PATH/bin/activate
