@@ -760,8 +760,9 @@ class MartTimeSteps:
         raise NotImplementedError('Not yet available.... But Soon ! :)')
 
     def __repr__(self):
-        msg = '\nMarthe timesteps\n'
-        msg += '================\n'
+        class_name = self.__class__.__name__
+        msg = f'{class_name}\n'
+        msg += '=' * len(class_name) + '\n'
         msg += 'Datetime From: {}, to: {}\n'.format(self.time_window[0], self.time_window[1])
         msg += 'Number of steps: {}\n'.format(len(self.times))
         msg += 'Number of steps with action: {}\n'.format(len(self.actions))
