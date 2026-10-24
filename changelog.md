@@ -6,7 +6,13 @@ Use : https://keepachangelog.com/en/1.0.0/ for syntax
 Use : https://semver.org/ for versioning strategy
 -->
 
-<!-- ## [unreleased] -->
+## [Unreleased]
+
+### Changed
+
+- Include the class name in the text representations of `MartHisto`, `MartLiais`,
+  `MartParams` and `MartTimeSteps`, preserving their existing content
+  ([#36](https://gitlab.com/brgm/hydrogeological-modelling/marthe-tools/martpy/-/work_items/36)).
 
 ## [0.2.0] - 2026-10-03
 

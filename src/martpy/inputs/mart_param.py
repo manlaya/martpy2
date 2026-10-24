@@ -157,7 +157,7 @@ class MartParams:
     def __repr__(self):
         import pprint
         pp = pprint.PrettyPrinter(indent=2, sort_dicts=False)
-        return pp.pformat(self.to_dict())
+        return f'{self.__class__.__name__}\n{pp.pformat(self.to_dict())}'
 
 
 def read_general_parameters(mart_file):

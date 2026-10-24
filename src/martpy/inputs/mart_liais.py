@@ -46,6 +46,12 @@ class MartLiais(pd.DataFrame):
     def __init__(self, df):
         super().__init__(df)
 
+    def __repr__(self):
+        return f'{self.__class__.__name__}\n{super().__repr__()}'
+
+    def __str__(self):
+        return self.__repr__()
+
     @property
     def _constructor(self):
         return MartLiais
